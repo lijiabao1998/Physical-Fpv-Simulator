@@ -22,13 +22,14 @@ Physics-first FPV simulator built from real physical properties.
 | 4. 電氣 | 壓降、峰值電流、額定值 | 電池等效電路、額定值檢查 | ✅（溫升待做） |
 | 5. 調參 | 看陀螺儀頻譜設濾波、看步階響應調 PID | 雜訊調查、濾波延遲、反卷積步階響應、增益掃描 | ✅ |
 | 6. 飛行測試 | 實飛並錄 log | 6DOF 飛行模擬、Betaflight 式飛控、虛擬 Blackbox、適用範圍監測 | ✅（即時手動飛行待做） |
-| 7. 迭代 | 依 log 修改設計 | 版本比較報告 | 規劃中 |
+| 7. 迭代 | 依測試結果修改設計 | 版本檔（只寫變更）、成對蒙地卡羅、各版本相同流程的比較報告 | ✅ |
 
 範例輸出：
 
 - [參考機設計報告](reports/ref-5in-6s-freestyle/report.md)（第 1–4 階段）
 - [調參報告](reports/tune-acro-5in-baseline/report.md)（第 5 階段）
 - [飛行測試報告：綜合飛行](reports/flight-freestyle/report.md)（第 6 階段）
+- [設計迭代：加掛運動相機的兩個版本](reports/compare-actioncam/report.md)（第 7 階段）
 
 ## 快速開始
 
@@ -61,6 +62,14 @@ python -m venv .venv
 .venv/bin/fpvsim tune data/builds/ref-5in-6s-freestyle.toml --fc data/fc/acro-5in-baseline.toml
 ```
 
+設計迭代（說明見 [docs/iteration.md](docs/iteration.md)）：
+
+```bash
+.venv/bin/fpvsim compare data/builds/ref-5in-6s-freestyle.toml \
+    data/builds/ref-5in-6s-freestyle-actioncam-a.toml data/builds/ref-5in-6s-freestyle-actioncam-b.toml \
+    --fc data/fc/acro-5in-baseline.toml
+```
+
 ## 專案結構
 
 ```
@@ -86,6 +95,7 @@ src/fpvsim/
   flightanalysis.py       頻譜、步階響應、延遲
   tuning.py               調參流程
   flight_report.py, tuning_report.py
+  compare.py, compare_report.py   設計迭代：版本比較
 data/
   specs/                  需求規格
   builds/                 組裝檔（零件與擺放位置）
@@ -96,6 +106,7 @@ docs/
   models.md               每個物理模型的方程、假設與適用範圍
   data-format.md          資料檔格式
   flight-sim.md           飛行模擬、飛控與調參
+  iteration.md            設計迭代與版本比較
 tests/                    驗證測試
 reports/                  產生的報告範例
 ```

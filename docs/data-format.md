@@ -99,6 +99,12 @@ position = { value = [-45, 15, 0], unit = "mm" }
 
 馬達與槳會自動放在機架的 `[[rotors]]` 安裝點上，加上各自的 `cg_offset`。
 
+零件可以帶阻力面積 `cda_x`、`cda_y`、`cda_z`（零件檔的 `[params]`，或行內零件的鍵），會加到機架的阻力面積上。
+
+### 版本檔
+
+`[meta] extends = "<基準組裝檔>"` 讓組裝檔只寫變更：同名 `[[parts]]` 取代、新名稱新增、`remove_parts = [...]` 移除；`[components]`、`[electrical]`、`[flight_controller]` 以鍵覆蓋；`change` 寫一句變更說明。詳見 [iteration.md](iteration.md)。
+
 ## 規格檔（`schema = "fpvsim.spec/1"`）
 
 ```toml
