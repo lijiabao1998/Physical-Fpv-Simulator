@@ -42,7 +42,30 @@ Lumped thermal simulation is explicitly **unvalidated**: several built-in Chen20
 
 ## Current results
 
-Software checks pass (49 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
+Software checks pass (58 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
+
+## Thermal reconstruction: inspect the second cohort
+
+The ORegan2022 extension covers **36 first-discharge traces from12 LG M50 cells**, at0/10/25°C and0.5/1/2C. Published diffusion corrections and h=15 W/m²/K are declared; no new fit or initial-voltage alignment is performed.
+
+On grid40, **6/36 empirical targets pass and30/36 fail**. Voltage RMSE ranges24.51–88.00mV; surface-proxy temperature RMSE0.35–14.68K, including the retained cell791 anomaly. All36 actual-node/surface, lithium, charge and heat-balance audits pass. These are separate findings: **this is not a mature, qualified battery model**.
+
+The1C/25°C representative40→80 mesh check actually completed in187 seconds but **failed convergence targets**: maximum voltage difference14.33mV versus5mV, and temperature difference0.207K versus0.1K. Peaks occur at340s and970s, not at the slightly different cutoff endpoints. Whole-cohort numerical verification remains open. Cold conditions and some hot endpoints extrapolate measured parameter ranges.
+
+- [Full36-case thermal report](docs/benchmarks/thermal-grid40.md) and [machine-readable summary](docs/benchmarks/thermal-summary.json)
+- Raw-data inspection, duplicate counts and sensor flags: run physical-fpv thermal-inspect
+- [Representative numerical comparison](docs/benchmarks/thermal-representative-grid-comparison.json) and [solver statistics](docs/benchmarks/thermal-solver-statistics.txt)
+- [Frozen thermal protocol](docs/thermal-protocol.md), [numerical status](docs/thermal-numerical-status.md), and [ghost-point audit correction](docs/concentration-audit-correction.md)
+
+```sh
+physical-fpv thermal-fetch-data
+physical-fpv thermal-inspect
+physical-fpv thermal-benchmark --skip-numerics --out results/thermal-final
+python scripts/render_thermal_evidence.py
+python scripts/verify_thermal_grid.py --timeout 600
+```
+
+The36-case grid40 report intentionally marks numerical stages NOT RUN. The separate representative result does not establish convergence for the remaining conditions. Running thermal-benchmark without --skip-numerics requests all frozen numerical checks and is computationally heavier.
 
 ## What is implemented
 

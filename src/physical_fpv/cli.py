@@ -9,6 +9,8 @@ from pathlib import Path
 from physical_fpv.core import ModelConfig, simulate
 from physical_fpv.data import download_data
 from physical_fpv.materials import analytic_material_example
+from physical_fpv.thermal_benchmark import run_thermal_benchmark
+from physical_fpv.thermal_data import fetch_thermal_data, save_cohort_inspection
 from physical_fpv.validation import run_benchmark, write_timeseries
 
 
@@ -36,6 +38,28 @@ def main(argv: list[str] | None = None) -> int:
         help="Exit 2 if frozen research acceptance gates fail",
     )
     sub.add_parser("material-method-check", help="Analytical jump network, not a real material")
+    thermal_fetch = sub.add_parser("thermal-fetch-data", help="Fetch checksum-pinned TEC archive")
+    thermal_fetch.add_argument(
+        "--archive", type=Path, default=Path("data/oregan/raw/validation.zip")
+    )
+    thermal_inspect = sub.add_parser(
+        "thermal-inspect", help="Inspect raw quality, units and sensor flags"
+    )
+    thermal_inspect.add_argument(
+        "--archive", type=Path, default=Path("data/oregan/raw/validation.zip")
+    )
+    thermal_inspect.add_argument(
+        "--out", type=Path, default=Path("results/thermal-data-inspection.json")
+    )
+    thermal_bench = sub.add_parser(
+        "thermal-benchmark", help="Run fixed ORegan2022 thermal reproduction"
+    )
+    thermal_bench.add_argument(
+        "--archive", type=Path, default=Path("data/oregan/raw/validation.zip")
+    )
+    thermal_bench.add_argument("--out", type=Path, default=Path("results/thermal"))
+    thermal_bench.add_argument("--skip-numerics", action="store_true")
+    thermal_bench.add_argument("--require-pass", action="store_true")
     args = parser.parse_args(argv)
     try:
         if args.command == "fetch-data":
@@ -54,6 +78,27 @@ def main(argv: list[str] | None = None) -> int:
             )
             print((args.out / "report.md").read_text(encoding="utf-8"))
             if args.require_pass and not report["research_gate_passed"]:
+                return 2
+        elif args.command == "thermal-fetch-data":
+            print(json.dumps(fetch_thermal_data(args.archive), indent=2))
+        elif args.command == "thermal-inspect":
+            report = save_cohort_inspection(args.archive, args.out)
+            print(
+                json.dumps(
+                    {
+                        "files": report["files"],
+                        "unique_cells": report["unique_cells"],
+                        "duplicates": report["duplicate_records"],
+                        "output": str(args.out),
+                    }
+                )
+            )
+        elif args.command == "thermal-benchmark":
+            report = run_thermal_benchmark(args.archive, args.out, not args.skip_numerics)
+            print((args.out / "report.md").read_text(encoding="utf-8"))
+            if args.require_pass and not (
+                report["all_empirical_targets_passed"] and report["all_numerical_targets_passed"]
+            ):
                 return 2
         else:
             print(json.dumps(analytic_material_example(), indent=2, allow_nan=False))

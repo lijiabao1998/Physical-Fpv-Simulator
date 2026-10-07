@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 from dataclasses import asdict, dataclass
+from functools import lru_cache
 from typing import Literal
 
 # Telemetry is unnecessary for reproducible offline simulations.
@@ -24,6 +25,9 @@ MODEL_TYPES = {
 class ModelConfig:
     model: Literal["SPM", "SPMe", "DFN"] = "DFN"
     thermal: Literal["isothermal", "lumped"] = "isothermal"
+    parameter_set: Literal["Chen2020", "ORegan2022"] = "Chen2020"
+    initial_temperature_k: float | None = None
+    heat_transfer_coefficient_w_m2_k: float | None = None
     current_a: float = 5.0
     ambient_temperature_k: float = 298.15
     mesh_points: int = 20
@@ -34,6 +38,18 @@ class ModelConfig:
     def validate(self) -> None:
         if self.model not in MODEL_TYPES or self.thermal not in {"isothermal", "lumped"}:
             raise ValueError("Unsupported model or thermal option")
+        if self.parameter_set not in {"Chen2020", "ORegan2022"}:
+            raise ValueError("Unsupported parameter set")
+        if self.initial_temperature_k is not None and (
+            not np.isfinite(self.initial_temperature_k)
+            or not 263.15 <= self.initial_temperature_k < self.max_temperature_k
+        ):
+            raise ValueError("Initial temperature must be finite and inside the research envelope")
+        if self.heat_transfer_coefficient_w_m2_k is not None and (
+            not np.isfinite(self.heat_transfer_coefficient_w_m2_k)
+            or not 1 <= self.heat_transfer_coefficient_w_m2_k <= 50
+        ):
+            raise ValueError("Heat transfer coefficient must be within 1 to 50 W/m2/K")
         scalars = (
             self.current_a,
             self.ambient_temperature_k,
@@ -43,10 +59,12 @@ class ModelConfig:
         )
         if not np.isfinite(scalars).all():
             raise ValueError("All numerical settings must be finite")
-        if not 0.5 <= self.current_a <= 7.5:
-            raise ValueError("Supported research envelope is 0.5 to 7.5 A; no high-C FPV claim")
-        if not 288.15 <= self.ambient_temperature_k <= 318.15:
-            raise ValueError("Exploratory temperature envelope is 288.15 to 318.15 K")
+        maximum_current = 7.5 if self.parameter_set == "Chen2020" else 10.0
+        if not 0.5 <= self.current_a <= maximum_current:
+            raise ValueError(f"Supported current is 0.5 to {maximum_current} A; no FPV claim")
+        minimum_temperature = 288.15 if self.parameter_set == "Chen2020" else 273.15
+        if not minimum_temperature <= self.ambient_temperature_k <= 318.15:
+            raise ValueError("Ambient temperature outside the parameter-set research envelope")
         if not isinstance(self.mesh_points, int) or not 10 <= self.mesh_points <= 80:
             raise ValueError("Mesh must be an integer from 10 to 80 (bounded CPU cost)")
         if not 1e-9 <= self.tolerance <= 1e-5:
@@ -71,14 +89,16 @@ class SimulationResult:
     termination: str
     physical_audit: dict
     parameter_fingerprint: str
+    solver_cache_info: dict | None = None
 
     def metadata(self) -> dict:
         return {
             "config": asdict(self.config),
             "pybamm_version": pybamm.__version__,
-            "parameter_set": "Chen2020",
+            "parameter_set": self.config.parameter_set,
             "parameter_fingerprint": self.parameter_fingerprint,
-            "initial_state": "published Chen2020 initial concentrations; no SOC fitting",
+            "compiled_template_cache": self.solver_cache_info,
+            "initial_state": f"{self.config.parameter_set} initial concentrations; no SOC fit",
             "termination": self.termination,
             "voltage_cutoff_reached": "Minimum voltage" in self.termination,
             "endpoint_time_s": float(self.time_s[-1]),
@@ -89,10 +109,16 @@ class SimulationResult:
             "physical_audit": self.physical_audit,
             "temperature_status": "imposed, not predicted"
             if self.config.thermal == "isothermal"
-            else "exploratory; thermal parameter provenance incomplete; NOT validated",
+            else (
+                "exploratory; thermal parameter provenance incomplete; NOT validated"
+                if self.config.parameter_set == "Chen2020"
+                else "lumped volume-average prediction; empirical qualification reported separately"
+            ),
             "scope": "fresh LG M50 benchmark; not certified for FPV, abuse, aging or safety",
             "outside_benchmark_temperature": self.config.ambient_temperature_k != 298.15,
-            "concentration_audit_scope": "output samples only; not every internal solver step",
+            "concentration_audit_scope": (
+                "finite-volume nodes and surface states at output times; no plotting ghost points"
+            ),
         }
 
 
@@ -105,41 +131,79 @@ def parameter_fingerprint(parameters: pybamm.ParameterValues) -> str:
     return hashlib.sha256(json.dumps(values, sort_keys=True).encode()).hexdigest()
 
 
-def simulate(config: ModelConfig) -> SimulationResult:
-    config.validate()
-    model = MODEL_TYPES[config.model](options={"thermal": config.thermal})
+@lru_cache(maxsize=6)
+def _simulation_template(
+    model_name, thermal, parameter_set, mesh_points, tolerance, maximum_temperature, heat_transfer
+):
+    """Reuse symbolic/discretized equations only; every solve resets initial state.
+
+    Current and temperature boundary values are explicit inputs, not fitted parameters.
+    This cache is deliberately small and intended for sequential CPU research runs.
+    """
+    model = MODEL_TYPES[model_name](options={"thermal": thermal})
     model.events.append(
         pybamm.Event(
             "Research temperature envelope",
-            config.max_temperature_k - model.variables["Volume-averaged cell temperature [K]"],
+            maximum_temperature - model.variables["Volume-averaged cell temperature [K]"],
         )
     )
-    parameters = pybamm.ParameterValues("Chen2020")
+    parameters = pybamm.ParameterValues(parameter_set)
+    parameters.update(
+        {
+            "Current function [A]": "[input]",
+            "Ambient temperature [K]": "[input]",
+            "Initial temperature [K]": "[input]",
+        }
+    )
+    if heat_transfer is not None:
+        parameters.update({"Total heat transfer coefficient [W.m-2.K-1]": heat_transfer})
+    var_pts = {
+        "x_n": mesh_points,
+        "x_s": max(5, mesh_points // 2),
+        "x_p": mesh_points,
+        "r_n": mesh_points,
+        "r_p": mesh_points,
+    }
+    solver = pybamm.IDAKLUSolver(rtol=tolerance, atol=tolerance, options={"num_threads": 1})
+    return pybamm.Simulation(model, parameter_values=parameters, var_pts=var_pts, solver=solver)
+
+
+def simulate(config: ModelConfig) -> SimulationResult:
+    config.validate()
+    parameters = pybamm.ParameterValues(config.parameter_set)
     parameters.update(
         {
             "Current function [A]": config.current_a,
             "Ambient temperature [K]": config.ambient_temperature_k,
-            "Initial temperature [K]": config.ambient_temperature_k,
+            "Initial temperature [K]": (
+                config.initial_temperature_k
+                if config.initial_temperature_k is not None
+                else config.ambient_temperature_k
+            ),
         }
     )
-    points = config.mesh_points
-    var_pts = {
-        "x_n": points,
-        "x_s": max(5, points // 2),
-        "x_p": points,
-        "r_n": points,
-        "r_p": points,
+    if config.heat_transfer_coefficient_w_m2_k is not None:
+        parameters.update(
+            {"Total heat transfer coefficient [W.m-2.K-1]": config.heat_transfer_coefficient_w_m2_k}
+        )
+    cache_before = _simulation_template.cache_info()
+    simulation = _simulation_template(
+        config.model,
+        config.thermal,
+        config.parameter_set,
+        config.mesh_points,
+        config.tolerance,
+        config.max_temperature_k,
+        config.heat_transfer_coefficient_w_m2_k,
+    )
+    inputs = {
+        key: parameters[key]
+        for key in ("Current function [A]", "Ambient temperature [K]", "Initial temperature [K]")
     }
-    solver = pybamm.IDAKLUSolver(
-        rtol=config.tolerance, atol=config.tolerance, options={"num_threads": 1}
-    )
-    simulation = pybamm.Simulation(
-        model, parameter_values=parameters, var_pts=var_pts, solver=solver
-    )
     duration = min(86400.0, 1.5 * 5.0 / config.current_a * 3600)
     output_time = np.arange(0, duration + config.sample_period_s, config.sample_period_s)
     output_time = output_time[output_time <= duration]
-    solution = simulation.solve([0, duration], t_interp=output_time)
+    solution = simulation.solve([0, duration], t_interp=output_time, inputs=inputs)
     time = np.asarray(solution.t)
 
     def get(name):
@@ -167,31 +231,47 @@ def simulate(config: ModelConfig) -> SimulationResult:
         raise RuntimeError("Solver returned invalid/nonmonotone outputs")
     concentration_bounds = {}
     for electrode in ("Negative", "Positive"):
-        concentration = np.asarray(solution[f"{electrode} particle concentration [mol.m-3]"](time))
+        concentration = np.asarray(
+            solution[f"{electrode} particle concentration [mol.m-3]"].entries
+        )
         maximum = parameters[f"Maximum concentration in {electrode.lower()} electrode [mol.m-3]"]
+        surface = np.asarray(
+            solution[f"{electrode} particle surface concentration [mol.m-3]"].entries
+        )
+        lower = min(float(np.min(concentration)), float(np.min(surface)))
+        upper = max(float(np.max(concentration)), float(np.max(surface)))
         concentration_bounds[electrode.lower()] = {
-            "min_mol_m3": float(np.min(concentration)),
-            "max_mol_m3": float(np.max(concentration)),
+            "node_min_mol_m3": float(np.min(concentration)),
+            "node_max_mol_m3": float(np.max(concentration)),
+            "surface_min_mol_m3": float(np.min(surface)),
+            "surface_max_mol_m3": float(np.max(surface)),
+            "node_array_shape": list(concentration.shape),
+            "min_mol_m3": lower,
+            "max_mol_m3": upper,
             "limit_mol_m3": maximum,
             "passed": bool(
                 np.isfinite(concentration).all()
-                and np.min(concentration) >= -1e-6
-                and np.max(concentration) <= maximum + 1e-6
+                and np.isfinite(surface).all()
+                and lower >= -1e-6
+                and upper <= maximum + 1e-6
             ),
         }
-    electrolyte = np.asarray(solution["Electrolyte concentration [mol.m-3]"](time))
+    electrolyte = np.asarray(solution["Electrolyte concentration [mol.m-3]"].entries)
     drift = float(np.max(np.abs(lithium - lithium[0])) / lithium[0])
     charge_error = float(np.max(np.abs(capacity - config.current_a * time / 3600)))
     thermal_residual = None
     if config.thermal == "lumped":
-        # Surface cooling is signed negative when removing heat. Constant Chen heat capacities.
-        stored = float(heat_capacity[0] * (temperature[-1] - temperature[0]))
+        # Cooling is signed. Integrate temperature-dependent heat capacity along the trajectory.
+        stored = float(np.trapezoid(heat_capacity, temperature))
         net_heat = float(np.trapezoid(heating + cooling, time))
+        generated_heat = float(np.trapezoid(np.abs(heating), time))
         thermal_residual = {
             "stored_energy_j": stored,
             "integrated_net_heat_j": net_heat,
             "absolute_residual_j": abs(stored - net_heat),
             "relative_residual": abs(stored - net_heat) / max(abs(stored), 1.0),
+            "relative_to_generated_heat": abs(stored - net_heat) / max(generated_heat, 1.0),
+            "passed": abs(stored - net_heat) / max(generated_heat, 1.0) <= 0.01,
             "note": "trapezoidal sampled-output audit, not experimental validation",
         }
     audit = {
@@ -206,6 +286,7 @@ def simulate(config: ModelConfig) -> SimulationResult:
             and np.isfinite(electrolyte).all()
             and np.min(electrolyte) > 0
             and all(v["passed"] for v in concentration_bounds.values())
+            and (thermal_residual is None or thermal_residual["passed"])
         ),
     }
     return SimulationResult(
@@ -221,4 +302,10 @@ def simulate(config: ModelConfig) -> SimulationResult:
         str(solution.termination),
         audit,
         parameter_fingerprint(parameters),
+        {
+            "hit": _simulation_template.cache_info().hits > cache_before.hits,
+            "templates": _simulation_template.cache_info().currsize,
+            "maximum_templates": 6,
+            "state_reset": "fresh initial conditions every solve",
+        },
     )

@@ -1,0 +1,83 @@
+{
+  "config": {
+    "model": "DFN",
+    "thermal": "lumped",
+    "parameter_set": "ORegan2022",
+    "initial_temperature_k": 297.75,
+    "heat_transfer_coefficient_w_m2_k": 15,
+    "current_a": 5,
+    "ambient_temperature_k": 298.15,
+    "mesh_points": 80,
+    "tolerance": 1e-07,
+    "sample_period_s": 10.0,
+    "max_temperature_k": 333.15
+  },
+  "pybamm_version": "26.9.0.0",
+  "parameter_set": "ORegan2022",
+  "parameter_fingerprint": "ed8798d67bbda09fcd60debc01a664bb2dbe091271f5dc3523b5bf4661f3d4a5",
+  "compiled_template_cache": {
+    "hit": true,
+    "templates": 1,
+    "maximum_templates": 6,
+    "state_reset": "fresh initial conditions every solve"
+  },
+  "initial_state": "ORegan2022 initial concentrations; no SOC fit",
+  "termination": "event: Minimum voltage [V]",
+  "voltage_cutoff_reached": true,
+  "endpoint_time_s": 3333.506160869621,
+  "cutoff_capacity_ah": 4.629869667874591,
+  "capacity_ah": 4.629869667874591,
+  "physical_audit": {
+    "lithium_inventory_relative_drift": 1.8506726126235504e-14,
+    "charge_integral_error_ah": 2.349231920106831e-13,
+    "concentration_bounds": {
+      "negative": {
+        "node_min_mol_m3": 1211.8685310598,
+        "node_max_mol_m3": 28866.0,
+        "surface_min_mol_m3": 1150.0940917182202,
+        "surface_max_mol_m3": 28866.000000000007,
+        "node_array_shape": [
+          80,
+          80,
+          335
+        ],
+        "min_mol_m3": 1150.0940917182202,
+        "max_mol_m3": 28866.000000000007,
+        "limit_mol_m3": 29583.0,
+        "passed": true
+      },
+      "positive": {
+        "node_min_mol_m3": 13975.0,
+        "node_max_mol_m3": 51466.01315604787,
+        "surface_min_mol_m3": 13975.0,
+        "surface_max_mol_m3": 51535.477644761995,
+        "node_array_shape": [
+          80,
+          80,
+          335
+        ],
+        "min_mol_m3": 13975.0,
+        "max_mol_m3": 51535.477644761995,
+        "limit_mol_m3": 51765.0,
+        "passed": true
+      }
+    },
+    "electrolyte_min_mol_m3": 712.1275024608266,
+    "thermal_energy_balance": {
+      "stored_energy_j": 740.5627343141688,
+      "integrated_net_heat_j": 740.4932276089926,
+      "absolute_residual_j": 0.06950670517619528,
+      "relative_residual": 9.385660654470424e-05,
+      "relative_to_generated_heat": 3.240189518353063e-05,
+      "passed": true,
+      "note": "trapezoidal sampled-output audit, not experimental validation"
+    },
+    "passed": true
+  },
+  "temperature_status": "lumped volume-average prediction; empirical qualification reported separately",
+  "scope": "fresh LG M50 benchmark; not certified for FPV, abuse, aging or safety",
+  "outside_benchmark_temperature": false,
+  "concentration_audit_scope": "finite-volume nodes and surface states at output times; no plotting ghost points",
+  "elapsed_seconds": 187.4590515930031,
+  "diagnostic_method": "default IDAKLU VM; solver statistics enabled"
+}

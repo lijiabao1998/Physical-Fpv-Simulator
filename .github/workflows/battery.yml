@@ -28,10 +28,13 @@ jobs:
           python -m pip install --no-deps -e .
       - name: Lint and format
         run: |
-          ruff check src tests
-          ruff format --check src tests
+          ruff check src tests scripts
+          ruff format --check src tests scripts
       - name: Fetch checksum-pinned public data
-        run: physical-fpv fetch-data
+        run: |
+          physical-fpv fetch-data
+          physical-fpv thermal-fetch-data
+          physical-fpv thermal-inspect
       - name: Unit and physical-invariant tests
         run: pytest -q
       - name: Record full DFN numerical and empirical benchmark
