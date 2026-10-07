@@ -1,0 +1,12 @@
+schema = "fpvsim.component/1"
+
+mass = { value = 6, unit = "g", source = "estimate", u = 1.0 }
+shape = { type = "box", size = [27, 27, 6], unit = "mm" }
+
+[meta]
+id = "generic-analog-vtx"
+category = "avionics"
+name = "通用 20×20 類比圖傳"
+
+[params]
+power = { value = 4.0, unit = "W", source = "estimate", u_rel = 0.3, note = "400 mW 輸出時的直流輸入功率；類比圖傳的 DC 到 RF 效率低" }

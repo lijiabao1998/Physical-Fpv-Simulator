@@ -1,0 +1,12 @@
+schema = "fpvsim.component/1"
+
+mass = { value = 7, unit = "g", source = "estimate", u = 1.0 }
+shape = { type = "box", size = [36, 36, 5], unit = "mm" }
+
+[meta]
+id = "generic-fc-30x30"
+category = "avionics"
+name = "通用 30×30 飛控"
+
+[params]
+power = { value = 0.8, unit = "W", source = "estimate", u_rel = 0.3, note = "MCU、陀螺儀、OSD" }

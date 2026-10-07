@@ -1,0 +1,78 @@
+# Reference build: generic 5-inch 6S freestyle quad, analog video, no action camera.
+schema = "fpvsim.build/1"
+
+[meta]
+id = "ref-5in-6s-freestyle"
+name = "參考機：5 吋 6S freestyle（通用零件）"
+description = "以通用零件級距數據組成的參考機，用來建立研發流程與驗證工具。所有零件數據都是標示來源的估計值，不代表任何特定產品。"
+spec = "../specs/freestyle-5in-6s.toml"
+
+[components]
+frame = "../components/frames/generic-5in-freestyle-225.toml"
+motor = "../components/motors/generic-2306-1750kv.toml"
+prop = "../components/props/generic-5.1x4.3x3.toml"
+esc = "../components/escs/generic-4in1-50a-30x30.toml"
+battery = "../components/batteries/generic-6s-1300mah.toml"
+
+[electrical]
+harness_resistance = { value = 2.5, unit = "mohm", source = "estimate", u = 1.0, note = "XT60 一對約 1–2 mΩ，加上兩條約 8 cm 的 12AWG 線（約 5.2 mΩ/m）" }
+bec_efficiency = { value = 0.85, unit = "1", source = "estimate", u = 0.05, note = "飛控上 5 V/9 V 降壓穩壓器效率" }
+
+[flight_controller]
+motor_idle = { value = 5.5, unit = "%", source = "nominal", note = "常見的 DShot idle 設定值" }
+
+[[parts]]
+name = "battery"
+uses = "battery"
+position = { value = [0, 0, -46], unit = "mm" }
+
+[[parts]]
+name = "esc"
+uses = "esc"
+position = { value = [0, 0, -5], unit = "mm" }
+
+[[parts]]
+name = "fc"
+component = "../components/electronics/generic-fc-30x30.toml"
+position = { value = [0, 0, -13], unit = "mm" }
+
+[[parts]]
+name = "camera"
+component = "../components/electronics/generic-micro-camera-19mm.toml"
+position = { value = [45, 0, -12], unit = "mm" }
+
+[[parts]]
+name = "vtx"
+component = "../components/electronics/generic-analog-vtx.toml"
+position = { value = [-35, 0, -9], unit = "mm" }
+
+[[parts]]
+name = "rx"
+component = "../components/electronics/generic-nano-rx-2g4.toml"
+position = { value = [-30, 0, -20], unit = "mm" }
+
+[[parts]]
+name = "vtx_antenna"
+group = "avionics"
+mass = { value = 7, unit = "g", source = "estimate", u = 2.0, note = "含天線座" }
+position = { value = [-65, 0, -20], unit = "mm" }
+
+[[parts]]
+name = "xt60_pigtail"
+mass = { value = 11, unit = "g", source = "estimate", u = 2.0, note = "XT60 公頭加 12AWG 電源線" }
+position = { value = [-55, 0, -15], unit = "mm" }
+
+[[parts]]
+name = "capacitor"
+mass = { value = 4, unit = "g", source = "estimate", u = 1.0, note = "1000 µF 35 V 低 ESR 電容" }
+position = { value = [-45, 15, 0], unit = "mm" }
+
+[[parts]]
+name = "battery_strap"
+mass = { value = 6, unit = "g", source = "estimate", u = 1.0, note = "綁帶與防滑墊" }
+position = { value = [0, 0, -66], unit = "mm" }
+
+[[parts]]
+name = "wiring"
+mass = { value = 6, unit = "g", source = "estimate", u = 2.0, note = "訊號線、熱縮套管、束線帶" }
+position = { value = [0, 0, -10], unit = "mm" }

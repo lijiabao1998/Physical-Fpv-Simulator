@@ -1,0 +1,56 @@
+# Design specification: what the aircraft must achieve, and under which conditions.
+# The requirement values are example design targets for a 5-inch 6S freestyle quad.
+schema = "fpvsim.spec/1"
+
+[meta]
+id = "freestyle-5in-6s"
+name = "5 吋 6S freestyle 設計規格（範例）"
+description = "不掛運動相機的 5 吋 6S freestyle 機。需求數值是範例設計目標，請依實際用途修改。"
+
+[environment]
+altitude = { value = 0, unit = "m", source = "standard", note = "ISA 海平面設計條件" }
+temperature = { value = 15, unit = "degC", source = "standard", note = "ISA 海平面標準溫度" }
+
+[endurance]
+reserve_soc = { value = 20, unit = "%", source = "nominal", note = "降落時保留 20% 電量，延長電池壽命" }
+min_cell_voltage = { value = 3.3, unit = "V", source = "nominal", note = "負載下、在 ESC 端量到的單芯電壓下限" }
+
+[[requirements]]
+id = "R1"
+metric = "auw"
+max = 600
+unit = "g"
+rationale = "不掛運動相機的 5 吋 freestyle 機常見的重量上限"
+
+[[requirements]]
+id = "R2"
+metric = "thrust_to_weight"
+min = 8
+rationale = "freestyle 動作與救機需要足夠的推力餘裕"
+
+[[requirements]]
+id = "R3"
+metric = "hover_duty"
+max = 35
+unit = "%"
+rationale = "懸停油門越低，姿態控制可用的推力差越大"
+
+[[requirements]]
+id = "R4"
+metric = "endurance"
+min = 5
+unit = "min"
+rationale = "懸停續航是上限值；實際花式飛行會明顯更短"
+
+[[requirements]]
+id = "R5"
+metric = "tip_mach"
+max = 0.70
+rationale = "超過約 0.7 後壓縮性使效率下降、噪音上升；本模型也未計入壓縮性，超過即超出適用範圍"
+
+[[requirements]]
+id = "R6"
+metric = "cg_offset"
+max = 5
+unit = "mm"
+rationale = "重心偏離推力中心會讓懸停時前後馬達負載不均"

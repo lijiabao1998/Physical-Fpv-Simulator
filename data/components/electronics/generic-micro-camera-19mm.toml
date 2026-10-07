@@ -1,0 +1,12 @@
+schema = "fpvsim.component/1"
+
+mass = { value = 8, unit = "g", source = "estimate", u = 1.0 }
+shape = { type = "box", size = [20, 19, 19], unit = "mm" }
+
+[meta]
+id = "generic-micro-camera-19mm"
+category = "avionics"
+name = "通用 19 mm 類比 FPV 鏡頭"
+
+[params]
+power = { value = 1.0, unit = "W", source = "estimate", u_rel = 0.3 }

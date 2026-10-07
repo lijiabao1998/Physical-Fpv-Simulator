@@ -1,0 +1,21 @@
+# Generic 2306-class 1750KV motor for 6S. Class-typical engineering estimates;
+# replace with measured values (four-wire Rm, no-load sweep) when available.
+schema = "fpvsim.component/1"
+
+mass = { value = 32, unit = "g", source = "estimate", u = 1.5, note = "含約 5 cm 馬達線" }
+shape = { type = "cylinder", radius = 14.25, height = 18, unit = "mm" }
+cg_offset = { value = [0, 0, -9], unit = "mm" }
+
+[meta]
+id = "generic-2306-1750kv"
+category = "motor"
+name = "通用 2306 級 1750KV 馬達（6S）"
+
+[params]
+kv = { value = 1750, unit = "rpm/V", source = "nominal", u_rel = 0.025, note = "標稱值；±2.5% (1σ) 為生產公差估計" }
+rm = { value = 80, unit = "mohm", source = "estimate", u_rel = 0.20, note = "線間電阻；由同尺寸 2450KV 級約 40–50 mΩ 依 (Kv 比)² 縮放估計，應以四線法實測" }
+i0_ref = { value = 1.0, unit = "A", source = "estimate", u_rel = 0.25, note = "10 V 空載電流，級距典型值" }
+v_i0_ref = { value = 10, unit = "V", source = "nominal", note = "空載電流的量測電壓" }
+i0_speed_fraction = { value = 0.5, unit = "1", source = "estimate", u = 0.2887, dist = "uniform", note = "空載損耗中與轉速成正比的比例，0–1 均勻分布；兩個以上電壓的空載測試可辨識" }
+rotor_inertia = { value = 2200, unit = "g*mm^2", source = "estimate", u_rel = 0.30, note = "鐘罩加磁鐵約 12 g、等效半徑約 13.5 mm，以 m r² 估算" }
+max_current = { value = 45, unit = "A", source = "nominal", note = "級距常見的標示峰值電流" }

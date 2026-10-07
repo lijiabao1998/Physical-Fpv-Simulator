@@ -1,0 +1,40 @@
+# Generic 5.1 x 4.3 inch tri-blade prop. No test-stand data, so Ct/Cp come from BEMT
+# on an estimated blade geometry. Add a [coefficients] table from measurements to replace it.
+schema = "fpvsim.component/1"
+
+mass = { value = 4.3, unit = "g", source = "estimate", u = 0.3 }
+cg_offset = { value = [0, 0, -24], unit = "mm" }
+
+[meta]
+id = "generic-5.1x4.3x3"
+category = "prop"
+name = "通用 5.1×4.3 三葉槳"
+
+[config]
+blades = 3
+
+[params]
+diameter = { value = 5.1, unit = "in", source = "nominal" }
+pitch = { value = 4.3, unit = "in", source = "nominal", note = "75% 半徑處的幾何螺距，模型視為等螺距" }
+spin_inertia = { value = 4900, unit = "g*mm^2", source = "estimate", u_rel = 0.30, note = "三片葉片共約 3.5 g，以均勻細桿 (1/3) m R² 估算" }
+
+[bemt]
+hub_radius = { value = 6, unit = "mm", source = "estimate" }
+ct_model_u_rel = 0.10
+cp_model_u_rel = 0.15
+
+[bemt.blade]
+source = "estimate"
+note = "高弦長 freestyle 槳的典型弦長分布估計；應以槳葉掃描或卡尺量測取代"
+r_over_R = [0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 0.95, 1.00]
+chord = [9.0, 11.5, 12.5, 12.5, 12.0, 11.0, 10.0, 8.5, 6.5, 4.0]
+chord_unit = "mm"
+
+[bemt.airfoil]
+cl_alpha = { value = 5.7, unit = "1/rad", source = "estimate", note = "約 0.9 × 2π，薄翼型在低雷諾數下的升力斜率" }
+alpha0 = { value = -4, unit = "deg", source = "estimate", note = "有彎度薄翼型的零升力攻角" }
+cl_max = { value = 1.2, unit = "1", source = "estimate" }
+cl_min = { value = -0.5, unit = "1", source = "estimate" }
+cd_min = { value = 0.030, unit = "1", source = "estimate", note = "雷諾數 3×10⁴–10⁵ 的量級，參考低速翼型風洞文獻（如 UIUC Low-Speed Airfoil Tests）" }
+cl_cd_min = { value = 0.4, unit = "1", source = "estimate" }
+k_cd = { value = 0.04, unit = "1", source = "estimate" }

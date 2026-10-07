@@ -1,0 +1,26 @@
+schema = "fpvsim.component/1"
+
+mass = { value = 215, unit = "g", source = "estimate", u = 8 }
+shape = { type = "box", size = [75, 35, 38], unit = "mm" }
+
+[meta]
+id = "generic-6s-1300mah"
+category = "battery"
+name = "通用 6S 1300 mAh 高放電 LiPo"
+
+[config]
+series = 6
+parallel = 1
+
+[params]
+capacity = { value = 1300, unit = "mAh", source = "nominal", u_rel = 0.04, note = "標示容量；±4% (1σ) 為實際容量與標示差異的估計" }
+r0_cell = { value = 4.0, unit = "mohm", source = "estimate", u_rel = 0.30, note = "單芯歐姆內阻（瞬間壓降）；新電池充電器量測值的量級" }
+r1_cell = { value = 3.0, unit = "mohm", source = "estimate", u_rel = 0.40, note = "單芯極化內阻（數十秒內建立的壓降）" }
+tau1 = { value = 20, unit = "s", source = "estimate", u_rel = 0.30, note = "極化時間常數" }
+c_rating = { value = 100, unit = "1", source = "nominal", note = "標示 C 數，多為行銷數字" }
+
+[ocv]
+source = "estimate"
+note = "鈷酸鋰系 LiPo 靜置開路電壓的典型曲線；應以 C/20 低倍率放電或間歇靜置測試實測"
+soc = [0.0, 0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 0.95, 1.0]
+cell_voltage = [3.27, 3.61, 3.69, 3.71, 3.73, 3.77, 3.80, 3.84, 3.87, 3.95, 4.02, 4.11, 4.15, 4.20]

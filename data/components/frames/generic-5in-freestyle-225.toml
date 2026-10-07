@@ -1,0 +1,72 @@
+# Generic 5-inch freestyle frame, true X, 225 mm wheelbase, separate 5 mm carbon arms.
+# Body frame FRD (x forward, y right, z down); origin at the centre of the motor pattern,
+# on the motor mounting plane (top surface of the arms).
+schema = "fpvsim.component/1"
+
+[meta]
+id = "generic-5in-freestyle-225"
+category = "frame"
+name = "通用 5 吋 freestyle 機架（True X，軸距 225 mm）"
+
+[params]
+thrust_interference = { value = 0.95, unit = "1", source = "estimate", u = 0.025, note = "機臂遮擋下洗氣流造成的淨推力比例；應以有機臂與無機臂的推力台比較實測" }
+
+# Motor mounts in Betaflight Quad X order (M1 rear-right, M2 front-right, M3 rear-left,
+# M4 front-left). Spin seen from above, Betaflight default "props in".
+[[rotors]]
+position = { value = [-79.55, 79.55, 0], unit = "mm" }
+spin = "cw"
+[[rotors]]
+position = { value = [79.55, 79.55, 0], unit = "mm" }
+spin = "ccw"
+[[rotors]]
+position = { value = [-79.55, -79.55, 0], unit = "mm" }
+spin = "ccw"
+[[rotors]]
+position = { value = [79.55, -79.55, 0], unit = "mm" }
+spin = "cw"
+
+[[parts]]
+name = "arm"
+mass = { value = 15, unit = "g", source = "estimate", u = 1.5, note = "5 mm 碳板機臂；碳纖板密度約 1.5–1.6 g/cm³ 估算" }
+shape = { type = "box", size = [100, 15, 5], unit = "mm" }
+placements = [
+  { position = { value = [49.5, 49.5, 2.5], unit = "mm" }, rotation_deg = [0, 0, 45] },
+  { position = { value = [-49.5, 49.5, 2.5], unit = "mm" }, rotation_deg = [0, 0, 135] },
+  { position = { value = [-49.5, -49.5, 2.5], unit = "mm" }, rotation_deg = [0, 0, -135] },
+  { position = { value = [49.5, -49.5, 2.5], unit = "mm" }, rotation_deg = [0, 0, -45] },
+]
+
+[[parts]]
+name = "bottom_plate"
+mass = { value = 10, unit = "g", source = "estimate", u = 1.0 }
+shape = { type = "box", size = [95, 42, 2], unit = "mm" }
+placements = [{ position = { value = [0, 0, 6], unit = "mm" } }]
+
+[[parts]]
+name = "top_plate"
+mass = { value = 9, unit = "g", source = "estimate", u = 1.0 }
+shape = { type = "box", size = [100, 40, 2], unit = "mm" }
+placements = [{ position = { value = [0, 0, -26], unit = "mm" } }]
+
+[[parts]]
+name = "standoff"
+mass = { value = 2, unit = "g", source = "estimate", u = 0.3, note = "25 mm 鋁柱" }
+shape = { type = "cylinder", radius = 2.5, height = 25, unit = "mm" }
+placements = [
+  { position = { value = [22, 17, -12.5], unit = "mm" } },
+  { position = { value = [22, -17, -12.5], unit = "mm" } },
+  { position = { value = [-22, 17, -12.5], unit = "mm" } },
+  { position = { value = [-22, -17, -12.5], unit = "mm" } },
+]
+
+[[parts]]
+name = "camera_plates"
+mass = { value = 4, unit = "g", source = "estimate", u = 1.0 }
+shape = { type = "box", size = [15, 36, 25], unit = "mm" }
+placements = [{ position = { value = [42, 0, -12], unit = "mm" } }]
+
+[[parts]]
+name = "hardware"
+mass = { value = 12, unit = "g", source = "estimate", u = 3.0, note = "螺絲、螺帽、馬達螺絲；實際分布在全機，以中心點質量近似（慣性略低估）" }
+placements = [{ position = { value = [0, 0, -6], unit = "mm" } }]
