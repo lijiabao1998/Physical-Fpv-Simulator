@@ -362,3 +362,33 @@ def test_recommendation_rule():
     assert rec.label == "good"
     assert [c.feasible for c in cands] == [True, False, False, True, False]
     assert "15%" in rule
+
+
+def test_edge_steps_read_known_response_exactly():
+    """Scripted steps with known timing: overshoot is read directly per edge."""
+    fs = 2000.0
+    b, a, _ = _second_order(fs, delay=0.004)
+    t = np.arange(int(6 * fs)) / fs
+    sp = np.zeros_like(t)
+    edges = []
+    for k, value in enumerate([200.0, -200.0, 0.0, 300.0, -300.0, 0.0]):
+        t0 = 0.5 + 0.8 * k
+        sp[t >= t0] = value
+        edges.append((t0, t0 + 0.8))
+    gyro = lfilter(b, a, np.concatenate([np.zeros(8), sp])[: len(sp)])
+    es = fa.edge_steps(t, sp, gyro, edges)
+    expected = math.exp(-0.5 * math.pi / math.sqrt(1 - 0.25))
+    assert es.response.segments == 6
+    assert np.allclose(es.overshoot, expected, atol=0.005)  # independent of step size and direction
+    assert np.all(np.isfinite(es.settling_time))
+
+
+def test_step_test_blocks_cover_each_axis():
+    from fpvsim.pilot import step_test
+    from fpvsim.tuning import sweep_maneuver
+
+    segments, end = step_test(amplitudes=(0.3,), cycles=1)
+    assert [s.tag for s in segments] == ["step:roll"] * 3 + ["step:pitch"] * 3 + ["step:yaw"] * 3
+    assert [s.sticks for s in segments[:3]] == [{"roll": 0.3}, {"roll": -0.3}, {"roll": 0.0}]
+    man, window = sweep_maneuver()
+    assert len(man.step_edges("roll")) == 12 and window[0] > man.step_edges("yaw")[-1][1]

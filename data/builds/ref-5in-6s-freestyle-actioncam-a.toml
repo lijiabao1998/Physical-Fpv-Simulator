@@ -13,6 +13,7 @@ name = "action_camera"
 component = "../components/payloads/generic-action-camera-full.toml"
 # on top of the battery (top surface z = -65 mm), on an 8 mm mount, overhanging the front a little
 position = { value = [30, 0, -98.5], unit = "mm" }
+position_u = { value = [5, 2, 2], unit = "mm", source = "estimate", note = "綁在電池上，安裝位置因人而異" }
 
 [[parts]]
 name = "camera_mount"
@@ -20,3 +21,4 @@ group = "payload"
 mass = { value = 12, unit = "g", source = "estimate", u = 3, note = "TPU 相機座與綁帶" }
 shape = { type = "box", size = [40, 60, 8], unit = "mm" }
 position = { value = [30, 0, -69], unit = "mm" }
+position_u = { value = [5, 2, 1], unit = "mm", source = "estimate" }

@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import hashlib
 import math
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from enum import Enum
 from typing import Any, Iterator, Mapping
 
@@ -69,6 +69,7 @@ class Param:
     dist: str = "normal"
     ref: str = ""
     note: str = ""
+    stream: str = ""  # identity of the physical item, for paired sampling (see ParamSet.sample)
 
     @property
     def si_unit(self) -> str:
@@ -115,7 +116,7 @@ class Param:
 _PARAM_KEYS = {"value", "unit", "source", "u", "u_rel", "dist", "ref", "note"}
 
 
-def parse_param(key: str, entry: Any) -> Param:
+def parse_param(key: str, entry: Any, stream: str = "") -> Param:
     """Parse one data-file entry such as
     ``{ value = 1750, unit = "rpm/V", source = "estimate", u_rel = 0.03 }``.
     """
@@ -165,6 +166,7 @@ def parse_param(key: str, entry: Any) -> Param:
         dist=dist,
         ref=str(entry.get("ref", "")),
         note=str(entry.get("note", "")),
+        stream=stream,
     )
 
 
@@ -187,6 +189,8 @@ class ParamSet:
     def add(self, param: Param) -> Param:
         if param.key in self.params:
             raise ParamError(f"duplicate parameter key {param.key!r}")
+        if not param.stream:
+            param = replace(param, stream=value_stream(param))
         self.params[param.key] = param
         return param
 
@@ -211,12 +215,24 @@ class ParamSet:
     def sample(self, seed: int, n: int) -> dict[str, np.ndarray]:
         """Independent draws for every uncertain parameter.
 
-        Each parameter has its own random stream derived from (seed, key), so
-        its samples do not depend on which other parameters exist. Two builds
-        that share a parameter therefore get identical draws for it: common
-        random numbers, which make paired comparisons between design versions
-        far less noisy than independent runs."""
-        return {p.key: p.sample(key_rng(seed, p.key), n) for p in self.uncertain()}
+        Each parameter has its own random stream derived from (seed, stream),
+        so its samples do not depend on which other parameters exist. The
+        stream names the physical item: a parameter of a component file is
+        keyed by the component's id, any other parameter by its key together
+        with its value, uncertainty and source. Two builds therefore share a
+        parameter's draws exactly when they contain the same item (common
+        random numbers); a swapped component or a re-valued parameter gets
+        an independent error, as a different physical item would."""
+        return {p.key: p.sample(key_rng(seed, p.stream or p.key), n) for p in self.uncertain()}
+
+
+def value_stream(p: Param) -> str:
+    """Stream identity of a parameter that is not part of a component file."""
+    return f"value:{p.key}|{p.value!r}|{p.u!r}|{p.dist}|{p.source.value}"
+
+
+def component_stream(component_id: str, name: str) -> str:
+    return f"component:{component_id}/{name}"
 
 
 def key_rng(seed: int, key: str) -> np.random.Generator:

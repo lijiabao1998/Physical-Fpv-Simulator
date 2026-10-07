@@ -7,7 +7,7 @@ Blackbox data converted to the same columns.
   frequency map (noise lines that move with motor rpm show up as diagonals).
 * Step response from ordinary flight data by Wiener deconvolution of the
   setpoint -> gyro relation over short windows (the approach popularised by
-  PIDtoolbox), averaged over windows with enough stick activity.
+  PIDtoolbox), combined over the windows where the axis was actually stepped.
 * Step-response metrics, tracking error and latency (cross-correlation lag).
 """
 
@@ -72,60 +72,140 @@ def step_response(
     setpoint: np.ndarray,
     gyro: np.ndarray,
     fs: float,
-    window: float = 1.0,
+    window: float = 2.0,
     length: float = 0.5,
-    min_setpoint: float = 40.0,
+    min_setpoint: float = 100.0,
     regularisation: float = 1e-4,
+    spans: list[tuple[float, float]] | None = None,
 ) -> StepResponse | None:
     """Closed-loop step response (setpoint -> gyro) by Wiener deconvolution.
 
-    Windows of ``window`` seconds with 50 % overlap; only windows whose peak
-    setpoint exceeds ``min_setpoint`` (deg/s) are used. Each window's
-    impulse response is h = IFFT(G S* / (|S|^2 + lambda)), with lambda a
-    fraction of the window's mean input power; its running sum is the step
-    response. Windows whose response does not settle near 1 are rejected.
+    Windows of ``window`` seconds with 75 % overlap; a window several times
+    longer than the response keeps truncation bias small (with 1 s windows
+    the settled level came out ~5 % low on a known system, 2 s gives ~1 %).
+    A window is used only if
+    its peak setpoint exceeds ``min_setpoint`` (deg/s) and, when ``spans``
+    is given (seconds from the start of the arrays), it lies inside one of
+    them: for a scripted test flight, the stretches where this axis is being
+    stepped, so the test pilot's small corrections do not count as steps.
+
+    Windows are combined H1-style: H = sum(G S*) / (sum |S|^2 + lambda), so
+    each window counts in proportion to how strongly it was excited and a
+    single poorly excited window cannot dominate. The step response is the
+    running sum of the impulse response IFFT(H). ``std`` is the spread of
+    the per-window estimates, for display.
     """
     n = int(window * fs)
     m = int(length * fs)
     taper = np.hanning(n)
-    responses = []
-    for start in range(0, len(setpoint) - n + 1, n // 2):
+    cross = np.zeros(n // 2 + 1, dtype=complex)
+    power = np.zeros(n // 2 + 1)
+    singles = []
+    for start in range(0, len(setpoint) - n + 1, n // 4):
+        if spans is not None and not any(t0 <= start / fs and (start + n) / fs <= t1 for t0, t1 in spans):
+            continue
         sp = setpoint[start : start + n]
         if np.max(np.abs(sp)) < min_setpoint:
             continue
-        gy = gyro[start : start + n]
         S = np.fft.rfft(sp * taper)
-        G = np.fft.rfft(gy * taper)
-        power = np.abs(S) ** 2
-        H = G * np.conj(S) / (power + regularisation * power.mean())
-        step = np.cumsum(np.fft.irfft(H, n)[:m])
-        tail = step[int(0.6 * m) :].mean()
-        if 0.5 < tail < 1.5:
-            responses.append(step)
-    if not responses:
+        G = np.fft.rfft(gyro[start : start + n] * taper)
+        cross += G * np.conj(S)
+        power += np.abs(S) ** 2
+        p = np.abs(S) ** 2
+        singles.append(np.cumsum(np.fft.irfft(G * np.conj(S) / (p + regularisation * p.mean()), n)[:m]))
+    if not singles:
         return None
-    arr = np.array(responses)
-    return StepResponse(np.arange(m) / fs, arr.mean(axis=0), arr.std(axis=0), len(responses))
+    H = cross / (power + regularisation * power.mean())
+    mean = np.cumsum(np.fft.irfft(H, n)[:m])
+    return StepResponse(np.arange(m) / fs, mean, np.array(singles).std(axis=0), len(singles))
 
 
-def step_metrics(t: np.ndarray, y: np.ndarray, band: float = 0.05) -> dict[str, float]:
-    """Rise time (10-90 %), overshoot, peak time and settling time (+/-band),
-    relative to the final value (mean of the last 20 %)."""
+def step_metrics(t: np.ndarray, y: np.ndarray, band: float = 0.05, reference: float | None = 1.0) -> dict[str, float]:
+    """Rise time (10-90 %), overshoot, peak time and settling time (+/-band).
+
+    The reference level is the step size, 1: a rate loop with an I-term
+    settles there, and dividing by an estimated final value would turn any
+    estimator bias in the tail into overshoot. ``reference=None`` uses the
+    mean of the last 20 % instead (for systems without integral action).
+    ``final`` is reported either way. ``settled`` is 0 when the response is
+    still outside the band at the end of the record; the settling time is
+    then only a lower bound."""
     final = float(y[int(0.8 * len(y)) :].mean())
-    if final <= 0:
-        return {"rise_time": math.nan, "overshoot": math.nan, "peak_time": math.nan, "settling_time": math.nan, "final": final}
-    yn = y / final
+    ref = final if reference is None else reference
+    if ref <= 0:
+        return {"rise_time": math.nan, "overshoot": math.nan, "peak_time": math.nan, "settling_time": math.nan,
+                "final": final, "settled": 0.0}
+    yn = y / ref
     i10 = int(np.argmax(yn >= 0.1))
     i90 = int(np.argmax(yn >= 0.9))
     outside = np.nonzero(np.abs(yn - 1.0) > band)[0]
-    settle = t[outside[-1] + 1] if len(outside) and outside[-1] + 1 < len(t) else (t[-1] if len(outside) else 0.0)
+    settled = not len(outside) or outside[-1] + 1 < len(t)
+    settle = t[outside[-1] + 1] if len(outside) and settled else (t[-1] if len(outside) else 0.0)
     return {
         "rise_time": float(t[i90] - t[i10]),
         "overshoot": float(max(0.0, yn.max() - 1.0)),
         "peak_time": float(t[int(np.argmax(yn))]),
         "settling_time": float(settle),
         "final": final,
+        "settled": 1.0 if settled else 0.0,
     }
+
+
+@dataclass(frozen=True)
+class EdgeSteps:
+    """Step response measured directly at known stick edges."""
+
+    response: StepResponse  # normalised response (0 before, 1 = new setpoint), mean and spread over edges
+    overshoot: np.ndarray  # per edge
+    rise_time: np.ndarray  # per edge, s
+    settling_time: np.ndarray  # per edge, s (inf if never within the band)
+
+
+def edge_steps(
+    t: np.ndarray,
+    setpoint: np.ndarray,
+    gyro: np.ndarray,
+    edges: list[tuple[float, float]],
+    min_step: float = 20.0,
+    band: float = 0.05,
+) -> EdgeSteps | None:
+    """Step response from scripted steps whose timing is known.
+
+    ``edges`` are (start, end) of constant-stick segments. For each, the
+    setpoint before the edge and its plateau at the end of the segment give
+    the step; the gyro is normalised to it (0 = old level, 1 = new level),
+    so overshoot, rise time and settling time are read directly with no
+    deconvolution. Steps smaller than ``min_step`` deg/s are skipped.
+    The steps should stay out of mixer saturation, or the result describes
+    the saturated (non-linear) response instead.
+    """
+    curves, overshoot, rise, settle = [], [], [], []
+    dt = float(np.median(np.diff(t)))
+    for t0, t1 in edges:
+        before = (t >= t0 - 0.03) & (t < t0)
+        plateau = (t >= t1 - 0.08) & (t < t1)
+        window = (t >= t0) & (t < t1)
+        if not before.any() or not plateau.any():
+            continue
+        start, final = setpoint[before].mean(), setpoint[plateau].mean()
+        step = final - start
+        if abs(step) < min_step:
+            continue
+        y = (gyro[window] - start) / step
+        tt = t[window] - t0
+        overshoot.append(max(0.0, float(y.max()) - 1.0))
+        i10, i90 = int(np.argmax(y >= 0.1)), int(np.argmax(y >= 0.9))
+        rise.append(float(tt[i90] - tt[i10]))
+        outside = np.nonzero(np.abs(y - 1.0) > band)[0]
+        settle.append(float(tt[outside[-1] + 1]) if len(outside) and outside[-1] + 1 < len(tt) else
+                      (0.0 if not len(outside) else math.inf))
+        curves.append(y)
+    if not curves:
+        return None
+    n = min(len(c) for c in curves)
+    arr = np.array([c[:n] for c in curves])
+    response = StepResponse(np.arange(n) * dt, arr.mean(axis=0), arr.std(axis=0), len(curves))
+    return EdgeSteps(response, np.array(overshoot), np.array(rise), np.array(settle))
 
 
 def latency(setpoint: np.ndarray, gyro: np.ndarray, fs: float, max_lag: float = 0.1) -> float:

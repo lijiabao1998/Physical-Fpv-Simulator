@@ -266,7 +266,7 @@ def mass_breakdown(groups: list[tuple[str, float]], path: Path) -> None:
 _SEQUENTIAL = ("#cde2fb", "#9ec5f4", "#6da7ec", "#3987e5", "#256abf", "#184f95", "#0d366b")
 
 
-def timeseries(panels: list[dict], path: Path, width: float = 8.0, panel_height: float = 1.9) -> None:
+def timeseries(panels: list[dict], path: Path, width: float = 8.0, panel_height: float = 1.9, xlabel: str = "Time [s]") -> None:
     """Stacked time-series panels sharing the time axis.
 
     Each panel: title, ylabel, series [(label, t, y)], optional refs
@@ -288,7 +288,7 @@ def timeseries(panels: list[dict], path: Path, width: float = 8.0, panel_height:
             ax.set_ylabel(panel["ylabel"])
             if len(series) > 1:
                 ax.legend(loc="upper right", ncol=min(len(series), 4))
-        axes[-1, 0].set_xlabel("Time [s]")
+        axes[-1, 0].set_xlabel(xlabel)
         fig.tight_layout()
         _save(fig, path)
 

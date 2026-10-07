@@ -5,10 +5,12 @@
    filtered gyro, D-term and motor-output noise show what gets through. The
    same flight is repeated with filter variants (RPM filter off; lighter
    low-pass filters) to quantify the noise / delay trade-off.
-2. Gain sweep: the tuning flight (stick snaps) is flown with P and D scaled
-   by a grid of multipliers. For each, the step response is recovered from
-   the log by deconvolution, and its quality is set against motor-output
-   noise (heat and wasted power).
+2. Gain sweep: the tuning flight (a small-signal step test on each axis) is
+   flown with P and D scaled by a grid of multipliers. The step times are
+   known, so the step response is measured directly at every step edge
+   (flightanalysis.edge_steps); its quality is set against motor-output
+   noise (heat and wasted power). Deconvolution (flightanalysis.step_response)
+   is the fallback for flights without scripted steps, such as real logs.
 3. Recommendation: among candidates whose roll and pitch overshoot are each
    within the limit and whose motor noise is at most a set multiple of the baseline's,
    the one with the lowest roll/pitch tracking error on the same scripted
@@ -32,7 +34,7 @@ from . import flightanalysis as fa
 from .design import load_build
 from .filters import chain_response, group_delay, make_lowpass
 from .flightcontroller import FcConfig, FilterSpec
-from .pilot import MANEUVERS, Maneuver, Segment
+from .pilot import MANEUVERS, Maneuver, Segment, step_test
 from .sim import SimSettings, simulate
 
 AXES = ("roll", "pitch", "yaw")
@@ -45,20 +47,14 @@ NOISE_RAMP = 2.5  # s, level throttle ramp at the end of the sweep flight
 
 
 def sweep_maneuver() -> tuple[Maneuver, tuple[float, float]]:
-    """Shorter tuning flight for sweeps: two amplitudes per axis, then a calm
-    level throttle ramp. Returns the maneuver and the noise window: noise is
-    measured only during the ramp, because stick snaps put real (wanted)
-    signal into the same frequency band."""
-    segments, t = [], 1.0
-    for axis in AXES:
-        for amp in (0.5, 1.0):
-            for sign in (1.0, -1.0):
-                segments.append(Segment(t, t + 0.15, {axis: sign * amp}))
-                t += 0.75
-        t += 0.4
-    t += 0.6
-    segments.append(Segment(t, t + NOISE_RAMP, {"throttle": (0.2, 0.7)}))
-    maneuver = Maneuver("tune_short", "調參飛行（掃描用）：三軸、兩種幅度的正反向打桿，最後平飛油門爬升量測雜訊", t + NOISE_RAMP, tuple(segments))
+    """Tuning flight for sweeps: a small-signal step test on each axis, then
+    a calm level throttle ramp. Returns the maneuver and the noise window:
+    noise is measured only during the ramp, because the steps put real
+    (wanted) signal into the same frequency band."""
+    segments, t = step_test(amplitudes=(0.3, 0.5), cycles=2)
+    t += 0.3
+    segments.append(Segment(t, t + NOISE_RAMP, {"throttle": (0.2, 0.7)}, tag="noise_ramp"))
+    maneuver = Maneuver("tune_short", "調參飛行（掃描用）：三軸小幅度步階，最後平飛油門爬升量測雜訊", t + NOISE_RAMP, tuple(segments))
     return maneuver, (t + 0.3, t + NOISE_RAMP)
 
 
@@ -71,17 +67,32 @@ def filter_delay(specs: tuple[FilterSpec, ...], fs: float, f: float = 50.0) -> f
     return float(group_delay(h, freqs)[1])
 
 
-def flight_metrics(log, noise_window: tuple[float, float] | None = None) -> dict:
-    """Step response and tracking over the whole flight; noise (gyro,
-    D-term, motor output in NOISE_BAND) only inside ``noise_window``."""
+def flight_metrics(log, noise_window: tuple[float, float] | None = None, maneuver: Maneuver | None = None) -> dict:
+    """Step response per axis over the spans where the maneuver steps that
+    axis (whole flight if no maneuver is given), tracking over the whole
+    flight, noise (gyro, D-term, motor output in NOISE_BAND) only inside
+    ``noise_window``."""
     fs = log.rate
     t = log.time
     quiet = (t >= noise_window[0]) & (t < noise_window[1]) if noise_window else np.ones(len(t), dtype=bool)
     out: dict = {"axes": {}}
     for axis in AXES:
         sp, gy = log[f"setpoint_{axis}"], log[f"gyro_{axis}"]
-        sr = fa.step_response(sp, gy, fs)
-        metrics = fa.step_metrics(sr.t, sr.mean) if sr else {}
+        edges = maneuver.step_edges(axis) if maneuver else []
+        if edges:  # scripted steps with known timing: measure each edge directly
+            es = fa.edge_steps(t, sp, gy, edges)
+            sr = es.response if es else None
+            metrics = {
+                "overshoot": float(np.median(es.overshoot)),
+                "overshoot_spread": float(np.percentile(es.overshoot, 75) - np.percentile(es.overshoot, 25)),
+                "rise_time": float(np.median(es.rise_time)),
+                "settling_time": float(np.median(es.settling_time)),
+                "settled": float(np.mean(np.isfinite(es.settling_time))),
+                "method": "edges",
+            } if es else {}
+        else:  # free flight: deconvolution
+            sr = fa.step_response(sp, gy, fs, spans=maneuver.axis_spans(axis) if maneuver else None)
+            metrics = {**fa.step_metrics(sr.t, sr.mean), "method": "deconvolution"} if sr else {}
         out["axes"][axis] = {
             "step": (sr.t.tolist(), sr.mean.tolist(), sr.std.tolist(), sr.segments) if sr else None,
             **metrics,
@@ -106,7 +117,7 @@ def flight_metrics(log, noise_window: tuple[float, float] | None = None) -> dict
 def _fly(job: dict) -> dict:
     build = load_build(job["build"])
     log = simulate(build, job["cfg"], job["maneuver"], SimSettings(log_rate=job["log_rate"], seed=job["seed"]))
-    result = {"label": job["label"], "metrics": flight_metrics(log, job.get("noise_window"))}
+    result = {"label": job["label"], "metrics": flight_metrics(log, job.get("noise_window"), job["maneuver"])}
     if job.get("keep_log"):
         result["log"] = log
     return result
@@ -173,7 +184,7 @@ def select(candidates: list[Candidate]) -> tuple[Candidate | None, str]:
         f"滾轉與俯仰的超調各自 ≤ {OVERSHOOT_LIMIT:.0%}（本專案的設計目標，不是業界標準；兩軸分別檢查，避免平均值掩蓋較差的一軸），"
         f"且馬達輸出雜訊（{NOISE_BAND[0]:.0f}–{NOISE_BAND[1]:.0f} Hz RMS）不超過基準設定的 {NOISE_FACTOR_LIMIT:g} 倍；"
         "符合條件者中，取同一段調參飛行中滾轉與俯仰追蹤誤差 (RMS) 最小的。"
-        "排序不用安定時間，因為由飛行數據反卷積得到的步階響應有漣波，安定時間對它很敏感。"
+        "超調取每一軸 12 次小幅度步階的中位數。"
     )
     return recommended, rule
 

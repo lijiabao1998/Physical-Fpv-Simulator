@@ -178,8 +178,9 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
 
     add("## 3. 增益掃描\n")
     add("以基準設定為中心，P 與 D 一起乘上「PD 倍數」，D 再另外乘上「D 倍數」，I 與 F 不變。"
-        "每個候選飛同一段調參飛行（三軸打桿），步階響應由飛行數據以反卷積求得；雜訊只在最後一段平飛油門爬升中量測，"
-        "因為打桿本身的訊號也落在同一個頻帶。\n")
+        "每個候選飛同一段調參飛行：每一軸有固定時間、小幅度（不讓混控飽和）的正反向步階。"
+        "步階的時刻已知，所以直接在每一次步階量測超調、上升時間與安定時間，取 12 次的中位數。"
+        "雜訊只在最後一段平飛油門爬升中量測，因為步階本身的訊號也落在同一個頻帶。\n")
     add(f"**判定規則：** {study.rule}\n")
     rows = []
     for c in study.candidates:
@@ -224,7 +225,9 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
     add(f"{3 if study.at_grid_edge else 2}. 在建議設定下，評估「RPM 濾波 + 較輕的低通」能否在雜訊可接受時換到更低的延遲。\n")
 
     add("## 5. 方法與限制\n")
-    add("- 步階響應：把飛行數據切成 1 秒、重疊 50% 的視窗，只用打桿量夠大的視窗，以 Wiener 反卷積求設定值到陀螺儀的脈衝響應，累加成步階響應後平均。"
+    add("- 步階響應：模擬的調參飛行知道每次步階的時刻，所以直接量測每一次步階（相對於步階大小正規化）。"
+        "實機 log 沒有這個資訊時，改用 Wiener 反卷積（`flightanalysis.step_response`，2 秒視窗、只用該軸被打桿的時段），"
+        "兩種方法都用已知系統驗證過；全幅度打桿會讓混控飽和，量到的是非線性響應，所以調參用小幅度步階。"
         "此方法已用已知系統驗證（tests/test_flight.py）。")
     add("- 飛控依 Betaflight 的結構獨立實作（Actual rates、PID 數值尺度、D 項作用在量測值、RPM 濾波、airmode）；"
         "feedforward 的尺度、動態濾波、TPA、anti-gravity、I-term relax 等與 Betaflight 不同或沒有實作，所以調參結果是起點，不保證能一對一套用到實機。")

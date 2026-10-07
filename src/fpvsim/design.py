@@ -36,7 +36,7 @@ from .battery import Battery
 from .bemt import Airfoil, BladeGeometry, coefficient_curves
 from .mass import BoxShape, CylinderShape, MassItem, MassProperties, PointShape, Shape, combine, rotation_matrix
 from .motor import ESC, Motor
-from .params import Param, ParamError, ParamSet, Source, Values, parse_param, parse_vector
+from .params import Param, ParamError, ParamSet, Source, Values, component_stream, parse_param, parse_vector
 from .powertrain import Powertrain
 from .prop import Prop, PropCurves
 
@@ -139,7 +139,13 @@ class PartTemplate:
     position: np.ndarray
     rotation: np.ndarray
     power_key: str | None = None  # W drawn from the regulated rail, if any
-    drag_keys: tuple[str | None, str | None, str | None] = (None, None, None)  # added CdA per body axis
+    drag_keys: tuple[str | None, str | None, str | None] = (None, None, None)  # the part's own CdA per body axis
+    offset_keys: tuple[str, str, str] | None = None  # placement uncertainty (x, y, z), m
+
+    def placed(self, v) -> np.ndarray:
+        if self.offset_keys is None:
+            return self.position
+        return self.position + np.array([v(k) for k in self.offset_keys])
 
 
 @dataclass(frozen=True)
@@ -285,7 +291,7 @@ class Build:
         )
 
         items = [
-            MassItem(p.name, p.group, p.mass_key, v(p.mass_key), p.position, p.shape, p.rotation) for p in self.parts
+            MassItem(p.name, p.group, p.mass_key, v(p.mass_key), p.placed(v), p.shape, p.rotation) for p in self.parts
         ]
         rail_power = sum(v(p.power_key) for p in self.parts if p.power_key)
         p_aux = rail_power / v("electrical.bec_efficiency") + esc.quiescent_power
@@ -305,9 +311,14 @@ class Build:
                 reserve_soc=v("criteria.reserve_soc"), min_cell_voltage=v("criteria.min_cell_voltage")
             ),
             extras=AirframeExtras(
-                cda=tuple(
-                    v(f"frame.cda_{axis}") + sum(v(p.drag_keys[k]) for p in self.parts if p.drag_keys[k])
-                    for k, axis in enumerate("xyz")
+                cda=tuple(v(f"frame.cda_{axis}") for axis in "xyz"),
+                drag_points=tuple(
+                    (
+                        tuple(float(x) for x in p.placed(v)),
+                        tuple(v(k) if k else 0.0 for k in p.drag_keys),
+                    )
+                    for p in self.parts
+                    if any(p.drag_keys)
                 ),
                 rotor_drag_factor=v("prop.rotor_drag_factor"),
                 brake_current_limit=v("esc.brake_current_limit"),
@@ -381,11 +392,16 @@ def _load_component(path: Path, role: str, category: str, params: ParamSet) -> d
     for key in _REQUIRED.get(category, ()):
         if key not in table:
             raise DesignError(f"{path}: [params] needs {key}")
+    cid = _component_id(path, data)
     for key, entry in table.items():
-        params.add(parse_param(f"{role}.{key}", entry))
+        params.add(parse_param(f"{role}.{key}", entry, component_stream(cid, key)))
     if "mass" in data:
-        params.add(parse_param(f"{role}.mass", data["mass"]))
+        params.add(parse_param(f"{role}.mass", data["mass"], component_stream(cid, "mass")))
     return data
+
+
+def _component_id(path: Path, data: Mapping[str, Any]) -> str:
+    return str(data.get("meta", {}).get("id") or path.stem)
 
 
 def _absolute(base: Path, value: Any) -> str:
@@ -415,7 +431,9 @@ def _absolutise(data: dict[str, Any], base: Path) -> dict[str, Any]:
 def _merge_builds(base: dict[str, Any], variant: dict[str, Any], where: Path) -> dict[str, Any]:
     merged = {k: (dict(v) if isinstance(v, dict) else v) for k, v in base.items()}
     vmeta = variant.get("meta", {})
-    meta = {k: v for k, v in merged.get("meta", {}).items() if k not in ("extends", "change", "remove_parts")}
+    # a version never inherits the base's identity: id, name, description and change are its own
+    identity = ("extends", "change", "remove_parts", "id", "name", "description")
+    meta = {k: v for k, v in merged.get("meta", {}).items() if k not in identity}
     meta.update({k: v for k, v in vmeta.items() if k not in ("extends", "remove_parts")})
     merged["meta"] = meta
     for table in ("components", "electrical", "flight_controller"):
@@ -568,7 +586,7 @@ def _frame_parts(path: Path, data: dict[str, Any], params: ParamSet, parts: list
         if not name:
             raise DesignError(f"{where}: needs a name")
         key = f"frame.{name}.mass"
-        params.add(parse_param(key, entry.get("mass")))
+        params.add(parse_param(key, entry.get("mass"), component_stream(_component_id(path, data), f"parts.{name}.mass")))
         shape = _parse_shape(where, entry.get("shape"))
         placements = entry.get("placements")
         if not isinstance(placements, list) or not placements:
@@ -646,6 +664,7 @@ def _prop_curves(
                 u=u_rel,
                 ref=ref,
                 note="係數曲線的模型不確定度乘數",
+                stream=component_stream(_component_id(path, data), name),
             )
         )
     return curves, source
@@ -694,14 +713,18 @@ def _build_part(
     name = entry.get("name")
     if not name:
         raise DesignError(f"{where}: needs a name")
+    if name in _RESERVED_PREFIXES:
+        raise DesignError(f"{where}: part name {name!r} is reserved; choose another name")
     position = parse_vector(f"{where}.position", entry.get("position"))
     rotation = _rotation(where, entry.get("rotation_deg"))
+    offset_keys = _placement_uncertainty(where, name, entry.get("position_u"), params)
     power_key = None
-    for k, axis in enumerate("xyz"):  # inline drag areas, e.g. cda_x = { value = ..., unit = "cm^2", ... }
+    drag = {}
+    for axis in "xyz":  # inline drag areas, e.g. cda_x = { value = ..., unit = "cm^2", ... }
         if f"cda_{axis}" in entry and "component" in entry:
             raise DesignError(f"{where}: give drag areas in the component file, not in the part entry")
         if f"cda_{axis}" in entry:
-            params.add(parse_param(f"{name}.cda_{axis}", entry[f"cda_{axis}"]))
+            drag[axis] = params.add(parse_param(f"{name}.cda_{axis}", entry[f"cda_{axis}"])).key
 
     if "uses" in entry:  # a powertrain component placed as a part (battery, ESC)
         role = entry["uses"]
@@ -720,9 +743,12 @@ def _build_part(
         if "mass" not in data:
             raise DesignError(f"{comp_path}: needs mass")
         mass_key = f"{name}.mass"
-        params.add(parse_param(mass_key, data["mass"]))
+        cid = _component_id(comp_path, data)
+        params.add(parse_param(mass_key, data["mass"], component_stream(cid, "mass")))
         for key, value in data.get("params", {}).items():
-            params.add(parse_param(f"{name}.{key}", value))
+            added = params.add(parse_param(f"{name}.{key}", value, component_stream(cid, key)))
+            if key in ("cda_x", "cda_y", "cda_z"):
+                drag[key[-1]] = added.key
         if f"{name}.power" in params:
             power_key = f"{name}.power"
         shape = _parse_shape(str(comp_path), data.get("shape"))
@@ -733,8 +759,31 @@ def _build_part(
         shape = _parse_shape(where, entry.get("shape"))
         group = entry.get("group", "misc")
 
-    drag_keys = tuple(f"{name}.cda_{axis}" if f"{name}.cda_{axis}" in params else None for axis in "xyz")
-    return PartTemplate(name, str(group), mass_key, shape, position, rotation, power_key, drag_keys)
+    drag_keys = tuple(drag.get(axis) for axis in "xyz")
+    return PartTemplate(name, str(group), mass_key, shape, position, rotation, power_key, drag_keys, offset_keys)
+
+
+_RESERVED_PREFIXES = {"frame", "motor", "prop", "electrical", "flight_controller", "env", "criteria"}
+
+
+def _placement_uncertainty(where: str, name: str, entry: Any, params: ParamSet) -> tuple[str, str, str] | None:
+    """``position_u = { value = [ux, uy, uz], unit = "mm", source = ..., note = ... }``:
+    standard uncertainty of where the part ends up (straps, mounts, the pilot)."""
+    if entry is None:
+        return None
+    if not isinstance(entry, Mapping) or "source" not in entry:
+        raise DesignError(f"{where}: position_u needs value = [ux, uy, uz], unit and source")
+    spread = parse_vector(f"{where}.position_u", entry)
+    unit = entry["unit"]
+    keys = []
+    for axis, u in zip("xyz", spread):
+        param = parse_param(
+            f"{name}.offset_{axis}",
+            {"value": 0.0, "unit": unit, "source": entry["source"], "u": u / units.scale(unit),
+             "note": str(entry.get("note", "安裝位置的不確定度"))},
+        )
+        keys.append(params.add(param).key)
+    return tuple(keys)
 
 
 def check_sources(build: Build) -> list[str]:

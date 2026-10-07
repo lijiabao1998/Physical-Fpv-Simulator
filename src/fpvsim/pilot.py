@@ -33,6 +33,7 @@ class Segment:
     end: float
     sticks: dict = field(default_factory=dict)  # axis -> value or (start, end) ramp
     velocity: tuple[float, float, float] | None = None  # NED, m/s
+    tag: str = ""  # what the element is (forward, flip, punch, ...), for analysis
 
     def stick(self, axis: str, t: float) -> float | None:
         if axis not in self.sticks:
@@ -54,18 +55,51 @@ class Maneuver:
     def active(self, t: float) -> list[Segment]:
         return [s for s in self.segments if s.start <= t < s.end]
 
+    def step_edges(self, axis: str) -> list[tuple[float, float]]:
+        """(start, end) of the scripted step segments of ``axis``."""
+        return [(s.start, s.end) for s in self.segments if s.tag == f"step:{axis}"]
+
+    def axis_spans(self, axis: str, before: float = 0.3, after: float = 1.0) -> list[tuple[float, float]] | None:
+        """Time spans in which ``axis`` is being stepped by the script (merged),
+        or None if the script never overrides it."""
+        spans = sorted((s.start - before, s.end + after) for s in self.segments if axis in s.sticks)
+        if not spans:
+            return None
+        merged = [list(spans[0])]
+        for t0, t1 in spans[1:]:
+            if t0 <= merged[-1][1]:
+                merged[-1][1] = max(merged[-1][1], t1)
+            else:
+                merged.append([t0, t1])
+        return [tuple(m) for m in merged]
+
+
+STEP_HOLD = 0.4  # s per step level
+STEP_REST = 0.5  # s at centre stick after each +/- pair
+
+
+def step_test(amplitudes=(0.3, 0.5), cycles: int = 2, start: float = 1.0, gap: float = 1.0) -> tuple[list[Segment], float]:
+    """Step-test blocks, one per axis: +a, -a, 0 held for fixed times.
+
+    The axis is under script control for the whole block, so every edge is a
+    clean step from a settled level and the test pilot's corrections never
+    enter it; a +a / -a pair leaves the attitude about where it started. The
+    amplitudes keep the mixer out of saturation (small-signal response).
+    Segments are tagged "step:<axis>". Returns the segments and the end time."""
+    segments, t = [], start
+    for axis in ("roll", "pitch", "yaw"):
+        for amp in amplitudes:
+            for _ in range(cycles):
+                for value, hold in ((amp, STEP_HOLD), (-amp, STEP_HOLD), (0.0, STEP_REST)):
+                    segments.append(Segment(t, t + hold, {axis: value}, tag=f"step:{axis}"))
+                    t += hold
+        t += gap  # the pilot levels out before the next axis
+    return segments, t
+
 
 def _tune() -> Maneuver:
-    """Stick snaps on each axis at three amplitudes, both directions: the input
-    a pilot flies for step-response analysis."""
-    segments, t = [], 1.0
-    for axis in ("roll", "pitch", "yaw"):
-        for amp in (0.4, 0.7, 1.0):
-            for sign in (1.0, -1.0):
-                segments.append(Segment(t, t + 0.15, {axis: sign * amp}))
-                t += 0.75
-        t += 0.5
-    return Maneuver("tune", "調參飛行：三軸、三種幅度的正反向打桿", t + 1.0, tuple(segments))
+    segments, t = step_test(amplitudes=(0.3, 0.5, 0.7))
+    return Maneuver("tune", "調參飛行：三軸、三種幅度的正反向步階", t + 0.5, tuple(segments))
 
 
 def _throttle_sweep() -> Maneuver:
@@ -98,12 +132,12 @@ def _freestyle() -> Maneuver:
     # Flips come before the punch-out and after a pause, so each element starts
     # from a settled hover and its numbers are not mixed with the previous one.
     segs = (
-        Segment(1.0, 5.0, velocity=(10.0, 0.0, 0.0)),
-        Segment(7.0, 7.6, {"roll": 1.0, "throttle": 0.2}),
-        Segment(9.0, 9.6, {"pitch": -1.0, "throttle": 0.2}),
-        Segment(11.0, 12.0, {"yaw": 1.0}),
-        Segment(13.0, 13.8, {"throttle": 1.0}),
-        Segment(15.0, 15.6, {"throttle": 0.0}),
+        Segment(1.0, 5.0, velocity=(10.0, 0.0, 0.0), tag="forward"),
+        Segment(7.0, 7.6, {"roll": 1.0, "throttle": 0.2}, tag="flip"),
+        Segment(9.0, 9.6, {"pitch": -1.0, "throttle": 0.2}, tag="backflip"),
+        Segment(11.0, 12.0, {"yaw": 1.0}, tag="yaw_spin"),
+        Segment(13.0, 13.8, {"throttle": 1.0}, tag="punch"),
+        Segment(15.0, 15.6, {"throttle": 0.0}, tag="chop"),
     )
     return Maneuver("freestyle", "綜合飛行：10 m/s 前飛、滾轉翻、後空翻、原地自轉、衝刺、收油下墜", 19.0, segs)
 

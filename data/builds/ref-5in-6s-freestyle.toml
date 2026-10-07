@@ -26,6 +26,7 @@ motor_idle = { value = 5.5, unit = "%", source = "nominal", note = "常見的 DS
 name = "battery"
 uses = "battery"
 position = { value = [0, 0, -46], unit = "mm" }
+position_u = { value = [4, 2, 1], unit = "mm", source = "estimate", note = "用綁帶固定，每次裝電池的位置都略有不同" }
 
 [[parts]]
 name = "esc"

@@ -157,8 +157,12 @@ def cmd_compare(args) -> int:
     from .flightcontroller import load_fc_config
 
     cfg = load_fc_config(args.fc)
-    cmp = compare([args.base, *args.variants], cfg, samples=args.samples, seed=args.seed,
-                  maneuver=None if args.no_fly else args.maneuver, tune=not args.no_tune, workers=args.workers)
+    try:
+        cmp = compare([args.base, *args.variants], cfg, samples=args.samples, seed=args.seed,
+                      maneuver=None if args.no_fly else args.maneuver, tune=not args.no_tune, workers=args.workers)
+    except ValueError as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 2
     out = Path(args.out) if args.out else Path("out") / "compare"
     print(f"wrote {generate(cmp, out)}")
     return 0

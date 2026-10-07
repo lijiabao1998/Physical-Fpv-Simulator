@@ -87,12 +87,16 @@ def rel_path(path: Path, root: Path) -> str:
         return str(path)
 
 
-def _verdict(p: float) -> str:
-    if p >= 0.95:
-        return "符合"
-    if p >= 0.5:
-        return "有風險"
-    return "不符合"
+def verdict(p: float, mc: MonteCarloResult | None = None) -> str:
+    """符合 (>= 95 %), 有風險 (50-95 %), 不符合 (< 50 %); a probability within
+    two Monte Carlo standard errors of a threshold is marked as borderline,
+    because another seed could put it on the other side."""
+    label = "符合" if p >= 0.95 else ("有風險" if p >= 0.5 else "不符合")
+    if mc is not None and 0.0 < p < 1.0:
+        se = mc.probability_stderr(p)
+        if any(abs(p - t) < 2.0 * se for t in (0.95, 0.5)):
+            return f"{label}（臨界）"
+    return label
 
 
 _MEASUREMENT_METHODS = (
@@ -109,12 +113,16 @@ _MEASUREMENT_METHODS = (
     ("electrical.bec_efficiency", "量測穩壓器輸入與輸出功率"),
     (".power", "量測該模組的工作電流"),
     (".mass", "電子秤秤重"),
+    (".offset_", "量測實際安裝位置（每次安裝）"),
+    (".cda_", "風洞或滑行減速測試"),
+    ("frame.cda", "風洞或滑行減速測試"),
+    ("prop.rotor_drag_factor", "定速平飛：傾角對速度"),
 )
 
 
-def _method(key: str) -> str:
+def measurement_method(key: str) -> str:
     for pattern, method in _MEASUREMENT_METHODS:
-        if key.startswith(pattern) or (pattern.startswith(".") and key.endswith(pattern)):
+        if key.startswith(pattern) or (pattern.startswith(".") and pattern in key):
             return method
     return "依參數性質設計量測"
 
@@ -221,7 +229,8 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
 
     add("## 1. 規格符合度\n")
     add("符合機率是蒙地卡羅樣本中滿足需求的比例，± 為抽樣標準誤差；所有樣本都符合時，以 95% 信心的單邊界限表示"
-        "（三法則：失敗機率 < 3/n）。判定：≥ 95% 為「符合」，50–95% 為「有風險」，< 50% 為「不符合」。\n")
+        "（三法則：失敗機率 < 3/n）。判定：≥ 95% 為「符合」，50–95% 為「有風險」，< 50% 為「不符合」；"
+        "與門檻相差不到兩倍標準誤差時標為「臨界」，換一個隨機種子可能落在另一邊。\n")
     rows = []
     for req in spec.requirements:
         p5, p50, p95 = mc.percentiles(req.metric)
@@ -235,7 +244,7 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
             fmt_metric(req.metric, nominal[req.metric]),
             f"{fmt_metric(req.metric, p5, False)} – {fmt_metric(req.metric, p95)}",
             fmt_probability(probs[req.id], mc),
-            _verdict(probs[req.id]),
+            verdict(probs[req.id], mc),
         ])
     add(md_table(["編號", "需求", "門檻", "標稱值", "90% 區間 (P5–P95)", "符合機率", "判定"], rows))
     add("")
@@ -433,5 +442,5 @@ def _priorities(build: Build, bars, nominal) -> list[list[str]]:
             m = METRICS[metric]
             effects.append(f"±{abs(units.from_si(hi, m.unit) - units.from_si(lo, m.unit)) / 2:{m.fmt}}"
                            + ("" if m.unit == "1" else f" {m.unit}"))
-        rows.append([str(i), f"`{key}`", p.source.label_zh, f"{p.u_rel:.0%}", effects[0], effects[1], _method(key)])
+        rows.append([str(i), f"`{key}`", p.source.label_zh, f"{p.u_rel:.0%}", effects[0], effects[1], measurement_method(key)])
     return rows

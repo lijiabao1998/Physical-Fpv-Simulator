@@ -7,6 +7,8 @@ Definitions used throughout the reports:
   the arms).
 * Full throttle: duty = 1 on all motors, short punch from a rested pack
   (polarisation voltage v_rc = 0, so only R0 sags). Static, no forward speed.
+  Thrust-to-weight counts only the thrust usable while holding level against
+  the CG offset (trim_factor); currents are for all motors at full duty.
 * Hover endurance: constant hover from full charge until the first of
   (state of charge <= reserve) or (loaded cell voltage at the ESC <= minimum).
   This is an upper bound for real flights, which are never steady hover.
@@ -42,7 +44,7 @@ METRICS: dict[str, Metric] = {
         Metric("auw", "全備重量", "All-up weight", "g", ".0f"),
         Metric("dry_mass", "不含電池重量", "Dry mass", "g", ".0f"),
         Metric("cg_offset", "重心與推力中心的水平偏移", "CG offset from thrust centre", "mm", ".1f"),
-        Metric("thrust_to_weight", "靜態推重比（滿電、全油門）", "Static thrust-to-weight", "1", ".2f"),
+        Metric("thrust_to_weight", "靜態推重比（滿電、全油門、含重心配平）", "Static thrust-to-weight", "1", ".2f"),
         Metric("hover_duty", "懸停油門（馬達輸出，滿電）", "Hover motor output", "%", ".1f"),
         Metric("hover_throttle", "懸停油門（搖桿位置，扣除 idle）", "Hover stick throttle", "%", ".1f"),
         Metric("hover_rpm", "懸停轉速", "Hover speed", "rpm", ".0f"),
@@ -133,6 +135,21 @@ def _crossing(rows, t, soc, v_cell, reserve, v_min) -> tuple[float, str]:
     return t0 + frac * (t - t0), reason
 
 
+def trim_factor(ac: "Aircraft") -> float:
+    """Fraction of the all-motors-at-full static thrust usable with the CG offset.
+
+    To stay level, the rotors nearer the CG's side must carry more thrust, so
+    they reach full output first: with rotor arm a and CG offset e along an
+    axis, the usable total is 4 T_max a / (a + |e|). The x and y factors are
+    multiplied, an approximation when both offsets are present."""
+    offset = ac.mass_props.cg - ac.thrust_centroid
+    factor = 1.0
+    for axis in (0, 1):
+        arm = max(abs(r.position[axis] - ac.thrust_centroid[axis]) for r in ac.rotors)
+        factor *= arm / (arm + abs(offset[axis]))
+    return factor
+
+
 def evaluate(ac: "Aircraft", dt: float = 1.0) -> dict[str, float]:
     """All design metrics in SI units. Infeasible ones are NaN."""
     nan = math.nan
@@ -148,7 +165,7 @@ def evaluate(ac: "Aircraft", dt: float = 1.0) -> dict[str, float]:
         "auw": mp.mass,
         "dry_mass": mp.mass - battery_mass,
         "cg_offset": float(np.linalg.norm((mp.cg - ac.thrust_centroid)[:2])),
-        "thrust_to_weight": n * full.thrust * ac.thrust_interference / ac.weight if full else nan,
+        "thrust_to_weight": n * full.thrust * ac.thrust_interference * trim_factor(ac) / ac.weight if full else nan,
         "hover_duty": hover.duty if hover else nan,
         "hover_throttle": max(0.0, (hover.duty - ac.motor_idle) / (1.0 - ac.motor_idle)) if hover else nan,
         "hover_rpm": hover.omega if hover else nan,

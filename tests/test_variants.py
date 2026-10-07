@@ -40,11 +40,62 @@ def test_variant_replaces_parts_by_name(builds):
     assert len(b.parts) == len(base.parts) + 2  # battery replaced, not duplicated
 
 
-def test_drag_buildup_adds_part_areas(builds):
+def test_part_drag_acts_at_the_part(builds):
     base, a, _ = builds
-    extra = [a.params[f"action_camera.cda_{axis}"].value for axis in "xyz"]
-    for k in range(3):
-        assert a.realize().extras.cda[k] == pytest.approx(base.realize().extras.cda[k] + extra[k], rel=1e-12)
+    ea = a.realize().extras
+    assert ea.cda == base.realize().extras.cda  # the frame's own drag is unchanged
+    (position, areas), = ea.drag_points  # only the camera brings its own drag
+    assert areas == tuple(a.params[f"action_camera.cda_{axis}"].value for axis in "xyz")
+    assert position == pytest.approx((0.030, 0.0, -0.0985))
+
+
+def test_drag_above_the_cg_pitches_the_nose_up_in_forward_flight(builds):
+    """Camera drag acts above the CG and points backwards: a nose-up moment."""
+    from dataclasses import replace
+    from fpvsim.dynamics import QuadModel
+
+    _, a, _ = builds
+    ac = a.realize()
+    no_points = QuadModel(ac, replace(ac.extras, drag_points=()))
+    with_points = QuadModel(ac, ac.extras)
+    s = with_points.initial_state(position=(0, 0, -50.0))
+    s[3] = 15.0  # flying north, level, motors stopped
+    gain = with_points.derivative(s, [0.0] * 4)[11] - no_points.derivative(s, [0.0] * 4)[11]
+    assert gain > 0.0
+    lever = ac.mass_props.cg[2] - (-0.0985)  # camera is above the CG (smaller z)
+    drag = 0.5 * ac.env.rho * 15.0**2 * ac.extras.drag_points[0][1][0]
+    assert gain * with_points.inertia[1][1] == pytest.approx(lever * drag, rel=0.05)
+
+
+def test_trimmed_thrust_to_weight(builds):
+    from fpvsim.performance import full_throttle_point, trim_factor
+
+    _, a, _ = builds
+    ac = a.realize()
+    offset = ac.mass_props.cg - ac.thrust_centroid
+    arm = 0.07955
+    assert trim_factor(ac) == pytest.approx(arm / (arm + abs(offset[0])) * arm / (arm + abs(offset[1])), rel=1e-9)
+    full = full_throttle_point(ac)
+    untrimmed = 4 * full.thrust * ac.thrust_interference / ac.weight
+    from fpvsim.performance import evaluate
+    assert evaluate(ac)["thrust_to_weight"] == pytest.approx(untrimmed * trim_factor(ac), rel=1e-12)
+
+
+def test_placement_uncertainty_moves_the_cg(builds):
+    base, _, _ = builds
+    assert base.params["battery.offset_x"].u == pytest.approx(0.004)
+    nominal = base.realize().mass_props.cg[0]
+    shifted = base.realize({"battery.offset_x": 0.004}).mass_props.cg[0]
+    battery = base.params["battery.mass"].value
+    assert shifted - nominal == pytest.approx(0.004 * battery / base.realize().mass_props.mass, rel=1e-9)
+
+
+def test_reserved_part_names_are_rejected(tmp_path):
+    bad = _variant(tmp_path, f'[meta]\nextends = "{REFERENCE_BUILD}"\n[[parts]]\nname = "frame"\n'
+                   'mass = {{ value = 1, unit = "g", source = "estimate", u = 0.1 }}\n'
+                   'position = {{ value = [0, 0, 0], unit = "mm" }}\n'.replace("{{", "{").replace("}}", "}"))
+    with pytest.raises(DesignError, match="reserved"):
+        load_build(bad)
 
 
 def _variant(tmp_path, text, name="variant.toml"):
@@ -121,3 +172,88 @@ def test_compare_report_without_flights(tmp_path):
     assert "`action_camera`" in report and "`battery`" in report
     for figure in ("deltas.png", "side_views.png", "endurance.png"):
         assert (out / figure).stat().st_size > 0
+
+
+def test_swapped_component_gets_independent_errors(tmp_path):
+    """A different physical part must not inherit the replaced part's random error,
+    while the parts both versions share stay paired."""
+    battery = ROOT / "data" / "components" / "batteries" / "generic-6s-1300mah.toml"
+    other = tmp_path / "other-6s-1300mah.toml"
+    other.write_text(battery.read_text(encoding="utf-8").replace('id = "generic-6s-1300mah"', 'id = "other-6s-1300mah"'),
+                     encoding="utf-8")
+    variant = _variant(tmp_path, f'[meta]\nextends = "{REFERENCE_BUILD}"\nid = "swap"\n[components]\nbattery = "{other}"\n')
+    base, swapped = load_build(REFERENCE_BUILD), load_build(variant)
+    a, b = base.params.sample(3, 400), swapped.params.sample(3, 400)
+    assert not np.allclose(a["battery.mass"], b["battery.mass"])  # independent parts
+    assert np.std(b["battery.mass"] - a["battery.mass"]) == pytest.approx(np.sqrt(2) * base.params["battery.mass"].u, rel=0.15)
+    assert np.array_equal(a["motor.kv"], b["motor.kv"])  # the unchanged motor stays paired
+
+
+def test_revalued_inline_parameter_gets_its_own_stream(tmp_path):
+    text = REFERENCE_BUILD.read_text(encoding="utf-8").replace('"../', f'"{REFERENCE_BUILD.parent}/../')
+    heavier = tmp_path / "heavier.toml"
+    heavier.write_text(text.replace('name = "wiring"\nmass = { value = 6,', 'name = "wiring"\nmass = { value = 9,'), encoding="utf-8")
+    base, changed = load_build(REFERENCE_BUILD), load_build(heavier)
+    assert base.params["wiring.mass"].stream != changed.params["wiring.mass"].stream
+    assert base.params["capacitor.mass"].stream == changed.params["capacitor.mass"].stream
+
+
+def test_variant_has_its_own_identity(tmp_path):
+    build = load_build(_variant(tmp_path, f'[meta]\nextends = "{REFERENCE_BUILD}"\n', "nameless.toml"))
+    base = load_build(REFERENCE_BUILD)
+    assert build.id == "nameless" and build.name == "nameless" and build.description == ""
+    assert build.id != base.id
+
+
+def test_compare_rejects_a_different_spec(tmp_path):
+    from fpvsim.compare import compare
+    from fpvsim.flightcontroller import load_fc_config
+
+    spec = ROOT / "data" / "specs" / "freestyle-5in-6s.toml"
+    relaxed = tmp_path / "relaxed.toml"
+    relaxed.write_text(spec.read_text(encoding="utf-8").replace("max = 600", "max = 750"), encoding="utf-8")
+    variant = _variant(tmp_path, f'[meta]\nextends = "{VERSION_A}"\nid = "relaxed"\nspec = "{relaxed}"\n')
+    with pytest.raises(ValueError, match="different spec"):
+        compare([REFERENCE_BUILD, variant], load_fc_config(ROOT / "data" / "fc" / "acro-5in-baseline.toml"),
+                samples=5, maneuver=None, tune=False)
+    with pytest.raises(ValueError, match="unknown maneuver"):
+        compare([REFERENCE_BUILD, VERSION_A], load_fc_config(ROOT / "data" / "fc" / "acro-5in-baseline.toml"),
+                samples=5, maneuver="loop-de-loop", tune=False)
+
+
+def test_design_changes_list_parameters_of_one_version_only(builds):
+    base, a, b = builds
+    kinds = {(c.kind, c.item) for c in design_changes(base, a)}
+    # the camera's own parameters belong to the added part row, not separate rows
+    assert not any(k == "param_added" and item.startswith("action_camera.") for k, item in kinds)
+    assert ("value", "battery.offset_x") not in kinds  # unchanged placement uncertainty
+    kinds_b = {(c.kind, c.item) for c in design_changes(base, b)}
+    assert ("moved", "battery") in kinds_b
+
+
+def test_delta_sensitivity_scopes(builds):
+    from fpvsim.compare import delta_sensitivity
+
+    base, a, _ = builds
+    bars = delta_sensitivity(base, a, ("auw", "endurance"))
+    by_key = {bar.key: bar for bar in bars["auw"]}
+    assert by_key["action_camera.mass"].scope == "variant"
+    assert by_key["motor.kv"].scope == "shared"
+    # AUW difference depends only on the added parts' masses
+    assert by_key["motor.mass"].span == pytest.approx(0.0, abs=1e-12)
+    assert by_key["action_camera.mass"].span == pytest.approx(2 * a.params["action_camera.mass"].u, rel=1e-9)
+    # endurance difference also depends on shared powertrain parameters
+    assert {bar.key for bar in bars["endurance"][:6]} & {"prop.cp_scale", "prop.ct_scale", "motor.i0_speed_fraction"}
+
+
+def test_compare_report_signs_a_lighter_version(tmp_path):
+    from fpvsim.cli import main
+
+    lighter = _variant(tmp_path, f'[meta]\nextends = "{REFERENCE_BUILD}"\nid = "light"\nname = "輕量版"\n'
+                       'change = "拿掉線材"\nremove_parts = ["wiring"]\n', "light.toml")
+    out = tmp_path / "cmp"
+    assert main(["compare", str(REFERENCE_BUILD), str(lighter), "--fc", str(ROOT / "data" / "fc" / "acro-5in-baseline.toml"),
+                 "--samples", "20", "--no-fly", "--no-tune", "--out", str(out)]) == 0
+    report = (out / "report.md").read_text(encoding="utf-8")
+    assert "全備重量 -6 g" in report and "+-" not in report
+    assert "拿掉線材" in report

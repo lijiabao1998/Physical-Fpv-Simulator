@@ -105,6 +105,10 @@ class QuadModel:
         self.hover_omega = hover.omega if hover else 0.0
 
         self.cda = extras.cda
+        self.drag_points = [
+            (tuple(float(x) for x in (np.array(pos) - cg)), tuple(float(a) for a in areas))
+            for pos, areas in extras.drag_points
+        ]
         self.k_contact = extras.contact_stiffness
         self.c_contact = extras.contact_damping
         self.mu = extras.ground_friction
@@ -257,12 +261,24 @@ class QuadModel:
                 thrusts[i] = thrust
                 js[i] = J
 
-        # body drag, per axis
+        # body drag, per axis: the frame at the CG, parts with their own drag at their position
         speed = math.sqrt(ub * ub + vb * vb + wb * wb)
         q_dyn = 0.5 * rho * speed
         fx -= q_dyn * self.cda[0] * ub
         fy -= q_dyn * self.cda[1] * vb
         fz -= q_dyn * self.cda[2] * wb
+        for (px, py, pz), (ax_, ay_, az_) in self.drag_points:
+            lu = ub + wy * pz - wz * py
+            lv = vb + wz * px - wx * pz
+            lw = wb + wx * py - wy * px
+            q_part = 0.5 * rho * math.sqrt(lu * lu + lv * lv + lw * lw)
+            dfx, dfy, dfz = -q_part * ax_ * lu, -q_part * ay_ * lv, -q_part * az_ * lw
+            fx += dfx
+            fy += dfy
+            fz += dfz
+            mx += py * dfz - pz * dfy
+            my += pz * dfx - px * dfz
+            mz += px * dfy - py * dfx
 
         # gyroscopic coupling of the rotors' spin momentum
         h_rot = self.j_rotor * sum(self.spin[i] * omegas[i] for i in range(n))

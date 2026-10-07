@@ -7,7 +7,10 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class AirframeExtras:
-    cda: tuple[float, float, float]  # m^2, drag area along body x, y, z
+    cda: tuple[float, float, float]  # m^2, frame drag area along body x, y, z, acting at the CG
+    # parts with their own drag: (position in the body frame / mount origin, drag areas x, y, z),
+    # each acting at its own position so a camera high above the CG adds a pitching moment
+    drag_points: tuple[tuple[tuple[float, float, float], tuple[float, float, float]], ...]
     rotor_drag_factor: float  # multiplier on momentum-theory rotor drag
     brake_current_limit: float  # A, ESC limit on reverse (braking) phase current
     drive_current_limit: float  # A, ESC limit on forward phase current (ramp-up / current protection)
