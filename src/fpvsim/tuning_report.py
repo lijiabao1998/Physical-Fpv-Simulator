@@ -14,7 +14,7 @@ from .design import Build
 from .filters import chain_response, group_delay, make_lowpass
 from .flightcontroller import dump_fc_config
 from .report import git_version, md_table, rel_path
-from .tuning import NOISE_BAND, OVERSHOOT_LIMIT, TuningStudy, filter_delay, robust_alternative
+from .tuning import NOISE_BAND, OVERSHOOT_LIMIT, TuningStudy, ff_dominated, filter_delay, robust_alternative
 
 AXES = ("roll", "pitch", "yaw")
 AXIS_ZH = {"roll": "滾轉", "pitch": "俯仰", "yaw": "偏航"}
@@ -114,7 +114,8 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
     add(md_table(["項目", "內容"], [
         ["機體", f"`{rel_path(build.path, Path.cwd())}`"],
         ["基準飛控設定", f"{cfg.name}（`{cfg.id}`）"],
-        ["試飛次數", f"雜訊調查 {len(study.noise_runs)} 次，增益掃描 {len(study.candidates)} 次"],
+        ["試飛次數", f"雜訊調查 {len(study.noise_runs)} 次，增益掃描 {len(study.candidates)} 次"
+                     + ("，feedforward 對照 1 次" if study.ff_off else "")],
         ["程式版本", f"fpvsim {__version__}，git `{git_version(build.path.parent)}`"],
         ["輸入檔雜湊", f"`{build.input_hash()[:16]}`"],
         ["隨機種子", str(study.seed)],
@@ -154,6 +155,13 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
                 "同樣的增益在慣性較小的軸上等於較高的迴路增益）。本次掃描對三軸使用相同倍數，下一輪應分軸調整。")
     elif not rec:
         add("- **沒有候選設定符合條件。** 請擴大掃描範圍或放寬條件。")
+    ff_axes = ff_dominated(study)
+    if ff_axes:
+        parts = [f"{AXIS_ZH[a]} {_pct(o)}（F = 0 時 {_pct(o0)}，上升時間 {_ms(r)} → {_ms(r0)}）" for a, o, o0, r, r0 in ff_axes]
+        names = "、".join(AXIS_ZH[a[0]] for a in ff_axes)
+        rule_note = "，而且偏航不在判定規則內" if any(a[0] == "yaw" for a in ff_axes) else ""
+        add(f"- **{names}的超調主要來自 feedforward：**" + "；".join(parts)
+            + f"。PD 掃描改變不了這部分{rule_note}；下一輪應單獨掃描{names}的 F，在超調與上升時間之間取捨。")
     if study.at_grid_edge:
         add(f"- **建議值落在掃描範圍邊緣（{'、'.join(study.at_grid_edge)}）**，更好的設定可能在範圍外，下一輪應往該方向擴大掃描。")
     worst = max(study.candidates, key=lambda c: c.metrics["motor_noise"])
@@ -224,6 +232,16 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
             [AXIS_ZH[a], _pct(base.metrics["axes"][a].get("overshoot", math.nan)), _pct(rec.metrics["axes"][a].get("overshoot", math.nan)),
              _ms(base.metrics["axes"][a].get("rise_time", math.nan)), _ms(rec.metrics["axes"][a].get("rise_time", math.nan)),
              _ms(base.metrics["axes"][a]["latency"]), _ms(rec.metrics["axes"][a]["latency"])]
+            for a in AXES
+        ]))
+        add("")
+
+    if base and study.ff_off:
+        add("**Feedforward 的貢獻：** 基準增益下把三軸的 F 設為 0，再飛同一段調參飛行。"
+            "兩者的差異是 feedforward 造成的部分，PD 掃描改變不了它。\n")
+        add(md_table(["軸", "超調（F 照設定）", "超調（F = 0）", "上升時間（F 照設定）", "上升時間（F = 0）"], [
+            [AXIS_ZH[a], _pct(base.metrics["axes"][a].get("overshoot", math.nan)), _pct(study.ff_off["axes"][a].get("overshoot", math.nan)),
+             _ms(base.metrics["axes"][a].get("rise_time", math.nan)), _ms(study.ff_off["axes"][a].get("rise_time", math.nan))]
             for a in AXES
         ]))
         add("")

@@ -15,7 +15,7 @@ from fpvsim.flightcontroller import AxisRates, FlightController, dump_fc_config,
 from fpvsim.performance import hover_point
 from fpvsim.pilot import MANEUVERS
 from fpvsim.sim import SimSettings, simulate
-from fpvsim.tuning import Candidate, robust_alternative, select
+from fpvsim.tuning import Candidate, TuningStudy, ff_dominated, robust_alternative, select
 
 from conftest import ROOT
 
@@ -375,6 +375,16 @@ def test_robust_alternative_offers_margin_only_within_tracking_tie():
         c.feasible = c.label != "infeasible"
     assert robust_alternative(cands, cands[0]).label == "margin, similar tracking"
     assert robust_alternative(cands[:1], cands[0]) is None
+
+
+def test_ff_dominated_names_axes_whose_overshoot_feedforward_causes():
+    def axes(roll, pitch, yaw):
+        return {"axes": {a: {"overshoot": o, "rise_time": 0.01} for a, o in zip(("roll", "pitch", "yaw"), (roll, pitch, yaw))}}
+
+    base = Candidate("PD×1 D×1", 1.0, 1.0, None, axes(0.20, 0.14, 0.33))
+    study = TuningStudy(None, [], [base], None, "", 1, ff_off=axes(0.15, 0.10, 0.02))
+    assert [a[0] for a in ff_dominated(study)] == ["yaw"]  # roll exceeds the limit but F is not the main cause
+    assert ff_dominated(TuningStudy(None, [], [base], None, "", 1)) == []
 
 
 def test_edge_steps_read_known_response_exactly():

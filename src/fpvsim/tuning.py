@@ -11,6 +11,9 @@
    (flightanalysis.edge_steps); its quality is set against motor-output
    noise (heat and wasted power). Deconvolution (flightanalysis.step_response)
    is the fallback for flights without scripted steps, such as real logs.
+   One more flight at the baseline gains with feedforward off shows how much
+   of each axis's overshoot comes from feedforward, which the PD sweep
+   cannot change.
 3. Recommendation: among candidates whose roll and pitch overshoot are each
    within the limit and whose motor noise is at most a set multiple of the baseline's,
    the one with the lowest roll/pitch tracking error on the same scripted
@@ -152,6 +155,11 @@ class TuningStudy:
     pd_values: tuple[float, ...] = ()
     d_values: tuple[float, ...] = ()
     baseline_log: object = None  # the baseline candidate's tuning-flight log
+    ff_off: dict | None = None  # metrics of the tuning flight at baseline gains with F = 0 on every axis
+
+    @property
+    def baseline_candidate(self) -> Candidate | None:
+        return next((c for c in self.candidates if c.pd == 1.0 and c.d == 1.0), None)
 
     @property
     def at_grid_edge(self) -> list[str]:
@@ -187,6 +195,21 @@ def select(candidates: list[Candidate]) -> tuple[Candidate | None, str]:
         "超調取每一軸 12 次小幅度步階的中位數。"
     )
     return recommended, rule
+
+
+def ff_dominated(study: TuningStudy) -> list[tuple[str, float, float, float, float]]:
+    """Axes whose overshoot at baseline gains exceeds the limit and at least
+    halves with feedforward off: (axis, overshoot, overshoot F=0, rise, rise F=0)."""
+    base = study.baseline_candidate
+    if base is None or not study.ff_off:
+        return []
+    out = []
+    for a in AXES:
+        on, off = base.metrics["axes"][a], study.ff_off["axes"][a]
+        o, o0 = on.get("overshoot", math.nan), off.get("overshoot", math.nan)
+        if o > OVERSHOOT_LIMIT and o0 < 0.5 * o:
+            out.append((a, o, o0, on.get("rise_time", math.nan), off.get("rise_time", math.nan)))
+    return out
 
 
 TRACKING_TIE = 0.05  # tracking errors within 5 % are treated as equivalent when looking for margin
@@ -241,7 +264,12 @@ def run_study(
          "noise_window": window, "keep_log": c.pd == 1.0 and c.d == 1.0}
         for c in candidates
     ]
-    results = _run(noise_jobs + gain_jobs, workers)
+    # Feedforward check: the baseline gains with F = 0 show how much of each
+    # axis's overshoot comes from feedforward rather than from P, I and D.
+    ff_job = {"build": build_path, "cfg": cfg.with_gains(f=0.0), "maneuver": tune, "log_rate": 2000.0, "seed": seed,
+              "label": "F=0", "noise_window": window}
+    results = _run(noise_jobs + gain_jobs + [ff_job], workers)
+    ff_off = results.pop()["metrics"]
     noise_runs = []
     for (label, label_en, c), res in zip(filter_variants(cfg), results[: len(noise_jobs)]):
         noise_runs.append({"label": label, "label_en": label_en, "cfg": c, "metrics": res["metrics"], "log": res["log"]})
@@ -251,4 +279,5 @@ def run_study(
         baseline_log = res.get("log", baseline_log)
 
     recommended, rule = select(candidates)
-    return TuningStudy(cfg, noise_runs, candidates, recommended, rule, seed, tuple(pd_values), tuple(d_values), baseline_log)
+    return TuningStudy(cfg, noise_runs, candidates, recommended, rule, seed, tuple(pd_values), tuple(d_values), baseline_log,
+                       ff_off)

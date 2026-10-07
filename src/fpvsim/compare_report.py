@@ -16,6 +16,7 @@ from . import __version__, plots, units
 from .compare import COMPARE_METRICS, Comparison, summarise_delta
 from .performance import METRICS
 from .report import fmt_metric, fmt_probability, git_version, md_table, measurement_method, rel_path, verdict
+from .tuning import ff_dominated
 
 AXES = ("roll", "pitch", "yaw")
 AXIS_ZH = {"roll": "滾轉", "pitch": "俯仰", "yaw": "偏航"}
@@ -351,6 +352,12 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
         add(md_table(["版本", "滾轉超調", "俯仰超調", "偏航超調", "上升時間（滾 / 俯）", "未安定的軸",
                       "調參建議", "建議 P-D（滾轉 / 俯仰）"], table))
         add("")
+        ff = [(t, ff_dominated(v.tuning)) for t, v in zip(tags, vs)]
+        ff = [(t, axes) for t, axes in ff if axes]
+        if ff:
+            add("超調主要來自 feedforward 的軸（基準增益下 F 設為 0 再飛一次的對照）："
+                + "；".join(f"{t}：" + "、".join(f"{AXIS_ZH[a]} {_pct(o)} → {_pct(o0)}" for a, o, o0, _, _ in axes) for t, axes in ff)
+                + "。PD 掃描改變不了這部分，應單獨調整該軸的 F。\n")
         edges = [f"{t}（{'、'.join(v.tuning.at_grid_edge)}）" for t, v in zip(tags, vs) if v.tuning.at_grid_edge]
         if edges:
             add(f"建議值落在掃描範圍邊緣的有：{'、'.join(edges)}，下一輪應往該方向擴大掃描。\n")
