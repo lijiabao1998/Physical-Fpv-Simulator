@@ -1,0 +1,25 @@
+{
+  "reference_mesh": 80,
+  "candidate_mesh": 120,
+  "reference_sha256": "c6a19fbed16508bf16499b485247776ff994d8946f01d321267dea89de6b0134",
+  "voltage_max_difference_v": 0.0033209300229870564,
+  "temperature_max_difference_k": 0.018017734930026563,
+  "capacity_relative_difference": 3.4459802158082156e-05,
+  "voltage_peak_time_s": 140,
+  "temperature_peak_time_s": 920,
+  "common_interval_s": [
+    0,
+    3333.391292865383
+  ],
+  "reference_cutoff_time_s": 3333.506160869621,
+  "candidate_cutoff_time_s": 3333.391292865383,
+  "physical_audit_passed": true,
+  "passed": true,
+  "scope": "single representative case; no whole-cohort validation",
+  "ci_run_id": 37681264082,
+  "commit_sha": "f746e0e1483f9f5d616fdfd95c7a1cb03ffa2aea",
+  "ci_url": "https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/37681264082",
+  "artifact_id": 11510186568,
+  "artifact_zip_sha256": "7e09719322a9de3c5dcae2b9d01ded3d97642d5082ba98ccfd9154c502486057",
+  "supervised_elapsed_seconds": 880.0621305699999
+}

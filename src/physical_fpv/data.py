@@ -13,6 +13,8 @@ from pathlib import Path
 
 import numpy as np
 
+from physical_fpv.attribution import write_evidence_attribution
+
 RECORD = "https://zenodo.org/records/4032561"
 DOI = "10.5281/zenodo.4032561"
 LICENSE = "CC-BY-4.0"
@@ -104,6 +106,7 @@ def download_data(directory: Path) -> list[dict]:
     (directory / "download-manifest.json").write_text(
         json.dumps(artifacts, indent=2) + "\n", encoding="utf-8"
     )
+    write_evidence_attribution(directory, ["chen2020"])
     return artifacts
 
 

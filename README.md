@@ -42,7 +42,7 @@ Lumped thermal simulation is explicitly **unvalidated**: several built-in Chen20
 
 ## Current results
 
-Software checks pass (60 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
+Software checks pass (78 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
 
 ## Thermal reconstruction: inspect the second cohort
 
@@ -50,7 +50,7 @@ The ORegan2022 extension covers **36 first-discharge traces from12 LG M50 cells*
 
 On grid40, **6/36 empirical targets pass and30/36 fail**. Voltage RMSE ranges24.51–88.00mV; surface-proxy temperature RMSE0.35–14.68K, including the retained cell791 anomaly. All36 actual-node/surface, lithium, charge and heat-balance audits pass. These are separate findings: **this is not a mature, qualified battery model**.
 
-The 1C/25°C representative40→80 mesh check actually completed in187 seconds but **failed convergence targets**: maximum voltage difference14.33mV versus5mV, and temperature difference0.207K versus0.1K. Peaks occur at340s and970s, not at the slightly different cutoff endpoints. A separate single-case 80→120 GitHub Actions job now has a 20-minute/4GB limit; its actual outcome is reported separately. Whole-cohort numerical verification remains open. Cold conditions and some hot endpoints extrapolate measured parameter ranges.
+The 1C/25°C representative40→80 mesh check actually completed in187 seconds but **failed convergence targets**: maximum voltage difference14.33mV versus5mV, and temperature difference0.207K versus0.1K. Peaks occur at340s and970s, not at the slightly different cutoff endpoints. The same-case80→120 check has now passed:3.321mV maximum voltage difference,0.0180K temperature difference and0.00345% capacity difference, within the20-minute/4GB budget. The exact source run is [37681264082](https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/37681264082) at f746e0e. Packaging-only changes reuse this recorded result after checking calculation fingerprints; CI explicitly labels reuse rather than claiming a new solve. Whole-cohort numerical verification remains open. Cold conditions and some hot endpoints extrapolate measured parameter ranges.
 
 - [Full36-case thermal report](docs/benchmarks/thermal-grid40.md) and [machine-readable summary](docs/benchmarks/thermal-summary.json)
 - Raw-data inspection, duplicate counts and sensor flags: run physical-fpv thermal-inspect
@@ -66,6 +66,8 @@ python scripts/verify_thermal_grid.py --timeout 600
 ```
 
 The36-case grid40 report intentionally marks numerical stages NOT RUN. The separate representative result does not establish convergence for the remaining conditions. Running thermal-benchmark without --skip-numerics requests all frozen numerical checks and is computationally heavier.
+
+See [the first no-fit causal diagnosis](docs/causal-diagnosis.md) for grouped failures, the original TEC implementation differences, and the unchanged-parameter cell790 check. Standalone evidence exports now carry authors, DOI, source-license distinctions and required notices; this does not select a license for original project code.
 
 ## What is implemented
 

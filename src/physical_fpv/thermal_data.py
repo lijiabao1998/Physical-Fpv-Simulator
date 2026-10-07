@@ -14,6 +14,7 @@ from pathlib import Path
 
 import numpy as np
 
+from physical_fpv.attribution import write_evidence_attribution
 from physical_fpv.data import Discharge
 
 ARCHIVE_URL = (
@@ -67,6 +68,7 @@ def fetch_thermal_data(path: Path) -> dict:
         temp = path.with_suffix(".zip.tmp")
         temp.write_bytes(content)
         os.replace(temp, path)
+    write_evidence_attribution(path.parent, ["tec_validation"])
     return {
         "url": ARCHIVE_URL,
         "sha256": sha,
@@ -263,5 +265,6 @@ def inspect_cohort(traces: list[ThermalTrace]) -> dict:
 def save_cohort_inspection(archive: Path, output: Path) -> dict:
     report = inspect_cohort(load_thermal_cohort(archive))
     output.parent.mkdir(parents=True, exist_ok=True)
+    write_evidence_attribution(output.parent, ["tec_validation"])
     output.write_text(json.dumps(report, indent=2, allow_nan=False) + "\n", encoding="utf-8")
     return report

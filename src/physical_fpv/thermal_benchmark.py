@@ -10,6 +10,7 @@ from pathlib import Path
 
 import numpy as np
 
+from physical_fpv.attribution import write_evidence_attribution
 from physical_fpv.core import ModelConfig, SimulationResult, simulate
 from physical_fpv.thermal_data import ThermalTrace, inspect_cohort, load_thermal_cohort
 from physical_fpv.validation import compare_numerics, compare_trace, write_timeseries
@@ -268,6 +269,7 @@ def run_thermal_benchmark(archive: Path, output: Path, numerical: bool = True) -
         source_hash.update(path.read_bytes())
     traces = load_thermal_cohort(archive)
     output.mkdir(parents=True, exist_ok=True)
+    write_evidence_attribution(output, ["tec_validation", "oregan2022_parameters"])
     (output / "data-inspection.json").write_text(
         json.dumps(inspect_cohort(traces), indent=2) + "\n"
     )

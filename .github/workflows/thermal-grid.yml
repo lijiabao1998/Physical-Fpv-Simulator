@@ -4,6 +4,12 @@ on:
     paths:
       - src/physical_fpv/core.py
       - scripts/verify_thermal_grid.py
+      - scripts/grid_evidence_cache.py
+      - src/physical_fpv/validation.py
+      - requirements-lock.txt
+      - pyproject.toml
+      - docs/benchmarks/grid120-verified-evidence.json
+      - docs/benchmarks/thermal-representative-grid80.json
       - docs/benchmarks/thermal-grid80-reference.csv
       - docs/benchmarks/thermal-reference-manifest.json
       - .github/workflows/thermal-grid.yml
@@ -31,7 +37,11 @@ jobs:
         run: |
           python -m pip install -r requirements-lock.txt
           python -m pip install --no-deps -e .
+      - name: Verify calculation fingerprints before reusing evidence
+        id: saved
+        run: python scripts/grid_evidence_cache.py --out results/grid120 --github-output "$GITHUB_OUTPUT"
       - name: Run one unchanged-state grid120 case with 20-minute budget
+        if: steps.saved.outputs.reuse != 'true'
         run: python scripts/verify_thermal_grid.py --mesh 120 --timeout 1200 --out results/grid120
       - name: Check representative numerical targets
         run: |
@@ -48,6 +58,9 @@ jobs:
               echo '```' >> "$GITHUB_STEP_SUMMARY"
             fi
           done
+      - name: Add portable source attribution
+        if: always()
+        run: python -c "from physical_fpv.attribution import write_evidence_attribution; write_evidence_attribution('results/grid120', ['tec_validation', 'oregan2022_parameters'])"
       - name: Preserve numerical evidence, including budget failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

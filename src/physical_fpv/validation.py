@@ -9,6 +9,7 @@ from pathlib import Path
 
 import numpy as np
 
+from physical_fpv.attribution import write_evidence_attribution
 from physical_fpv.core import ModelConfig, SimulationResult, simulate
 from physical_fpv.data import Discharge, load_discharges
 
@@ -158,6 +159,7 @@ def run_benchmark(
     mesh_points: int = 40,
 ) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
+    write_evidence_attribution(output_dir, ["chen2020"])
     traces = [
         trace
         for cell in ("02", "03", "04")

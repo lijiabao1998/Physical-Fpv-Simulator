@@ -22,10 +22,8 @@
   {
     "package": "casadi",
     "version": "3.8.1",
-    "declared_license": [
-      "License :: OSI Approved"
-    ],
-    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+    "declared_license": "LGPL-3.0-or-later",
+    "source": "Installed CasADi3.8.1 METADATA License: GNU Lesser General Public License v3 or later (LGPLv3+)"
   },
   {
     "package": "certifi",
@@ -154,8 +152,8 @@
   {
     "package": "pybammsolvers",
     "version": "0.10.0",
-    "declared_license": "not declared in installed metadata; inspect distribution",
-    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+    "declared_license": "BSD-3-Clause",
+    "source": "Installed pybammsolvers0.10.0 LICENSE, copyright(c)2024 PyBaMM Team; bundled native-library notices are separate"
   },
   {
     "package": "Pygments",

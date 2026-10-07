@@ -6,6 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
+from physical_fpv.attribution import write_evidence_attribution
 from physical_fpv.core import ModelConfig, simulate
 from physical_fpv.data import download_data
 from physical_fpv.materials import analytic_material_example
@@ -69,6 +70,7 @@ def main(argv: list[str] | None = None) -> int:
                 ModelConfig(model=args.model, thermal=args.thermal, current_a=args.current)
             )
             write_timeseries(args.out / "timeseries.csv", result)
+            write_evidence_attribution(args.out, [])
             text = json.dumps(result.metadata(), indent=2, allow_nan=False)
             (args.out / "metadata.json").write_text(text + "\n", encoding="utf-8")
             print(text)
