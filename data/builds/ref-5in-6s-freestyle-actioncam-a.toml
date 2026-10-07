@@ -1,0 +1,22 @@
+# Version A: action camera strapped onto the front of the battery; nothing else changes.
+schema = "fpvsim.build/1"
+
+[meta]
+extends = "ref-5in-6s-freestyle.toml"
+id = "ref-5in-6s-freestyle-actioncam-a"
+name = "版本 A：運動相機綁在電池前端"
+description = "參考機加掛全尺寸運動相機，相機用 TPU 座綁在電池上方前端，電池位置不變。最快的改裝方式。"
+change = "加掛全尺寸運動相機（綁在電池前端），電池位置不變"
+
+[[parts]]
+name = "action_camera"
+component = "../components/payloads/generic-action-camera-full.toml"
+# on top of the battery (top surface z = -65 mm), on an 8 mm mount, overhanging the front a little
+position = { value = [30, 0, -98.5], unit = "mm" }
+
+[[parts]]
+name = "camera_mount"
+group = "payload"
+mass = { value = 12, unit = "g", source = "estimate", u = 3, note = "TPU 相機座與綁帶" }
+shape = { type = "box", size = [40, 60, 8], unit = "mm" }
+position = { value = [30, 0, -69], unit = "mm" }

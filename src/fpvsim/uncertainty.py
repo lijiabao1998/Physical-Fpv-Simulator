@@ -3,7 +3,9 @@
 * Monte Carlo (GUM Supplement 1 approach): every uncertain input is drawn
   from its distribution, the full analysis runs on each sample, and the
   output distribution gives percentiles and the probability of meeting each
-  requirement. Inputs are treated as independent.
+  requirement. Inputs are treated as independent. Draws are keyed by
+  parameter, so sample i of two builds shares every common input value
+  (paired comparison, see compare.py).
 * One-at-a-time sensitivity (tornado): each input is moved by +/- one
   standard uncertainty with all others nominal. It shows which measurement
   would reduce output uncertainty the most.
@@ -57,8 +59,7 @@ class MonteCarloResult:
 
 
 def monte_carlo(build: Build, n: int = 1000, seed: int = 1, analysis: Analysis = evaluate) -> MonteCarloResult:
-    rng = np.random.default_rng(seed)
-    inputs = build.params.sample(rng, n)
+    inputs = build.params.sample(seed, n)
     collected: dict[str, list[float]] = {}
     for i in range(n):
         out = analysis(build.realize({k: v[i] for k, v in inputs.items()}))

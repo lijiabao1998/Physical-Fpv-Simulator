@@ -9,6 +9,13 @@ so the same code serves nominal analysis and Monte Carlo samples.
 Identical parts (four motors, four arms) share one parameter key, so their
 values are fully correlated in uncertainty analysis. Asymmetry between
 nominally identical parts is not modelled at this stage.
+
+Design versions: a build file can ``extends`` another and list only what
+changes, like an engineering change order. Parts merge by name (a part with
+an existing name replaces it, a new name is added), ``remove_parts`` deletes
+parts, and component roles and [electrical] / [flight_controller] keys
+override the base. Relative paths are resolved against the file that wrote
+them, so a variant may live in another directory.
 """
 
 from __future__ import annotations
@@ -132,6 +139,7 @@ class PartTemplate:
     position: np.ndarray
     rotation: np.ndarray
     power_key: str | None = None  # W drawn from the regulated rail, if any
+    drag_keys: tuple[str | None, str | None, str | None] = (None, None, None)  # added CdA per body axis
 
 
 @dataclass(frozen=True)
@@ -230,6 +238,7 @@ class Build:
     model_inputs: ParamSet = field(default_factory=ParamSet)  # inputs of derived models, not sampled
     tables: list[DataTable] = field(default_factory=list)
     files: list[Path] = field(default_factory=list)
+    lineage: list[dict] = field(default_factory=list)  # base first: id, name, change, path
 
     def input_hash(self) -> str:
         """SHA-256 over every input file, to tie a report to its exact inputs."""
@@ -296,7 +305,10 @@ class Build:
                 reserve_soc=v("criteria.reserve_soc"), min_cell_voltage=v("criteria.min_cell_voltage")
             ),
             extras=AirframeExtras(
-                cda=(v("frame.cda_x"), v("frame.cda_y"), v("frame.cda_z")),
+                cda=tuple(
+                    v(f"frame.cda_{axis}") + sum(v(p.drag_keys[k]) for p in self.parts if p.drag_keys[k])
+                    for k, axis in enumerate("xyz")
+                ),
                 rotor_drag_factor=v("prop.rotor_drag_factor"),
                 brake_current_limit=v("esc.brake_current_limit"),
                 drive_current_limit=v("esc.drive_current_limit"),
@@ -376,13 +388,86 @@ def _load_component(path: Path, role: str, category: str, params: ParamSet) -> d
     return data
 
 
+def _absolute(base: Path, value: Any) -> str:
+    return str((base / str(value)).resolve())
+
+
+def _absolutise(data: dict[str, Any], base: Path) -> dict[str, Any]:
+    """Copy of raw build data with every file path made absolute."""
+    out = {k: (dict(v) if isinstance(v, dict) else v) for k, v in data.items()}
+    meta = out.setdefault("meta", {})
+    for key in ("spec", "extends"):
+        if key in meta:
+            meta[key] = _absolute(base, meta[key])
+    if "components" in out:
+        out["components"] = {role: _absolute(base, p) for role, p in out["components"].items()}
+    parts = []
+    for entry in out.get("parts", []):
+        entry = dict(entry)
+        if "component" in entry:
+            entry["component"] = _absolute(base, entry["component"])
+        parts.append(entry)
+    if "parts" in out:
+        out["parts"] = parts
+    return out
+
+
+def _merge_builds(base: dict[str, Any], variant: dict[str, Any], where: Path) -> dict[str, Any]:
+    merged = {k: (dict(v) if isinstance(v, dict) else v) for k, v in base.items()}
+    vmeta = variant.get("meta", {})
+    meta = {k: v for k, v in merged.get("meta", {}).items() if k not in ("extends", "change", "remove_parts")}
+    meta.update({k: v for k, v in vmeta.items() if k not in ("extends", "remove_parts")})
+    merged["meta"] = meta
+    for table in ("components", "electrical", "flight_controller"):
+        if table in variant:
+            merged[table] = {**merged.get(table, {}), **variant[table]}
+    parts = list(merged.get("parts", []))
+    names = [p.get("name") for p in parts]
+    for name in vmeta.get("remove_parts", []):
+        if name not in names:
+            raise DesignError(f"{where}: remove_parts names {name!r}, which the base build does not have")
+        parts = [p for p in parts if p.get("name") != name]
+        names = [p.get("name") for p in parts]
+    for entry in variant.get("parts", []):
+        name = entry.get("name")
+        if name in names:
+            parts[names.index(name)] = entry
+        else:
+            parts.append(entry)
+            names.append(name)
+    merged["parts"] = parts
+    return merged
+
+
+def _resolve_build(path: Path, chain: tuple[Path, ...] = ()) -> tuple[dict[str, Any], list[Path], list[dict]]:
+    """Raw build data with its ``extends`` chain merged in, plus the files and
+    the version lineage (base first)."""
+    if path in chain:
+        cycle = " -> ".join(str(p.name) for p in (*chain, path))
+        raise DesignError(f"circular extends: {cycle}")
+    data = _absolutise(_read_toml(path, BUILD_SCHEMA), path.parent)
+    meta = data["meta"]
+    entry = {
+        "id": str(meta.get("id", path.stem)),
+        "name": str(meta.get("name", path.stem)),
+        "change": str(meta.get("change", "")),
+        "path": path,
+    }
+    if "extends" not in meta:
+        if "remove_parts" in meta:
+            raise DesignError(f"{path}: remove_parts needs extends")
+        return data, [path], [entry]
+    base_data, files, lineage = _resolve_build(Path(meta["extends"]), (*chain, path))
+    return _merge_builds(base_data, data, path), [*files, path], [*lineage, entry]
+
+
 def load_build(path: str | Path) -> Build:
     path = Path(path).resolve()
-    data = _read_toml(path, BUILD_SCHEMA)
+    data, files, lineage = _resolve_build(path)
     base = path.parent
     meta = data.get("meta", {})
     params = ParamSet()
-    files = [path]
+    files = list(files)
 
     if "spec" not in meta:
         raise DesignError(f"{path}: [meta] needs spec = <path to spec file>")
@@ -461,6 +546,7 @@ def load_build(path: str | Path) -> Build:
         model_inputs=model_inputs,
         tables=tables,
         files=files,
+        lineage=lineage,
     )
     build.realize()  # fail at load time, not halfway through an analysis
     return build
@@ -611,6 +697,11 @@ def _build_part(
     position = parse_vector(f"{where}.position", entry.get("position"))
     rotation = _rotation(where, entry.get("rotation_deg"))
     power_key = None
+    for k, axis in enumerate("xyz"):  # inline drag areas, e.g. cda_x = { value = ..., unit = "cm^2", ... }
+        if f"cda_{axis}" in entry and "component" in entry:
+            raise DesignError(f"{where}: give drag areas in the component file, not in the part entry")
+        if f"cda_{axis}" in entry:
+            params.add(parse_param(f"{name}.cda_{axis}", entry[f"cda_{axis}"]))
 
     if "uses" in entry:  # a powertrain component placed as a part (battery, ESC)
         role = entry["uses"]
@@ -642,7 +733,8 @@ def _build_part(
         shape = _parse_shape(where, entry.get("shape"))
         group = entry.get("group", "misc")
 
-    return PartTemplate(name, str(group), mass_key, shape, position, rotation, power_key)
+    drag_keys = tuple(f"{name}.cda_{axis}" if f"{name}.cda_{axis}" in params else None for axis in "xyz")
+    return PartTemplate(name, str(group), mass_key, shape, position, rotation, power_key, drag_keys)
 
 
 def check_sources(build: Build) -> list[str]:

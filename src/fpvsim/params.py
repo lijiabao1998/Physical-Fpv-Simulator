@@ -13,6 +13,7 @@ trusted and which inputs it depends on.
 
 from __future__ import annotations
 
+import hashlib
 import math
 from dataclasses import dataclass, field
 from enum import Enum
@@ -207,10 +208,22 @@ class ParamSet:
     def nominal(self) -> dict[str, float]:
         return {p.key: p.value for p in self}
 
-    def sample(self, rng: np.random.Generator, n: int) -> dict[str, np.ndarray]:
-        """Independent draws for every uncertain parameter (sorted key order, so
-        the same seed always gives the same samples)."""
-        return {p.key: p.sample(rng, n) for p in sorted(self.uncertain(), key=lambda p: p.key)}
+    def sample(self, seed: int, n: int) -> dict[str, np.ndarray]:
+        """Independent draws for every uncertain parameter.
+
+        Each parameter has its own random stream derived from (seed, key), so
+        its samples do not depend on which other parameters exist. Two builds
+        that share a parameter therefore get identical draws for it: common
+        random numbers, which make paired comparisons between design versions
+        far less noisy than independent runs."""
+        return {p.key: p.sample(key_rng(seed, p.key), n) for p in self.uncertain()}
+
+
+def key_rng(seed: int, key: str) -> np.random.Generator:
+    """Random generator for one parameter, stable across runs and builds."""
+    digest = hashlib.sha256(key.encode("utf-8")).digest()
+    words = [int.from_bytes(digest[i : i + 4], "little") for i in range(0, 16, 4)]
+    return np.random.default_rng(np.random.SeedSequence([seed, *words]))
 
 
 class Values:

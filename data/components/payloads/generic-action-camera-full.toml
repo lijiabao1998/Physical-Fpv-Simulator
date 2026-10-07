@@ -1,0 +1,16 @@
+# Generic full-size action camera with its own battery (no power drawn from the quad).
+schema = "fpvsim.component/1"
+
+mass = { value = 153, unit = "g", source = "estimate", u = 6, note = "全尺寸運動相機含電池的級距典型值" }
+shape = { type = "box", size = [34, 71, 51], unit = "mm" }
+
+[meta]
+id = "generic-action-camera-full"
+category = "payload"
+name = "通用全尺寸運動相機（含電池）"
+
+[params]
+# Drag buildup: face area x Cd of a bluff box; interference with the frame is not modelled.
+cda_x = { value = 33, unit = "cm^2", source = "estimate", u_rel = 0.4, note = "正面約 71×51 mm（36 cm²），鈍體 Cd 約 0.9" }
+cda_y = { value = 16, unit = "cm^2", source = "estimate", u_rel = 0.4, note = "側面約 34×51 mm（17 cm²），Cd 約 0.9" }
+cda_z = { value = 25, unit = "cm^2", source = "estimate", u_rel = 0.4, note = "頂面約 34×71 mm（24 cm²），Cd 約 1.05" }

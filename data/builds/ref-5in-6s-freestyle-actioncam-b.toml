@@ -1,0 +1,27 @@
+# Version B: camera on the front of the top plate, battery moved back to rebalance.
+schema = "fpvsim.build/1"
+
+[meta]
+extends = "ref-5in-6s-freestyle.toml"
+id = "ref-5in-6s-freestyle-actioncam-b"
+name = "版本 B：相機裝在上板前端、電池後移"
+description = "參考機加掛全尺寸運動相機，相機座鎖在上板前端，電池往後移 20 mm 讓重心回到推力中心附近；相機位置也比版本 A 低。"
+change = "加掛全尺寸運動相機（上板前端），電池後移 20 mm"
+
+[[parts]]
+name = "battery"
+uses = "battery"
+position = { value = [-20, 0, -46], unit = "mm" }
+
+[[parts]]
+name = "action_camera"
+component = "../components/payloads/generic-action-camera-full.toml"
+# in front of the battery on the top plate (top surface z = -27 mm), on an 8 mm mount
+position = { value = [40, 0, -60.5], unit = "mm" }
+
+[[parts]]
+name = "camera_mount"
+group = "payload"
+mass = { value = 12, unit = "g", source = "estimate", u = 3, note = "TPU 相機座" }
+shape = { type = "box", size = [40, 60, 8], unit = "mm" }
+position = { value = [40, 0, -31], unit = "mm" }

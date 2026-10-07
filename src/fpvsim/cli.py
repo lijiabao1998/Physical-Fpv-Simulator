@@ -151,6 +151,19 @@ def cmd_tune(args) -> int:
     return 0
 
 
+def cmd_compare(args) -> int:
+    from .compare import compare
+    from .compare_report import generate
+    from .flightcontroller import load_fc_config
+
+    cfg = load_fc_config(args.fc)
+    cmp = compare([args.base, *args.variants], cfg, samples=args.samples, seed=args.seed,
+                  maneuver=None if args.no_fly else args.maneuver, tune=not args.no_tune, workers=args.workers)
+    out = Path(args.out) if args.out else Path("out") / "compare"
+    print(f"wrote {generate(cmp, out)}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="fpvsim", description="Physics-first FPV design and simulation tools")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -206,6 +219,19 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--workers", type=int, help="parallel flights (default: CPU count)")
     p.add_argument("--out", help="output directory")
     p.set_defaults(func=cmd_tune)
+
+    p = sub.add_parser("compare", help="stage 7: compare design versions (base first)")
+    p.add_argument("base")
+    p.add_argument("variants", nargs="+")
+    p.add_argument("--fc", required=True, help="flight-controller config used for every version")
+    p.add_argument("--samples", type=int, default=1000, help="paired Monte Carlo samples per version")
+    p.add_argument("--seed", type=int, default=1)
+    p.add_argument("--maneuver", default="freestyle", help="flight-test maneuver flown by every version")
+    p.add_argument("--no-fly", action="store_true", help="skip the flight test")
+    p.add_argument("--no-tune", action="store_true", help="skip the tuning study per version")
+    p.add_argument("--workers", type=int, help="parallel flights in tuning studies")
+    p.add_argument("--out", help="output directory")
+    p.set_defaults(func=cmd_compare)
 
     args = parser.parse_args(argv)
     try:

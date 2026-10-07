@@ -90,9 +90,22 @@ def test_paramset_sampling_is_reproducible():
     ps = ParamSet()
     ps.add(parse_param("a", {"value": 1, "unit": "1", "source": "estimate", "u": 0.1}))
     ps.add(parse_param("b", {"value": 2, "unit": "1", "source": "nominal"}))
-    s1 = ps.sample(np.random.default_rng(42), 10)
-    s2 = ps.sample(np.random.default_rng(42), 10)
+    s1 = ps.sample(42, 10)
+    s2 = ps.sample(42, 10)
     assert set(s1) == {"a"}  # only uncertain parameters are sampled
     assert np.array_equal(s1["a"], s2["a"])
+    assert not np.array_equal(s1["a"], ps.sample(43, 10)["a"])
     with pytest.raises(ParamError):
         ps.add(parse_param("a", {"value": 1, "unit": "1", "source": "nominal"}))
+
+
+def test_shared_parameters_get_identical_draws_across_sets():
+    """Common random numbers: adding a parameter must not change the others' draws."""
+    entry = {"value": 1, "unit": "1", "source": "estimate", "u": 0.1}
+    small, large = ParamSet(), ParamSet()
+    small.add(parse_param("motor.kv", entry))
+    for key in ("aaa.first", "motor.kv", "zzz.last"):
+        large.add(parse_param(key, entry))
+    a, b = small.sample(7, 50), large.sample(7, 50)
+    assert np.array_equal(a["motor.kv"], b["motor.kv"])
+    assert not np.array_equal(b["aaa.first"], b["zzz.last"])  # streams differ between keys

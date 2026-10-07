@@ -96,14 +96,14 @@ def _forward() -> Maneuver:
 
 def _freestyle() -> Maneuver:
     segs = (
-        Segment(1.0, 4.0, velocity=(12.0, 0.0, 0.0)),
-        Segment(4.0, 4.8, {"throttle": 1.0}),
-        Segment(5.5, 6.1, {"roll": 1.0, "throttle": 0.2}),
-        Segment(7.5, 8.1, {"pitch": -1.0, "throttle": 0.2}),
-        Segment(9.5, 10.5, {"yaw": 1.0}),
-        Segment(11.0, 11.6, {"throttle": 0.0}),
+        Segment(1.0, 5.0, velocity=(10.0, 0.0, 0.0)),
+        Segment(5.0, 5.8, {"throttle": 1.0}),
+        Segment(6.5, 7.1, {"roll": 1.0, "throttle": 0.2}),
+        Segment(8.5, 9.1, {"pitch": -1.0, "throttle": 0.2}),
+        Segment(10.5, 11.5, {"yaw": 1.0}),
+        Segment(12.0, 12.6, {"throttle": 0.0}),
     )
-    return Maneuver("freestyle", "綜合飛行：前飛、衝刺、滾轉翻、後空翻、原地自轉、收油下墜", 15.0, segs)
+    return Maneuver("freestyle", "綜合飛行：10 m/s 前飛、衝刺、滾轉翻、後空翻、原地自轉、收油下墜", 16.0, segs)
 
 
 def _hover() -> Maneuver:
@@ -154,6 +154,7 @@ class TestPilot:
         self.hold = None  # position target
         self.heading = 0.0
         self.alt_integral = 0.0
+        self.vel_integral = [0.0, 0.0]  # m/s^2, removes the steady speed error against drag
         self._was_overridden = False
 
     def _stick_for_rate(self, axis: int, rate_rad: float) -> float:
@@ -171,10 +172,14 @@ class TestPilot:
         px, py, pz, vx, vy, vz = s[0:6]
         q = tuple(s[6:10])
         if velocity is not None:
-            ax = 1.5 * (velocity[0] - vx)
-            ay = 1.5 * (velocity[1] - vy)
+            ex, ey = velocity[0] - vx, velocity[1] - vy
+            ax = 1.5 * ex + self.vel_integral[0]
+            ay = 1.5 * ey + self.vel_integral[1]
+            if math.hypot(ax, ay) < self.g * math.tan(self.MAX_TILT):  # integrate only while not tilt-limited
+                self.vel_integral = [i + 0.8 * e * dt for i, e in zip(self.vel_integral, (ex, ey))]
             az_target = 1.0 * (self.hold[2] - pz) + 2.0 * (velocity[2] - vz)
         else:
+            self.vel_integral = [0.0, 0.0]
             ax = 1.2 * (self.hold[0] - px) - 2.0 * vx
             ay = 1.2 * (self.hold[1] - py) - 2.0 * vy
             az_target = 4.0 * (self.hold[2] - pz) - 4.0 * vz

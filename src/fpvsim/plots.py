@@ -28,7 +28,14 @@ MUTED = "#898781"
 GRID = "#e1e0d9"
 BASELINE = "#c3c2b7"
 SERIES = ("#2a78d6", "#eb6834", "#1baf7a", "#eda100")  # fixed order: blue, orange, aqua, yellow
-GROUP_COLORS = {"propulsion": SERIES[0], "battery": SERIES[1], "avionics": SERIES[2], "frame": MUTED, "misc": INK_2}
+GROUP_COLORS = {
+    "propulsion": SERIES[0],
+    "battery": SERIES[1],
+    "avionics": SERIES[2],
+    "payload": SERIES[3],
+    "frame": MUTED,
+    "misc": INK_2,
+}
 
 STYLE = {
     "figure.facecolor": SURFACE,
@@ -417,4 +424,75 @@ def step_compare(axes_data: list[dict], path: Path) -> None:
         axes[0, 0].set_ylim(-0.25, 1.6)  # a wide early band (yaw) must not flatten the curves
         axes[0, 0].legend(loc="lower right")
         fig.tight_layout()
+        _save(fig, path)
+
+
+# ------------------------------------------------------------- comparisons
+
+def delta_intervals(rows: list[dict], versions: list[str], path: Path) -> None:
+    """Paired relative differences against the base.
+
+    rows: label, and per version a (p5, p50, p95) tuple in percent."""
+    with plt.rc_context(STYLE):
+        fig, ax = plt.subplots(figsize=(8.0, 0.55 * len(rows) * max(1, len(versions)) ** 0.5 + 1.4))
+        n = len(versions)
+        offsets = np.linspace(-0.18, 0.18, n) if n > 1 else [0.0]
+        for i, version in enumerate(versions):
+            ys, lo, mid, hi = [], [], [], []
+            for k, row in enumerate(rows):
+                p5, p50, p95 = row[version]
+                ys.append(len(rows) - 1 - k + offsets[i])
+                lo.append(p5)
+                mid.append(p50)
+                hi.append(p95)
+            ax.hlines(ys, lo, hi, color=SERIES[i], linewidth=2.0)
+            ax.plot(mid, ys, "o", color=SERIES[i], markersize=6, markeredgecolor=SURFACE, markeredgewidth=1.5,
+                    label=version)
+        ax.axvline(0.0, color=INK_2, linewidth=0.9)
+        ax.set_yticks(range(len(rows)), [r["label"] for r in rows][::-1])
+        ax.grid(axis="y", visible=False)
+        ax.set_xlabel("Change against the base design [%] (dot: median, bar: 5th-95th percentile, paired samples)")
+        ax.set_title("What the change does, with its uncertainty")
+        ax.legend(loc="lower right")
+        fig.tight_layout()
+        _save(fig, path)
+
+
+def side_views(versions: list[dict], path: Path) -> None:
+    """One side view per version: label, items, cg, thrust_centre, prop_z."""
+    mm = 1000.0
+    with plt.rc_context(STYLE):
+        fig, axes = plt.subplots(1, len(versions), figsize=(4.2 * len(versions), 3.6), sharey=True, squeeze=False)
+        for ax, v in zip(axes[0], versions):
+            seen = set()
+            for item in sorted(v["items"], key=lambda i: i.group != "frame"):
+                color = GROUP_COLORS.get(item.group, INK_2)
+                label = item.group if item.group not in seen else None
+                seen.add(item.group)
+                outline = _outline(item, (0, 2))
+                if outline is None:
+                    ax.plot(item.position[0] * mm, -item.position[2] * mm, "o", color=color, markersize=4, label=label)
+                else:
+                    ax.add_patch(Polygon(outline * mm * np.array((1, -1)), closed=True, facecolor=color, alpha=0.25,
+                                         edgecolor=color, linewidth=0.8, label=label))
+            ax.axhline(-v["prop_z"] * mm, color=BASELINE, linewidth=0.8)
+            ax.annotate("prop plane", (1, -v["prop_z"] * mm), xycoords=("axes fraction", "data"), xytext=(-3, 3),
+                        textcoords="offset points", ha="right", color=INK_2, fontsize=8)
+            ax.plot(v["cg"][0] * mm, -v["cg"][2] * mm, marker="+", color=INK, markersize=12, markeredgewidth=1.6,
+                    linestyle="none", label="CG")
+            ax.plot(v["thrust_centre"][0] * mm, -v["thrust_centre"][2] * mm, marker="o", markerfacecolor="none",
+                    color=INK, markersize=8, linestyle="none", label="thrust centre")
+            ax.set_aspect("equal")
+            ax.autoscale_view()
+            ax.set_title(v["label"])
+            ax.set_xlabel("x, forward [mm]")
+        axes[0, 0].set_ylabel("up (-z) [mm]")
+        handles, labels = [], []
+        for ax in axes[0]:
+            for h, l in zip(*ax.get_legend_handles_labels()):
+                if l not in labels:
+                    handles.append(h)
+                    labels.append(l)
+        fig.tight_layout(rect=(0, 0.1, 1, 1))
+        fig.legend(handles, labels, loc="lower center", ncol=len(labels), bbox_to_anchor=(0.5, 0.0))
         _save(fig, path)
