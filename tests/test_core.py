@@ -78,3 +78,9 @@ def test_cached_template_never_carries_state_between_inputs():
     _simulation_template.cache_clear()
     fresh = simulate(ModelConfig(model="SPM", current_a=5))
     np.testing.assert_allclose(repeated.voltage_v, fresh.voltage_v, rtol=1e-9, atol=1e-9)
+
+
+def test_bounded_oregan_representative_grid_extension():
+    ModelConfig(parameter_set="ORegan2022", mesh_points=120).validate()
+    with pytest.raises(ValueError):
+        ModelConfig(parameter_set="ORegan2022", mesh_points=121).validate()

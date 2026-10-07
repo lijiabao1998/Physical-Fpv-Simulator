@@ -1,0 +1,20 @@
+{
+  "csv_sha256": "c6a19fbed16508bf16499b485247776ff994d8946f01d321267dea89de6b0134",
+  "metadata_sha256": "8b7ce0008064e78c9376f4b9bbaba55994f910e695d96f716f4008b783d5660e",
+  "parameter_fingerprint": "ed8798d67bbda09fcd60debc01a664bb2dbe091271f5dc3523b5bf4661f3d4a5",
+  "pybamm_version": "26.9.0.0",
+  "config": {
+    "model": "DFN",
+    "thermal": "lumped",
+    "parameter_set": "ORegan2022",
+    "initial_temperature_k": 297.75,
+    "heat_transfer_coefficient_w_m2_k": 15,
+    "current_a": 5,
+    "ambient_temperature_k": 298.15,
+    "mesh_points": 80,
+    "tolerance": 1e-07,
+    "sample_period_s": 10.0,
+    "max_temperature_k": 333.15
+  },
+  "source": "local completed grid80 representative run, same frozen ORegan inputs"
+}

@@ -65,8 +65,11 @@ class ModelConfig:
         minimum_temperature = 288.15 if self.parameter_set == "Chen2020" else 273.15
         if not minimum_temperature <= self.ambient_temperature_k <= 318.15:
             raise ValueError("Ambient temperature outside the parameter-set research envelope")
-        if not isinstance(self.mesh_points, int) or not 10 <= self.mesh_points <= 80:
-            raise ValueError("Mesh must be an integer from 10 to 80 (bounded CPU cost)")
+        maximum_mesh = 120 if self.parameter_set == "ORegan2022" else 80
+        if not isinstance(self.mesh_points, int) or not 10 <= self.mesh_points <= maximum_mesh:
+            raise ValueError(
+                f"Mesh must be an integer from 10 to {maximum_mesh} (bounded CPU cost)"
+            )
         if not 1e-9 <= self.tolerance <= 1e-5:
             raise ValueError("Solver tolerance must be between 1e-9 and 1e-5")
         if not 1 <= self.sample_period_s <= 60:
