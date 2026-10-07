@@ -23,6 +23,7 @@ from typing import Any, Mapping
 import numpy as np
 
 from . import units
+from .airframe import AirframeExtras, GyroSpec
 from .atmosphere import Environment
 from .battery import Battery
 from .bemt import Airfoil, BladeGeometry, coefficient_curves
@@ -38,10 +39,24 @@ SPEC_SCHEMA = "fpvsim.spec/1"
 
 _REQUIRED = {
     "motor": ("kv", "rm", "i0_ref", "v_i0_ref", "i0_speed_fraction", "rotor_inertia", "max_current"),
-    "prop": ("diameter", "pitch", "spin_inertia"),
-    "esc": ("r_on", "quiescent_power", "max_current"),
+    "prop": ("diameter", "pitch", "spin_inertia", "rotor_drag_factor"),
+    "esc": ("r_on", "quiescent_power", "max_current", "brake_current_limit", "drive_current_limit"),
     "battery": ("capacity", "r0_cell", "r1_cell", "tau1", "c_rating"),
-    "frame": ("thrust_interference",),
+    "frame": (
+        "thrust_interference",
+        "cda_x",
+        "cda_y",
+        "cda_z",
+        "contact_stiffness",
+        "contact_damping",
+        "ground_friction",
+        "vib_amp_1",
+        "vib_amp_2",
+        "vib_amp_3",
+        "vib_ref_speed",
+        "vib_exponent",
+        "vib_yaw_ratio",
+    ),
 }
 _POWERTRAIN_ROLES = ("frame", "motor", "prop", "esc", "battery")
 
@@ -180,6 +195,8 @@ class Aircraft:
     rotors: list[RotorMount]
     env: Environment
     criteria: EnduranceCriteria
+    extras: AirframeExtras
+    gyro: GyroSpec
 
     @property
     def weight(self) -> float:
@@ -200,6 +217,8 @@ class Build:
     params: ParamSet
     parts: list[PartTemplate]
     rotors: list[RotorMount]
+    contacts: list[np.ndarray]
+    fc_board: str
     battery_series: int
     battery_parallel: int
     ocv_soc: np.ndarray
@@ -275,6 +294,24 @@ class Build:
             env=Environment(altitude=v("env.altitude"), temperature=v("env.temperature")),
             criteria=EnduranceCriteria(
                 reserve_soc=v("criteria.reserve_soc"), min_cell_voltage=v("criteria.min_cell_voltage")
+            ),
+            extras=AirframeExtras(
+                cda=(v("frame.cda_x"), v("frame.cda_y"), v("frame.cda_z")),
+                rotor_drag_factor=v("prop.rotor_drag_factor"),
+                brake_current_limit=v("esc.brake_current_limit"),
+                drive_current_limit=v("esc.drive_current_limit"),
+                contacts=tuple(tuple(float(x) for x in c) for c in self.contacts),
+                contact_stiffness=v("frame.contact_stiffness"),
+                contact_damping=v("frame.contact_damping"),
+                ground_friction=v("frame.ground_friction"),
+            ),
+            gyro=GyroSpec(
+                noise_density=v(f"{self.fc_board}.gyro_noise_density"),
+                vib_amplitudes=(v("frame.vib_amp_1"), v("frame.vib_amp_2"), v("frame.vib_amp_3")),
+                vib_harmonics=(1, 2, self.prop_blades),
+                vib_ref_speed=v("frame.vib_ref_speed"),
+                vib_exponent=v("frame.vib_exponent"),
+                vib_yaw_ratio=v("frame.vib_yaw_ratio"),
             ),
         )
 
@@ -366,10 +403,10 @@ def load_build(path: str | Path) -> Build:
         if entry is None:
             raise DesignError(f"{path}: [electrical] needs {key}")
         params.add(parse_param(f"electrical.{key}", entry))
-    idle = data.get("flight_controller", {}).get("motor_idle")
-    if idle is None:
-        raise DesignError(f"{path}: [flight_controller] needs motor_idle")
-    params.add(parse_param("flight_controller.motor_idle", idle))
+    fc_table = data.get("flight_controller", {})
+    if "motor_idle" not in fc_table or "board" not in fc_table:
+        raise DesignError(f"{path}: [flight_controller] needs motor_idle and board (the part name of the FC)")
+    params.add(parse_param("flight_controller.motor_idle", fc_table["motor_idle"]))
 
     parts: list[PartTemplate] = []
     rotors = _frame_parts(component_files["frame"], comp["frame"], params, parts)
@@ -384,6 +421,15 @@ def load_build(path: str | Path) -> Build:
         placed = sum(1 for p in parts if p.mass_key == f"{role}.mass")
         if placed != 1:
             raise DesignError(f"{path}: place the {role} exactly once with [[parts]] uses = {role!r} (found {placed})")
+    board = str(fc_table["board"])
+    if f"{board}.gyro_noise_density" not in params:
+        raise DesignError(f"{path}: flight controller part {board!r} must define gyro_noise_density in its [params]")
+    contacts = [
+        parse_vector(f"{component_files['frame']}: contacts[{i}].position", c.get("position"))
+        for i, c in enumerate(comp["frame"].get("contacts", []))
+    ]
+    if len(contacts) < 3:
+        raise DesignError(f"{component_files['frame']}: a frame needs at least 3 [[contacts]] ground contact points")
 
     battery_cfg = comp["battery"].get("config", {})
     ocv = comp["battery"].get("ocv", {})
@@ -402,6 +448,8 @@ def load_build(path: str | Path) -> Build:
         params=params,
         parts=parts,
         rotors=rotors,
+        contacts=contacts,
+        fc_board=board,
         battery_series=_int(str(component_files["battery"]), battery_cfg, "series"),
         battery_parallel=_int(str(component_files["battery"]), battery_cfg, "parallel"),
         ocv_soc=ocv_soc,

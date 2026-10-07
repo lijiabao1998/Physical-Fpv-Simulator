@@ -6,3 +6,6 @@ __pycache__/
 build/
 dist/
 /out/
+
+# flight logs are large and regenerate deterministically
+reports/**/flight_log.csv

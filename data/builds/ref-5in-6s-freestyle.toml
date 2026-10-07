@@ -19,6 +19,7 @@ harness_resistance = { value = 2.5, unit = "mohm", source = "estimate", u = 1.0,
 bec_efficiency = { value = 0.85, unit = "1", source = "estimate", u = 0.05, note = "飛控上 5 V/9 V 降壓穩壓器效率" }
 
 [flight_controller]
+board = "fc"
 motor_idle = { value = 5.5, unit = "%", source = "nominal", note = "常見的 DShot idle 設定值" }
 
 [[parts]]

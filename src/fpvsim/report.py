@@ -61,13 +61,13 @@ def fmt_probability(p: float, mc: MonteCarloResult) -> str:
     return f"{p:.1%} ± {mc.probability_stderr(p):.1%}"
 
 
-def _table(header: list[str], rows: list[list[str]]) -> str:
+def md_table(header: list[str], rows: list[list[str]]) -> str:
     lines = ["| " + " | ".join(header) + " |", "|" + "|".join("---" for _ in header) + "|"]
     lines += ["| " + " | ".join(str(c).replace("|", "\\|") for c in row) + " |" for row in rows]
     return "\n".join(lines)
 
 
-def _git(cwd: Path) -> str:
+def git_version(cwd: Path) -> str:
     try:
         commit = subprocess.run(
             ["git", "rev-parse", "--short=12", "HEAD"], cwd=cwd, capture_output=True, text=True, check=True
@@ -80,7 +80,7 @@ def _git(cwd: Path) -> str:
         return "無法取得（不在 git 儲存庫中）"
 
 
-def _rel(path: Path, root: Path) -> str:
+def rel_path(path: Path, root: Path) -> str:
     try:
         return str(path.relative_to(root))
     except ValueError:
@@ -190,12 +190,12 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
     add(f"# 設計報告：{build.name}\n")
     add("> 由 `fpvsim report` 自動產生，請勿手動修改。所有數字都能追溯到 `data/` 下的輸入檔；"
         "用同一個 commit、同一組輸入與同一個隨機種子重跑，會得到相同結果。\n")
-    add(_table(
+    add(md_table(
         ["項目", "內容"],
         [
-            ["設計檔", f"`{_rel(build.path, root)}`"],
+            ["設計檔", f"`{rel_path(build.path, root)}`"],
             ["規格", f"{spec.name}（`{spec.id}`）"],
-            ["程式版本", f"fpvsim {__version__}，git `{_git(build.path.parent)}`"],
+            ["程式版本", f"fpvsim {__version__}，git `{git_version(build.path.parent)}`"],
             ["輸入檔雜湊 (SHA-256)", f"`{build.input_hash()[:16]}`"],
             ["蒙地卡羅", f"{mc.n} 組樣本，隨機種子 {mc.seed}"],
             ["環境", f"氣壓高度 {ac.env.altitude:.0f} m，氣溫 {ac.env.temperature - 273.15:.1f} °C，"
@@ -237,7 +237,7 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
             fmt_probability(probs[req.id], mc),
             _verdict(probs[req.id]),
         ])
-    add(_table(["編號", "需求", "門檻", "標稱值", "90% 區間 (P5–P95)", "符合機率", "判定"], rows))
+    add(md_table(["編號", "需求", "門檻", "標稱值", "90% 區間 (P5–P95)", "符合機率", "判定"], rows))
     add("")
     for req in spec.requirements:
         if req.rationale:
@@ -250,7 +250,7 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
     for key, m in METRICS.items():
         p5, p50, p95 = mc.percentiles(key)
         rows.append([m.title, fmt_metric(key, nominal[key]), fmt_metric(key, p5), fmt_metric(key, p50), fmt_metric(key, p95)])
-    add(_table(["指標", "標稱值", "P5", "P50", "P95"], rows))
+    add(md_table(["指標", "標稱值", "P5", "P50", "P95"], rows))
     add("")
 
     add("## 3. 質量預算\n")
@@ -270,7 +270,7 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
             f"±{p.display_u:.3g} {unit_symbol(p.unit)}" + (" 每件" if len(its) > 1 else "") if p.uncertain else "—",
             p.source.label_zh,
         ])
-    add(_table(["零件", "分組", "質量", "占比", "不確定度 (1σ)", "來源"], rows))
+    add(md_table(["零件", "分組", "質量", "占比", "不確定度 (1σ)", "來源"], rows))
     add("")
     offset = (mp.cg - ac.thrust_centroid) * 1000
     add(f"- 重心位置：x = {mp.cg[0] * 1000:.1f} mm，y = {mp.cg[1] * 1000:.1f} mm，z = {mp.cg[2] * 1000:.1f} mm")
@@ -294,7 +294,7 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
     rows_25 = stand_series[0][1]
     picks = [r for r in rows_25 if round(100 * r.duty) % 10 == 0 and r.duty > 0]
     add(f"**{stand_series[0][0]}** 的數據：\n")
-    add(_table(
+    add(md_table(
         ["馬達輸出", "轉速 (rpm)", "推力 (gf)", "電流 (A)", "電功率 (W)", "效率 (gf/W)", "驅動效率", "槳尖馬赫"],
         [[f"{100 * r.duty:.0f}%", f"{units.from_si(r.omega, 'rpm'):.0f}", f"{units.from_si(r.thrust, 'gf'):.0f}",
           f"{r.current:.1f}", f"{r.p_elec:.0f}", f"{units.from_si(r.specific_thrust, 'gf/W'):.2f}",
@@ -308,7 +308,7 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
 
     add("## 5. 懸停與續航\n")
     if hover:
-        add(_table(
+        add(md_table(
             ["項目", "數值"],
             [
                 ["懸停馬達輸出（ESC duty）", f"{hover.duty:.1%}"],
@@ -343,7 +343,7 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
             f"轉速 {full.rpm:.0f} rpm，單顆推力 {units.from_si(full.thrust, 'gf'):.0f} gf。\n")
     rows = [[c.title, f"{c.value:.1f} {c.unit}", f"{c.limit:.0f} {c.unit}", "通過" if c.passes else "超標", c.note]
             for c in rating_checks(ac)]
-    add(_table(["檢查", "全油門值", "額定", "結果", "說明"], rows))
+    add(md_table(["檢查", "全油門值", "額定", "結果", "說明"], rows))
     add("")
 
     add("## 7. 不確定度與敏感度\n")
@@ -354,13 +354,13 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
     add("![Thrust-to-weight sensitivity](tornado_thrust_to_weight.png)\n")
     add("### 建議優先量測\n")
     add("依參數對續航、推重比與懸停油門的相對影響加總排序。先量測前幾項，最能縮小預測的不確定度。\n")
-    add(_table(["順序", "參數", "目前來源", "目前不確定度", "對續航影響 (±1σ)", "對推重比影響 (±1σ)", "建議量測方法"],
+    add(md_table(["順序", "參數", "目前來源", "目前不確定度", "對續航影響 (±1σ)", "對推重比影響 (±1σ)", "建議量測方法"],
                _priorities(build, bars, nominal)))
     add("")
 
     add("## 8. 模型假設與適用範圍\n")
     add("完整說明見 `docs/models.md`。本報告用到的模型與它們的限制：\n")
-    add(_table(
+    add(md_table(
         ["模型", "可信度", "主要假設與限制"],
         [
             ["質量、重心、慣性", "高（取決於零件數據）", "零件以均勻密度的幾何體近似；同型零件數值完全相關"],
@@ -376,20 +376,21 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
 
     add("## 9. 參數來源總表\n")
     add("所有參數。數值以資料檔中的單位顯示；不確定度為標準不確定度 (1σ)。"
-        "轉動慣量（`motor.rotor_inertia`、`prop.spin_inertia`）保留給下一階段的飛行動力學，本報告的穩態分析不會用到。\n")
+        "轉動慣量、阻力、ESC 電流限制、接地與振動等參數只用於飛行模擬（`fpvsim fly`、`fpvsim tune`），"
+        "不影響本報告的穩態分析，所以它們在敏感度分析中的影響為零。\n")
     rows = []
     for p in sorted(build.params, key=lambda p: p.key):
         u = "—" if not p.uncertain else f"±{p.display_u:.3g}（{p.u_rel:.0%}{'，均勻' if p.dist == 'uniform' else ''}）"
         rows.append([f"`{p.key}`", fmt_param(p), u, p.source.label_zh, " ".join(x for x in (p.note, p.ref) if x)])
-    add(_table(["參數", "數值", "不確定度", "來源", "說明"], rows))
+    add(md_table(["參數", "數值", "不確定度", "來源", "說明"], rows))
     add("")
     if len(build.model_inputs):
         add("BEMT 的輸入（只在載入時計算一次；它們的不確定度由上表的 `prop.ct_scale`、`prop.cp_scale` 代表）：\n")
-        add(_table(["參數", "數值", "來源", "說明"],
+        add(md_table(["參數", "數值", "來源", "說明"],
                    [[f"`{p.key}`", fmt_param(p), p.source.label_zh, p.note] for p in build.model_inputs]))
         add("")
     add("陣列數據：\n")
-    add(_table(["數據", "來源", "說明"], [[f"`{t.name}`", t.source.label_zh, " ".join(x for x in (t.note, t.ref) if x)] for t in build.tables]))
+    add(md_table(["數據", "來源", "說明"], [[f"`{t.name}`", t.source.label_zh, " ".join(x for x in (t.note, t.ref) if x)] for t in build.tables]))
     add("")
 
     path = out_dir / "report.md"

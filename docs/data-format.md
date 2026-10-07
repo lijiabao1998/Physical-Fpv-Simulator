@@ -46,11 +46,13 @@ name = "..."
 | 類別 | 必要參數 | 其他 |
 |---|---|---|
 | `motor` | `kv`、`rm`、`i0_ref`、`v_i0_ref`、`i0_speed_fraction`、`rotor_inertia`、`max_current` | |
-| `prop` | `diameter`、`pitch`、`spin_inertia` | `[config] blades`；`[coefficients]`（實測）或 `[bemt]`（幾何估計） |
-| `esc` | `r_on`、`quiescent_power`、`max_current` | |
+| `prop` | `diameter`、`pitch`、`spin_inertia`、`rotor_drag_factor` | `[config] blades`；`[coefficients]`（實測）或 `[bemt]`（幾何估計） |
+| `esc` | `r_on`、`quiescent_power`、`max_current`、`drive_current_limit`、`brake_current_limit` | |
 | `battery` | `capacity`、`r0_cell`、`r1_cell`、`tau1`、`c_rating` | `[config] series, parallel`；`[ocv] soc, cell_voltage, source` |
-| `frame` | `thrust_interference` | `[[rotors]]` 安裝點與轉向；`[[parts]]` 機架零件與 `placements` |
-| `avionics` | 無 | `power`（W，穩壓端功率）會計入航電負載 |
+| `frame` | `thrust_interference`、`cda_x/y/z`、`contact_stiffness`、`contact_damping`、`ground_friction`、`vib_amp_1/2/3`、`vib_ref_speed`、`vib_exponent`、`vib_yaw_ratio` | `[[rotors]]` 安裝點與轉向；`[[contacts]]` 地面接觸點（至少 3 個）；`[[parts]]` 機架零件與 `placements` |
+| `avionics` | 無 | `power`（W，穩壓端功率）會計入航電負載；飛控板需有 `gyro_noise_density` |
+
+組裝檔的 `[flight_controller]` 需要 `board`（飛控板的零件名稱）與 `motor_idle`。
 
 槳的實測係數表：
 

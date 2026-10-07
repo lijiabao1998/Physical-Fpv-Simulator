@@ -11,6 +11,25 @@ name = "通用 5 吋 freestyle 機架（True X，軸距 225 mm）"
 [params]
 thrust_interference = { value = 0.95, unit = "1", source = "estimate", u = 0.025, note = "機臂遮擋下洗氣流造成的淨推力比例；應以有機臂與無機臂的推力台比較實測" }
 
+# Body drag (props excluded; rotor drag is modelled separately). Cd x reference area per body axis.
+cda_x = { value = 60, unit = "cm^2", source = "estimate", u_rel = 0.4, note = "正面：電池約 35×38 mm、鏡頭、機架板，Cd 約 1；可用風洞或滑行減速測試辨識" }
+cda_y = { value = 80, unit = "cm^2", source = "estimate", u_rel = 0.4, note = "側面：電池 75×38 mm 加機架側板" }
+cda_z = { value = 180, unit = "cm^2", source = "estimate", u_rel = 0.4, note = "上下方向：電池頂面、機架板與機臂，Cd 約 1.2" }
+
+# Ground contact (penalty model) for take-off, landing and crash detection.
+contact_stiffness = { value = 3000, unit = "N/m", source = "estimate", u_rel = 0.5, note = "每個接觸點；碳板機臂碰地的等效剛性" }
+contact_damping = { value = 15, unit = "N*s/m", source = "estimate", u_rel = 0.5 }
+ground_friction = { value = 0.6, unit = "1", source = "estimate", u = 0.15, note = "碳板對草地或水泥地" }
+
+# rpm-locked vibration seen by the gyro (prop/motor imbalance through the frame).
+# Amplitudes at the reference speed; identify from real unfiltered gyro spectra (fpvsim tune).
+vib_amp_1 = { value = 6, unit = "deg/s", source = "estimate", u_rel = 0.5, note = "1 倍轉速：槳與馬達的不平衡" }
+vib_amp_2 = { value = 2, unit = "deg/s", source = "estimate", u_rel = 0.5, note = "2 倍轉速" }
+vib_amp_3 = { value = 4, unit = "deg/s", source = "estimate", u_rel = 0.5, note = "葉片通過頻率（槳葉數倍轉速）" }
+vib_ref_speed = { value = 19000, unit = "rpm", source = "nominal", note = "振幅的參考轉速" }
+vib_exponent = { value = 2.0, unit = "1", source = "estimate", u = 0.3, note = "不平衡力與轉速平方成正比" }
+vib_yaw_ratio = { value = 0.3, unit = "1", source = "estimate", u = 0.1, note = "偏航軸振動相對於滾轉、俯仰軸的比例" }
+
 # Motor mounts in Betaflight Quad X order (M1 rear-right, M2 front-right, M3 rear-left,
 # M4 front-left). Spin seen from above, Betaflight default "props in".
 [[rotors]]
@@ -25,6 +44,22 @@ spin = "ccw"
 [[rotors]]
 position = { value = [79.55, -79.55, 0], unit = "mm" }
 spin = "cw"
+
+# Ground contact points: under the four arm tips, under the bottom plate, and the top of the battery strap.
+[[contacts]]
+position = { value = [-79.55, 79.55, 5], unit = "mm" }
+[[contacts]]
+position = { value = [79.55, 79.55, 5], unit = "mm" }
+[[contacts]]
+position = { value = [-79.55, -79.55, 5], unit = "mm" }
+[[contacts]]
+position = { value = [79.55, -79.55, 5], unit = "mm" }
+[[contacts]]
+position = { value = [40, 0, 7], unit = "mm" }
+[[contacts]]
+position = { value = [-40, 0, 7], unit = "mm" }
+[[contacts]]
+position = { value = [0, 0, -70], unit = "mm" }
 
 [[parts]]
 name = "arm"

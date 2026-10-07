@@ -10,6 +10,7 @@ from pathlib import Path
 from . import units
 from .atmosphere import Environment
 from .design import DesignError, check_sources, load_build
+from .flightcontroller import FcConfigError
 from .params import ParamError
 from .performance import METRICS, evaluate
 
@@ -102,6 +103,54 @@ def cmd_fit_prop(args) -> int:
     return 0
 
 
+def cmd_maneuvers(args) -> int:
+    from .pilot import MANEUVERS
+
+    for m in MANEUVERS.values():
+        print(f"  {m.name:15s} {m.duration:5.1f} s  {m.title}")
+    return 0
+
+
+def cmd_fly(args) -> int:
+    from .flight_report import generate
+    from .flightcontroller import load_fc_config
+    from .pilot import MANEUVERS, StickFile
+    from .sim import SimSettings, simulate
+
+    build = load_build(args.build)
+    cfg = load_fc_config(args.fc)
+    if args.sticks:
+        source, title = StickFile(args.sticks), f"搖桿輸入檔 {Path(args.sticks).name}"
+    else:
+        if args.maneuver not in MANEUVERS:
+            print(f"error: unknown maneuver {args.maneuver!r}; see `fpvsim maneuvers`", file=sys.stderr)
+            return 2
+        source = MANEUVERS[args.maneuver]
+        title = f"{source.title}（`{source.name}`）"
+    settings = SimSettings(log_rate=args.log_rate, seed=args.seed, start_altitude=args.altitude)
+    log = simulate(build, cfg, source, settings, duration=args.duration)
+    out = Path(args.out) if args.out else Path("out") / f"fly-{getattr(source, 'name', 'sticks')}"
+    path = generate(build, cfg, log, title, out, float(build.prop_curves.J[-1]))
+    print(f"wrote {path}")
+    return 0
+
+
+def cmd_tune(args) -> int:
+    from .flightcontroller import load_fc_config
+    from .tuning import run_study
+    from .tuning_report import generate
+
+    build = load_build(args.build)
+    cfg = load_fc_config(args.fc)
+    study = run_study(args.build, cfg, seed=args.seed, workers=args.workers)
+    out = Path(args.out) if args.out else Path("out") / f"tune-{cfg.id}"
+    path = generate(build, study, out)
+    print(f"wrote {path}")
+    if study.recommended:
+        print(f"recommended: {study.recommended.label} -> {out / 'recommended_fc.toml'}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="fpvsim", description="Physics-first FPV design and simulation tools")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -134,10 +183,34 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--altitude", type=_quantity, default=0.0, help="pressure altitude, e.g. 150m")
     p.set_defaults(func=cmd_fit_prop)
 
+    p = sub.add_parser("maneuvers", help="list the built-in flight-test maneuvers")
+    p.set_defaults(func=cmd_maneuvers)
+
+    p = sub.add_parser("fly", help="stage 6: simulate a test flight and write a flight report")
+    p.add_argument("build")
+    p.add_argument("--fc", required=True, help="flight-controller config (TOML)")
+    group = p.add_mutually_exclusive_group()
+    group.add_argument("--maneuver", default="freestyle", help="built-in maneuver (default freestyle)")
+    group.add_argument("--sticks", help="CSV of recorded stick inputs instead of a maneuver")
+    p.add_argument("--duration", type=float, help="override the flight duration, s")
+    p.add_argument("--altitude", type=float, default=20.0, help="start altitude in trimmed hover, m")
+    p.add_argument("--log-rate", type=float, default=1000.0, help="log rate, Hz (default 1000)")
+    p.add_argument("--seed", type=int, default=1)
+    p.add_argument("--out", help="output directory")
+    p.set_defaults(func=cmd_fly)
+
+    p = sub.add_parser("tune", help="stage 5: noise survey, filter check and PID gain sweep")
+    p.add_argument("build")
+    p.add_argument("--fc", required=True, help="baseline flight-controller config (TOML)")
+    p.add_argument("--seed", type=int, default=1)
+    p.add_argument("--workers", type=int, help="parallel flights (default: CPU count)")
+    p.add_argument("--out", help="output directory")
+    p.set_defaults(func=cmd_tune)
+
     args = parser.parse_args(argv)
     try:
         return args.func(args)
-    except (DesignError, ParamError) as e:
+    except (DesignError, ParamError, FcConfigError) as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
 

@@ -12,3 +12,5 @@ name = "通用 30×30 四合一 50A ESC"
 r_on = { value = 3, unit = "mohm", source = "estimate", u_rel = 0.5, note = "兩顆導通 MOSFET 的 Rds(on) 約 1 mΩ，加上銅箔與焊點" }
 quiescent_power = { value = 0.5, unit = "W", source = "estimate", u_rel = 0.5, note = "MCU 與閘極驅動" }
 max_current = { value = 50, unit = "A", source = "nominal", note = "標示連續電流（每路）" }
+drive_current_limit = { value = 55, unit = "A", source = "estimate", u_rel = 0.4, note = "加速時的相電流上限，代表韌體的 ramp-up 與電流保護；可由全油門衝刺的電流遙測辨識" }
+brake_current_limit = { value = 30, unit = "A", source = "estimate", u_rel = 0.5, note = "互補式 PWM 主動煞車時的反向相電流上限；決定油門收回時馬達減速多快，可由轉速遙測的減速曲線辨識" }

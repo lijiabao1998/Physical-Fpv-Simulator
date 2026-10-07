@@ -7,6 +7,7 @@ name = "fpvsim"
 version = "0.1.0"
 description = "Physics-first FPV quadcopter simulator that follows a real R&D workflow"
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.11"
 dependencies = ["numpy>=1.26", "scipy>=1.11", "matplotlib>=3.8"]
 

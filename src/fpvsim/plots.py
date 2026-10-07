@@ -252,3 +252,168 @@ def mass_breakdown(groups: list[tuple[str, float]], path: Path) -> None:
         ax.set_xlim(right=max(values) * 1.15)
         fig.tight_layout()
         _save(fig, path)
+
+
+# ---------------------------------------------------------------- flight logs
+
+_SEQUENTIAL = ("#cde2fb", "#9ec5f4", "#6da7ec", "#3987e5", "#256abf", "#184f95", "#0d366b")
+
+
+def timeseries(panels: list[dict], path: Path, width: float = 8.0, panel_height: float = 1.9) -> None:
+    """Stacked time-series panels sharing the time axis.
+
+    Each panel: title, ylabel, series [(label, t, y)], optional refs
+    [(value, label)] drawn as reference lines and optional ylim."""
+    with plt.rc_context(STYLE):
+        fig, axes = plt.subplots(len(panels), 1, figsize=(width, panel_height * len(panels) + 0.4), sharex=True, squeeze=False)
+        for ax, panel in zip(axes[:, 0], panels):
+            series = panel["series"]
+            for i, (label, t, y) in enumerate(series):
+                ax.plot(t, y, color=SERIES[i % len(SERIES)] if len(series) > 1 or not panel.get("muted") else MUTED,
+                        linewidth=1.2, label=label)
+            for value, label in panel.get("refs", []):
+                ax.axhline(value, color=INK_2, linewidth=0.9)
+                ax.annotate(label, (1, value), xycoords=("axes fraction", "data"), xytext=(-3, 3),
+                            textcoords="offset points", ha="right", color=INK_2, fontsize=8)
+            if "ylim" in panel:
+                ax.set_ylim(*panel["ylim"])
+            ax.set_title(panel["title"])
+            ax.set_ylabel(panel["ylabel"])
+            if len(series) > 1:
+                ax.legend(loc="upper right", ncol=min(len(series), 4))
+        axes[-1, 0].set_xlabel("Time [s]")
+        fig.tight_layout()
+        _save(fig, path)
+
+
+def trajectory(t, north, east, alt, path: Path) -> None:
+    with plt.rc_context(STYLE):
+        fig, (top, side) = plt.subplots(1, 2, figsize=(9.0, 3.8), gridspec_kw={"width_ratios": [1.0, 1.4]})
+        top.plot(east, north, color=SERIES[0])
+        top.plot(east[0], north[0], "o", color=INK, markersize=6, label="start")
+        top.plot(east[-1], north[-1], "s", color=INK, markersize=6, markerfacecolor="none", label="end")
+        top.set_aspect("equal", adjustable="datalim")
+        top.set_title("Ground track")
+        top.set_xlabel("East [m]")
+        top.set_ylabel("North [m]")
+        top.legend(loc="best")
+        side.plot(t, alt, color=SERIES[0])
+        side.set_title("Altitude")
+        side.set_xlabel("Time [s]")
+        side.set_ylabel("Altitude [m]")
+        fig.tight_layout()
+        _save(fig, path)
+
+
+# ------------------------------------------------------------------- tuning
+
+def throttle_noise_map(tmap, path: Path, title: str, fmax: float) -> None:
+    from matplotlib.colors import LinearSegmentedColormap
+
+    cmap = LinearSegmentedColormap.from_list("seq", _SEQUENTIAL)
+    cmap.set_bad(SURFACE)
+    keep = tmap.freqs <= fmax
+    rows = tmap.frames > 0
+    with plt.rc_context(STYLE):
+        fig, ax = plt.subplots(figsize=(8.0, 3.8))
+        data = np.ma.masked_invalid(tmap.power_db[:, keep])
+        finite = data.compressed()
+        vmin, vmax = (np.percentile(finite, 5), np.percentile(finite, 99.5)) if finite.size else (None, None)
+        lo, hi = tmap.throttle[rows].min() - 2.5, tmap.throttle[rows].max() + 2.5
+        im = ax.imshow(data, origin="lower", aspect="auto", cmap=cmap, vmin=vmin, vmax=vmax,
+                       extent=(0, tmap.freqs[keep][-1], tmap.throttle[0] - 2.5, tmap.throttle[-1] + 2.5))
+        ax.set_ylim(lo, hi)
+        ax.grid(False)
+        ax.set_title(title)
+        ax.set_xlabel("Frequency [Hz]")
+        ax.set_ylabel("Throttle (motor output) [%]")
+        cb = fig.colorbar(im, ax=ax, pad=0.02)
+        cb.set_label("PSD [dB re (deg/s)²/Hz]", color=INK_2)
+        cb.outline.set_visible(False)
+        fig.tight_layout()
+        _save(fig, path)
+
+
+def spectra(panels: list[dict], path: Path, fmax: float) -> None:
+    """PSD panels; each: title, ylabel, series [(label, f, p, style)] with
+    style 'raw' drawn muted."""
+    with plt.rc_context(STYLE):
+        fig, axes = plt.subplots(len(panels), 1, figsize=(8.0, 2.8 * len(panels)), squeeze=False)
+        for ax, panel in zip(axes[:, 0], panels):
+            k = 0
+            for label, f, p, style in panel["series"]:
+                keep = (f > 0) & (f <= fmax)
+                db = 10 * np.log10(np.maximum(p[keep], 1e-12))
+                if style == "raw":
+                    ax.plot(f[keep], db, color=BASELINE, linewidth=1.0, label=label)
+                else:
+                    ax.plot(f[keep], db, color=SERIES[k], linewidth=1.2, label=label)
+                    k += 1
+            ax.set_title(panel["title"])
+            ax.set_ylabel(panel["ylabel"])
+            ax.set_xlabel("Frequency [Hz]")
+            ax.legend(loc="upper right")
+        fig.tight_layout()
+        _save(fig, path)
+
+
+def bode(chains: list[tuple[str, np.ndarray, np.ndarray]], f: np.ndarray, path: Path) -> None:
+    """Low-pass chains: magnitude and group delay. chains = [(label, h, delay_s)]."""
+    with plt.rc_context(STYLE):
+        fig, (mag, dly) = plt.subplots(2, 1, figsize=(8.0, 5.4), sharex=True)
+        for i, (label, h, delay) in enumerate(chains):
+            mag.semilogx(f, 20 * np.log10(np.abs(h)), color=SERIES[i], label=label)
+            dly.semilogx(f, 1000 * delay, color=SERIES[i], label=label)
+        mag.set_title("Filter magnitude")
+        mag.set_ylabel("Gain [dB]")
+        mag.set_ylim(-30, 3)
+        mag.legend(loc="lower left")
+        dly.set_title("Filter group delay")
+        dly.set_ylabel("Delay [ms]")
+        dly.set_xlabel("Frequency [Hz]")
+        dly.set_ylim(bottom=0)
+        fig.tight_layout()
+        _save(fig, path)
+
+
+def pareto(points: list[dict], path: Path, xlabel: str, ylabel: str) -> None:
+    """points: label, x, y, feasible, highlight ('recommended'/'baseline'/None)."""
+    with plt.rc_context(STYLE):
+        fig, ax = plt.subplots(figsize=(7.5, 4.6))
+        for feasible, color, name in ((True, SERIES[0], "meets constraints"), (False, MUTED, "fails a constraint")):
+            pts = [p for p in points if p["feasible"] == feasible]
+            if pts:
+                ax.scatter([p["x"] for p in pts], [p["y"] for p in pts], s=48,
+                           facecolors=color if feasible else "none", edgecolors=color, linewidths=1.4,
+                           label=name, zorder=3)
+        for p in points:
+            if p.get("highlight"):
+                ax.scatter([p["x"]], [p["y"]], s=150, facecolors="none", edgecolors=SERIES[1] if p["highlight"] == "recommended" else INK,
+                           linewidths=1.8, zorder=4)
+                ax.annotate(f"{p['highlight']}: {p['label']}", (p["x"], p["y"]), xytext=(8, 6), textcoords="offset points",
+                            color=INK, fontsize=8)
+        ax.set_xscale("log")
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+        ax.set_title("Gain sweep: tracking error vs motor-output noise")
+        ax.legend(loc="upper right")
+        fig.tight_layout()
+        _save(fig, path)
+
+
+def step_compare(axes_data: list[dict], path: Path) -> None:
+    """axes_data: title, series [(label, t, mean, std)]."""
+    with plt.rc_context(STYLE):
+        fig, axes = plt.subplots(1, len(axes_data), figsize=(10.0, 3.4), sharey=True, squeeze=False)
+        for ax, panel in zip(axes[0], axes_data):
+            for i, (label, t, mean, std) in enumerate(panel["series"]):
+                tm = 1000 * np.asarray(t)
+                ax.fill_between(tm, mean - std, mean + std, color=SERIES[i], alpha=0.10, linewidth=0)
+                ax.plot(tm, mean, color=SERIES[i], label=label)
+            ax.axhline(1.0, color=INK_2, linewidth=0.8)
+            ax.set_title(panel["title"])
+            ax.set_xlabel("Time [ms]")
+        axes[0, 0].set_ylabel("Response (setpoint step = 1)")
+        axes[0, 0].legend(loc="lower right")
+        fig.tight_layout()
+        _save(fig, path)

@@ -20,11 +20,15 @@ Physics-first FPV simulator built from real physical properties.
 | 2. 動力匹配 | 推力台測試馬達、槳、電壓組合 | 虛擬推力台、BEMT、系統識別 | ✅ |
 | 3. 重量與重心 | 秤重、做重量表、算重心與慣性 | 質量預算 | ✅ |
 | 4. 電氣 | 壓降、峰值電流、額定值 | 電池等效電路、額定值檢查 | ✅（溫升待做） |
-| 5. 調參 | 看陀螺儀頻譜設濾波、看步階響應調 PID | 虛擬 Blackbox 與分析工具 | 規劃中 |
-| 6. 飛行測試 | 實飛並錄 log | 6DOF 飛行模擬、遙控器輸入 | 規劃中 |
+| 5. 調參 | 看陀螺儀頻譜設濾波、看步階響應調 PID | 雜訊調查、濾波延遲、反卷積步階響應、增益掃描 | ✅ |
+| 6. 飛行測試 | 實飛並錄 log | 6DOF 飛行模擬、Betaflight 式飛控、虛擬 Blackbox、適用範圍監測 | ✅（即時手動飛行待做） |
 | 7. 迭代 | 依 log 修改設計 | 版本比較報告 | 規劃中 |
 
-範例輸出：[參考機設計報告](reports/ref-5in-6s-freestyle/report.md)
+範例輸出：
+
+- [參考機設計報告](reports/ref-5in-6s-freestyle/report.md)（第 1–4 階段）
+- [調參報告](reports/tune-acro-5in-baseline/report.md)（第 5 階段）
+- [飛行測試報告：綜合飛行](reports/flight-freestyle/report.md)（第 6 階段）
 
 ## 快速開始
 
@@ -49,6 +53,14 @@ python -m venv .venv
 
 它會輸出辨識出的 Ct、Cp 與不確定度，可以直接貼進槳的零件檔取代 BEMT 估計值。
 
+飛行模擬與調參（說明見 [docs/flight-sim.md](docs/flight-sim.md)）：
+
+```bash
+.venv/bin/fpvsim maneuvers
+.venv/bin/fpvsim fly  data/builds/ref-5in-6s-freestyle.toml --fc data/fc/acro-5in-baseline.toml --maneuver freestyle
+.venv/bin/fpvsim tune data/builds/ref-5in-6s-freestyle.toml --fc data/fc/acro-5in-baseline.toml
+```
+
 ## 專案結構
 
 ```
@@ -66,18 +78,30 @@ src/fpvsim/
   sysid.py                系統識別（由測試數據辨識參數）
   uncertainty.py          蒙地卡羅與敏感度分析
   report.py, plots.py     設計報告
+  dynamics.py             6DOF 飛行動力學
+  sensors.py, filters.py  陀螺儀模型；數位濾波器
+  flightcontroller.py     Betaflight 式 Acro 飛控
+  pilot.py, sim.py        自動測試飛手與飛行腳本；多速率模擬迴圈
+  blackbox.py             飛行 log
+  flightanalysis.py       頻譜、步階響應、延遲
+  tuning.py               調參流程
+  flight_report.py, tuning_report.py
 data/
   specs/                  需求規格
   builds/                 組裝檔（零件與擺放位置）
   components/             零件庫
+  fc/                     飛控設定
 docs/
   methodology.md          研發方法：V&V、參數出處、不確定度、數據政策
   models.md               每個物理模型的方程、假設與適用範圍
   data-format.md          資料檔格式
+  flight-sim.md           飛行模擬、飛控與調參
 tests/                    驗證測試
 reports/                  產生的報告範例
 ```
 
 ## 數據與版權
 
-零件庫只收錄**通用級距零件**，不使用品牌名稱，數值是標示為「工程估計」的級距典型值，不複製任何廠商或第三方的測試資料表。物理模型依教科書與論文中的方程自行實作。詳見 [docs/methodology.md](docs/methodology.md#7-數據與智慧財產政策)。
+零件庫只收錄**通用級距零件**，不使用品牌名稱，數值是標示為「工程估計」的級距典型值，不複製任何廠商或第三方的測試資料表。物理模型依教科書與論文中的方程自行實作；飛控依公開資料描述的 Betaflight 行為獨立撰寫，沒有使用其原始碼。詳見 [docs/methodology.md](docs/methodology.md#7-數據與智慧財產政策)。
+
+本專案採 [MIT 授權](LICENSE)。

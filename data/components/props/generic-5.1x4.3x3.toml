@@ -17,6 +17,7 @@ blades = 3
 diameter = { value = 5.1, unit = "in", source = "nominal" }
 pitch = { value = 4.3, unit = "in", source = "nominal", note = "75% 半徑處的幾何螺距，模型視為等螺距" }
 spin_inertia = { value = 4900, unit = "g*mm^2", source = "estimate", u_rel = 0.30, note = "三片葉片共約 3.5 g，以均勻細桿 (1/3) m R² 估算" }
+rotor_drag_factor = { value = 1.0, unit = "1", source = "estimate", u_rel = 0.4, note = "對動量理論槳盤阻力 ρ·A·v_i·v_h 的修正倍數；可由定速平飛的姿態角辨識" }
 
 [bemt]
 hub_radius = { value = 6, unit = "mm", source = "estimate" }

@@ -10,3 +10,4 @@ name = "通用 30×30 飛控"
 
 [params]
 power = { value = 0.8, unit = "W", source = "estimate", u_rel = 0.3, note = "MCU、陀螺儀、OSD" }
+gyro_noise_density = { value = 0.005, unit = "deg/s/sqrt(Hz)", source = "estimate", u_rel = 0.3, note = "飛控常用 MEMS 陀螺儀的白雜訊密度級距（約 0.003–0.008）" }

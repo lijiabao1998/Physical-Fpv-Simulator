@@ -1,0 +1,42 @@
+# Flight-controller configuration (acro / rate mode). Settings, not physical
+# quantities: they are exact by definition and carry no uncertainty.
+# Gains use Betaflight's numeric scale; this baseline is our own starting point,
+# meant to be refined with `fpvsim tune`.
+schema = "fpvsim.fc/1"
+
+[meta]
+id = "acro-5in-baseline"
+name = "5 吋 Acro 基準設定"
+
+[loop]
+gyro_rate_hz = 8000
+pid_rate_hz = 4000
+
+[rc]
+link_rate_hz = 250
+setpoint_smoothing_hz = 40   # PT3 on the setpoint
+feedforward_smoothing_hz = 30   # PT3 on the setpoint derivative
+
+# Actual rates: centre sensitivity and max rate in deg/s, expo 0..1
+[rates]
+roll = { center = 70, max = 670, expo = 0.5 }
+pitch = { center = 70, max = 670, expo = 0.5 }
+yaw = { center = 70, max = 600, expo = 0.5 }
+
+[pid]
+roll = { p = 40, i = 70, d = 30, f = 100 }
+pitch = { p = 42, i = 75, d = 33, f = 100 }
+yaw = { p = 40, i = 70, d = 0, f = 100 }
+
+[pid_limits]
+pidsum_limit = 500
+pidsum_limit_yaw = 400
+iterm_limit = 400
+
+[filters]
+gyro_lowpass = [{ type = "pt1", cutoff_hz = 250 }, { type = "pt1", cutoff_hz = 500 }]
+dterm_lowpass = [{ type = "pt1", cutoff_hz = 90 }, { type = "pt1", cutoff_hz = 150 }]
+rpm_filter = { harmonics = 3, q = 5.0, min_hz = 100 }
+
+[mixer]
+airmode = true
