@@ -14,10 +14,13 @@ from .design import Build
 from .filters import chain_response, group_delay, make_lowpass
 from .flightcontroller import dump_fc_config
 from .report import git_version, md_table, rel_path
-from .tuning import NOISE_BAND, TuningStudy, filter_delay
+from .tuning import NOISE_BAND, OVERSHOOT_LIMIT, TuningStudy, filter_delay, robust_alternative
 
 AXES = ("roll", "pitch", "yaw")
 AXIS_ZH = {"roll": "滾轉", "pitch": "俯仰", "yaw": "偏航"}
+
+
+MARGIN_WARN = 0.02  # flag a recommendation closer than this to the overshoot limit
 
 
 def _pct(x: float) -> str:
@@ -131,6 +134,19 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
             f"俯仰超調 {_pct(bo['pitch'])} → {_pct(ro['pitch'])}，"
             f"追蹤誤差 {bm['tracking_rp']:.1f} → {rm['tracking_rp']:.1f} deg/s，"
             f"馬達輸出雜訊 {bm['motor_noise']:.3f}% → {rm['motor_noise']:.3f}%。設定檔：`recommended_fc.toml`。")
+        margin = OVERSHOOT_LIMIT - rm["overshoot_max_rp"]
+        if margin < MARGIN_WARN:
+            axis = max(("roll", "pitch"), key=lambda a: ro[a])
+            iqr = rm["axes"][axis].get("overshoot_spread", math.nan)
+            line = (f"- **建議值貼近超調上限：**{AXIS_ZH[axis]}超調 {_pct(ro[axis])}，距離 {OVERSHOOT_LIMIT:.0%} 上限只有 "
+                    f"{100 * margin:.1f} 個百分點（這一軸各次步階超調的四分位距為 {100 * iqr:.1f} 個百分點）。")
+            alt = robust_alternative(study.candidates, rec)
+            if alt:
+                am = alt.metrics
+                line += (f"較保守的選擇是 {alt.label}：滾轉 {_pct(am['axes']['roll']['overshoot'])}、"
+                         f"俯仰 {_pct(am['axes']['pitch']['overshoot'])}，追蹤誤差 {am['tracking_rp']:.1f} deg/s"
+                         f"（只多 {100 * (am['tracking_rp'] / rm['tracking_rp'] - 1):.0f}%），馬達雜訊 {am['motor_noise']:.3f}%。")
+            add(line)
         if bo["roll"] - bo["pitch"] > 0.05:
             inertia = build.realize().mass_props.inertia * 1000
             add(f"- **滾轉比俯仰更容易超調**（基準設定 {_pct(bo['roll'])} 對 {_pct(bo['pitch'])}），"
@@ -201,7 +217,8 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
     add("")
     add("![Pareto](pareto.png)\n")
     if base and rec:
-        add("基準與建議設定的步階響應（陰影為各分析視窗之間的 ±1 標準差）：\n")
+        spread = "各次步階" if base.metrics["axes"]["roll"].get("method") == "edges" else "各分析視窗"
+        add(f"基準與建議設定的步階響應（陰影為{spread}之間的 ±1 標準差）：\n")
         add("![Step responses](steps.png)\n")
         add(md_table(["軸", "基準超調", "建議超調", "基準上升時間", "建議上升時間", "基準延遲", "建議延遲"], [
             [AXIS_ZH[a], _pct(base.metrics["axes"][a].get("overshoot", math.nan)), _pct(rec.metrics["axes"][a].get("overshoot", math.nan)),
@@ -220,15 +237,16 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
         add("\n完整設定已寫入 `recommended_fc.toml`，可以直接用 `fpvsim fly --fc` 試飛。")
     add("\n下一步：")
     if study.at_grid_edge:
-        add(f"1. 以建議值為中心、往 {'、'.join(study.at_grid_edge)} 增加的方向擴大掃描。")
+        caution = (f"；同時留意雜訊，{worst.label} 的馬達雜訊已是基準的 "
+                   f"{worst.metrics['motor_noise'] / base.metrics['motor_noise']:.0f} 倍" if base else "")
+        add(f"1. 以建議值為中心、往 {'、'.join(study.at_grid_edge)} 增加的方向擴大掃描{caution}。")
     add(f"{2 if study.at_grid_edge else 1}. 用實機錄一段未濾波陀螺儀的 Blackbox log，辨識振動參數，讓雜訊的絕對數值可以採信。")
     add(f"{3 if study.at_grid_edge else 2}. 在建議設定下，評估「RPM 濾波 + 較輕的低通」能否在雜訊可接受時換到更低的延遲。\n")
 
     add("## 5. 方法與限制\n")
     add("- 步階響應：模擬的調參飛行知道每次步階的時刻，所以直接量測每一次步階（相對於步階大小正規化）。"
         "實機 log 沒有這個資訊時，改用 Wiener 反卷積（`flightanalysis.step_response`，2 秒視窗、只用該軸被打桿的時段），"
-        "兩種方法都用已知系統驗證過；全幅度打桿會讓混控飽和，量到的是非線性響應，所以調參用小幅度步階。"
-        "此方法已用已知系統驗證（tests/test_flight.py）。")
+        "兩種方法都用已知系統驗證過（tests/test_flight.py）；全幅度打桿會讓混控飽和，量到的是非線性響應，所以調參用小幅度步階。")
     add("- 飛控依 Betaflight 的結構獨立實作（Actual rates、PID 數值尺度、D 項作用在量測值、RPM 濾波、airmode）；"
         "feedforward 的尺度、動態濾波、TPA、anti-gravity、I-term relax 等與 Betaflight 不同或沒有實作，所以調參結果是起點，不保證能一對一套用到實機。")
     add("- 振動只進入陀螺儀量測；機架共振與彈性沒有模擬。")

@@ -189,6 +189,20 @@ def select(candidates: list[Candidate]) -> tuple[Candidate | None, str]:
     return recommended, rule
 
 
+TRACKING_TIE = 0.05  # tracking errors within 5 % are treated as equivalent when looking for margin
+
+
+def robust_alternative(candidates: list[Candidate], recommended: Candidate) -> Candidate | None:
+    """The feasible candidate with the most overshoot margin among those whose
+    tracking error is within TRACKING_TIE of the recommendation's, if it is
+    not the recommendation itself. Reported next to a recommendation that sits
+    close to the overshoot limit, so the choice between them is visible."""
+    near = [c for c in candidates if c.feasible
+            and c.metrics["tracking_rp"] <= (1 + TRACKING_TIE) * recommended.metrics["tracking_rp"]]
+    best = min(near, key=lambda c: (c.metrics["overshoot_max_rp"], c.metrics["motor_noise"]), default=None)
+    return best if best is not None and best is not recommended else None
+
+
 def filter_variants(cfg: FcConfig) -> list[tuple[str, str, FcConfig]]:
     """(Chinese label, English chart label, config) for the noise survey."""
     lighter = replace(

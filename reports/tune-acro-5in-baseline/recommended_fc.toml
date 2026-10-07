@@ -1,9 +1,9 @@
-# fpvsim tune recommendation: PD×0.85 D×1.25 applied to acro-5in-baseline
+# fpvsim tune recommendation: PD×1.3 D×1 applied to acro-5in-baseline
 schema = "fpvsim.fc/1"
 
 [meta]
 id = "acro-5in-baseline-tuned"
-name = "5 吋 Acro 基準設定（調參建議 PD×0.85 D×1.25）"
+name = "5 吋 Acro 基準設定（調參建議 PD×1.3 D×1）"
 
 [loop]
 gyro_rate_hz = 8000
@@ -20,9 +20,9 @@ pitch = { center = 70, max = 670, expo = 0.5 }
 yaw = { center = 70, max = 600, expo = 0.5 }
 
 [pid]
-roll = { p = 34, i = 70, d = 32, f = 100 }
-pitch = { p = 36, i = 75, d = 35, f = 100 }
-yaw = { p = 34, i = 70, d = 0, f = 100 }
+roll = { p = 52, i = 70, d = 39, f = 100 }
+pitch = { p = 55, i = 75, d = 43, f = 100 }
+yaw = { p = 52, i = 70, d = 0, f = 100 }
 
 [pid_limits]
 pidsum_limit = 500

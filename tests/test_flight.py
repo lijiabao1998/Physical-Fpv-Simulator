@@ -15,7 +15,7 @@ from fpvsim.flightcontroller import AxisRates, FlightController, dump_fc_config,
 from fpvsim.performance import hover_point
 from fpvsim.pilot import MANEUVERS
 from fpvsim.sim import SimSettings, simulate
-from fpvsim.tuning import Candidate, select
+from fpvsim.tuning import Candidate, robust_alternative, select
 
 from conftest import ROOT
 
@@ -362,6 +362,19 @@ def test_recommendation_rule():
     assert rec.label == "good"
     assert [c.feasible for c in cands] == [True, False, False, True, False]
     assert "15%" in rule
+
+
+def test_robust_alternative_offers_margin_only_within_tracking_tie():
+    cands = [
+        _candidate("edge of limit", 1.3, 1.0, 0.149, 0.060, 8.60),
+        _candidate("margin, similar tracking", 1.0, 1.25, 0.095, 0.055, 8.90),
+        _candidate("more margin, much worse tracking", 0.7, 1.25, 0.05, 0.041, 9.50),
+        _candidate("infeasible", 1.3, 1.25, 0.09, 0.193, 8.50),
+    ]
+    for c in cands:
+        c.feasible = c.label != "infeasible"
+    assert robust_alternative(cands, cands[0]).label == "margin, similar tracking"
+    assert robust_alternative(cands[:1], cands[0]) is None
 
 
 def test_edge_steps_read_known_response_exactly():
