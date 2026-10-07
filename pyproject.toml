@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=75,<83"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "physical-fpv"
+version = "0.1.0"
+description = "Physics-first, provenance-aware battery research core for Physical FPV Simulator"
+requires-python = ">=3.12,<3.13"
+dependencies = ["pybamm==26.9.0.0"]
+
+[project.optional-dependencies]
+dev = ["pytest==8.4.2", "ruff==0.14.0"]
+
+[project.scripts]
+physical-fpv = "physical_fpv.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = ["integration: CPU electrochemical model tests", "data: requires checksum-verified downloaded real data"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
