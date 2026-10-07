@@ -1,0 +1,38 @@
+# fpvsim tune recommendation: PD×0.85 D×1.25 applied to acro-5in-baseline
+schema = "fpvsim.fc/1"
+
+[meta]
+id = "acro-5in-baseline-tuned"
+name = "5 吋 Acro 基準設定（調參建議 PD×0.85 D×1.25）"
+
+[loop]
+gyro_rate_hz = 8000
+pid_rate_hz = 4000
+
+[rc]
+link_rate_hz = 250
+setpoint_smoothing_hz = 40
+feedforward_smoothing_hz = 30
+
+[rates]
+roll = { center = 70, max = 670, expo = 0.5 }
+pitch = { center = 70, max = 670, expo = 0.5 }
+yaw = { center = 70, max = 600, expo = 0.5 }
+
+[pid]
+roll = { p = 34, i = 70, d = 32, f = 100 }
+pitch = { p = 36, i = 75, d = 35, f = 100 }
+yaw = { p = 34, i = 70, d = 0, f = 100 }
+
+[pid_limits]
+pidsum_limit = 500
+pidsum_limit_yaw = 400
+iterm_limit = 400
+
+[filters]
+gyro_lowpass = [{ type = "pt1", cutoff_hz = 250 }, { type = "pt1", cutoff_hz = 500 }]
+dterm_lowpass = [{ type = "pt1", cutoff_hz = 90 }, { type = "pt1", cutoff_hz = 150 }]
+rpm_filter = { harmonics = 3, q = 5, min_hz = 100 }
+
+[mixer]
+airmode = true
