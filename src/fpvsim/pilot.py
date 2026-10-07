@@ -95,15 +95,17 @@ def _forward() -> Maneuver:
 
 
 def _freestyle() -> Maneuver:
+    # Flips come before the punch-out and after a pause, so each element starts
+    # from a settled hover and its numbers are not mixed with the previous one.
     segs = (
         Segment(1.0, 5.0, velocity=(10.0, 0.0, 0.0)),
-        Segment(5.0, 5.8, {"throttle": 1.0}),
-        Segment(6.5, 7.1, {"roll": 1.0, "throttle": 0.2}),
-        Segment(8.5, 9.1, {"pitch": -1.0, "throttle": 0.2}),
-        Segment(10.5, 11.5, {"yaw": 1.0}),
-        Segment(12.0, 12.6, {"throttle": 0.0}),
+        Segment(7.0, 7.6, {"roll": 1.0, "throttle": 0.2}),
+        Segment(9.0, 9.6, {"pitch": -1.0, "throttle": 0.2}),
+        Segment(11.0, 12.0, {"yaw": 1.0}),
+        Segment(13.0, 13.8, {"throttle": 1.0}),
+        Segment(15.0, 15.6, {"throttle": 0.0}),
     )
-    return Maneuver("freestyle", "綜合飛行：10 m/s 前飛、衝刺、滾轉翻、後空翻、原地自轉、收油下墜", 16.0, segs)
+    return Maneuver("freestyle", "綜合飛行：10 m/s 前飛、滾轉翻、後空翻、原地自轉、衝刺、收油下墜", 19.0, segs)
 
 
 def _hover() -> Maneuver:

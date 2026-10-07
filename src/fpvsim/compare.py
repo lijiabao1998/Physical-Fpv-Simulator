@@ -72,6 +72,7 @@ class Comparison:
     samples: int
     maneuver: Maneuver | None
     changes: list[list[Change]]  # per non-base version, against the base
+    code_version: str = ""  # git commit when the analysis started
 
     @property
     def base(self) -> VersionResult:
@@ -188,7 +189,10 @@ def compare(
 ) -> Comparison:
     if len(build_paths) < 2:
         raise ValueError("compare needs a base build and at least one other version")
+    from .report import git_version
+
     builds = [load_build(p) for p in build_paths]
+    code_version = git_version(builds[0].path.parent)  # before the long run, not after it
     versions = [analyse_version(b, samples, seed) for b in builds]
     man = MANEUVERS[maneuver] if maneuver else None
     for path, v in zip(build_paths, versions):
@@ -198,7 +202,7 @@ def compare(
         if tune:
             v.tuning = run_study(path, fc, seed=seed, workers=workers)
     changes = [design_changes(builds[0], b) for b in builds[1:]]
-    return Comparison(versions, fc, seed, samples, man, changes)
+    return Comparison(versions, fc, seed, samples, man, changes, code_version)
 
 
 def summarise_delta(values: np.ndarray) -> tuple[float, float, float]:

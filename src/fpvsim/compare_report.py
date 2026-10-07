@@ -144,7 +144,7 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
         ["飛控設定", f"{cmp.fc.name}（`{cmp.fc.id}`）"],
         ["蒙地卡羅", f"每個版本 {cmp.samples} 組成對樣本，隨機種子 {cmp.seed}"],
         ["飛行腳本", f"`{cmp.maneuver.name}`：{cmp.maneuver.title}" if cmp.maneuver else "未執行"],
-        ["程式版本", f"fpvsim {__version__}，git `{git_version(base.build.path.parent)}`"],
+        ["程式版本", f"fpvsim {__version__}，git `{cmp.code_version or git_version(base.build.path.parent)}`"],
         ["產生時間 (UTC)", _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M")],
     ]))
     add("")
@@ -161,7 +161,7 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
         risky = [r.id for r in reqs if 0.5 <= v.compliance[r.id] < 0.95]
         base_failed = {r.id for r in reqs if base.compliance[r.id] < 0.5}
         newly = [x for x in failed if x not in base_failed]
-        line = (f"- **版本 {tag}（{v.build.name}）**：重量 +{units.from_si(dm, 'g'):.0f} g（{_pct(dm / base.nominal['auw'], True)}），"
+        line = (f"- **{v.build.name}**：重量 +{units.from_si(dm, 'g'):.0f} g（{_pct(dm / base.nominal['auw'], True)}），"
                 f"懸停續航 {_pct(end_mid, True)}（90% 區間 {_pct(end_lo, True)} 至 {_pct(end_hi, True)}），"
                 f"推重比 {_pct(tw_mid, True)}，重心偏移 {fmt_metric('cg_offset', v.nominal['cg_offset'])}。")
         if newly:
@@ -183,7 +183,7 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
         parts = []
         for i in range(1, len(vs)):
             parts.append(f"版本 {tags[i]} {_pct(steps[i].metrics['axes']['roll'].get('overshoot', math.nan))}")
-        add(f"- **控制：** 用相同的基準增益，滾轉超調由基準的 {_pct(b_os)} 變為 " + "、".join(parts)
+        add(f"- **控制：** 用相同的基準增益，滾轉超調由基準的 {_pct(b_os)} 變為" + "、".join(parts)
             + "。轉動慣量變大，同樣的增益等於較低的迴路增益；各版本重新調參的建議見第 7 節。")
     add("")
 

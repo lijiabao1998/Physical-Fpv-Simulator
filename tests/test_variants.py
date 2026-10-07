@@ -99,12 +99,12 @@ def test_flight_summary_reads_freestyle_elements(reference_build):
 
     cfg = load_fc_config(ROOT / "data" / "fc" / "acro-5in-baseline.toml")
     man = MANEUVERS["freestyle"]
-    log = simulate(reference_build, cfg, man, SimSettings(log_rate=250), duration=6.0)
+    log = simulate(reference_build, cfg, man, SimSettings(log_rate=250), duration=8.5)
     summary = flight_summary(log, man, reference_build.battery_series)
     assert summary["forward_speed"] == pytest.approx(10.0, abs=1.0)
-    assert "flip_alt_loss" not in summary  # elements after the end of the log are skipped
     assert summary["forward_pitch"] > 5.0  # nose down to fly forward
-    assert summary["punch_alt_gain"] > 0.0
+    assert summary["flip_alt_loss"] > 0.0  # a flip from a settled hover always loses height
+    assert "punch_alt_gain" not in summary  # elements after the end of the log are skipped
     assert not summary["crashed"]
 
 
