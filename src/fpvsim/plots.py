@@ -414,6 +414,7 @@ def step_compare(axes_data: list[dict], path: Path) -> None:
             ax.set_title(panel["title"])
             ax.set_xlabel("Time [ms]")
         axes[0, 0].set_ylabel("Response (setpoint step = 1)")
+        axes[0, 0].set_ylim(-0.25, 1.6)  # a wide early band (yaw) must not flatten the curves
         axes[0, 0].legend(loc="lower right")
         fig.tight_layout()
         _save(fig, path)
