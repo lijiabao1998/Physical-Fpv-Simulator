@@ -9,8 +9,8 @@
    by a grid of multipliers. For each, the step response is recovered from
    the log by deconvolution, and its quality is set against motor-output
    noise (heat and wasted power).
-3. Recommendation: among candidates whose roll/pitch overshoot is within the
-   limit and whose motor noise is at most a set multiple of the baseline's,
+3. Recommendation: among candidates whose roll and pitch overshoot are each
+   within the limit and whose motor noise is at most a set multiple of the baseline's,
    the one with the lowest roll/pitch tracking error on the same scripted
    flight; the rule is printed with the result.
 
@@ -97,6 +97,7 @@ def flight_metrics(log, noise_window: tuple[float, float] | None = None) -> dict
     out["crashed"] = bool(log.meta.get("crashed"))
     rp = [out["axes"][a] for a in ("roll", "pitch")]
     out["overshoot_rp"] = float(np.mean([a.get("overshoot", math.nan) for a in rp]))
+    out["overshoot_max_rp"] = float(max(a.get("overshoot", math.nan) for a in rp))
     out["settling_rp"] = float(np.mean([a.get("settling_time", math.nan) for a in rp]))
     out["tracking_rp"] = float(np.mean([a["tracking_rms"] for a in rp]))
     return out
@@ -162,14 +163,14 @@ def select(candidates: list[Candidate]) -> tuple[Candidate | None, str]:
         m = c.metrics
         c.feasible = (
             not m["crashed"]
-            and math.isfinite(m["overshoot_rp"])
-            and m["overshoot_rp"] <= OVERSHOOT_LIMIT
+            and math.isfinite(m["overshoot_max_rp"])
+            and m["overshoot_max_rp"] <= OVERSHOOT_LIMIT
             and m["motor_noise"] <= noise_cap
         )
     feasible = [c for c in candidates if c.feasible]
     recommended = min(feasible, key=lambda c: c.metrics["tracking_rp"]) if feasible else None
     rule = (
-        f"滾轉與俯仰的平均超調 ≤ {OVERSHOOT_LIMIT:.0%}（本專案的設計目標，不是業界標準），"
+        f"滾轉與俯仰的超調各自 ≤ {OVERSHOOT_LIMIT:.0%}（本專案的設計目標，不是業界標準；兩軸分別檢查，避免平均值掩蓋較差的一軸），"
         f"且馬達輸出雜訊（{NOISE_BAND[0]:.0f}–{NOISE_BAND[1]:.0f} Hz RMS）不超過基準設定的 {NOISE_FACTOR_LIMIT:g} 倍；"
         "符合條件者中，取同一段調參飛行中滾轉與俯仰追蹤誤差 (RMS) 最小的。"
         "排序不用安定時間，因為由飛行數據反卷積得到的步階響應有漣波，安定時間對它很敏感。"

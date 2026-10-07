@@ -125,9 +125,17 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
     add(f"- **RPM 濾波是最重要的濾波器：** 關閉它，馬達輸出雜訊從 {with_rpm:.3f}% 升到 {no_rpm:.3f}%（{no_rpm / with_rpm:.0f} 倍）。")
     if rec and base:
         bm, rm = base.metrics, rec.metrics
-        add(f"- **建議增益：** {rec.label}。滾轉與俯仰的平均超調由 {_pct(bm['overshoot_rp'])} 降到 {_pct(rm['overshoot_rp'])}，"
+        bo = {a: bm["axes"][a].get("overshoot", math.nan) for a in ("roll", "pitch")}
+        ro = {a: rm["axes"][a].get("overshoot", math.nan) for a in ("roll", "pitch")}
+        add(f"- **建議增益：** {rec.label}。滾轉超調 {_pct(bo['roll'])} → {_pct(ro['roll'])}，"
+            f"俯仰超調 {_pct(bo['pitch'])} → {_pct(ro['pitch'])}，"
             f"追蹤誤差 {bm['tracking_rp']:.1f} → {rm['tracking_rp']:.1f} deg/s，"
             f"馬達輸出雜訊 {bm['motor_noise']:.3f}% → {rm['motor_noise']:.3f}%。設定檔：`recommended_fc.toml`。")
+        if bo["roll"] - bo["pitch"] > 0.05:
+            inertia = build.realize().mass_props.inertia * 1000
+            add(f"- **滾轉比俯仰更容易超調**（基準設定 {_pct(bo['roll'])} 對 {_pct(bo['pitch'])}），"
+                f"與兩軸慣性不同一致（Ixx = {inertia[0, 0]:.2f}、Iyy = {inertia[1, 1]:.2f} g·m²，"
+                "同樣的增益在慣性較小的軸上等於較高的迴路增益）。本次掃描對三軸使用相同倍數，下一輪應分軸調整。")
     elif not rec:
         add("- **沒有候選設定符合條件。** 請擴大掃描範圍或放寬條件。")
     if study.at_grid_edge:

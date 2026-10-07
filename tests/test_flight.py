@@ -347,7 +347,7 @@ def test_latency_band_rms_and_throttle_map():
 
 
 def _candidate(label, pd, d, overshoot, noise, tracking, crashed=False):
-    return Candidate(label, pd, d, None, {"crashed": crashed, "overshoot_rp": overshoot, "motor_noise": noise, "tracking_rp": tracking})
+    return Candidate(label, pd, d, None, {"crashed": crashed, "overshoot_max_rp": overshoot, "motor_noise": noise, "tracking_rp": tracking})
 
 
 def test_recommendation_rule():
