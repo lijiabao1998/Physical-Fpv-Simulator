@@ -180,3 +180,14 @@ The frozen k2/k6 history inspection verified 27/30 files and 995,676 measurement
 [Partial findings and all recorded intervals](docs/stanford-k2-k6-history-findings.md) · [Provenance, quality and missing-file evidence](docs/benchmarks/stanford-k2-k6-history-partial.json) · [Frozen protocol](docs/stanford-k2-k6-history-protocol.md)
 
 The implementation passed 309 software tests. This data-only inspection ran no model or fit and leaves the existing numerical PASS and empirical FAIL outcomes intact.
+
+
+## Recorded boundary responses: no resistance fit
+
+The zero-download six-cell audit retains all 24 charge/CV/discharge boundaries and 240 finite-delay observations. Each cell’s apparent ΔV/ΔI varies across boundaries; k1 spans 61.30–75.17 mΩ and k6 60.68–75.16 mΩ. This arithmetic variation does not establish contact resistance or physically exclude a fixed-R component: sampling delays, electrochemical state, relaxation and unknown uncertainty remain relevant. Every CV-stop ratio is retained and flagged for its small ≈0.05-A current change.
+
+[Complete boundary table, interpretation and next required observable](docs/stanford-boundary-findings.md) · [Source-linked numerical report](docs/benchmarks/stanford-six-cell-boundaries.json)
+
+![Recorded boundary responses at actual observed delays](docs/benchmarks/stanford-six-cell-boundaries.svg)
+
+All 349 software tests passed. The measured-source analysis used 6.98 seconds, with zero model runs or fitting; prior empirical failures and incomplete k6 history remain unchanged.
