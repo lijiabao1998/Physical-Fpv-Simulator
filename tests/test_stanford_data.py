@@ -12,6 +12,7 @@ from physical_fpv.stanford_data import (
     fetch_pilot,
     inspect_pilot,
     inspect_records,
+    inspect_workbook,
     validate_workbook_bytes,
 )
 
@@ -63,6 +64,18 @@ def test_conflicting_same_time_records_remain_visible():
     assert len(discharge) == 3
 
 
+def test_reversed_or_negative_step_clock_is_flagged_without_repair():
+    source = records()
+    row = list(source[9])
+    row[2] = -1.0
+    source[9] = tuple(row)
+    report, discharge = inspect_records(source)
+    d = next(s for s in report["contiguous_steps"] if s["step"] == 5)
+    assert d["backwards_step_clock_intervals"] == 1
+    assert d["negative_step_clock_records"] == 1
+    assert discharge[1, 0] == -1.0
+
+
 @pytest.mark.parametrize("change", ["clock", "nonfinite", "date"])
 def test_invalid_source_semantics_are_rejected(change):
     source = records()
@@ -98,6 +111,38 @@ def test_transfer_budget_is_checked_before_any_network_access(tmp_path):
     entry = {"filename": "large.xlsx", "size": 2_000_000}
     with pytest.raises(ValueError, match="budget"):
         fetch_pilot({"files": [entry], "manufacturer_specification": {"size": 1}}, tmp_path)
+
+
+def test_workbook_wall_clock_reversal_is_reported_even_when_test_clock_increases(tmp_path):
+    openpyxl = pytest.importorskip("openpyxl")
+    from physical_fpv.stanford_data import HEADERS
+
+    source = records()
+    row = list(source[1])
+    row[0] = source[0][0] - timedelta(seconds=3)
+    source[1] = tuple(row)
+    path = tmp_path / "synthetic-clock-test.xlsx"
+    workbook = openpyxl.Workbook()
+    workbook.active.append(HEADERS)
+    for row in source:
+        workbook.active.append(row)
+    workbook.save(path)
+    workbook.close()
+    entry = {
+        "filename": path.name,
+        "size": path.stat().st_size,
+        "content_details": {"sha256_hash": hashlib.sha256(path.read_bytes()).hexdigest()},
+    }
+    metadata = {
+        k: "synthetic test" for k in ("dataset_doi", "dataset_url", "license_url", "license")
+    }
+    metadata["authors"] = []
+    report, _ = inspect_workbook(tmp_path, entry, metadata)
+    audit = report["measurement_clock_audit"]
+    assert audit["backwards_date_intervals"] == 1
+    assert audit["first_backwards_date_excel_row_pairs"] == [[2, 3]]
+    assert audit["max_relative_date_test_clock_discrepancy_s"] == pytest.approx(4)
+    assert audit["date_test_clock_jumps_above_1s"] == 2
 
 
 @pytest.mark.data

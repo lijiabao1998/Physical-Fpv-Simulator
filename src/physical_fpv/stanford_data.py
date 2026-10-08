@@ -139,6 +139,8 @@ def inspect_records(rows: list[tuple]) -> tuple[dict, np.ndarray | None]:
                 "clock_relation_max_deviation_s": float(
                     np.max(np.abs(origins - np.median(origins)))
                 ),
+                "backwards_step_clock_intervals": int(np.sum(np.diff(step_t) < 0)),
+                "negative_step_clock_records": int(np.sum(step_t < 0)),
                 "native_interval_s": {
                     "min": float(min(dt)),
                     "median": float(statistics.median(dt)),
@@ -209,11 +211,16 @@ def inspect_records(rows: list[tuple]) -> tuple[dict, np.ndarray | None]:
 
 
 def inspect_pilot(raw_dir: Path, manifest: dict) -> tuple[dict, np.ndarray | None]:
+    entry = sorted(manifest["files"], key=lambda f: f["filename"])[0]
+    return inspect_workbook(raw_dir, entry, manifest)
+
+
+def inspect_workbook(raw_dir: Path, entry: dict, manifest: dict) -> tuple[dict, np.ndarray | None]:
+    """Inspect one explicitly selected source workbook without changing its records."""
     import openpyxl
 
     if not openpyxl.DEFUSEDXML:
         raise RuntimeError("Install pinned optional workbook dependencies, including defusedxml")
-    entry = sorted(manifest["files"], key=lambda f: f["filename"])[0]
     path = Path(raw_dir) / entry["filename"]
     integrity = validate_workbook_bytes(path.read_bytes(), entry)
     workbook = openpyxl.load_workbook(path, read_only=True, data_only=True, keep_links=False)
@@ -230,6 +237,11 @@ def inspect_pilot(raw_dir: Path, manifest: dict) -> tuple[dict, np.ndarray | Non
         if any(all(v is None for v in row) for row in rows):
             raise ValueError("Unexpected blank measurement row; inspect before changing selection")
         report, discharge = inspect_records(rows)
+        elapsed_dates = np.array([(r[0] - rows[0][0]).total_seconds() for r in rows])
+        elapsed_clock = np.array([r[1] - rows[0][1] for r in rows])
+        date_residual = elapsed_dates - elapsed_clock
+        backwards_dates = np.flatnonzero(np.diff(elapsed_dates) < 0)
+        clock_jumps = np.flatnonzero(np.abs(np.diff(date_residual)) > 1.0)
         report.update(
             {
                 "source": integrity,
@@ -243,6 +255,20 @@ def inspect_pilot(raw_dir: Path, manifest: dict) -> tuple[dict, np.ndarray | Non
                 "license": manifest["license"],
                 "authors": manifest["authors"],
                 "openpyxl_version": openpyxl.__version__,
+                "measurement_clock_audit": {
+                    "backwards_date_intervals": len(backwards_dates),
+                    "max_relative_date_test_clock_discrepancy_s": float(
+                        np.max(np.abs(date_residual))
+                    ),
+                    "date_test_clock_jumps_above_1s": len(clock_jumps),
+                    "first_backwards_date_excel_row_pairs": [
+                        [int(i) + 2, int(i) + 3] for i in backwards_dates[:20]
+                    ],
+                    "first_clock_jump_excel_row_pairs": [
+                        [int(i) + 2, int(i) + 3] for i in clock_jumps[:20]
+                    ],
+                    "timezone": "Unspecified in source; timestamps are not converted to UTC",
+                },
             }
         )
         return report, discharge
