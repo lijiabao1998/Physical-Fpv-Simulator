@@ -10,12 +10,15 @@ on:
       - src/physical_fpv/validation.py
       - scripts/run_stanford_pilot.py
       - docs/stanford-validation-protocol.md
+      - docs/stanford-scheduling-addendum.md
       - data/stanford-manifest.json
       - docs/benchmarks/stanford-k1-chronology.json
       - requirements-lock.txt
       - requirements-data-lock.txt
       - pyproject.toml
       - .github/workflows/stanford-pilot.yml
+      - scripts/stanford_evidence_cache.py
+      - docs/benchmarks/stanford-k1-v2-verified-evidence.json
   workflow_dispatch:
 permissions:
   contents: read
@@ -46,10 +49,19 @@ jobs:
           python -m pip install -r requirements-lock.txt
           python -m pip install --no-deps -e .
           python -m pip install --index-url https://pypi.org/simple --only-binary=:all: --no-deps --require-hashes -r requirements-data-lock.txt
+      - name: Verify calculation fingerprints before reusing the recorded attempt
+        id: saved
+        run: python scripts/stanford_evidence_cache.py --github-output "$GITHUB_OUTPUT"
       - name: Acquire the checksum-pinned source pilot
+        if: steps.saved.outputs.reuse != 'true'
         run: python scripts/inspect_stanford_pilot.py --fetch
       - name: Run one external record with a shared two-grid twenty-minute budget
+        if: steps.saved.outputs.reuse != 'true'
         run: python scripts/run_stanford_pilot.py --timeout 1200
+      - name: Keep incomplete reused execution distinct from scientific disagreement
+        if: steps.saved.outputs.reuse == 'true'
+        run: |
+          python -c "import json; r=json.load(open('results/stanford-k1-pilot/status.json')); assert r['status']=='completed', 'Recorded solver/budget failure remains unverified; no new simulation was run'"
       - name: Report numerical and empirical outcomes separately
         if: always()
         run: |

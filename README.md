@@ -42,7 +42,7 @@ Lumped thermal simulation is explicitly **unvalidated**: several built-in Chen20
 
 ## Current results
 
-Software checks pass (164 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
+Software checks pass (169 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
 
 ## Thermal reconstruction: inspect the second cohort
 
@@ -115,4 +115,23 @@ The [recorded chronology](docs/stanford-chronology-findings.md) shows that some 
 
 ## Prospective external-current pilot
 
-The [frozen Stanford k1 comparison](docs/stanford-validation-protocol.md) replays the measured current and keeps the missing first1.0006seconds explicit. The new current-profile solver is checked against constant-current results and analytical charge integrals. A single80→120-point external-record run is bounded to20minutes/4GB. Prediction results are pending; unspecified fixture cooling and measured-surface versus predicted-average temperature prevent a claim of independent thermal validation. The core change also requires a fresh constant-current numerical regression, so the previous120-point cache is deliberately invalidated.
+The first [frozen Stanford k1 run](docs/stanford-validation-protocol.md) exhausted its20-minute budget while integrating mesh80; it produced no prediction curve, and mesh120 never started. Its [verified execution evidence](docs/benchmarks/stanford-k1-verified-evidence.json) is preserved. Experimental agreement and numerical convergence for this external pilot remain **NOT EVALUATED**, distinct from the existing30/36 ORegan empirical failures.
+
+A [predeclared60-second scheduling experiment](docs/stanford-scheduling-diagnostic.md) held the mesh, complete measured-current interpolant, parameters, tolerance and72 output times identical. Native integration took47.789s with61 stops versus1.535s with two endpoints. Maximum differences were2.07microvolts,0.000000754K and0.00000000376Ah; both physical audits passed. This identifies substantial restart overhead for the prefix, not full-discharge validity. See [exact evidence](docs/benchmarks/stanford-scheduling-prefix.json).
+
+The [scheduling addendum](docs/stanford-scheduling-addendum.md) changes only integration stops, preserves every forcing/output point, and requests the same single80→120 pilot under the original20-minute/4GB budget. Full results are pending. No curve is fitted or gate relaxed; Stanford cooling remains an unidentified boundary, and temperature comparison remains a skin-versus-average proxy.
+
+The preceding constant-current numerical regression at a8eb171 completed in480.08s and passed. Its curve differed from the original120-point curve by at most5.64e-8V and8.70e-8K, with identical physical parameter fingerprints. [Regression evidence](docs/benchmarks/constant-profile-regression.json) and the original880-second evidence are retained separately.
+
+## Inspect the actual measurement
+
+![Stanford k1 measured current, voltage and skin temperature](docs/benchmarks/stanford-k1-source.svg)
+
+The source-only figure preserves the first1.0006seconds as missing and labels measured skin temperature. Display compression retains original local extrema; it does not smooth or change the archived records. Reproduce the figure with optional, separately pinned plotting dependencies:
+
+```sh
+python -m pip install --index-url https://pypi.org/simple --only-binary=:all: --no-deps --require-hashes -r requirements-plot-lock.txt
+python scripts/render_stanford_measurements.py
+```
+
+[Plotting dependency sources and declared licenses](docs/plot-dependency-licenses.json) are separate from the numerical lock and source-data licenses.

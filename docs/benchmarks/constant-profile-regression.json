@@ -1,0 +1,47 @@
+{
+  "current_evidence": {
+    "ci_run_id": 37724035996,
+    "commit_sha": "a8eb17134d5e70b94c8ddaaac1e31b65cf8fa0e5",
+    "ci_url": "https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/37724035996",
+    "artifact_id": 11526722832,
+    "artifact_zip_sha256": "231903a4ae57585a03ca2332e4a3a188e56d623986bac3d0d00028f6b43c20a4",
+    "supervised_elapsed_seconds": 480.078097289,
+    "comparison": {
+      "reference_mesh": 80,
+      "candidate_mesh": 120,
+      "reference_sha256": "c6a19fbed16508bf16499b485247776ff994d8946f01d321267dea89de6b0134",
+      "voltage_max_difference_v": 0.003320930016940782,
+      "temperature_max_difference_k": 0.018017713128813284,
+      "capacity_relative_difference": 3.4459850598625345e-05,
+      "voltage_peak_time_s": 140.0,
+      "temperature_peak_time_s": 920.0,
+      "common_interval_s": [
+        0.0,
+        3333.391292703808
+      ],
+      "reference_cutoff_time_s": 3333.506160869621,
+      "candidate_cutoff_time_s": 3333.391292703808,
+      "physical_audit_passed": true,
+      "passed": true,
+      "scope": "single representative case; no whole-cohort validation"
+    },
+    "calculation_contract": {
+      "src/physical_fpv/core.py": "d5f4dad65c1260de12639441308dacc555ba0a4b981be1c5ee8c7310a7de672c",
+      "src/physical_fpv/current_profile.py": "9324ed84ee6ddd5bd142db99383ee69116b0d51bde759cd503680acde144d5d7",
+      "scripts/verify_thermal_grid.py": "acda23604cf8c2b5bea27289ce7ca090a1fee39735404e94cccfad65194435d9",
+      "requirements-lock.txt": "99e788261bf013158962b719b1710fde854c864ab67fac1c72dc69902830a20b",
+      "pyproject.toml": "b9407d6c6afafb0d0ab4ae96176f13133600a4b2fe373fe6803c11c95034077d",
+      "docs/benchmarks/thermal-grid80-reference.csv": "c6a19fbed16508bf16499b485247776ff994d8946f01d321267dea89de6b0134",
+      "docs/benchmarks/thermal-reference-manifest.json": "31d55cf6a66f2a2035a773ca3eb8a07e58ac6392cecf06e1c01aaf0feff22cbe",
+      "docs/benchmarks/thermal-representative-grid80.json": "8b7ce0008064e78c9376f4b9bbaba55994f910e695d96f716f4008b783d5660e",
+      "validation.py::write_timeseries": "a9eacb192a9767ad8e956f9e86192057c92ab1571252cd62d97a379239a38be8"
+    },
+    "previous_verified_evidence": "docs/benchmarks/grid120-verified-evidence-original.json"
+  },
+  "previous_grid120_sha256": "61585bc925a0328513f7f6a905d55a926eed762530f5e9faae2e005d8a492846",
+  "new_grid120_sha256": "4ef8b7a8a1e4b4300533d8a37ecbc5c074b5546f3092a3aa0e547fc78d8c6775",
+  "same_parameter_fingerprint": true,
+  "maximum_difference_from_previous_grid120_v": 5.636690847410364e-08,
+  "maximum_difference_from_previous_grid120_k": 8.700249054527376e-08,
+  "scope": "Constant-current regression after profile-input extension; no empirical gate repaired."
+}

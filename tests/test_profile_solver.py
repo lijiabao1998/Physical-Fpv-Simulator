@@ -48,3 +48,22 @@ def test_profile_domain_and_research_current_limits_are_enforced_before_solve():
         simulate(ModelConfig(), current_profile=CurrentProfile([0, 100], [5, 5]))
     with pytest.raises(ValueError, match="research envelope"):
         simulate(ModelConfig(), current_profile=CurrentProfile([0, 6000], [5, 8]))
+    with pytest.raises(ValueError, match="schedule"):
+        simulate(ModelConfig(), profile_schedule="unknown")
+
+
+@pytest.mark.integration
+def test_adaptive_schedule_preserves_forcing_and_sampled_audit_grid():
+    config = ModelConfig(model="SPM", mesh_points=10, sample_period_s=5)
+    profile = CurrentProfile([0, 100.3, 200.7, 6000], [5, 3, 5, 5])
+    reference = simulate(config, current_profile=profile)
+    adaptive = simulate(config, current_profile=profile, profile_schedule="adaptive")
+    assert reference.parameter_fingerprint == adaptive.parameter_fingerprint
+    assert 100.3 in adaptive.time_s and 200.7 in adaptive.time_s
+    stop = min(reference.time_s[-1], adaptive.time_s[-1])
+    np.testing.assert_array_equal(
+        reference.time_s[reference.time_s < stop], adaptive.time_s[adaptive.time_s < stop]
+    )
+    assert adaptive.physical_audit["charge_integral_error_ah"] <= 1e-6
+    assert adaptive.physical_audit["passed"]
+    assert not adaptive.current_protocol["solver_stops_at_profile_knots"]

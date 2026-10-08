@@ -18,6 +18,7 @@ CALCULATION_FILES = (
     "src/physical_fpv/validation.py",
     "scripts/run_stanford_pilot.py",
     "docs/stanford-validation-protocol.md",
+    "docs/stanford-scheduling-addendum.md",
     "data/stanford-manifest.json",
     "docs/benchmarks/stanford-k1-chronology.json",
     "requirements-lock.txt",
@@ -65,7 +66,12 @@ def run_worker(args):
 
     from physical_fpv.attribution import write_evidence_attribution
     from physical_fpv.core import simulate
-    from physical_fpv.stanford_benchmark import evaluate_pilot, prepare_pilot, verify_protocol
+    from physical_fpv.stanford_benchmark import (
+        SCHEDULING_ADDENDUM_SHA256,
+        evaluate_pilot,
+        prepare_pilot,
+        verify_protocol,
+    )
     from physical_fpv.thermal_benchmark import thermal_numerics
     from physical_fpv.validation import write_timeseries
 
@@ -93,6 +99,8 @@ def run_worker(args):
         "assumptions": assumptions,
         "fitting_performed": False,
         "initial_concentrations_mol_m3": initial_concentrations,
+        "profile_schedule": "adaptive",
+        "scheduling_addendum_sha256": SCHEDULING_ADDENDUM_SHA256,
     }
     write_json(args.out / "input.json", inputs)
     write_evidence_attribution(args.out, ["stanford2021", "oregan2022_parameters"])
@@ -108,7 +116,9 @@ def run_worker(args):
         gc.collect()
         started = time.monotonic()
         write_json(args.out / "stage.json", {"status": "running", "mesh": mesh})
-        result = simulate(replace(config, mesh_points=mesh), current_profile=profile)
+        result = simulate(
+            replace(config, mesh_points=mesh), current_profile=profile, profile_schedule="adaptive"
+        )
         write_timeseries(args.out / f"mesh{mesh}-timeseries.csv", result)
         report = evaluate_pilot(observed, profile, result, args.out / f"mesh{mesh}-residuals.csv")
         report["elapsed_s"] = time.monotonic() - started

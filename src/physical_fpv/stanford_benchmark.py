@@ -14,6 +14,7 @@ from physical_fpv.stanford_data import inspect_pilot
 from physical_fpv.thermal_benchmark import THERMAL_GATES, piecewise_error, temperature_domains
 
 PROTOCOL_SHA256 = "009f64f52b889c56fed15e085007a82c24ed58e8b926c49e5f964f9e185f53b0"
+SCHEDULING_ADDENDUM_SHA256 = "d3ce12b439053f88df50f8cc6448c318c139a302cd3421755a505aa6dec1d27e"
 SOURCE_SHA256 = "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6"
 
 
@@ -202,6 +203,7 @@ def evaluate_pilot(
         "cell": "Stanford k1",
         "source_sha256": SOURCE_SHA256,
         "protocol_sha256": PROTOCOL_SHA256,
+        "scheduling_addendum_sha256": SCHEDULING_ADDENDUM_SHA256,
         "model": model.metadata(),
         "comparison_role": (
             "preselected external-source pilot; no new fit; not a blinded six-cell validation"
@@ -237,6 +239,9 @@ def verify_protocol(root: Path) -> dict:
     path = root / "docs/stanford-validation-protocol.md"
     if hashlib.sha256(path.read_bytes()).hexdigest() != PROTOCOL_SHA256:
         raise ValueError("Frozen Stanford prediction protocol changed")
+    addendum = root / "docs/stanford-scheduling-addendum.md"
+    if hashlib.sha256(addendum.read_bytes()).hexdigest() != SCHEDULING_ADDENDUM_SHA256:
+        raise ValueError("Frozen Stanford scheduling addendum changed")
     chronology = json.loads((root / "docs/benchmarks/stanford-k1-chronology.json").read_text())
     if (
         not chronology["recorded_order_qualified"]

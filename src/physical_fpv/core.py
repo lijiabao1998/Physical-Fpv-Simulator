@@ -181,9 +181,14 @@ def _simulation_template(
 
 
 def simulate(
-    config: ModelConfig, current_profile: CurrentProfile | None = None
+    config: ModelConfig,
+    current_profile: CurrentProfile | None = None,
+    *,
+    profile_schedule: Literal["all_knots", "adaptive"] = "all_knots",
 ) -> SimulationResult:
     config.validate()
+    if profile_schedule not in {"all_knots", "adaptive"}:
+        raise ValueError("Unsupported current-profile integration schedule")
     duration = min(86400.0, 1.5 * 5.0 / config.current_a * 3600)
     if current_profile is not None:
         if not isinstance(current_profile, CurrentProfile):
@@ -270,9 +275,14 @@ def simulate(
         ).hexdigest()
     output_time = np.arange(0, duration + config.sample_period_s, config.sample_period_s)
     output_time = output_time[output_time <= duration]
+    if current_profile is not None:
+        # Preserve the same sampled state/audit grid under either integration schedule.
+        output_time = np.unique(
+            np.r_[output_time, current_profile.time_s[current_profile.time_s <= duration]]
+        )
     integration_stops = (
         [0, duration]
-        if current_profile is None
+        if current_profile is None or profile_schedule == "adaptive"
         else np.unique(np.r_[current_profile.time_s[current_profile.time_s < duration], duration])
     )
     solution = simulation.solve(integration_stops, t_interp=output_time, inputs=inputs)
@@ -398,7 +408,8 @@ def simulate(
                 "current_range_a": [current_profile.min_current_a, current_profile.max_current_a],
                 "profile_end_time_s": current_profile.end_time_s,
                 "implicit_extrapolation": False,
-                "solver_stops_at_profile_knots": True,
+                "solver_stops_at_profile_knots": profile_schedule == "all_knots",
+                "integration_schedule": profile_schedule,
             }
         ),
     )
