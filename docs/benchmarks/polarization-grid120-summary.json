@@ -1,0 +1,1334 @@
+{
+  "scope": "One unchanged model diagnostic; experimental ORegan 30/36 FAIL remains",
+  "status": {
+    "status": "completed",
+    "return_code": 0,
+    "elapsed_s": 780.0449001660018,
+    "budget_s": 1200
+  },
+  "input": {
+    "config": {
+      "model": "DFN",
+      "thermal": "lumped",
+      "parameter_set": "ORegan2022",
+      "initial_temperature_k": 297.75,
+      "heat_transfer_coefficient_w_m2_k": 15,
+      "current_a": 5,
+      "ambient_temperature_k": 298.15,
+      "mesh_points": 120,
+      "tolerance": 1e-07,
+      "sample_period_s": 10.0,
+      "max_temperature_k": 333.15
+    },
+    "source_sha256": {
+      "src/physical_fpv/core.py": "8d10606d09f232b6256fc0cf93c46c344f755a25082c3cf1378b604579424eb9",
+      "src/physical_fpv/polarization.py": "5edcaf362994d2902228c76e93fd238feb6f959f51963a247541b3068a596636",
+      "src/physical_fpv/validation.py": "e7fd1abeb8d47b7c522bd60668c5fb1dcd5b1a68ad5e542f9b9a1a2c37cb425c",
+      "src/physical_fpv/attribution.py": "8af95bb65e8fa55d5aea17d92dc185331c0dbd08f8758697edd39c9c1c94bc93",
+      "scripts/diagnose_polarization.py": "58ed4dee66c9f066d28e5930eb620fe50a4bcdb36c4daf55b47a9adfe29ddba3",
+      "docs/polarization-protocol.md": "46fed0a3e6ce82d42486b2c88741dfa0a32b954c8ea31feeeb1e707a6238bf23",
+      "requirements-lock.txt": "99e788261bf013158962b719b1710fde854c864ab67fac1c72dc69902830a20b",
+      "pyproject.toml": "b9407d6c6afafb0d0ab4ae96176f13133600a4b2fe373fe6803c11c95034077d",
+      "docs/benchmarks/cell790-grid120-diagnosis.json": "05f528e8b7d5bf4a50b1e8547d52dd426b3737d25e0cb812d2a03143b4232ba0",
+      "docs/benchmarks/thermal-grid120-reference.csv": "61585bc925a0328513f7f6a905d55a926eed762530f5e9faae2e005d8a492846"
+    },
+    "source_commit_sha": "02b16172d4e9a88b8923aef779d0f02df766d56c",
+    "protocol_sha256": "46fed0a3e6ce82d42486b2c88741dfa0a32b954c8ea31feeeb1e707a6238bf23",
+    "pybamm_version": "26.9.0.0",
+    "python_version": "3.12.14",
+    "numpy_version": "2.5.3",
+    "memory_budget_bytes": 4000000000,
+    "wall_budget_s": 1200,
+    "scope": "one unchanged model; new internal-state observables, no fit"
+  },
+  "outcome": {
+    "accounting_passed": true,
+    "repeatability_passed": true,
+    "physical_audit_passed": true,
+    "voltage_cutoff_reached": true,
+    "scope": "diagnostic consistency only; original empirical failures remain",
+    "new_simulation_run": true,
+    "diagnostic_checks_passed": true
+  },
+  "repeatability": {
+    "comparison": "new observable export vs original grid120; no new mesh-convergence claim",
+    "common_interval_s": [
+      0.0,
+      3333.391292703808
+    ],
+    "previous_cutoff_s": 3333.391292865383,
+    "new_cutoff_s": 3333.391292703808,
+    "voltage_max_difference_v": 5.636690847410364e-08,
+    "temperature_max_difference_k": 8.700249054527376e-08,
+    "capacity_relative_difference": 4.8438873989796855e-11,
+    "voltage_peak_difference_time_s": 2940.0,
+    "temperature_peak_difference_time_s": 3090.0,
+    "passed": true
+  },
+  "accounting": {
+    "fixed_active_capacity_ah": {
+      "negative": 5.203221458293159,
+      "positive": 7.163230036439915
+    },
+    "capacity_variable_max_error_ah": {
+      "negative": 0.0,
+      "positive": 8.881784197001252e-16
+    },
+    "volume_vs_particle_mean_max_error": {
+      "negative": 2.220446049250313e-16,
+      "positive": 3.3306690738754696e-16
+    },
+    "solution_vs_result_max_error": {
+      "terminal_voltage_v": 0.0,
+      "capacity_ah": 0.0,
+      "bulk_temperature_k": 0.0
+    },
+    "declared_initial_stoichiometry": {
+      "negative": 0.9757631071899402,
+      "positive": 0.26997005698831256
+    },
+    "initial_mean_vs_declared_max_error": {
+      "negative": 1.1879386363489175e-14,
+      "positive": 1.3322676295501878e-15
+    },
+    "charge_relation": "theta(t) = parameter c0/cmax +/- Q(t)/Q_active",
+    "faraday_constant_c_mol": 96485.33212331001
+  },
+  "voltage_reconstruction_max_error_v": 9.934346678619477e-10,
+  "mean_stoichiometry_charge_max_error": {
+    "negative": 2.500777362968165e-14,
+    "positive": 1.7208456881689926e-14
+  },
+  "state_selection": "Nearest existing output time to 0%, 10%, 50%, 90%, 100% of run",
+  "states": [
+    {
+      "label": "initial",
+      "time_s": 0.0,
+      "index": 0,
+      "scalars": {
+        "terminal_voltage_v": 4.1114769226489685,
+        "bulk_ocv_v": 4.180982574805126,
+        "bulk_temperature_k": 297.75,
+        "imposed_surface_boundary_temperature_k": 298.15,
+        "ambient_temperature_k": 298.15,
+        "negative_volume_mean_stoichiometry": 0.9757631071899283,
+        "positive_volume_mean_stoichiometry": 0.2699700569883139,
+        "negative_surface_x_average_stoichiometry": 0.9757631071899416,
+        "positive_surface_x_average_stoichiometry": 0.2699700569883117,
+        "negative_surface_min_stoichiometry": 0.9757631071899404,
+        "negative_surface_max_stoichiometry": 0.9757631071899404,
+        "positive_surface_min_stoichiometry": 0.26997005698831256,
+        "positive_surface_max_stoichiometry": 0.26997005698831256,
+        "negative_bulk_ocp_signed_v": -0.09205174603092187,
+        "positive_bulk_ocp_signed_v": 4.273034320836048,
+        "negative_particle_signed_v": 2.7755575615628914e-17,
+        "positive_particle_signed_v": -2.6645352591003757e-14,
+        "negative_reaction_signed_v": -0.03039364803519043,
+        "positive_reaction_signed_v": -0.017917758982818555,
+        "electrolyte_concentration_signed_v": -1.8985624141686863e-17,
+        "electrolyte_ohmic_signed_v": -0.01966899623137903,
+        "negative_solid_ohmic_signed_v": -6.872689427763078e-06,
+        "positive_solid_ohmic_signed_v": -0.0015183756756149691,
+        "contact_signed_v": -0.0
+      }
+    },
+    {
+      "label": "early",
+      "time_s": 330.0,
+      "index": 33,
+      "scalars": {
+        "terminal_voltage_v": 3.918361015926826,
+        "bulk_ocv_v": 4.0927902486137455,
+        "bulk_temperature_k": 299.6982908193114,
+        "imposed_surface_boundary_temperature_k": 298.15,
+        "ambient_temperature_k": 298.15,
+        "negative_volume_mean_stoichiometry": 0.8876766520953109,
+        "positive_volume_mean_stoichiometry": 0.33395422767692234,
+        "negative_surface_x_average_stoichiometry": 0.6333032139836102,
+        "positive_surface_x_average_stoichiometry": 0.3862635762962854,
+        "negative_surface_min_stoichiometry": 0.5860935880426568,
+        "negative_surface_max_stoichiometry": 0.702820652965545,
+        "positive_surface_min_stoichiometry": 0.3808736738203711,
+        "positive_surface_max_stoichiometry": 0.3982906193515525,
+        "negative_bulk_ocp_signed_v": -0.09191228894973864,
+        "positive_bulk_ocp_signed_v": 4.184702537563484,
+        "negative_particle_signed_v": -0.013495550747526591,
+        "positive_particle_signed_v": -0.05766759058053417,
+        "negative_reaction_signed_v": -0.021801014698672808,
+        "positive_reaction_signed_v": -0.01843498245173869,
+        "electrolyte_concentration_signed_v": -0.042219379930526255,
+        "electrolyte_ohmic_signed_v": -0.019351871419324776,
+        "negative_solid_ohmic_signed_v": -6.9402521161396484e-06,
+        "positive_solid_ohmic_signed_v": -0.001451902062534316,
+        "contact_signed_v": -0.0
+      }
+    },
+    {
+      "label": "middle",
+      "time_s": 1670.0,
+      "index": 167,
+      "scalars": {
+        "terminal_voltage_v": 3.523066296679821,
+        "bulk_ocv_v": 3.6997204505194503,
+        "bulk_temperature_k": 303.4433510592714,
+        "imposed_surface_boundary_temperature_k": 298.15,
+        "ambient_temperature_k": 298.15,
+        "negative_volume_mean_stoichiometry": 0.5299922586807649,
+        "positive_volume_mean_stoichiometry": 0.5937687389579398,
+        "negative_surface_x_average_stoichiometry": 0.32766047143265215,
+        "positive_surface_x_average_stoichiometry": 0.641817822458731,
+        "negative_surface_min_stoichiometry": 0.26879652991258934,
+        "negative_surface_max_stoichiometry": 0.37397738836116284,
+        "positive_surface_min_stoichiometry": 0.6333924884341504,
+        "positive_surface_max_stoichiometry": 0.6612263065187005,
+        "negative_bulk_ocp_signed_v": -0.1326032457450712,
+        "positive_bulk_ocp_signed_v": 3.8323236962645213,
+        "negative_particle_signed_v": -0.02018141979039509,
+        "positive_particle_signed_v": -0.05192548381924622,
+        "negative_reaction_signed_v": -0.026702836038038275,
+        "positive_reaction_signed_v": -0.017930705693129045,
+        "electrolyte_concentration_signed_v": -0.03903452502595506,
+        "electrolyte_ohmic_signed_v": -0.01945260609125246,
+        "negative_solid_ohmic_signed_v": -6.471433934526844e-06,
+        "positive_solid_ohmic_signed_v": -0.00142010530125658,
+        "contact_signed_v": -0.0
+      }
+    },
+    {
+      "label": "late",
+      "time_s": 3000.0,
+      "index": 300,
+      "scalars": {
+        "terminal_voltage_v": 3.1127055459987356,
+        "bulk_ocv_v": 3.3776952839424577,
+        "bulk_temperature_k": 307.005166963741,
+        "imposed_surface_boundary_temperature_k": 298.15,
+        "ambient_temperature_k": 298.15,
+        "negative_volume_mean_stoichiometry": 0.17497715178424422,
+        "positive_volume_mean_stoichiometry": 0.8516443359756596,
+        "negative_surface_x_average_stoichiometry": 0.1374803270104699,
+        "positive_surface_x_average_stoichiometry": 0.938982705348506,
+        "negative_surface_min_stoichiometry": 0.11909534915433495,
+        "negative_surface_max_stoichiometry": 0.15111556956259778,
+        "positive_surface_min_stoichiometry": 0.9316053621416196,
+        "positive_surface_max_stoichiometry": 0.954895901523661,
+        "negative_bulk_ocp_signed_v": -0.22909683669896128,
+        "positive_bulk_ocp_signed_v": 3.606792120641419,
+        "negative_particle_signed_v": -0.06078994226644188,
+        "positive_particle_signed_v": -0.07038237155029226,
+        "negative_reaction_signed_v": -0.03869745690891252,
+        "positive_reaction_signed_v": -0.035756700685833476,
+        "electrolyte_concentration_signed_v": -0.03776154538938727,
+        "electrolyte_ohmic_signed_v": -0.020205764804395877,
+        "negative_solid_ohmic_signed_v": -5.469499311005451e-06,
+        "positive_solid_ohmic_signed_v": -0.0013904858607864945,
+        "contact_signed_v": -0.0
+      }
+    },
+    {
+      "label": "end",
+      "time_s": 3333.391292703808,
+      "index": 334,
+      "scalars": {
+        "terminal_voltage_v": 2.499999999999719,
+        "bulk_ocv_v": 3.096727133873872,
+        "bulk_temperature_k": 309.62603862316695,
+        "imposed_surface_boundary_temperature_k": 298.15,
+        "ambient_temperature_k": 298.15,
+        "negative_volume_mean_stoichiometry": 0.08598546350033798,
+        "positive_volume_mean_stoichiometry": 0.9162860492437042,
+        "negative_surface_x_average_stoichiometry": 0.04126543079311835,
+        "positive_surface_x_average_stoichiometry": 0.9896798292291146,
+        "negative_surface_min_stoichiometry": 0.038866939496867585,
+        "negative_surface_max_stoichiometry": 0.04285551785567358,
+        "positive_surface_min_stoichiometry": 0.9863267340593223,
+        "positive_surface_max_stoichiometry": 0.9955772735720615,
+        "negative_bulk_ocp_signed_v": -0.45787287273137534,
+        "positive_bulk_ocp_signed_v": 3.554600006605247,
+        "negative_particle_signed_v": -0.33865090877254667,
+        "positive_particle_signed_v": -0.05910596572848448,
+        "negative_reaction_signed_v": -0.07312128559980047,
+        "positive_reaction_signed_v": -0.07281046252449608,
+        "electrolyte_concentration_signed_v": -0.033087911280202706,
+        "electrolyte_ohmic_signed_v": -0.01860428297782714,
+        "negative_solid_ohmic_signed_v": -6.037933177396255e-06,
+        "positive_solid_ohmic_signed_v": -0.0013402782520279821,
+        "contact_signed_v": -0.0
+      }
+    }
+  ],
+  "voltage_terms": [
+    {
+      "term": "negative_bulk_ocp",
+      "variable": "Negative electrode bulk open-circuit potential [V]",
+      "units": "V",
+      "raw_column": "negative_bulk_ocp_raw_v",
+      "signed_column": "negative_bulk_ocp_signed_v",
+      "rawsign": "unmodified PyBaMM entries",
+      "signed_multiplier": -1,
+      "raw_sign_observed": "nonnegative"
+    },
+    {
+      "term": "positive_bulk_ocp",
+      "variable": "Positive electrode bulk open-circuit potential [V]",
+      "units": "V",
+      "raw_column": "positive_bulk_ocp_raw_v",
+      "signed_column": "positive_bulk_ocp_signed_v",
+      "rawsign": "unmodified PyBaMM entries",
+      "signed_multiplier": 1,
+      "raw_sign_observed": "nonnegative"
+    },
+    {
+      "term": "negative_particle",
+      "variable": "Negative particle concentration overpotential [V]",
+      "units": "V",
+      "raw_column": "negative_particle_raw_v",
+      "signed_column": "negative_particle_signed_v",
+      "rawsign": "unmodified PyBaMM entries",
+      "signed_multiplier": -1,
+      "raw_sign_observed": "mixed"
+    },
+    {
+      "term": "positive_particle",
+      "variable": "Positive particle concentration overpotential [V]",
+      "units": "V",
+      "raw_column": "positive_particle_raw_v",
+      "signed_column": "positive_particle_signed_v",
+      "rawsign": "unmodified PyBaMM entries",
+      "signed_multiplier": 1,
+      "raw_sign_observed": "nonpositive"
+    },
+    {
+      "term": "negative_reaction",
+      "variable": "X-averaged negative electrode reaction overpotential [V]",
+      "units": "V",
+      "raw_column": "negative_reaction_raw_v",
+      "signed_column": "negative_reaction_signed_v",
+      "rawsign": "unmodified PyBaMM entries",
+      "signed_multiplier": -1,
+      "raw_sign_observed": "nonnegative"
+    },
+    {
+      "term": "positive_reaction",
+      "variable": "X-averaged positive electrode reaction overpotential [V]",
+      "units": "V",
+      "raw_column": "positive_reaction_raw_v",
+      "signed_column": "positive_reaction_signed_v",
+      "rawsign": "unmodified PyBaMM entries",
+      "signed_multiplier": 1,
+      "raw_sign_observed": "nonpositive"
+    },
+    {
+      "term": "electrolyte_concentration",
+      "variable": "X-averaged battery concentration overpotential [V]",
+      "units": "V",
+      "raw_column": "electrolyte_concentration_raw_v",
+      "signed_column": "electrolyte_concentration_signed_v",
+      "rawsign": "unmodified PyBaMM entries",
+      "signed_multiplier": 1,
+      "raw_sign_observed": "nonpositive"
+    },
+    {
+      "term": "electrolyte_ohmic",
+      "variable": "X-averaged battery electrolyte ohmic losses [V]",
+      "units": "V",
+      "raw_column": "electrolyte_ohmic_raw_v",
+      "signed_column": "electrolyte_ohmic_signed_v",
+      "rawsign": "unmodified PyBaMM entries",
+      "signed_multiplier": 1,
+      "raw_sign_observed": "nonpositive"
+    },
+    {
+      "term": "negative_solid_ohmic",
+      "variable": "X-averaged battery negative solid phase ohmic losses [V]",
+      "units": "V",
+      "raw_column": "negative_solid_ohmic_raw_v",
+      "signed_column": "negative_solid_ohmic_signed_v",
+      "rawsign": "unmodified PyBaMM entries",
+      "signed_multiplier": -1,
+      "raw_sign_observed": "nonnegative"
+    },
+    {
+      "term": "positive_solid_ohmic",
+      "variable": "X-averaged battery positive solid phase ohmic losses [V]",
+      "units": "V",
+      "raw_column": "positive_solid_ohmic_raw_v",
+      "signed_column": "positive_solid_ohmic_signed_v",
+      "rawsign": "unmodified PyBaMM entries",
+      "signed_multiplier": 1,
+      "raw_sign_observed": "nonpositive"
+    },
+    {
+      "term": "contact",
+      "variable": "Contact overpotential [V]",
+      "units": "V",
+      "raw_column": "contact_raw_v",
+      "signed_column": "contact_signed_v",
+      "rawsign": "unmodified PyBaMM entries",
+      "signed_multiplier": -1,
+      "raw_sign_observed": "zero"
+    }
+  ],
+  "series_summaries": {
+    "terminal_voltage_v": {
+      "variable": "Terminal voltage [V]",
+      "units": "V",
+      "summary": {
+        "initial": {
+          "value": 4.1114769226489685,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": 2.499999999999719,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": 2.499999999999719,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "maximum": {
+          "value": 4.1114769226489685,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "peak_absolute": {
+          "value": 4.1114769226489685,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "raw_sign_observed": "nonnegative"
+      }
+    },
+    "bulk_ocv_v": {
+      "variable": "Bulk open-circuit voltage [V]",
+      "units": "V",
+      "summary": {
+        "initial": {
+          "value": 4.180982574805126,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": 3.096727133873872,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": 3.096727133873872,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "maximum": {
+          "value": 4.180982574805126,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "peak_absolute": {
+          "value": 4.180982574805126,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "raw_sign_observed": "nonnegative"
+      }
+    },
+    "bulk_temperature_k": {
+      "variable": "Volume-averaged cell temperature [K]",
+      "units": "K",
+      "summary": {
+        "initial": {
+          "value": 297.75,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": 309.62603862316695,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": 297.75,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "maximum": {
+          "value": 309.62603862316695,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "peak_absolute": {
+          "value": 309.62603862316695,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "raw_sign_observed": "nonnegative"
+      }
+    },
+    "imposed_surface_boundary_temperature_k": {
+      "variable": "Volume-averaged surface temperature [K]",
+      "units": "K",
+      "summary": {
+        "initial": {
+          "value": 298.15,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": 298.15,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": 298.15,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "maximum": {
+          "value": 298.15,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "peak_absolute": {
+          "value": 298.15,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "raw_sign_observed": "nonnegative"
+      }
+    },
+    "ambient_temperature_k": {
+      "variable": "Volume-averaged ambient temperature [K]",
+      "units": "K",
+      "summary": {
+        "initial": {
+          "value": 298.15,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": 298.15,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": 298.15,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "maximum": {
+          "value": 298.15,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "peak_absolute": {
+          "value": 298.15,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "raw_sign_observed": "nonnegative"
+      }
+    },
+    "negative_volume_mean_stoichiometry": {
+      "variable": "Negative electrode stoichiometry",
+      "units": "1",
+      "summary": {
+        "initial": {
+          "value": 0.9757631071899283,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": 0.08598546350033798,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": 0.08598546350033798,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "maximum": {
+          "value": 0.9757631071899283,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "peak_absolute": {
+          "value": 0.9757631071899283,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "raw_sign_observed": "nonnegative"
+      }
+    },
+    "positive_volume_mean_stoichiometry": {
+      "variable": "Positive electrode stoichiometry",
+      "units": "1",
+      "summary": {
+        "initial": {
+          "value": 0.2699700569883139,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": 0.9162860492437042,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": 0.2699700569883139,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "maximum": {
+          "value": 0.9162860492437042,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "peak_absolute": {
+          "value": 0.9162860492437042,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "raw_sign_observed": "nonnegative"
+      }
+    },
+    "negative_surface_x_average_stoichiometry": {
+      "variable": "X-averaged negative particle surface stoichiometry",
+      "units": "1",
+      "summary": {
+        "initial": {
+          "value": 0.9757631071899416,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": 0.04126543079311835,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": 0.04126543079311835,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "maximum": {
+          "value": 0.9757631071899416,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "peak_absolute": {
+          "value": 0.9757631071899416,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "raw_sign_observed": "nonnegative"
+      }
+    },
+    "positive_surface_x_average_stoichiometry": {
+      "variable": "X-averaged positive particle surface stoichiometry",
+      "units": "1",
+      "summary": {
+        "initial": {
+          "value": 0.2699700569883117,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": 0.9896798292291146,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": 0.2699700569883117,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "maximum": {
+          "value": 0.9896798292291146,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "peak_absolute": {
+          "value": 0.9896798292291146,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "raw_sign_observed": "nonnegative"
+      }
+    },
+    "negative_surface_min_stoichiometry": {
+      "variable": "Negative particle surface stoichiometry",
+      "units": "1",
+      "reduction": "min over physical electrode nodes, from .entries",
+      "summary": {
+        "initial": {
+          "value": 0.9757631071899404,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": 0.038866939496867585,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": 0.038866939496867585,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "maximum": {
+          "value": 0.9757631071899404,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "peak_absolute": {
+          "value": 0.9757631071899404,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "raw_sign_observed": "nonnegative"
+      }
+    },
+    "negative_surface_max_stoichiometry": {
+      "variable": "Negative particle surface stoichiometry",
+      "units": "1",
+      "reduction": "max over physical electrode nodes, from .entries",
+      "summary": {
+        "initial": {
+          "value": 0.9757631071899404,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": 0.04285551785567358,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": 0.04285551785567358,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "maximum": {
+          "value": 0.9757631071899404,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "peak_absolute": {
+          "value": 0.9757631071899404,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "raw_sign_observed": "nonnegative"
+      }
+    },
+    "positive_surface_min_stoichiometry": {
+      "variable": "Positive particle surface stoichiometry",
+      "units": "1",
+      "reduction": "min over physical electrode nodes, from .entries",
+      "summary": {
+        "initial": {
+          "value": 0.26997005698831256,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": 0.9863267340593223,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": 0.26997005698831256,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "maximum": {
+          "value": 0.9863267340593223,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "peak_absolute": {
+          "value": 0.9863267340593223,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "raw_sign_observed": "nonnegative"
+      }
+    },
+    "positive_surface_max_stoichiometry": {
+      "variable": "Positive particle surface stoichiometry",
+      "units": "1",
+      "reduction": "max over physical electrode nodes, from .entries",
+      "summary": {
+        "initial": {
+          "value": 0.26997005698831256,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": 0.9955772735720615,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": 0.26997005698831256,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "maximum": {
+          "value": 0.9955772735720615,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "peak_absolute": {
+          "value": 0.9955772735720615,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "raw_sign_observed": "nonnegative"
+      }
+    },
+    "negative_bulk_ocp_signed_v": {
+      "variable": "Negative electrode bulk open-circuit potential [V]",
+      "units": "V",
+      "multiplier": -1,
+      "summary": {
+        "initial": {
+          "value": -0.09205174603092187,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": -0.45787287273137534,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": -0.45787287273137534,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "maximum": {
+          "value": -0.09183589275807214,
+          "time_s": 800.0,
+          "index": 80
+        },
+        "peak_absolute": {
+          "value": -0.45787287273137534,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "raw_sign_observed": "nonpositive"
+      }
+    },
+    "positive_bulk_ocp_signed_v": {
+      "variable": "Positive electrode bulk open-circuit potential [V]",
+      "units": "V",
+      "multiplier": 1,
+      "summary": {
+        "initial": {
+          "value": 4.273034320836048,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": 3.554600006605247,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": 3.554600006605247,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "maximum": {
+          "value": 4.273034320836048,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "peak_absolute": {
+          "value": 4.273034320836048,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "raw_sign_observed": "nonnegative"
+      }
+    },
+    "negative_particle_signed_v": {
+      "variable": "Negative particle concentration overpotential [V]",
+      "units": "V",
+      "multiplier": -1,
+      "summary": {
+        "initial": {
+          "value": 2.7755575615628914e-17,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": -0.33865090877254667,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": -0.33865090877254667,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "maximum": {
+          "value": 7.067908395913536e-07,
+          "time_s": 30.0,
+          "index": 3
+        },
+        "peak_absolute": {
+          "value": -0.33865090877254667,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "raw_sign_observed": "mixed"
+      }
+    },
+    "positive_particle_signed_v": {
+      "variable": "Positive particle concentration overpotential [V]",
+      "units": "V",
+      "multiplier": 1,
+      "summary": {
+        "initial": {
+          "value": -2.6645352591003757e-14,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": -0.05910596572848448,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": -0.07417648467249327,
+          "time_s": 2700.0,
+          "index": 270
+        },
+        "maximum": {
+          "value": -2.6645352591003757e-14,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "peak_absolute": {
+          "value": -0.07417648467249327,
+          "time_s": 2700.0,
+          "index": 270
+        },
+        "raw_sign_observed": "nonpositive"
+      }
+    },
+    "negative_reaction_signed_v": {
+      "variable": "X-averaged negative electrode reaction overpotential [V]",
+      "units": "V",
+      "multiplier": -1,
+      "summary": {
+        "initial": {
+          "value": -0.03039364803519043,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": -0.07312128559980047,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": -0.07312128559980047,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "maximum": {
+          "value": -0.021620511013864946,
+          "time_s": 470.0,
+          "index": 47
+        },
+        "peak_absolute": {
+          "value": -0.07312128559980047,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "raw_sign_observed": "nonpositive"
+      }
+    },
+    "positive_reaction_signed_v": {
+      "variable": "X-averaged positive electrode reaction overpotential [V]",
+      "units": "V",
+      "multiplier": 1,
+      "summary": {
+        "initial": {
+          "value": -0.017917758982818555,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": -0.07281046252449608,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": -0.07281046252449608,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "maximum": {
+          "value": -0.017303507820374264,
+          "time_s": 1070.0,
+          "index": 107
+        },
+        "peak_absolute": {
+          "value": -0.07281046252449608,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "raw_sign_observed": "nonpositive"
+      }
+    },
+    "electrolyte_concentration_signed_v": {
+      "variable": "X-averaged battery concentration overpotential [V]",
+      "units": "V",
+      "multiplier": 1,
+      "summary": {
+        "initial": {
+          "value": -1.8985624141686863e-17,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": -0.033087911280202706,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": -0.04257037996432232,
+          "time_s": 230.0,
+          "index": 23
+        },
+        "maximum": {
+          "value": -1.8985624141686863e-17,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "peak_absolute": {
+          "value": -0.04257037996432232,
+          "time_s": 230.0,
+          "index": 23
+        },
+        "raw_sign_observed": "nonpositive"
+      }
+    },
+    "electrolyte_ohmic_signed_v": {
+      "variable": "X-averaged battery electrolyte ohmic losses [V]",
+      "units": "V",
+      "multiplier": 1,
+      "summary": {
+        "initial": {
+          "value": -0.01966899623137903,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": -0.01860428297782714,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": -0.020214397412078214,
+          "time_s": 2980.0,
+          "index": 298
+        },
+        "maximum": {
+          "value": -0.017580817799370513,
+          "time_s": 40.0,
+          "index": 4
+        },
+        "peak_absolute": {
+          "value": -0.020214397412078214,
+          "time_s": 2980.0,
+          "index": 298
+        },
+        "raw_sign_observed": "nonpositive"
+      }
+    },
+    "negative_solid_ohmic_signed_v": {
+      "variable": "X-averaged battery negative solid phase ohmic losses [V]",
+      "units": "V",
+      "multiplier": -1,
+      "summary": {
+        "initial": {
+          "value": -6.872689427763078e-06,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": -6.037933177396255e-06,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": -7.776121909474416e-06,
+          "time_s": 40.0,
+          "index": 4
+        },
+        "maximum": {
+          "value": -5.457784169329071e-06,
+          "time_s": 3020.0,
+          "index": 302
+        },
+        "peak_absolute": {
+          "value": -7.776121909474416e-06,
+          "time_s": 40.0,
+          "index": 4
+        },
+        "raw_sign_observed": "nonpositive"
+      }
+    },
+    "positive_solid_ohmic_signed_v": {
+      "variable": "X-averaged battery positive solid phase ohmic losses [V]",
+      "units": "V",
+      "multiplier": 1,
+      "summary": {
+        "initial": {
+          "value": -0.0015183756756149691,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": -0.0013402782520279821,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": -0.0015512463559259615,
+          "time_s": 70.0,
+          "index": 7
+        },
+        "maximum": {
+          "value": -0.0013402782520279821,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "peak_absolute": {
+          "value": -0.0015512463559259615,
+          "time_s": 70.0,
+          "index": 7
+        },
+        "raw_sign_observed": "nonpositive"
+      }
+    },
+    "contact_signed_v": {
+      "variable": "Contact overpotential [V]",
+      "units": "V",
+      "multiplier": -1,
+      "summary": {
+        "initial": {
+          "value": -0.0,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "endpoint": {
+          "value": -0.0,
+          "time_s": 3333.391292703808,
+          "index": 334
+        },
+        "minimum": {
+          "value": -0.0,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "maximum": {
+          "value": -0.0,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "peak_absolute": {
+          "value": -0.0,
+          "time_s": 0.0,
+          "index": 0
+        },
+        "raw_sign_observed": "zero"
+      }
+    }
+  },
+  "physical_audit": {
+    "lithium_inventory_relative_drift": 2.391318544401225e-14,
+    "charge_integral_error_ah": 1.3677947663381929e-13,
+    "concentration_bounds": {
+      "negative": {
+        "node_min_mol_m3": 1192.8018685411162,
+        "node_max_mol_m3": 28866.0,
+        "surface_min_mol_m3": 1149.8006711358337,
+        "surface_max_mol_m3": 28866.000000000007,
+        "node_array_shape": [
+          120,
+          120,
+          335
+        ],
+        "min_mol_m3": 1149.8006711358337,
+        "max_mol_m3": 28866.000000000007,
+        "limit_mol_m3": 29583.0,
+        "passed": true
+      },
+      "positive": {
+        "node_min_mol_m3": 13975.0,
+        "node_max_mol_m3": 51490.14983371743,
+        "surface_min_mol_m3": 13975.000000000002,
+        "surface_max_mol_m3": 51536.05756645778,
+        "node_array_shape": [
+          120,
+          120,
+          335
+        ],
+        "min_mol_m3": 13975.0,
+        "max_mol_m3": 51536.05756645778,
+        "limit_mol_m3": 51765.0,
+        "passed": true
+      }
+    },
+    "electrolyte_min_mol_m3": 714.4968704126414,
+    "thermal_energy_balance": {
+      "stored_energy_j": 740.1586037140811,
+      "integrated_net_heat_j": 740.0900893088733,
+      "absolute_residual_j": 0.06851440520779306,
+      "relative_residual": 9.25671941986366e-05,
+      "relative_to_generated_heat": 3.1978687902582856e-05,
+      "passed": true,
+      "note": "trapezoidal sampled-output audit, not experimental validation"
+    },
+    "passed": true
+  },
+  "limitations": [
+    "Accounting identities are not experimental validation or mesh-convergence evidence.",
+    "Electrode stoichiometries are model lithium fractions, not measured cell SOC.",
+    "Charge accounting assumes constant active volumes and no side reactions.",
+    "R averages use spherical volume weights; X averages use electrode-thickness weights.",
+    "Bulk OCPs and overpotentials are model observables, not direct measurements.",
+    "Overpotential signs are preserved, not rectified into positive loss magnitudes.",
+    "Extrema cover native output times and physical nodes, not all continuous space/time.",
+    "Default surface temperature is imposed ambient; lumped bulk temperature is dynamic.",
+    "Contact term is exported even when zero; default model disables contact resistance.",
+    "No fitting, smoothing, extra solve, or changed model parameters in this extraction."
+  ],
+  "source_attribution": {
+    "schema_version": 1,
+    "datasets": [
+      {
+        "id": "tec_validation",
+        "title": "TEC-reduced-model v1.0 thermal validation archive",
+        "authors": [
+          "Ferran Brosa Planella",
+          "Muhammad Sheikh",
+          "W. Dhammika Widanage"
+        ],
+        "archive_creator": "Ferran Brosa Planella",
+        "authors_basis": "Related source-paper authors; archive creator is Ferran Brosa Planella.",
+        "doi": "10.5281/zenodo.4864437",
+        "source_url": "https://zenodo.org/records/4864437",
+        "paper_doi": "10.1016/j.electacta.2021.138524",
+        "license": "BSD-3-Clause",
+        "license_url": "https://github.com/brosaplanella/TEC-reduced-model/blob/v1.0/LICENSE",
+        "license_basis": "v1.0 archive LICENSE; Zenodo record label is other-open",
+        "copyright": "Copyright (c) 2020, Ferran Brosa Planella",
+        "license_notice": "BSD 3-Clause License\n\nCopyright (c) 2020, Ferran Brosa Planella\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n",
+        "license_notice_file": "licenses/TEC-BSD-3-Clause.txt",
+        "modifications": "The downloaded archive is unmodified. Analysis selects the first contiguous discharge, retains the last row at duplicate timestamps, converts Celsius to Kelvin and changes discharge current to a positive magnitude. Initial cell temperature uses the preceding rest; electrode concentrations stay published and nominal ambient is used by the model. Generated comparisons, interpolated residuals and integrated metrics are derived analyses. Duplicate conflicts and source quality warnings are retained in the reports."
+      },
+      {
+        "id": "oregan2022_parameters",
+        "title": "O'Regan et al. thermal-electrochemical parameter measurements",
+        "authors_basis": "Related source-paper authors; record-level creator list not refreshed.",
+        "authors": [
+          "O'Regan, Kieran",
+          "Brosa-Planella, Ferran",
+          "Widanage, W. Dhammika",
+          "Kendrick, Emma"
+        ],
+        "doi": "10.5281/zenodo.5171874",
+        "source_url": "https://zenodo.org/records/5171874",
+        "paper_doi": "10.1016/j.electacta.2022.140700",
+        "license": "CC-BY-4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "modifications": "Measurement-source provenance for the published ORegan2022 parameterization. The model uses the installed PyBaMM implementation of published functions and corrections; no new parameter fitting is performed. Model outputs are derived calculations, not redistributed parameter-measurement records. PyBaMM's BSD-3-Clause software license does not replace this data license."
+      }
+    ],
+    "software": [
+      {
+        "name": "PyBaMM",
+        "authors": [
+          "Valentin Sulzer",
+          "Scott G. Marquis",
+          "Robert Timms",
+          "Martin Robinson",
+          "S. Jon Chapman"
+        ],
+        "doi": "10.5334/jors.309",
+        "source_url": "https://github.com/pybamm-team/PyBaMM",
+        "license": "BSD-3-Clause",
+        "license_url": "https://github.com/pybamm-team/PyBaMM/blob/main/LICENSE.txt",
+        "scope": "Software implementation only; measurement-data licenses are listed separately."
+      }
+    ],
+    "original_project_code_license": "No license has been selected.",
+    "scope": "Source licenses remain separate. This attribution is not a blanket license for the evidence bundle or original project code. Cited authors and projects do not endorse this analysis. Source paper licenses are not inferred from dataset licenses."
+  },
+  "original_full_output_files": {
+    "ATTRIBUTION.md": {
+      "sha256": "fe013ba462c0c5ec28ab79b6237004e992bc31df48f7ccebf1d9758fac0703ca",
+      "bytes": 4093
+    },
+    "input.json": {
+      "sha256": "624df29b053964ee1109053461188456f7310b8a288ee6f7ac87bbc632e4228e",
+      "bytes": 1821
+    },
+    "licenses/TEC-BSD-3-Clause.txt": {
+      "sha256": "3f99e2fadccd0ee3ad6e0420411a7c5b1711ef9c19d3c57adb743b6e9459b40e",
+      "bytes": 1529
+    },
+    "metadata.json": {
+      "sha256": "deac7df943132ced00a59b81fc89cc0e74d30576103296a705f95bb693a0fa00",
+      "bytes": 2783
+    },
+    "outcome.json": {
+      "sha256": "3341a97529fdb85df6913eb3363b684253971c95d2e94d1ee3de845f24d78113",
+      "bytes": 275
+    },
+    "polarization.csv": {
+      "sha256": "aabf685ea8cba1a78c7798dc3d7240770e4bc2cde93e025893dd75c24bb989f7",
+      "bytes": 4939770
+    },
+    "polarization.json": {
+      "sha256": "7be481083458329bc443e4a629493da23b2963d6d983c936e9e59b3f9e1e59d3",
+      "bytes": 251494
+    },
+    "progress.json": {
+      "sha256": "11f9abe16f0257d1a40c40827cc545883eb8ea8aa94737960c08ed5fcfee16d8",
+      "bytes": 102
+    },
+    "repeatability.json": {
+      "sha256": "42046410e9db43c717c6745eca7b0bd08b1c56ffd9b0c8ed6578847af5a6f061",
+      "bytes": 513
+    },
+    "solver.log": {
+      "sha256": "3c3ded7d5ccbd1fb1420c7d9721e0c609c5fd476d57f16a2dd352082d6c46196",
+      "bytes": 13807
+    },
+    "source-attribution.json": {
+      "sha256": "6dc1c74752d7a40fe8502d089227e64d48fcc693efb3f00ab53cf09e72a6d2cb",
+      "bytes": 4906
+    },
+    "status.json": {
+      "sha256": "11f9abe16f0257d1a40c40827cc545883eb8ea8aa94737960c08ed5fcfee16d8",
+      "bytes": 102
+    },
+    "timeseries.csv": {
+      "sha256": "4ef8b7a8a1e4b4300533d8a37ecbc5c074b5546f3092a3aa0e547fc78d8c6775",
+      "bytes": 41940
+    }
+  },
+  "packaging_script_sha256": "ceae0bcfcbe22cec201a4dc8564f3eafb27cd3f0cf44ba194d47fcfe0e651b5d",
+  "reproduce_full_outputs": "python scripts/diagnose_polarization.py --timeout 1200 --out results/new-polarization-run"
+}
