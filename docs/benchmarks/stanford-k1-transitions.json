@@ -1,0 +1,3014 @@
+{
+  "scope": "Exploratory measurement-boundary inspection of the same k1 cell; no independent cohort or new model validation",
+  "selection": "All 15 files of the preexisting frozen k1 chronology manifest; no error-based subset",
+  "complete": true,
+  "error": null,
+  "elapsed_s": 20.627341303988942,
+  "wall_budget_s": 600,
+  "manifest_sha256": "d0ba632f37af43e8359aa195f45b73960235c9ffafefeaa6ccdafe78be9037b3",
+  "implementation_sha256": {
+    "src/physical_fpv/stanford_transitions.py": "9292fceff2297feae8ea2a01451ea71c4c4e75569bc49fd0009f61d15e3599cc",
+    "scripts/inspect_stanford_transitions.py": "aba3bf1ce7e20a83e43ccc07822529c62547e8f296c20f612c84a097f1e48529"
+  },
+  "dataset_doi": "10.17632/kxsbr4x3j2.2",
+  "license": "CC-BY-4.0",
+  "authors": [
+    "Edoardo Catenaro",
+    "Simona Onori"
+  ],
+  "fitting_performed": false,
+  "new_model_solves": 0,
+  "new_downloaded_bytes": 0,
+  "history_warning": "Same cell measured repeatedly. Earlier nominal rates >=2C are explicitly listed; unrecorded exposure is unknown. Source chronology is context, not a controlled causal comparison.",
+  "measurement_uncertainty": {
+    "voltage_standard_uncertainty_v": null,
+    "current_standard_uncertainty_a": null,
+    "ratio_standard_uncertainty_ohm": null,
+    "sampling_clock_uncertainty_s": null,
+    "note": "Campaign channel calibration and timing uncertainty are unavailable. Displayed precision and conflicting advertised instrument resolution are not measurement uncertainty; no confidence bands are invented."
+  },
+  "protocol_comparison_limits": "Rest duration, adjacent CV endpoint, temperatures, exact sample gap and first ten loaded samples are retained for each file. The first commanded-step interval is unobserved, so actual current ramp and instantaneous impedance are unresolved. No time realignment or SOC normalization makes these a matched pulse experiment.",
+  "complete_report_sha256": "a320529b9e4a42290d3855a90e3a6b61b5def9394f61c7247b63fd48bb47d53e",
+  "summary_change": "Keep all15 cases and selected boundary records; the runnable inspector emits all boundary samples",
+  "cases": [
+    {
+      "source": {
+        "filename": "NMC_k1_0_05C_25degC.xlsx",
+        "bytes": 6096861,
+        "sha256": "e5870c6989c94995de10e053f04efcf96951790e3c26e51d4c537261ba847ec5",
+        "inflated_bytes": 34684956
+      },
+      "nominal_rate_label_c": 0.05,
+      "nominal_chamber_label_celsius": 25,
+      "measurement_rows": 92031,
+      "recorded_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "post_discharge_rest_recorded": true,
+      "recorded_earlier_high_rate_files": [],
+      "pre_discharge_rest": {
+        "first": {
+          "excel_row": 14831,
+          "date_naive_local": "2019-08-31T00:24:42.110000",
+          "test_time_s": 14828.211776,
+          "step_time_s": 1.0001,
+          "step": 4,
+          "voltage_v": 4.19692325592041,
+          "current_a": 0.0,
+          "skin_temperature_c": 25.60284423828125
+        },
+        "last": {
+          "excel_row": 18431,
+          "date_naive_local": "2019-08-31T01:24:41.111000",
+          "test_time_s": 18427.212976,
+          "step_time_s": 3600.0013,
+          "step": 4,
+          "voltage_v": 4.1860246658325195,
+          "current_a": 0.0,
+          "skin_temperature_c": 25.057647705078125
+        },
+        "rows": 3601,
+        "maximum_absolute_current_a": 0.0
+      },
+      "preceding_cv_end": {
+        "excel_row": 14830,
+        "date_naive_local": "2019-08-31T00:24:41.069000",
+        "test_time_s": 14827.172052,
+        "step_time_s": 5728.3714,
+        "step": 3,
+        "voltage_v": 4.200072288513184,
+        "current_a": 0.04999830946326256,
+        "skin_temperature_c": 25.60284423828125
+      },
+      "rest_to_discharge": {
+        "steps": [
+          4,
+          5
+        ],
+        "left": {
+          "excel_row": 18431,
+          "date_naive_local": "2019-08-31T01:24:41.111000",
+          "test_time_s": 18427.212976,
+          "step_time_s": 3600.0013,
+          "step": 4,
+          "voltage_v": 4.1860246658325195,
+          "current_a": 0.0,
+          "skin_temperature_c": 25.057647705078125
+        },
+        "right": {
+          "excel_row": 18432,
+          "date_naive_local": "2019-08-31T01:24:42.158000",
+          "test_time_s": 18428.259280000002,
+          "step_time_s": 1.001,
+          "step": 5,
+          "voltage_v": 4.170588493347168,
+          "current_a": -0.2500389814376831,
+          "skin_temperature_c": 25.057647705078125
+        },
+        "source_sample_gap_s": 1.046304000003147,
+        "current_change_a": -0.2500389814376831,
+        "voltage_change_v": -0.015436172485351562,
+        "apparent_transition_ratio_ohm": 0.06173506385522811,
+        "ratio_is_intrinsic_resistance": false
+      },
+      "first_ten_loaded_samples": [
+        {
+          "excel_row": 18432,
+          "date_naive_local": "2019-08-31T01:24:42.158000",
+          "test_time_s": 18428.259280000002,
+          "step_time_s": 1.001,
+          "step": 5,
+          "voltage_v": 4.170588493347168,
+          "current_a": -0.2500389814376831,
+          "skin_temperature_c": 25.057647705078125
+        },
+        {
+          "excel_row": 18433,
+          "date_naive_local": "2019-08-31T01:24:43.158000",
+          "test_time_s": 18429.25908,
+          "step_time_s": 2.0008,
+          "step": 5,
+          "voltage_v": 4.170183181762695,
+          "current_a": -0.250039279460907,
+          "skin_temperature_c": 25.057647705078125
+        },
+        {
+          "excel_row": 18434,
+          "date_naive_local": "2019-08-31T01:24:44.157000",
+          "test_time_s": 18430.258680000003,
+          "step_time_s": 3.0004,
+          "step": 5,
+          "voltage_v": 4.1700944900512695,
+          "current_a": -0.2500389814376831,
+          "skin_temperature_c": 25.07406997680664
+        },
+        {
+          "excel_row": 18435,
+          "date_naive_local": "2019-08-31T01:24:45.158000",
+          "test_time_s": 18431.25888,
+          "step_time_s": 4.0006,
+          "step": 5,
+          "voltage_v": 4.17002010345459,
+          "current_a": -0.25003761053085327,
+          "skin_temperature_c": 25.07406997680664
+        },
+        {
+          "excel_row": 18436,
+          "date_naive_local": "2019-08-31T01:24:46.158000",
+          "test_time_s": 18432.25908,
+          "step_time_s": 5.0008,
+          "step": 5,
+          "voltage_v": 4.169678688049316,
+          "current_a": -0.2500368356704712,
+          "skin_temperature_c": 25.07406997680664
+        },
+        {
+          "excel_row": 18437,
+          "date_naive_local": "2019-08-31T01:24:47.158000",
+          "test_time_s": 18433.25908,
+          "step_time_s": 6.0008,
+          "step": 5,
+          "voltage_v": 4.169625759124756,
+          "current_a": -0.2500404119491577,
+          "skin_temperature_c": 25.081212283205883
+        },
+        {
+          "excel_row": 18438,
+          "date_naive_local": "2019-08-31T01:24:48.158000",
+          "test_time_s": 18434.25958,
+          "step_time_s": 7.0013,
+          "step": 5,
+          "voltage_v": 4.169379234313965,
+          "current_a": -0.2500377297401428,
+          "skin_temperature_c": 25.081212997436523
+        },
+        {
+          "excel_row": 18439,
+          "date_naive_local": "2019-08-31T01:24:49.158000",
+          "test_time_s": 18435.25958,
+          "step_time_s": 8.0013,
+          "step": 5,
+          "voltage_v": 4.169322967529297,
+          "current_a": -0.2500377297401428,
+          "skin_temperature_c": 25.086492010550838
+        },
+        {
+          "excel_row": 18440,
+          "date_naive_local": "2019-08-31T01:24:50.158000",
+          "test_time_s": 18436.25938,
+          "step_time_s": 9.0011,
+          "step": 5,
+          "voltage_v": 4.169041633605957,
+          "current_a": -0.2500388026237488,
+          "skin_temperature_c": 25.08649253845215
+        },
+        {
+          "excel_row": 18441,
+          "date_naive_local": "2019-08-31T01:24:51.157000",
+          "test_time_s": 18437.258280000002,
+          "step_time_s": 10.0,
+          "step": 5,
+          "voltage_v": 4.169064521789551,
+          "current_a": -0.250041127204895,
+          "skin_temperature_c": 25.08649253845215
+        }
+      ],
+      "recorded_first_ten_current_range_a": [
+        -0.250041127204895,
+        -0.2500368356704712
+      ],
+      "exact_duplicate_times": 0,
+      "duplicate_time_conflicts": 0
+    },
+    {
+      "source": {
+        "filename": "NMC_k1_1C_25degC.xlsx",
+        "bytes": 1868963,
+        "sha256": "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6",
+        "inflated_bytes": 10538544
+      },
+      "nominal_rate_label_c": 1.0,
+      "nominal_chamber_label_celsius": 25,
+      "measurement_rows": 28669,
+      "recorded_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "post_discharge_rest_recorded": true,
+      "recorded_earlier_high_rate_files": [],
+      "pre_discharge_rest": {
+        "first": {
+          "excel_row": 18078,
+          "date_naive_local": "2019-09-03T00:12:08.855000",
+          "test_time_s": 18075.70552,
+          "step_time_s": 0.9998,
+          "step": 4,
+          "voltage_v": 4.196846008300781,
+          "current_a": 0.0,
+          "skin_temperature_c": 25.194759368896484
+        },
+        "last": {
+          "excel_row": 21678,
+          "date_naive_local": "2019-09-03T01:12:07.857000",
+          "test_time_s": 21674.70662,
+          "step_time_s": 3600.0009,
+          "step": 4,
+          "voltage_v": 4.186448097229004,
+          "current_a": 0.0,
+          "skin_temperature_c": 25.18794059753418
+        },
+        "rows": 3601,
+        "maximum_absolute_current_a": 0.0
+      },
+      "preceding_cv_end": {
+        "excel_row": 18077,
+        "date_naive_local": "2019-09-03T00:12:07.816000",
+        "test_time_s": 18074.66534,
+        "step_time_s": 5602.8989,
+        "step": 3,
+        "voltage_v": 4.20001745223999,
+        "current_a": 0.049991440027952194,
+        "skin_temperature_c": 25.193572998046875
+      },
+      "rest_to_discharge": {
+        "steps": [
+          4,
+          5
+        ],
+        "left": {
+          "excel_row": 21678,
+          "date_naive_local": "2019-09-03T01:12:07.857000",
+          "test_time_s": 21674.70662,
+          "step_time_s": 3600.0009,
+          "step": 4,
+          "voltage_v": 4.186448097229004,
+          "current_a": 0.0,
+          "skin_temperature_c": 25.18794059753418
+        },
+        "right": {
+          "excel_row": 21679,
+          "date_naive_local": "2019-09-03T01:12:08.903000",
+          "test_time_s": 21675.7522,
+          "step_time_s": 1.0006,
+          "step": 5,
+          "voltage_v": 3.8799378871917725,
+          "current_a": -5.000240325927734,
+          "skin_temperature_c": 25.18794059753418
+        },
+        "source_sample_gap_s": 1.0455799999981537,
+        "current_change_a": -5.000240325927734,
+        "voltage_change_v": -0.30651021003723145,
+        "apparent_transition_ratio_ohm": 0.06129909565503978,
+        "ratio_is_intrinsic_resistance": false
+      },
+      "first_ten_loaded_samples": [
+        {
+          "excel_row": 21679,
+          "date_naive_local": "2019-09-03T01:12:08.903000",
+          "test_time_s": 21675.7522,
+          "step_time_s": 1.0006,
+          "step": 5,
+          "voltage_v": 3.8799378871917725,
+          "current_a": -5.000240325927734,
+          "skin_temperature_c": 25.18794059753418
+        },
+        {
+          "excel_row": 21680,
+          "date_naive_local": "2019-09-03T01:12:09.904000",
+          "test_time_s": 21676.7525,
+          "step_time_s": 2.0009,
+          "step": 5,
+          "voltage_v": 3.874417543411255,
+          "current_a": -5.000252723693848,
+          "skin_temperature_c": 25.22391700744629
+        },
+        {
+          "excel_row": 21681,
+          "date_naive_local": "2019-09-03T01:12:10.903000",
+          "test_time_s": 21677.7519,
+          "step_time_s": 3.0003,
+          "step": 5,
+          "voltage_v": 3.8701305389404297,
+          "current_a": -5.0002593994140625,
+          "skin_temperature_c": 25.22391700744629
+        },
+        {
+          "excel_row": 21682,
+          "date_naive_local": "2019-09-03T01:12:11.904000",
+          "test_time_s": 21678.7526,
+          "step_time_s": 4.001,
+          "step": 5,
+          "voltage_v": 3.86665415763855,
+          "current_a": -5.0002760887146,
+          "skin_temperature_c": 25.22391700744629
+        },
+        {
+          "excel_row": 21683,
+          "date_naive_local": "2019-09-03T01:12:12.903000",
+          "test_time_s": 21679.7519,
+          "step_time_s": 5.0003,
+          "step": 5,
+          "voltage_v": 3.8633594512939453,
+          "current_a": -5.000264644622803,
+          "skin_temperature_c": 25.20314598083496
+        },
+        {
+          "excel_row": 21684,
+          "date_naive_local": "2019-09-03T01:12:13.903000",
+          "test_time_s": 21680.751800000002,
+          "step_time_s": 6.0002,
+          "step": 5,
+          "voltage_v": 3.8604862689971924,
+          "current_a": -5.000271320343018,
+          "skin_temperature_c": 25.20314598083496
+        },
+        {
+          "excel_row": 21685,
+          "date_naive_local": "2019-09-03T01:12:14.904000",
+          "test_time_s": 21681.7525,
+          "step_time_s": 7.0009,
+          "step": 5,
+          "voltage_v": 3.857893705368042,
+          "current_a": -5.00025749206543,
+          "skin_temperature_c": 25.20314598083496
+        },
+        {
+          "excel_row": 21686,
+          "date_naive_local": "2019-09-03T01:12:15.904000",
+          "test_time_s": 21682.752800000002,
+          "step_time_s": 8.0012,
+          "step": 5,
+          "voltage_v": 3.8554389476776123,
+          "current_a": -5.000288009643555,
+          "skin_temperature_c": 25.21460418594403
+        },
+        {
+          "excel_row": 21687,
+          "date_naive_local": "2019-09-03T01:12:16.904000",
+          "test_time_s": 21683.7525,
+          "step_time_s": 9.0009,
+          "step": 5,
+          "voltage_v": 3.8532066345214844,
+          "current_a": -5.000264644622803,
+          "skin_temperature_c": 25.2146053314209
+        },
+        {
+          "excel_row": 21688,
+          "date_naive_local": "2019-09-03T01:12:17.903000",
+          "test_time_s": 21684.7517,
+          "step_time_s": 10.0001,
+          "step": 5,
+          "voltage_v": 3.8508386611938477,
+          "current_a": -5.000282287597656,
+          "skin_temperature_c": 25.2146053314209
+        }
+      ],
+      "recorded_first_ten_current_range_a": [
+        -5.000288009643555,
+        -5.000240325927734
+      ],
+      "exact_duplicate_times": 0,
+      "duplicate_time_conflicts": 0
+    },
+    {
+      "source": {
+        "filename": "NMC_k1_3C_25degC.xlsx",
+        "bytes": 780921,
+        "sha256": "d517a8cda895347d62786b969f5238512ea914a480bb5b536dc5869344b9870e",
+        "inflated_bytes": 4558257
+      },
+      "nominal_rate_label_c": 3.0,
+      "nominal_chamber_label_celsius": 25,
+      "measurement_rows": 12772,
+      "recorded_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "post_discharge_rest_recorded": true,
+      "recorded_earlier_high_rate_files": [],
+      "pre_discharge_rest": {
+        "first": {
+          "excel_row": 4477,
+          "date_naive_local": "2019-09-05T09:31:38.025000",
+          "test_time_s": 4473.88014,
+          "step_time_s": 0.9997,
+          "step": 4,
+          "voltage_v": 4.198070526123047,
+          "current_a": 0.0,
+          "skin_temperature_c": 24.435405731201172
+        },
+        "last": {
+          "excel_row": 8077,
+          "date_naive_local": "2019-09-05T10:31:37.026000",
+          "test_time_s": 8072.88134,
+          "step_time_s": 3600.0009,
+          "step": 4,
+          "voltage_v": 4.1937384605407715,
+          "current_a": 0.0,
+          "skin_temperature_c": 24.46839714050293
+        },
+        "rows": 3601,
+        "maximum_absolute_current_a": 0.0
+      },
+      "preceding_cv_end": {
+        "excel_row": 4476,
+        "date_naive_local": "2019-09-05T09:31:36.984000",
+        "test_time_s": 4472.840084,
+        "step_time_s": 872.6835,
+        "step": 3,
+        "voltage_v": 4.200021743774414,
+        "current_a": 0.04998510330915451,
+        "skin_temperature_c": 24.435405731201172
+      },
+      "rest_to_discharge": {
+        "steps": [
+          4,
+          5
+        ],
+        "left": {
+          "excel_row": 8077,
+          "date_naive_local": "2019-09-05T10:31:37.026000",
+          "test_time_s": 8072.88134,
+          "step_time_s": 3600.0009,
+          "step": 4,
+          "voltage_v": 4.1937384605407715,
+          "current_a": 0.0,
+          "skin_temperature_c": 24.46839714050293
+        },
+        "right": {
+          "excel_row": 8078,
+          "date_naive_local": "2019-09-05T10:31:38.071000",
+          "test_time_s": 8073.927344,
+          "step_time_s": 1.0002,
+          "step": 5,
+          "voltage_v": 3.6884849071502686,
+          "current_a": -15.00274658203125,
+          "skin_temperature_c": 24.4696139125377
+        },
+        "source_sample_gap_s": 1.0460039999998116,
+        "current_change_a": -15.00274658203125,
+        "voltage_change_v": -0.5052535533905029,
+        "apparent_transition_ratio_ohm": 0.03367740370924106,
+        "ratio_is_intrinsic_resistance": false
+      },
+      "first_ten_loaded_samples": [
+        {
+          "excel_row": 8078,
+          "date_naive_local": "2019-09-05T10:31:38.071000",
+          "test_time_s": 8073.927344,
+          "step_time_s": 1.0002,
+          "step": 5,
+          "voltage_v": 3.6884849071502686,
+          "current_a": -15.00274658203125,
+          "skin_temperature_c": 24.4696139125377
+        },
+        {
+          "excel_row": 8079,
+          "date_naive_local": "2019-09-05T10:31:39.072000",
+          "test_time_s": 8074.927944,
+          "step_time_s": 2.0008,
+          "step": 5,
+          "voltage_v": 3.6729037761688232,
+          "current_a": -15.002845764160156,
+          "skin_temperature_c": 24.469614028930664
+        },
+        {
+          "excel_row": 8080,
+          "date_naive_local": "2019-09-05T10:31:40.072000",
+          "test_time_s": 8075.928244,
+          "step_time_s": 3.0011,
+          "step": 5,
+          "voltage_v": 3.661318302154541,
+          "current_a": -15.003150939941406,
+          "skin_temperature_c": 24.506311562670465
+        },
+        {
+          "excel_row": 8081,
+          "date_naive_local": "2019-09-05T10:31:41.072000",
+          "test_time_s": 8076.927744,
+          "step_time_s": 4.0006,
+          "step": 5,
+          "voltage_v": 3.6515591144561768,
+          "current_a": -15.002525329589844,
+          "skin_temperature_c": 24.506315231323242
+        },
+        {
+          "excel_row": 8082,
+          "date_naive_local": "2019-09-05T10:31:42.072000",
+          "test_time_s": 8077.927543999999,
+          "step_time_s": 5.0004,
+          "step": 5,
+          "voltage_v": 3.643399715423584,
+          "current_a": -15.002174377441406,
+          "skin_temperature_c": 24.506315231323242
+        },
+        {
+          "excel_row": 8083,
+          "date_naive_local": "2019-09-05T10:31:43.072000",
+          "test_time_s": 8078.927543999999,
+          "step_time_s": 6.0004,
+          "step": 5,
+          "voltage_v": 3.6358401775360107,
+          "current_a": -15.00299072265625,
+          "skin_temperature_c": 24.57964736039061
+        },
+        {
+          "excel_row": 8084,
+          "date_naive_local": "2019-09-05T10:31:44.071000",
+          "test_time_s": 8079.927344,
+          "step_time_s": 7.0002,
+          "step": 5,
+          "voltage_v": 3.6291284561157227,
+          "current_a": -15.002311706542969,
+          "skin_temperature_c": 24.579654693603516
+        },
+        {
+          "excel_row": 8085,
+          "date_naive_local": "2019-09-05T10:31:45.072000",
+          "test_time_s": 8080.9281439999995,
+          "step_time_s": 8.001,
+          "step": 5,
+          "voltage_v": 3.6230576038360596,
+          "current_a": -15.00244140625,
+          "skin_temperature_c": 24.579654693603516
+        },
+        {
+          "excel_row": 8086,
+          "date_naive_local": "2019-09-05T10:31:46.072000",
+          "test_time_s": 8081.927543999999,
+          "step_time_s": 9.0004,
+          "step": 5,
+          "voltage_v": 3.6175005435943604,
+          "current_a": -15.002792358398438,
+          "skin_temperature_c": 24.696155333962707
+        },
+        {
+          "excel_row": 8087,
+          "date_naive_local": "2019-09-05T10:31:47.072000",
+          "test_time_s": 8082.928244,
+          "step_time_s": 10.0011,
+          "step": 5,
+          "voltage_v": 3.6124918460845947,
+          "current_a": -15.00238037109375,
+          "skin_temperature_c": 24.6961669921875
+        }
+      ],
+      "recorded_first_ten_current_range_a": [
+        -15.003150939941406,
+        -15.002174377441406
+      ],
+      "exact_duplicate_times": 0,
+      "duplicate_time_conflicts": 0
+    },
+    {
+      "source": {
+        "filename": "NMC_k1_5C_25degC.xlsx",
+        "bytes": 1312960,
+        "sha256": "a4a45800742500ef6e78c03cb69f9ef6ae014907d1e07c7f236e7cb27fc80f5a",
+        "inflated_bytes": 7400469
+      },
+      "nominal_rate_label_c": 5.0,
+      "nominal_chamber_label_celsius": 25,
+      "measurement_rows": 20157,
+      "recorded_steps": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "post_discharge_rest_recorded": false,
+      "recorded_earlier_high_rate_files": [
+        "NMC_k1_3C_25degC.xlsx"
+      ],
+      "pre_discharge_rest": {
+        "first": {
+          "excel_row": 16241,
+          "date_naive_local": "2019-09-05T17:32:53.243000",
+          "test_time_s": 16238.089268,
+          "step_time_s": 1.0006,
+          "step": 4,
+          "voltage_v": 4.198362350463867,
+          "current_a": 0.0,
+          "skin_temperature_c": 24.477434299542352
+        },
+        "last": {
+          "excel_row": 19841,
+          "date_naive_local": "2019-09-05T18:32:52.244000",
+          "test_time_s": 19837.089868,
+          "step_time_s": 3600.0012,
+          "step": 4,
+          "voltage_v": 4.187093734741211,
+          "current_a": 0.0,
+          "skin_temperature_c": 24.418352127075195
+        },
+        "rows": 3601,
+        "maximum_absolute_current_a": 0.0
+      },
+      "preceding_cv_end": {
+        "excel_row": 16240,
+        "date_naive_local": "2019-09-05T17:32:52.203000",
+        "test_time_s": 16237.048916,
+        "step_time_s": 3875.7219,
+        "step": 3,
+        "voltage_v": 4.200035095214844,
+        "current_a": 0.049989551305770874,
+        "skin_temperature_c": 24.439233779907227
+      },
+      "rest_to_discharge": {
+        "steps": [
+          4,
+          5
+        ],
+        "left": {
+          "excel_row": 19841,
+          "date_naive_local": "2019-09-05T18:32:52.244000",
+          "test_time_s": 19837.089868,
+          "step_time_s": 3600.0012,
+          "step": 4,
+          "voltage_v": 4.187093734741211,
+          "current_a": 0.0,
+          "skin_temperature_c": 24.418352127075195
+        },
+        "right": {
+          "excel_row": 19842,
+          "date_naive_local": "2019-09-05T18:32:53.289000",
+          "test_time_s": 19838.134948000003,
+          "step_time_s": 1.0004,
+          "step": 5,
+          "voltage_v": 3.374490261077881,
+          "current_a": -25.004249572753906,
+          "skin_temperature_c": 24.418352127075195
+        },
+        "source_sample_gap_s": 1.0450800000035088,
+        "current_change_a": -25.004249572753906,
+        "voltage_change_v": -0.8126034736633301,
+        "apparent_transition_ratio_ohm": 0.03249861473742409,
+        "ratio_is_intrinsic_resistance": false
+      },
+      "first_ten_loaded_samples": [
+        {
+          "excel_row": 19842,
+          "date_naive_local": "2019-09-05T18:32:53.289000",
+          "test_time_s": 19838.134948000003,
+          "step_time_s": 1.0004,
+          "step": 5,
+          "voltage_v": 3.374490261077881,
+          "current_a": -25.004249572753906,
+          "skin_temperature_c": 24.418352127075195
+        },
+        {
+          "excel_row": 19843,
+          "date_naive_local": "2019-09-05T18:32:54.288000",
+          "test_time_s": 19839.134748,
+          "step_time_s": 2.0002,
+          "step": 5,
+          "voltage_v": 3.351688861846924,
+          "current_a": -25.004234313964844,
+          "skin_temperature_c": 24.436691284179688
+        },
+        {
+          "excel_row": 19844,
+          "date_naive_local": "2019-09-05T18:32:55.289000",
+          "test_time_s": 19840.135148,
+          "step_time_s": 3.0006,
+          "step": 5,
+          "voltage_v": 3.334404706954956,
+          "current_a": -25.00335693359375,
+          "skin_temperature_c": 24.436691284179688
+        },
+        {
+          "excel_row": 19845,
+          "date_naive_local": "2019-09-05T18:32:56.289000",
+          "test_time_s": 19841.135448,
+          "step_time_s": 4.0009,
+          "step": 5,
+          "voltage_v": 3.320875883102417,
+          "current_a": -25.00365447998047,
+          "skin_temperature_c": 24.436691284179688
+        },
+        {
+          "excel_row": 19846,
+          "date_naive_local": "2019-09-05T18:32:57.288000",
+          "test_time_s": 19842.134648000003,
+          "step_time_s": 5.0001,
+          "step": 5,
+          "voltage_v": 3.3092200756073,
+          "current_a": -25.0032958984375,
+          "skin_temperature_c": 24.61942481994629
+        },
+        {
+          "excel_row": 19847,
+          "date_naive_local": "2019-09-05T18:32:58.289000",
+          "test_time_s": 19843.135148,
+          "step_time_s": 6.0006,
+          "step": 5,
+          "voltage_v": 3.299466848373413,
+          "current_a": -25.00312042236328,
+          "skin_temperature_c": 24.61942481994629
+        },
+        {
+          "excel_row": 19848,
+          "date_naive_local": "2019-09-05T18:32:59.289000",
+          "test_time_s": 19844.135348,
+          "step_time_s": 7.0008,
+          "step": 5,
+          "voltage_v": 3.2908239364624023,
+          "current_a": -25.0025634765625,
+          "skin_temperature_c": 24.61942481994629
+        },
+        {
+          "excel_row": 19849,
+          "date_naive_local": "2019-09-05T18:33:00.289000",
+          "test_time_s": 19845.135248000002,
+          "step_time_s": 8.0007,
+          "step": 5,
+          "voltage_v": 3.2833709716796875,
+          "current_a": -25.003196716308594,
+          "skin_temperature_c": 24.93683501288514
+        },
+        {
+          "excel_row": 19850,
+          "date_naive_local": "2019-09-05T18:33:01.289000",
+          "test_time_s": 19846.135148,
+          "step_time_s": 9.0006,
+          "step": 5,
+          "voltage_v": 3.276777505874634,
+          "current_a": -25.00324249267578,
+          "skin_temperature_c": 24.936866760253906
+        },
+        {
+          "excel_row": 19851,
+          "date_naive_local": "2019-09-05T18:33:02.289000",
+          "test_time_s": 19847.134948000003,
+          "step_time_s": 10.0004,
+          "step": 5,
+          "voltage_v": 3.2704105377197266,
+          "current_a": -25.0025634765625,
+          "skin_temperature_c": 24.936866760253906
+        }
+      ],
+      "recorded_first_ten_current_range_a": [
+        -25.004249572753906,
+        -25.0025634765625
+      ],
+      "exact_duplicate_times": 0,
+      "duplicate_time_conflicts": 0
+    },
+    {
+      "source": {
+        "filename": "NMC_k1_2C_25degC.xlsx",
+        "bytes": 1435703,
+        "sha256": "d4b766f4b3b98405c56b7846872052a79ee8ad666503b33f02083f1666da0b1d",
+        "inflated_bytes": 7867402
+      },
+      "nominal_rate_label_c": 2.0,
+      "nominal_chamber_label_celsius": 25,
+      "measurement_rows": 21383,
+      "recorded_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "post_discharge_rest_recorded": true,
+      "recorded_earlier_high_rate_files": [
+        "NMC_k1_3C_25degC.xlsx",
+        "NMC_k1_5C_25degC.xlsx"
+      ],
+      "pre_discharge_rest": {
+        "first": {
+          "excel_row": 12560,
+          "date_naive_local": "2019-09-18T13:00:18.954000",
+          "test_time_s": 12556.655344,
+          "step_time_s": 1.0013,
+          "step": 4,
+          "voltage_v": 4.195975303649902,
+          "current_a": 0.0,
+          "skin_temperature_c": 24.925230026245117
+        },
+        "last": {
+          "excel_row": 16160,
+          "date_naive_local": "2019-09-18T14:00:17.954000",
+          "test_time_s": 16155.655644,
+          "step_time_s": 3600.0016,
+          "step": 4,
+          "voltage_v": 4.1855082511901855,
+          "current_a": 0.0,
+          "skin_temperature_c": 24.994874954223633
+        },
+        "rows": 3601,
+        "maximum_absolute_current_a": 0.0
+      },
+      "preceding_cv_end": {
+        "excel_row": 12559,
+        "date_naive_local": "2019-09-18T13:00:17.914000",
+        "test_time_s": 12555.615264,
+        "step_time_s": 5469.2427,
+        "step": 3,
+        "voltage_v": 4.199840068817139,
+        "current_a": 0.04999501258134842,
+        "skin_temperature_c": 24.925230026245117
+      },
+      "rest_to_discharge": {
+        "steps": [
+          4,
+          5
+        ],
+        "left": {
+          "excel_row": 16160,
+          "date_naive_local": "2019-09-18T14:00:17.954000",
+          "test_time_s": 16155.655644,
+          "step_time_s": 3600.0016,
+          "step": 4,
+          "voltage_v": 4.1855082511901855,
+          "current_a": 0.0,
+          "skin_temperature_c": 24.994874954223633
+        },
+        "right": {
+          "excel_row": 16161,
+          "date_naive_local": "2019-09-18T14:00:18.999000",
+          "test_time_s": 16156.700724,
+          "step_time_s": 1.0007,
+          "step": 5,
+          "voltage_v": 3.699338912963867,
+          "current_a": -9.997650146484375,
+          "skin_temperature_c": 24.994874954223633
+        },
+        "source_sample_gap_s": 1.0450799999998708,
+        "current_change_a": -9.997650146484375,
+        "voltage_change_v": -0.48616933822631836,
+        "apparent_transition_ratio_ohm": 0.04862836077508448,
+        "ratio_is_intrinsic_resistance": false
+      },
+      "first_ten_loaded_samples": [
+        {
+          "excel_row": 16161,
+          "date_naive_local": "2019-09-18T14:00:18.999000",
+          "test_time_s": 16156.700724,
+          "step_time_s": 1.0007,
+          "step": 5,
+          "voltage_v": 3.699338912963867,
+          "current_a": -9.997650146484375,
+          "skin_temperature_c": 24.994874954223633
+        },
+        {
+          "excel_row": 16162,
+          "date_naive_local": "2019-09-18T14:00:19.999000",
+          "test_time_s": 16157.700624000001,
+          "step_time_s": 2.0006,
+          "step": 5,
+          "voltage_v": 3.6968138217926025,
+          "current_a": -9.997917175292969,
+          "skin_temperature_c": 24.994874954223633
+        },
+        {
+          "excel_row": 16163,
+          "date_naive_local": "2019-09-18T14:00:20.999000",
+          "test_time_s": 16158.700724,
+          "step_time_s": 3.0007,
+          "step": 5,
+          "voltage_v": 3.6911733150482178,
+          "current_a": -9.997634887695312,
+          "skin_temperature_c": 25.003899625577205
+        },
+        {
+          "excel_row": 16164,
+          "date_naive_local": "2019-09-18T14:00:21.998000",
+          "test_time_s": 16159.700324,
+          "step_time_s": 4.0003,
+          "step": 5,
+          "voltage_v": 3.687432289123535,
+          "current_a": -9.997627258300781,
+          "skin_temperature_c": 25.0039005279541
+        },
+        {
+          "excel_row": 16165,
+          "date_naive_local": "2019-09-18T14:00:22.998000",
+          "test_time_s": 16160.700224,
+          "step_time_s": 5.0002,
+          "step": 5,
+          "voltage_v": 3.6832432746887207,
+          "current_a": -9.997756958007812,
+          "skin_temperature_c": 25.0039005279541
+        },
+        {
+          "excel_row": 16166,
+          "date_naive_local": "2019-09-18T14:00:23.998000",
+          "test_time_s": 16161.700424,
+          "step_time_s": 6.0004,
+          "step": 5,
+          "voltage_v": 3.678924083709717,
+          "current_a": -9.998146057128906,
+          "skin_temperature_c": 25.081804275512695
+        },
+        {
+          "excel_row": 16167,
+          "date_naive_local": "2019-09-18T14:00:24.998000",
+          "test_time_s": 16162.700224,
+          "step_time_s": 7.0002,
+          "step": 5,
+          "voltage_v": 3.675541877746582,
+          "current_a": -9.997970581054688,
+          "skin_temperature_c": 25.081804275512695
+        },
+        {
+          "excel_row": 16168,
+          "date_naive_local": "2019-09-18T14:00:25.999000",
+          "test_time_s": 16163.700524,
+          "step_time_s": 8.0005,
+          "step": 5,
+          "voltage_v": 3.6716504096984863,
+          "current_a": -9.997932434082031,
+          "skin_temperature_c": 25.081804275512695
+        },
+        {
+          "excel_row": 16169,
+          "date_naive_local": "2019-09-18T14:00:27",
+          "test_time_s": 16164.701624,
+          "step_time_s": 9.0016,
+          "step": 5,
+          "voltage_v": 3.6688270568847656,
+          "current_a": -9.997611999511719,
+          "skin_temperature_c": 25.177701906633477
+        },
+        {
+          "excel_row": 16170,
+          "date_naive_local": "2019-09-18T14:00:27.999000",
+          "test_time_s": 16165.700824,
+          "step_time_s": 10.0008,
+          "step": 5,
+          "voltage_v": 3.6659162044525146,
+          "current_a": -9.998023986816406,
+          "skin_temperature_c": 25.177711486816406
+        }
+      ],
+      "recorded_first_ten_current_range_a": [
+        -9.998146057128906,
+        -9.997611999511719
+      ],
+      "exact_duplicate_times": 0,
+      "duplicate_time_conflicts": 0
+    },
+    {
+      "source": {
+        "filename": "NMC_k1_0_05C_35degC.xlsx",
+        "bytes": 6137061,
+        "sha256": "669dfdfe4626234f63f66d99eefead590b7f7d405a95e4e3b7d2abc42645418c",
+        "inflated_bytes": 34633212
+      },
+      "nominal_rate_label_c": 0.05,
+      "nominal_chamber_label_celsius": 35,
+      "measurement_rows": 91811,
+      "recorded_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "post_discharge_rest_recorded": true,
+      "recorded_earlier_high_rate_files": [
+        "NMC_k1_3C_25degC.xlsx",
+        "NMC_k1_5C_25degC.xlsx",
+        "NMC_k1_2C_25degC.xlsx"
+      ],
+      "pre_discharge_rest": {
+        "first": {
+          "excel_row": 14791,
+          "date_naive_local": "2019-10-04T20:10:56.784000",
+          "test_time_s": 14787.669044,
+          "step_time_s": 1.0006,
+          "step": 4,
+          "voltage_v": 4.19608736038208,
+          "current_a": 0.0,
+          "skin_temperature_c": 35.240983226881596
+        },
+        "last": {
+          "excel_row": 18391,
+          "date_naive_local": "2019-10-04T21:10:55.784000",
+          "test_time_s": 18386.669244,
+          "step_time_s": 3600.0008,
+          "step": 4,
+          "voltage_v": 4.186630725860596,
+          "current_a": 0.0,
+          "skin_temperature_c": 35.26378631591797
+        },
+        "rows": 3601,
+        "maximum_absolute_current_a": 0.0
+      },
+      "preceding_cv_end": {
+        "excel_row": 14790,
+        "date_naive_local": "2019-10-04T20:10:55.742000",
+        "test_time_s": 14786.627432,
+        "step_time_s": 5634.1487,
+        "step": 3,
+        "voltage_v": 4.199892520904541,
+        "current_a": 0.04999706521630287,
+        "skin_temperature_c": 35.17372131347656
+      },
+      "rest_to_discharge": {
+        "steps": [
+          4,
+          5
+        ],
+        "left": {
+          "excel_row": 18391,
+          "date_naive_local": "2019-10-04T21:10:55.784000",
+          "test_time_s": 18386.669244,
+          "step_time_s": 3600.0008,
+          "step": 4,
+          "voltage_v": 4.186630725860596,
+          "current_a": 0.0,
+          "skin_temperature_c": 35.26378631591797
+        },
+        "right": {
+          "excel_row": 18392,
+          "date_naive_local": "2019-10-04T21:10:56.831000",
+          "test_time_s": 18387.717072,
+          "step_time_s": 1.0009,
+          "step": 5,
+          "voltage_v": 4.168070316314697,
+          "current_a": -0.2500420808792114,
+          "skin_temperature_c": 35.26378631591797
+        },
+        "source_sample_gap_s": 1.0478279999988445,
+        "current_change_a": -0.2500420808792114,
+        "voltage_change_v": -0.018560409545898438,
+        "apparent_transition_ratio_ohm": 0.07422914367307826,
+        "ratio_is_intrinsic_resistance": false
+      },
+      "first_ten_loaded_samples": [
+        {
+          "excel_row": 18392,
+          "date_naive_local": "2019-10-04T21:10:56.831000",
+          "test_time_s": 18387.717072,
+          "step_time_s": 1.0009,
+          "step": 5,
+          "voltage_v": 4.168070316314697,
+          "current_a": -0.2500420808792114,
+          "skin_temperature_c": 35.26378631591797
+        },
+        {
+          "excel_row": 18393,
+          "date_naive_local": "2019-10-04T21:10:57.831000",
+          "test_time_s": 18388.717072,
+          "step_time_s": 2.0009,
+          "step": 5,
+          "voltage_v": 4.167933464050293,
+          "current_a": -0.25004297494888306,
+          "skin_temperature_c": 35.26378631591797
+        },
+        {
+          "excel_row": 18394,
+          "date_naive_local": "2019-10-04T21:10:58.832000",
+          "test_time_s": 18389.717472,
+          "step_time_s": 3.0013,
+          "step": 5,
+          "voltage_v": 4.167701721191406,
+          "current_a": -0.25004202127456665,
+          "skin_temperature_c": 35.20754041294249
+        },
+        {
+          "excel_row": 18395,
+          "date_naive_local": "2019-10-04T21:10:59.831000",
+          "test_time_s": 18390.717072,
+          "step_time_s": 4.0009,
+          "step": 5,
+          "voltage_v": 4.167557716369629,
+          "current_a": -0.25004279613494873,
+          "skin_temperature_c": 35.20753479003906
+        },
+        {
+          "excel_row": 18396,
+          "date_naive_local": "2019-10-04T21:11:00.831000",
+          "test_time_s": 18391.716672,
+          "step_time_s": 5.0005,
+          "step": 5,
+          "voltage_v": 4.167272567749023,
+          "current_a": -0.2500448226928711,
+          "skin_temperature_c": 35.264726638793945
+        },
+        {
+          "excel_row": 18397,
+          "date_naive_local": "2019-10-04T21:11:01.831000",
+          "test_time_s": 18392.716571999998,
+          "step_time_s": 6.0004,
+          "step": 5,
+          "voltage_v": 4.167161464691162,
+          "current_a": -0.2500428557395935,
+          "skin_temperature_c": 35.264732360839844
+        },
+        {
+          "excel_row": 18398,
+          "date_naive_local": "2019-10-04T21:11:02.831000",
+          "test_time_s": 18393.716472,
+          "step_time_s": 7.0003,
+          "step": 5,
+          "voltage_v": 4.16713809967041,
+          "current_a": -0.25004279613494873,
+          "skin_temperature_c": 35.264732360839844
+        },
+        {
+          "excel_row": 18399,
+          "date_naive_local": "2019-10-04T21:11:03.831000",
+          "test_time_s": 18394.716772,
+          "step_time_s": 8.0006,
+          "step": 5,
+          "voltage_v": 4.166971683502197,
+          "current_a": -0.2500428557395935,
+          "skin_temperature_c": 35.20357743323874
+        },
+        {
+          "excel_row": 18400,
+          "date_naive_local": "2019-10-04T21:11:04.831000",
+          "test_time_s": 18395.717072,
+          "step_time_s": 9.0009,
+          "step": 5,
+          "voltage_v": 4.166758060455322,
+          "current_a": -0.25004345178604126,
+          "skin_temperature_c": 35.20357131958008
+        },
+        {
+          "excel_row": 18401,
+          "date_naive_local": "2019-10-04T21:11:05.832000",
+          "test_time_s": 18396.717271999998,
+          "step_time_s": 10.0011,
+          "step": 5,
+          "voltage_v": 4.166824817657471,
+          "current_a": -0.2500397562980652,
+          "skin_temperature_c": 35.20357131958008
+        }
+      ],
+      "recorded_first_ten_current_range_a": [
+        -0.2500448226928711,
+        -0.2500397562980652
+      ],
+      "exact_duplicate_times": 0,
+      "duplicate_time_conflicts": 0
+    },
+    {
+      "source": {
+        "filename": "NMC_k1_1C_35degC.xlsx",
+        "bytes": 1730248,
+        "sha256": "d8349933f31ff649d6d8a51eb9c4f9aa625945c39ee920ac111a63d3224d911f",
+        "inflated_bytes": 9648930
+      },
+      "nominal_rate_label_c": 1.0,
+      "nominal_chamber_label_celsius": 35,
+      "measurement_rows": 26107,
+      "recorded_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "post_discharge_rest_recorded": true,
+      "recorded_earlier_high_rate_files": [
+        "NMC_k1_3C_25degC.xlsx",
+        "NMC_k1_5C_25degC.xlsx",
+        "NMC_k1_2C_25degC.xlsx"
+      ],
+      "pre_discharge_rest": {
+        "first": {
+          "excel_row": 15557,
+          "date_naive_local": "2019-10-06T20:04:08.140000",
+          "test_time_s": 15554.926544,
+          "step_time_s": 1.0007,
+          "step": 4,
+          "voltage_v": 4.1962809562683105,
+          "current_a": 0.0,
+          "skin_temperature_c": 35.19760513305664
+        },
+        "last": {
+          "excel_row": 19157,
+          "date_naive_local": "2019-10-06T21:04:07.141000",
+          "test_time_s": 19153.927044,
+          "step_time_s": 3600.0012,
+          "step": 4,
+          "voltage_v": 4.187027931213379,
+          "current_a": 0.0,
+          "skin_temperature_c": 35.14968490600586
+        },
+        "rows": 3601,
+        "maximum_absolute_current_a": 0.0
+      },
+      "preceding_cv_end": {
+        "excel_row": 15556,
+        "date_naive_local": "2019-10-06T20:04:07.099000",
+        "test_time_s": 15553.884712,
+        "step_time_s": 5561.9103,
+        "step": 3,
+        "voltage_v": 4.20010232925415,
+        "current_a": 0.049998704344034195,
+        "skin_temperature_c": 35.19760513305664
+      },
+      "rest_to_discharge": {
+        "steps": [
+          4,
+          5
+        ],
+        "left": {
+          "excel_row": 19157,
+          "date_naive_local": "2019-10-06T21:04:07.141000",
+          "test_time_s": 19153.927044,
+          "step_time_s": 3600.0012,
+          "step": 4,
+          "voltage_v": 4.187027931213379,
+          "current_a": 0.0,
+          "skin_temperature_c": 35.14968490600586
+        },
+        "right": {
+          "excel_row": 19158,
+          "date_naive_local": "2019-10-06T21:04:08.187000",
+          "test_time_s": 19154.974048,
+          "step_time_s": 1.0012,
+          "step": 5,
+          "voltage_v": 3.8135910034179688,
+          "current_a": -5.000428199768066,
+          "skin_temperature_c": 35.14968490600586
+        },
+        "source_sample_gap_s": 1.0470040000000154,
+        "current_change_a": -5.000428199768066,
+        "voltage_change_v": -0.37343692779541016,
+        "apparent_transition_ratio_ohm": 0.0746809898825727,
+        "ratio_is_intrinsic_resistance": false
+      },
+      "first_ten_loaded_samples": [
+        {
+          "excel_row": 19158,
+          "date_naive_local": "2019-10-06T21:04:08.187000",
+          "test_time_s": 19154.974048,
+          "step_time_s": 1.0012,
+          "step": 5,
+          "voltage_v": 3.8135910034179688,
+          "current_a": -5.000428199768066,
+          "skin_temperature_c": 35.14968490600586
+        },
+        {
+          "excel_row": 19159,
+          "date_naive_local": "2019-10-06T21:04:09.187000",
+          "test_time_s": 19155.973948,
+          "step_time_s": 2.0011,
+          "step": 5,
+          "voltage_v": 3.8086938858032227,
+          "current_a": -5.000461578369141,
+          "skin_temperature_c": 35.14968490600586
+        },
+        {
+          "excel_row": 19160,
+          "date_naive_local": "2019-10-06T21:04:10.186000",
+          "test_time_s": 19156.973048,
+          "step_time_s": 3.0002,
+          "step": 5,
+          "voltage_v": 3.8048956394195557,
+          "current_a": -5.000438690185547,
+          "skin_temperature_c": 35.13873782054819
+        },
+        {
+          "excel_row": 19161,
+          "date_naive_local": "2019-10-06T21:04:11.187000",
+          "test_time_s": 19157.973747999997,
+          "step_time_s": 4.0009,
+          "step": 5,
+          "voltage_v": 3.801602363586426,
+          "current_a": -5.0004730224609375,
+          "skin_temperature_c": 35.138736724853516
+        },
+        {
+          "excel_row": 19162,
+          "date_naive_local": "2019-10-06T21:04:12.187000",
+          "test_time_s": 19158.973648,
+          "step_time_s": 5.0008,
+          "step": 5,
+          "voltage_v": 3.7987875938415527,
+          "current_a": -5.000473976135254,
+          "skin_temperature_c": 35.138736724853516
+        },
+        {
+          "excel_row": 19163,
+          "date_naive_local": "2019-10-06T21:04:13.187000",
+          "test_time_s": 19159.974048,
+          "step_time_s": 6.0012,
+          "step": 5,
+          "voltage_v": 3.796239137649536,
+          "current_a": -5.000469207763672,
+          "skin_temperature_c": 35.180686950683594
+        },
+        {
+          "excel_row": 19164,
+          "date_naive_local": "2019-10-06T21:04:14.187000",
+          "test_time_s": 19160.973547999998,
+          "step_time_s": 7.0007,
+          "step": 5,
+          "voltage_v": 3.7940163612365723,
+          "current_a": -5.000471115112305,
+          "skin_temperature_c": 35.180686950683594
+        },
+        {
+          "excel_row": 19165,
+          "date_naive_local": "2019-10-06T21:04:15.187000",
+          "test_time_s": 19161.973847999998,
+          "step_time_s": 8.001,
+          "step": 5,
+          "voltage_v": 3.791844606399536,
+          "current_a": -5.00047492980957,
+          "skin_temperature_c": 35.13058090209961
+        },
+        {
+          "excel_row": 19166,
+          "date_naive_local": "2019-10-06T21:04:16.186000",
+          "test_time_s": 19162.973248,
+          "step_time_s": 9.0004,
+          "step": 5,
+          "voltage_v": 3.7897753715515137,
+          "current_a": -5.000459671020508,
+          "skin_temperature_c": 35.13058090209961
+        },
+        {
+          "excel_row": 19167,
+          "date_naive_local": "2019-10-06T21:04:17.187000",
+          "test_time_s": 19163.973648,
+          "step_time_s": 10.0008,
+          "step": 5,
+          "voltage_v": 3.7880351543426514,
+          "current_a": -5.0004730224609375,
+          "skin_temperature_c": 35.13058090209961
+        }
+      ],
+      "recorded_first_ten_current_range_a": [
+        -5.00047492980957,
+        -5.000428199768066
+      ],
+      "exact_duplicate_times": 0,
+      "duplicate_time_conflicts": 0
+    },
+    {
+      "source": {
+        "filename": "NMC_k1_5C_35degC.xlsx",
+        "bytes": 1176345,
+        "sha256": "79b1d7088a231421fc20d4673afb3141b291f9aae828cd32cb73acf1d65f7f37",
+        "inflated_bytes": 6546376
+      },
+      "nominal_rate_label_c": 5.0,
+      "nominal_chamber_label_celsius": 35,
+      "measurement_rows": 17762,
+      "recorded_steps": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "post_discharge_rest_recorded": false,
+      "recorded_earlier_high_rate_files": [
+        "NMC_k1_3C_25degC.xlsx",
+        "NMC_k1_5C_25degC.xlsx",
+        "NMC_k1_2C_25degC.xlsx"
+      ],
+      "pre_discharge_rest": {
+        "first": {
+          "excel_row": 13797,
+          "date_naive_local": "2019-10-08T17:38:04.337000",
+          "test_time_s": 13793.783459999999,
+          "step_time_s": 1.0002,
+          "step": 4,
+          "voltage_v": 4.198207855224609,
+          "current_a": 0.0,
+          "skin_temperature_c": 34.722816467285156
+        },
+        "last": {
+          "excel_row": 17397,
+          "date_naive_local": "2019-10-08T18:38:03.338000",
+          "test_time_s": 17392.78466,
+          "step_time_s": 3600.0014,
+          "step": 4,
+          "voltage_v": 4.187673568725586,
+          "current_a": 0.0,
+          "skin_temperature_c": 34.67827606201172
+        },
+        "rows": 3601,
+        "maximum_absolute_current_a": 0.0
+      },
+      "preceding_cv_end": {
+        "excel_row": 13796,
+        "date_naive_local": "2019-10-08T17:38:03.297000",
+        "test_time_s": 13792.7424,
+        "step_time_s": 3336.4229,
+        "step": 3,
+        "voltage_v": 4.199940204620361,
+        "current_a": 0.04999534413218498,
+        "skin_temperature_c": 34.722816467285156
+      },
+      "rest_to_discharge": {
+        "steps": [
+          4,
+          5
+        ],
+        "left": {
+          "excel_row": 17397,
+          "date_naive_local": "2019-10-08T18:38:03.338000",
+          "test_time_s": 17392.78466,
+          "step_time_s": 3600.0014,
+          "step": 4,
+          "voltage_v": 4.187673568725586,
+          "current_a": 0.0,
+          "skin_temperature_c": 34.67827606201172
+        },
+        "right": {
+          "excel_row": 17398,
+          "date_naive_local": "2019-10-08T18:38:04.385000",
+          "test_time_s": 17393.832512,
+          "step_time_s": 1.0006,
+          "step": 5,
+          "voltage_v": 3.279304265975952,
+          "current_a": -25.004356384277344,
+          "skin_temperature_c": 34.70345687866211
+        },
+        "source_sample_gap_s": 1.0478519999996934,
+        "current_change_a": -25.004356384277344,
+        "voltage_change_v": -0.9083693027496338,
+        "apparent_transition_ratio_ohm": 0.03632844168389847,
+        "ratio_is_intrinsic_resistance": false
+      },
+      "first_ten_loaded_samples": [
+        {
+          "excel_row": 17398,
+          "date_naive_local": "2019-10-08T18:38:04.385000",
+          "test_time_s": 17393.832512,
+          "step_time_s": 1.0006,
+          "step": 5,
+          "voltage_v": 3.279304265975952,
+          "current_a": -25.004356384277344,
+          "skin_temperature_c": 34.70345687866211
+        },
+        {
+          "excel_row": 17399,
+          "date_naive_local": "2019-10-08T18:38:05.386000",
+          "test_time_s": 17394.833212,
+          "step_time_s": 2.0013,
+          "step": 5,
+          "voltage_v": 3.2568209171295166,
+          "current_a": -25.003768920898438,
+          "skin_temperature_c": 34.70345687866211
+        },
+        {
+          "excel_row": 17400,
+          "date_naive_local": "2019-10-08T18:38:06.385000",
+          "test_time_s": 17395.832912,
+          "step_time_s": 3.001,
+          "step": 5,
+          "voltage_v": 3.2399473190307617,
+          "current_a": -25.000259399414062,
+          "skin_temperature_c": 34.70345687866211
+        },
+        {
+          "excel_row": 17401,
+          "date_naive_local": "2019-10-08T18:38:07.385000",
+          "test_time_s": 17396.832112,
+          "step_time_s": 4.0002,
+          "step": 5,
+          "voltage_v": 3.2257273197174072,
+          "current_a": -25.000404357910156,
+          "skin_temperature_c": 34.84946124700664
+        },
+        {
+          "excel_row": 17402,
+          "date_naive_local": "2019-10-08T18:38:08.384000",
+          "test_time_s": 17397.832112,
+          "step_time_s": 5.0002,
+          "step": 5,
+          "voltage_v": 3.2138936519622803,
+          "current_a": -25.000099182128906,
+          "skin_temperature_c": 34.8494758605957
+        },
+        {
+          "excel_row": 17403,
+          "date_naive_local": "2019-10-08T18:38:09.385000",
+          "test_time_s": 17398.832312000002,
+          "step_time_s": 6.0004,
+          "step": 5,
+          "voltage_v": 3.203558921813965,
+          "current_a": -25.000473022460938,
+          "skin_temperature_c": 34.8494758605957
+        },
+        {
+          "excel_row": 17404,
+          "date_naive_local": "2019-10-08T18:38:10.385000",
+          "test_time_s": 17399.832412,
+          "step_time_s": 7.0005,
+          "step": 5,
+          "voltage_v": 3.1945157051086426,
+          "current_a": -24.999534606933594,
+          "skin_temperature_c": 35.040008544921875
+        },
+        {
+          "excel_row": 17405,
+          "date_naive_local": "2019-10-08T18:38:11.384000",
+          "test_time_s": 17400.832012000003,
+          "step_time_s": 8.0001,
+          "step": 5,
+          "voltage_v": 3.1866228580474854,
+          "current_a": -24.999099731445312,
+          "skin_temperature_c": 35.040008544921875
+        },
+        {
+          "excel_row": 17406,
+          "date_naive_local": "2019-10-08T18:38:12.385000",
+          "test_time_s": 17401.833112,
+          "step_time_s": 9.0012,
+          "step": 5,
+          "voltage_v": 3.179334878921509,
+          "current_a": -24.999122619628906,
+          "skin_temperature_c": 35.33668518066406
+        },
+        {
+          "excel_row": 17407,
+          "date_naive_local": "2019-10-08T18:38:13.386000",
+          "test_time_s": 17402.833312000002,
+          "step_time_s": 10.0014,
+          "step": 5,
+          "voltage_v": 3.1731815338134766,
+          "current_a": -24.998992919921875,
+          "skin_temperature_c": 35.33668518066406
+        }
+      ],
+      "recorded_first_ten_current_range_a": [
+        -25.004356384277344,
+        -24.998992919921875
+      ],
+      "exact_duplicate_times": 0,
+      "duplicate_time_conflicts": 0
+    },
+    {
+      "source": {
+        "filename": "NMC_k1_3C_35degC.xlsx",
+        "bytes": 1096831,
+        "sha256": "0e59071c1308c113feee285a4fa27721c775fcc0a9504392c7f4d616aecb0c2a",
+        "inflated_bytes": 6152143
+      },
+      "nominal_rate_label_c": 3.0,
+      "nominal_chamber_label_celsius": 35,
+      "measurement_rows": 16839,
+      "recorded_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "post_discharge_rest_recorded": true,
+      "recorded_earlier_high_rate_files": [
+        "NMC_k1_3C_25degC.xlsx",
+        "NMC_k1_5C_25degC.xlsx",
+        "NMC_k1_2C_25degC.xlsx",
+        "NMC_k1_5C_35degC.xlsx"
+      ],
+      "pre_discharge_rest": {
+        "first": {
+          "excel_row": 8593,
+          "date_naive_local": "2019-10-09T12:16:54.210000",
+          "test_time_s": 8590.126868000001,
+          "step_time_s": 0.9999,
+          "step": 4,
+          "voltage_v": 4.198005676269531,
+          "current_a": 0.0,
+          "skin_temperature_c": 34.71144392332143
+        },
+        "last": {
+          "excel_row": 12193,
+          "date_naive_local": "2019-10-09T13:16:53.212000",
+          "test_time_s": 12189.128568,
+          "step_time_s": 3600.0016,
+          "step": 4,
+          "voltage_v": 4.1882123947143555,
+          "current_a": 0.0,
+          "skin_temperature_c": 34.66096878051758
+        },
+        "rows": 3601,
+        "maximum_absolute_current_a": 0.0
+      },
+      "preceding_cv_end": {
+        "excel_row": 8592,
+        "date_naive_local": "2019-10-09T12:16:53.169000",
+        "test_time_s": 8589.085764,
+        "step_time_s": 3307.6799,
+        "step": 3,
+        "voltage_v": 4.199924468994141,
+        "current_a": 0.04999350756406784,
+        "skin_temperature_c": 34.66203689575195
+      },
+      "rest_to_discharge": {
+        "steps": [
+          4,
+          5
+        ],
+        "left": {
+          "excel_row": 12193,
+          "date_naive_local": "2019-10-09T13:16:53.212000",
+          "test_time_s": 12189.128568,
+          "step_time_s": 3600.0016,
+          "step": 4,
+          "voltage_v": 4.1882123947143555,
+          "current_a": 0.0,
+          "skin_temperature_c": 34.66096878051758
+        },
+        "right": {
+          "excel_row": 12194,
+          "date_naive_local": "2019-10-09T13:16:54.260000",
+          "test_time_s": 12190.175908,
+          "step_time_s": 1.0007,
+          "step": 5,
+          "voltage_v": 3.6277952194213867,
+          "current_a": -15.004112243652344,
+          "skin_temperature_c": 34.66096878051758
+        },
+        "source_sample_gap_s": 1.047339999999167,
+        "current_change_a": -15.004112243652344,
+        "voltage_change_v": -0.5604171752929688,
+        "apparent_transition_ratio_ohm": 0.03735090528465351,
+        "ratio_is_intrinsic_resistance": false
+      },
+      "first_ten_loaded_samples": [
+        {
+          "excel_row": 12194,
+          "date_naive_local": "2019-10-09T13:16:54.260000",
+          "test_time_s": 12190.175908,
+          "step_time_s": 1.0007,
+          "step": 5,
+          "voltage_v": 3.6277952194213867,
+          "current_a": -15.004112243652344,
+          "skin_temperature_c": 34.66096878051758
+        },
+        {
+          "excel_row": 12195,
+          "date_naive_local": "2019-10-09T13:16:55.260000",
+          "test_time_s": 12191.176308,
+          "step_time_s": 2.0011,
+          "step": 5,
+          "voltage_v": 3.6141324043273926,
+          "current_a": -15.004150390625,
+          "skin_temperature_c": 34.69313049316406
+        },
+        {
+          "excel_row": 12196,
+          "date_naive_local": "2019-10-09T13:16:56.259000",
+          "test_time_s": 12192.175608,
+          "step_time_s": 3.0004,
+          "step": 5,
+          "voltage_v": 3.6036624908447266,
+          "current_a": -15.003883361816406,
+          "skin_temperature_c": 34.69313049316406
+        },
+        {
+          "excel_row": 12197,
+          "date_naive_local": "2019-10-09T13:16:57.259000",
+          "test_time_s": 12193.175208,
+          "step_time_s": 4.0,
+          "step": 5,
+          "voltage_v": 3.5947234630584717,
+          "current_a": -15.004478454589844,
+          "skin_temperature_c": 34.69313049316406
+        },
+        {
+          "excel_row": 12198,
+          "date_naive_local": "2019-10-09T13:16:58.260000",
+          "test_time_s": 12194.175808,
+          "step_time_s": 5.0006,
+          "step": 5,
+          "voltage_v": 3.587057113647461,
+          "current_a": -15.000900268554688,
+          "skin_temperature_c": 34.78919022792867
+        },
+        {
+          "excel_row": 12199,
+          "date_naive_local": "2019-10-09T13:16:59.260000",
+          "test_time_s": 12195.176208,
+          "step_time_s": 6.001,
+          "step": 5,
+          "voltage_v": 3.5800929069519043,
+          "current_a": -15.000297546386719,
+          "skin_temperature_c": 34.78919982910156
+        },
+        {
+          "excel_row": 12200,
+          "date_naive_local": "2019-10-09T13:17:00.260000",
+          "test_time_s": 12196.176008,
+          "step_time_s": 7.0008,
+          "step": 5,
+          "voltage_v": 3.5737833976745605,
+          "current_a": -15.000083923339844,
+          "skin_temperature_c": 34.78919982910156
+        },
+        {
+          "excel_row": 12201,
+          "date_naive_local": "2019-10-09T13:17:01.259000",
+          "test_time_s": 12197.175408,
+          "step_time_s": 8.0002,
+          "step": 5,
+          "voltage_v": 3.5680716037750244,
+          "current_a": -14.999382019042969,
+          "skin_temperature_c": 34.8580322265625
+        },
+        {
+          "excel_row": 12202,
+          "date_naive_local": "2019-10-09T13:17:02.260000",
+          "test_time_s": 12198.175808,
+          "step_time_s": 9.0006,
+          "step": 5,
+          "voltage_v": 3.5627176761627197,
+          "current_a": -15.000556945800781,
+          "skin_temperature_c": 34.8580322265625
+        },
+        {
+          "excel_row": 12203,
+          "date_naive_local": "2019-10-09T13:17:03.260000",
+          "test_time_s": 12199.176408,
+          "step_time_s": 10.0012,
+          "step": 5,
+          "voltage_v": 3.557749032974243,
+          "current_a": -15.000595092773438,
+          "skin_temperature_c": 34.8580322265625
+        }
+      ],
+      "recorded_first_ten_current_range_a": [
+        -15.004478454589844,
+        -14.999382019042969
+      ],
+      "exact_duplicate_times": 0,
+      "duplicate_time_conflicts": 0
+    },
+    {
+      "source": {
+        "filename": "NMC_k1_2C_35degC.xlsx",
+        "bytes": 1440771,
+        "sha256": "14cbdcf9caee0493d502e6ac552b421785c1624cee3ea865623798ae6f1b4daf",
+        "inflated_bytes": 8078257
+      },
+      "nominal_rate_label_c": 2.0,
+      "nominal_chamber_label_celsius": 35,
+      "measurement_rows": 21960,
+      "recorded_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "post_discharge_rest_recorded": true,
+      "recorded_earlier_high_rate_files": [
+        "NMC_k1_3C_25degC.xlsx",
+        "NMC_k1_5C_25degC.xlsx",
+        "NMC_k1_2C_25degC.xlsx",
+        "NMC_k1_5C_35degC.xlsx",
+        "NMC_k1_3C_35degC.xlsx"
+      ],
+      "pre_discharge_rest": {
+        "first": {
+          "excel_row": 13118,
+          "date_naive_local": "2019-10-09T19:45:21.699000",
+          "test_time_s": 13115.514532,
+          "step_time_s": 1.0003,
+          "step": 4,
+          "voltage_v": 4.198128700256348,
+          "current_a": 0.0,
+          "skin_temperature_c": 34.67816162109375
+        },
+        "last": {
+          "excel_row": 16718,
+          "date_naive_local": "2019-10-09T20:45:20.700000",
+          "test_time_s": 16714.515632,
+          "step_time_s": 3600.0014,
+          "step": 4,
+          "voltage_v": 4.187786102294922,
+          "current_a": 0.0,
+          "skin_temperature_c": 34.67831802368164
+        },
+        "rows": 3601,
+        "maximum_absolute_current_a": 0.0
+      },
+      "preceding_cv_end": {
+        "excel_row": 13117,
+        "date_naive_local": "2019-10-09T19:45:20.658000",
+        "test_time_s": 13114.473184,
+        "step_time_s": 3423.3214,
+        "step": 3,
+        "voltage_v": 4.199949741363525,
+        "current_a": 0.049994468688964844,
+        "skin_temperature_c": 34.67816256970958
+      },
+      "rest_to_discharge": {
+        "steps": [
+          4,
+          5
+        ],
+        "left": {
+          "excel_row": 16718,
+          "date_naive_local": "2019-10-09T20:45:20.700000",
+          "test_time_s": 16714.515632,
+          "step_time_s": 3600.0014,
+          "step": 4,
+          "voltage_v": 4.187786102294922,
+          "current_a": 0.0,
+          "skin_temperature_c": 34.67831802368164
+        },
+        "right": {
+          "excel_row": 16719,
+          "date_naive_local": "2019-10-09T20:45:21.747000",
+          "test_time_s": 16715.56226,
+          "step_time_s": 1.0001,
+          "step": 5,
+          "voltage_v": 3.8081679344177246,
+          "current_a": -10.002098083496094,
+          "skin_temperature_c": 34.68322707006027
+        },
+        "source_sample_gap_s": 1.0466280000000552,
+        "current_change_a": -10.002098083496094,
+        "voltage_change_v": -0.37961816787719727,
+        "apparent_transition_ratio_ohm": 0.03795385375230264,
+        "ratio_is_intrinsic_resistance": false
+      },
+      "first_ten_loaded_samples": [
+        {
+          "excel_row": 16719,
+          "date_naive_local": "2019-10-09T20:45:21.747000",
+          "test_time_s": 16715.56226,
+          "step_time_s": 1.0001,
+          "step": 5,
+          "voltage_v": 3.8081679344177246,
+          "current_a": -10.002098083496094,
+          "skin_temperature_c": 34.68322707006027
+        },
+        {
+          "excel_row": 16720,
+          "date_naive_local": "2019-10-09T20:45:22.747000",
+          "test_time_s": 16716.562459999997,
+          "step_time_s": 2.0003,
+          "step": 5,
+          "voltage_v": 3.7987186908721924,
+          "current_a": -10.002670288085938,
+          "skin_temperature_c": 34.6832275390625
+        },
+        {
+          "excel_row": 16721,
+          "date_naive_local": "2019-10-09T20:45:23.748000",
+          "test_time_s": 16717.56296,
+          "step_time_s": 3.0008,
+          "step": 5,
+          "voltage_v": 3.7918100357055664,
+          "current_a": -10.002861022949219,
+          "skin_temperature_c": 34.71747970581055
+        },
+        {
+          "excel_row": 16722,
+          "date_naive_local": "2019-10-09T20:45:24.747000",
+          "test_time_s": 16718.562459999997,
+          "step_time_s": 4.0003,
+          "step": 5,
+          "voltage_v": 3.785491704940796,
+          "current_a": -10.002349853515625,
+          "skin_temperature_c": 34.71747970581055
+        },
+        {
+          "excel_row": 16723,
+          "date_naive_local": "2019-10-09T20:45:25.748000",
+          "test_time_s": 16719.56266,
+          "step_time_s": 5.0005,
+          "step": 5,
+          "voltage_v": 3.7801220417022705,
+          "current_a": -10.002044677734375,
+          "skin_temperature_c": 34.71747970581055
+        },
+        {
+          "excel_row": 16724,
+          "date_naive_local": "2019-10-09T20:45:26.748000",
+          "test_time_s": 16720.563059999997,
+          "step_time_s": 6.0009,
+          "step": 5,
+          "voltage_v": 3.7754175662994385,
+          "current_a": -10.002777099609375,
+          "skin_temperature_c": 34.73524678949831
+        },
+        {
+          "excel_row": 16725,
+          "date_naive_local": "2019-10-09T20:45:27.747000",
+          "test_time_s": 16721.56236,
+          "step_time_s": 7.0002,
+          "step": 5,
+          "voltage_v": 3.771145820617676,
+          "current_a": -10.002487182617188,
+          "skin_temperature_c": 34.73524856567383
+        },
+        {
+          "excel_row": 16726,
+          "date_naive_local": "2019-10-09T20:45:28.748000",
+          "test_time_s": 16722.56266,
+          "step_time_s": 8.0005,
+          "step": 5,
+          "voltage_v": 3.7669801712036133,
+          "current_a": -10.001594543457031,
+          "skin_temperature_c": 34.73524856567383
+        },
+        {
+          "excel_row": 16727,
+          "date_naive_local": "2019-10-09T20:45:29.748000",
+          "test_time_s": 16723.56266,
+          "step_time_s": 9.0005,
+          "step": 5,
+          "voltage_v": 3.763157606124878,
+          "current_a": -10.002525329589844,
+          "skin_temperature_c": 34.77645843394481
+        },
+        {
+          "excel_row": 16728,
+          "date_naive_local": "2019-10-09T20:45:30.748000",
+          "test_time_s": 16724.56286,
+          "step_time_s": 10.0007,
+          "step": 5,
+          "voltage_v": 3.7597270011901855,
+          "current_a": -10.001884460449219,
+          "skin_temperature_c": 34.77646255493164
+        }
+      ],
+      "recorded_first_ten_current_range_a": [
+        -10.002861022949219,
+        -10.001594543457031
+      ],
+      "exact_duplicate_times": 0,
+      "duplicate_time_conflicts": 0
+    },
+    {
+      "source": {
+        "filename": "NMC_k1_0_05C_05degC.xlsx",
+        "bytes": 6144093,
+        "sha256": "4849142bdb17640c9a73ab83cb1acea15790d2e390ba7b53f9a443b29f5a662d",
+        "inflated_bytes": 34566812
+      },
+      "nominal_rate_label_c": 0.05,
+      "nominal_chamber_label_celsius": 5,
+      "measurement_rows": 91638,
+      "recorded_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "post_discharge_rest_recorded": true,
+      "recorded_earlier_high_rate_files": [
+        "NMC_k1_3C_25degC.xlsx",
+        "NMC_k1_5C_25degC.xlsx",
+        "NMC_k1_2C_25degC.xlsx",
+        "NMC_k1_5C_35degC.xlsx",
+        "NMC_k1_3C_35degC.xlsx",
+        "NMC_k1_2C_35degC.xlsx"
+      ],
+      "pre_discharge_rest": {
+        "first": {
+          "excel_row": 16952,
+          "date_naive_local": "2019-10-25T13:16:04.710000",
+          "test_time_s": 16948.636724,
+          "step_time_s": 1.0007,
+          "step": 4,
+          "voltage_v": 4.195870876312256,
+          "current_a": 0.0,
+          "skin_temperature_c": 5.777318954467773
+        },
+        "last": {
+          "excel_row": 20552,
+          "date_naive_local": "2019-10-25T14:16:03.710000",
+          "test_time_s": 20547.636824,
+          "step_time_s": 3600.0008,
+          "step": 4,
+          "voltage_v": 4.181455612182617,
+          "current_a": 0.0,
+          "skin_temperature_c": 5.783782482147217
+        },
+        "rows": 3601,
+        "maximum_absolute_current_a": 0.0
+      },
+      "preceding_cv_end": {
+        "excel_row": 16951,
+        "date_naive_local": "2019-10-25T13:16:03.669000",
+        "test_time_s": 16947.59468,
+        "step_time_s": 7797.1364,
+        "step": 3,
+        "voltage_v": 4.199925422668457,
+        "current_a": 0.049994513392448425,
+        "skin_temperature_c": 5.802915096282959
+      },
+      "rest_to_discharge": {
+        "steps": [
+          4,
+          5
+        ],
+        "left": {
+          "excel_row": 20552,
+          "date_naive_local": "2019-10-25T14:16:03.710000",
+          "test_time_s": 20547.636824,
+          "step_time_s": 3600.0008,
+          "step": 4,
+          "voltage_v": 4.181455612182617,
+          "current_a": 0.0,
+          "skin_temperature_c": 5.783782482147217
+        },
+        "right": {
+          "excel_row": 20553,
+          "date_naive_local": "2019-10-25T14:16:04.756000",
+          "test_time_s": 20548.682504,
+          "step_time_s": 1.0007,
+          "step": 5,
+          "voltage_v": 4.1604485511779785,
+          "current_a": -0.250044047832489,
+          "skin_temperature_c": 5.783782482147217
+        },
+        "source_sample_gap_s": 1.0456799999992654,
+        "current_change_a": -0.250044047832489,
+        "voltage_change_v": -0.021007061004638672,
+        "apparent_transition_ratio_ohm": 0.08401344157854877,
+        "ratio_is_intrinsic_resistance": false
+      },
+      "first_ten_loaded_samples": [
+        {
+          "excel_row": 20553,
+          "date_naive_local": "2019-10-25T14:16:04.756000",
+          "test_time_s": 20548.682504,
+          "step_time_s": 1.0007,
+          "step": 5,
+          "voltage_v": 4.1604485511779785,
+          "current_a": -0.250044047832489,
+          "skin_temperature_c": 5.783782482147217
+        },
+        {
+          "excel_row": 20554,
+          "date_naive_local": "2019-10-25T14:16:05.756000",
+          "test_time_s": 20549.682004000002,
+          "step_time_s": 2.0002,
+          "step": 5,
+          "voltage_v": 4.160077095031738,
+          "current_a": -0.2500450015068054,
+          "skin_temperature_c": 5.829421721940759
+        },
+        {
+          "excel_row": 20555,
+          "date_naive_local": "2019-10-25T14:16:06.757000",
+          "test_time_s": 20550.683004000002,
+          "step_time_s": 3.0012,
+          "step": 5,
+          "voltage_v": 4.1597137451171875,
+          "current_a": -0.2500483989715576,
+          "skin_temperature_c": 5.829426288604736
+        },
+        {
+          "excel_row": 20556,
+          "date_naive_local": "2019-10-25T14:16:07.756000",
+          "test_time_s": 20551.682404000003,
+          "step_time_s": 4.0006,
+          "step": 5,
+          "voltage_v": 4.159430503845215,
+          "current_a": -0.25004881620407104,
+          "skin_temperature_c": 5.829426288604736
+        },
+        {
+          "excel_row": 20557,
+          "date_naive_local": "2019-10-25T14:16:08.757000",
+          "test_time_s": 20552.683004000002,
+          "step_time_s": 5.0012,
+          "step": 5,
+          "voltage_v": 4.159215450286865,
+          "current_a": -0.25004786252975464,
+          "skin_temperature_c": 5.83840423494774
+        },
+        {
+          "excel_row": 20558,
+          "date_naive_local": "2019-10-25T14:16:09.757000",
+          "test_time_s": 20553.682804,
+          "step_time_s": 6.001,
+          "step": 5,
+          "voltage_v": 4.158979415893555,
+          "current_a": -0.2500470280647278,
+          "skin_temperature_c": 5.838405132293701
+        },
+        {
+          "excel_row": 20559,
+          "date_naive_local": "2019-10-25T14:16:10.756000",
+          "test_time_s": 20554.682004000002,
+          "step_time_s": 7.0002,
+          "step": 5,
+          "voltage_v": 4.158802032470703,
+          "current_a": -0.25004833936691284,
+          "skin_temperature_c": 5.838405132293701
+        },
+        {
+          "excel_row": 20560,
+          "date_naive_local": "2019-10-25T14:16:11.756000",
+          "test_time_s": 20555.682204,
+          "step_time_s": 8.0004,
+          "step": 5,
+          "voltage_v": 4.158675193786621,
+          "current_a": -0.2500143051147461,
+          "skin_temperature_c": 5.819012641906738
+        },
+        {
+          "excel_row": 20561,
+          "date_naive_local": "2019-10-25T14:16:12.757000",
+          "test_time_s": 20556.682804,
+          "step_time_s": 9.001,
+          "step": 5,
+          "voltage_v": 4.15838623046875,
+          "current_a": -0.2500138282775879,
+          "skin_temperature_c": 5.819012641906738
+        },
+        {
+          "excel_row": 20562,
+          "date_naive_local": "2019-10-25T14:16:13.756000",
+          "test_time_s": 20557.682404000003,
+          "step_time_s": 10.0006,
+          "step": 5,
+          "voltage_v": 4.158225059509277,
+          "current_a": -0.2500150799751282,
+          "skin_temperature_c": 5.819012641906738
+        }
+      ],
+      "recorded_first_ten_current_range_a": [
+        -0.25004881620407104,
+        -0.2500138282775879
+      ],
+      "exact_duplicate_times": 0,
+      "duplicate_time_conflicts": 0
+    },
+    {
+      "source": {
+        "filename": "NMC_k1_1C_05degC.xlsx",
+        "bytes": 1800071,
+        "sha256": "3feab141169dcbd7320f096b39a826dac9f148b9714bd361841d167c8cf5541c",
+        "inflated_bytes": 9965409
+      },
+      "nominal_rate_label_c": 1.0,
+      "nominal_chamber_label_celsius": 5,
+      "measurement_rows": 26962,
+      "recorded_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "post_discharge_rest_recorded": true,
+      "recorded_earlier_high_rate_files": [
+        "NMC_k1_3C_25degC.xlsx",
+        "NMC_k1_5C_25degC.xlsx",
+        "NMC_k1_2C_25degC.xlsx",
+        "NMC_k1_5C_35degC.xlsx",
+        "NMC_k1_3C_35degC.xlsx",
+        "NMC_k1_2C_35degC.xlsx"
+      ],
+      "pre_discharge_rest": {
+        "first": {
+          "excel_row": 16628,
+          "date_naive_local": "2019-10-26T19:35:46.057000",
+          "test_time_s": 16625.720896,
+          "step_time_s": 1.0001,
+          "step": 4,
+          "voltage_v": 4.195991516113281,
+          "current_a": 0.0,
+          "skin_temperature_c": 8.255180358886719
+        },
+        "last": {
+          "excel_row": 20228,
+          "date_naive_local": "2019-10-26T20:35:45.057000",
+          "test_time_s": 20224.721296,
+          "step_time_s": 3600.0005,
+          "step": 4,
+          "voltage_v": 4.182589054107666,
+          "current_a": 0.0,
+          "skin_temperature_c": 8.341764450073242
+        },
+        "rows": 3601,
+        "maximum_absolute_current_a": 0.0
+      },
+      "preceding_cv_end": {
+        "excel_row": 16627,
+        "date_naive_local": "2019-10-26T19:35:45.018000",
+        "test_time_s": 16624.682236,
+        "step_time_s": 7333.8137,
+        "step": 3,
+        "voltage_v": 4.199850082397461,
+        "current_a": 0.04999680072069168,
+        "skin_temperature_c": 8.255180358886719
+      },
+      "rest_to_discharge": {
+        "steps": [
+          4,
+          5
+        ],
+        "left": {
+          "excel_row": 20228,
+          "date_naive_local": "2019-10-26T20:35:45.057000",
+          "test_time_s": 20224.721296,
+          "step_time_s": 3600.0005,
+          "step": 4,
+          "voltage_v": 4.182589054107666,
+          "current_a": 0.0,
+          "skin_temperature_c": 8.341764450073242
+        },
+        "right": {
+          "excel_row": 20229,
+          "date_naive_local": "2019-10-26T20:35:46.102000",
+          "test_time_s": 20225.765952,
+          "step_time_s": 1.0003,
+          "step": 5,
+          "voltage_v": 3.7837541103363037,
+          "current_a": -5.00035285949707,
+          "skin_temperature_c": 8.352569580078125
+        },
+        "source_sample_gap_s": 1.0446560000018508,
+        "current_change_a": -5.00035285949707,
+        "voltage_change_v": -0.3988349437713623,
+        "apparent_transition_ratio_ohm": 0.07976135984360845,
+        "ratio_is_intrinsic_resistance": false
+      },
+      "first_ten_loaded_samples": [
+        {
+          "excel_row": 20229,
+          "date_naive_local": "2019-10-26T20:35:46.102000",
+          "test_time_s": 20225.765952,
+          "step_time_s": 1.0003,
+          "step": 5,
+          "voltage_v": 3.7837541103363037,
+          "current_a": -5.00035285949707,
+          "skin_temperature_c": 8.352569580078125
+        },
+        {
+          "excel_row": 20230,
+          "date_naive_local": "2019-10-26T20:35:47.102000",
+          "test_time_s": 20226.766152,
+          "step_time_s": 2.0005,
+          "step": 5,
+          "voltage_v": 3.7765889167785645,
+          "current_a": -5.000344276428223,
+          "skin_temperature_c": 8.352569580078125
+        },
+        {
+          "excel_row": 20231,
+          "date_naive_local": "2019-10-26T20:35:48.103000",
+          "test_time_s": 20227.767352000003,
+          "step_time_s": 3.0017,
+          "step": 5,
+          "voltage_v": 3.77144193649292,
+          "current_a": -5.000374794006348,
+          "skin_temperature_c": 8.352569580078125
+        },
+        {
+          "excel_row": 20232,
+          "date_naive_local": "2019-10-26T20:35:49.103000",
+          "test_time_s": 20228.766952,
+          "step_time_s": 4.0013,
+          "step": 5,
+          "voltage_v": 3.767035961151123,
+          "current_a": -5.000358581542969,
+          "skin_temperature_c": 8.352569580078125
+        },
+        {
+          "excel_row": 20233,
+          "date_naive_local": "2019-10-26T20:35:50.102000",
+          "test_time_s": 20229.766152,
+          "step_time_s": 5.0005,
+          "step": 5,
+          "voltage_v": 3.7631006240844727,
+          "current_a": -5.000335216522217,
+          "skin_temperature_c": 8.352569580078125
+        },
+        {
+          "excel_row": 20234,
+          "date_naive_local": "2019-10-26T20:35:51.102000",
+          "test_time_s": 20230.766352000002,
+          "step_time_s": 6.0007,
+          "step": 5,
+          "voltage_v": 3.7595601081848145,
+          "current_a": -5.00033712387085,
+          "skin_temperature_c": 8.344942092895508
+        },
+        {
+          "excel_row": 20235,
+          "date_naive_local": "2019-10-26T20:35:52.103000",
+          "test_time_s": 20231.766852,
+          "step_time_s": 7.0012,
+          "step": 5,
+          "voltage_v": 3.7563424110412598,
+          "current_a": -5.00034236907959,
+          "skin_temperature_c": 8.344942092895508
+        },
+        {
+          "excel_row": 20236,
+          "date_naive_local": "2019-10-26T20:35:53.103000",
+          "test_time_s": 20232.766652000002,
+          "step_time_s": 8.001,
+          "step": 5,
+          "voltage_v": 3.753375768661499,
+          "current_a": -5.000345230102539,
+          "skin_temperature_c": 8.344942092895508
+        },
+        {
+          "excel_row": 20237,
+          "date_naive_local": "2019-10-26T20:35:54.102000",
+          "test_time_s": 20233.766452,
+          "step_time_s": 9.0008,
+          "step": 5,
+          "voltage_v": 3.750521659851074,
+          "current_a": -5.000378608703613,
+          "skin_temperature_c": 8.398979187011719
+        },
+        {
+          "excel_row": 20238,
+          "date_naive_local": "2019-10-26T20:35:55.102000",
+          "test_time_s": 20234.766152,
+          "step_time_s": 10.0005,
+          "step": 5,
+          "voltage_v": 3.748058319091797,
+          "current_a": -5.0003557205200195,
+          "skin_temperature_c": 8.398979187011719
+        }
+      ],
+      "recorded_first_ten_current_range_a": [
+        -5.000378608703613,
+        -5.000335216522217
+      ],
+      "exact_duplicate_times": 0,
+      "duplicate_time_conflicts": 0
+    },
+    {
+      "source": {
+        "filename": "NMC_k1_2C_05degC.xlsx",
+        "bytes": 1320944,
+        "sha256": "8f3c24b5000b746c045b48ba25f9d98b955772c37bfa3516207449fefc83c00c",
+        "inflated_bytes": 7325204
+      },
+      "nominal_rate_label_c": 2.0,
+      "nominal_chamber_label_celsius": 5,
+      "measurement_rows": 19946,
+      "recorded_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "post_discharge_rest_recorded": true,
+      "recorded_earlier_high_rate_files": [
+        "NMC_k1_3C_25degC.xlsx",
+        "NMC_k1_5C_25degC.xlsx",
+        "NMC_k1_2C_25degC.xlsx",
+        "NMC_k1_5C_35degC.xlsx",
+        "NMC_k1_3C_35degC.xlsx",
+        "NMC_k1_2C_35degC.xlsx"
+      ],
+      "pre_discharge_rest": {
+        "first": {
+          "excel_row": 11399,
+          "date_naive_local": "2019-11-21T13:13:19.465000",
+          "test_time_s": 11395.900168,
+          "step_time_s": 1.0003,
+          "step": 4,
+          "voltage_v": 4.197200775146484,
+          "current_a": 0.0,
+          "skin_temperature_c": 7.844392769233838
+        },
+        "last": {
+          "excel_row": 14999,
+          "date_naive_local": "2019-11-21T14:13:18.467000",
+          "test_time_s": 14994.901768,
+          "step_time_s": 3600.0019,
+          "step": 4,
+          "voltage_v": 4.183688163757324,
+          "current_a": 0.0,
+          "skin_temperature_c": 7.060642242431641
+        },
+        "rows": 3601,
+        "maximum_absolute_current_a": 0.0
+      },
+      "preceding_cv_end": {
+        "excel_row": 11398,
+        "date_naive_local": "2019-11-21T13:13:18.427000",
+        "test_time_s": 11394.861904,
+        "step_time_s": 5957.4007,
+        "step": 3,
+        "voltage_v": 4.200048923492432,
+        "current_a": 0.04999643564224243,
+        "skin_temperature_c": 7.799758434295654
+      },
+      "rest_to_discharge": {
+        "steps": [
+          4,
+          5
+        ],
+        "left": {
+          "excel_row": 14999,
+          "date_naive_local": "2019-11-21T14:13:18.467000",
+          "test_time_s": 14994.901768,
+          "step_time_s": 3600.0019,
+          "step": 4,
+          "voltage_v": 4.183688163757324,
+          "current_a": 0.0,
+          "skin_temperature_c": 7.060642242431641
+        },
+        "right": {
+          "excel_row": 15000,
+          "date_naive_local": "2019-11-21T14:13:19.512000",
+          "test_time_s": 14995.947372,
+          "step_time_s": 1.0006,
+          "step": 5,
+          "voltage_v": 3.6448380947113037,
+          "current_a": -10.002243041992188,
+          "skin_temperature_c": 7.060642242431641
+        },
+        "source_sample_gap_s": 1.0456040000008215,
+        "current_change_a": -10.002243041992188,
+        "voltage_change_v": -0.5388500690460205,
+        "apparent_transition_ratio_ohm": 0.05387292298175306,
+        "ratio_is_intrinsic_resistance": false
+      },
+      "first_ten_loaded_samples": [
+        {
+          "excel_row": 15000,
+          "date_naive_local": "2019-11-21T14:13:19.512000",
+          "test_time_s": 14995.947372,
+          "step_time_s": 1.0006,
+          "step": 5,
+          "voltage_v": 3.6448380947113037,
+          "current_a": -10.002243041992188,
+          "skin_temperature_c": 7.060642242431641
+        },
+        {
+          "excel_row": 15001,
+          "date_naive_local": "2019-11-21T14:13:20.513000",
+          "test_time_s": 14996.948072000001,
+          "step_time_s": 2.0013,
+          "step": 5,
+          "voltage_v": 3.631722927093506,
+          "current_a": -10.002578735351562,
+          "skin_temperature_c": 7.0564336214459145
+        },
+        {
+          "excel_row": 15002,
+          "date_naive_local": "2019-11-21T14:13:21.513000",
+          "test_time_s": 14997.948172,
+          "step_time_s": 3.0014,
+          "step": 5,
+          "voltage_v": 3.622025489807129,
+          "current_a": -10.002098083496094,
+          "skin_temperature_c": 7.056433200836182
+        },
+        {
+          "excel_row": 15003,
+          "date_naive_local": "2019-11-21T14:13:22.513000",
+          "test_time_s": 14998.948172,
+          "step_time_s": 4.0014,
+          "step": 5,
+          "voltage_v": 3.6140925884246826,
+          "current_a": -10.002670288085938,
+          "skin_temperature_c": 7.056433200836182
+        },
+        {
+          "excel_row": 15004,
+          "date_naive_local": "2019-11-21T14:13:23.512000",
+          "test_time_s": 14999.947172,
+          "step_time_s": 5.0004,
+          "step": 5,
+          "voltage_v": 3.6072611808776855,
+          "current_a": -10.002082824707031,
+          "skin_temperature_c": 7.060641821106156
+        },
+        {
+          "excel_row": 15005,
+          "date_naive_local": "2019-11-21T14:13:24.513000",
+          "test_time_s": 15000.947872,
+          "step_time_s": 6.0011,
+          "step": 5,
+          "voltage_v": 3.6011111736297607,
+          "current_a": -10.002403259277344,
+          "skin_temperature_c": 7.060642242431641
+        },
+        {
+          "excel_row": 15006,
+          "date_naive_local": "2019-11-21T14:13:25.512000",
+          "test_time_s": 15001.946972000002,
+          "step_time_s": 7.0002,
+          "step": 5,
+          "voltage_v": 3.595686912536621,
+          "current_a": -10.001167297363281,
+          "skin_temperature_c": 7.069057941436768
+        },
+        {
+          "excel_row": 15007,
+          "date_naive_local": "2019-11-21T14:13:26.512000",
+          "test_time_s": 15002.947372,
+          "step_time_s": 8.0006,
+          "step": 5,
+          "voltage_v": 3.5906620025634766,
+          "current_a": -10.00177001953125,
+          "skin_temperature_c": 7.069057941436768
+        },
+        {
+          "excel_row": 15008,
+          "date_naive_local": "2019-11-21T14:13:27.513000",
+          "test_time_s": 15003.948372,
+          "step_time_s": 9.0016,
+          "step": 5,
+          "voltage_v": 3.5860345363616943,
+          "current_a": -10.002037048339844,
+          "skin_temperature_c": 7.069057941436768
+        },
+        {
+          "excel_row": 15009,
+          "date_naive_local": "2019-11-21T14:13:28.512000",
+          "test_time_s": 15004.946772000001,
+          "step_time_s": 10.0,
+          "step": 5,
+          "voltage_v": 3.5817630290985107,
+          "current_a": -10.001914978027344,
+          "skin_temperature_c": 7.106380939483643
+        }
+      ],
+      "recorded_first_ten_current_range_a": [
+        -10.002670288085938,
+        -10.001167297363281
+      ],
+      "exact_duplicate_times": 0,
+      "duplicate_time_conflicts": 0
+    },
+    {
+      "source": {
+        "filename": "NMC_k1_3C_05degC.xlsx",
+        "bytes": 1456599,
+        "sha256": "60e957fee71abb80b2f12ce89f7909a85c14b741fa1adf4b333fbe3af253334e",
+        "inflated_bytes": 8034955
+      },
+      "nominal_rate_label_c": 3.0,
+      "nominal_chamber_label_celsius": 5,
+      "measurement_rows": 21849,
+      "recorded_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "post_discharge_rest_recorded": true,
+      "recorded_earlier_high_rate_files": [
+        "NMC_k1_3C_25degC.xlsx",
+        "NMC_k1_5C_25degC.xlsx",
+        "NMC_k1_2C_25degC.xlsx",
+        "NMC_k1_5C_35degC.xlsx",
+        "NMC_k1_3C_35degC.xlsx",
+        "NMC_k1_2C_35degC.xlsx",
+        "NMC_k1_2C_05degC.xlsx"
+      ],
+      "pre_discharge_rest": {
+        "first": {
+          "excel_row": 13799,
+          "date_naive_local": "2019-11-22T19:51:23.727000",
+          "test_time_s": 13796.453652,
+          "step_time_s": 0.9998,
+          "step": 4,
+          "voltage_v": 4.196924686431885,
+          "current_a": 0.0,
+          "skin_temperature_c": 4.851047039031982
+        },
+        "last": {
+          "excel_row": 17399,
+          "date_naive_local": "2019-11-22T20:51:22.729000",
+          "test_time_s": 17395.455052,
+          "step_time_s": 3600.0012,
+          "step": 4,
+          "voltage_v": 4.182568550109863,
+          "current_a": 0.0,
+          "skin_temperature_c": 4.7960124015808105
+        },
+        "rows": 3601,
+        "maximum_absolute_current_a": 0.0
+      },
+      "preceding_cv_end": {
+        "excel_row": 13798,
+        "date_naive_local": "2019-11-22T19:51:22.689000",
+        "test_time_s": 13795.4151,
+        "step_time_s": 6591.7162,
+        "step": 3,
+        "voltage_v": 4.200013160705566,
+        "current_a": 0.04999784752726555,
+        "skin_temperature_c": 4.856342792510986
+      },
+      "rest_to_discharge": {
+        "steps": [
+          4,
+          5
+        ],
+        "left": {
+          "excel_row": 17399,
+          "date_naive_local": "2019-11-22T20:51:22.729000",
+          "test_time_s": 17395.455052,
+          "step_time_s": 3600.0012,
+          "step": 4,
+          "voltage_v": 4.182568550109863,
+          "current_a": 0.0,
+          "skin_temperature_c": 4.7960124015808105
+        },
+        "right": {
+          "excel_row": 17400,
+          "date_naive_local": "2019-11-22T20:51:23.772000",
+          "test_time_s": 17396.498808,
+          "step_time_s": 1.0001,
+          "step": 5,
+          "voltage_v": 3.3245275020599365,
+          "current_a": -15.00225830078125,
+          "skin_temperature_c": 4.7960124015808105
+        },
+        "source_sample_gap_s": 1.0437559999991208,
+        "current_change_a": -15.00225830078125,
+        "voltage_change_v": -0.8580410480499268,
+        "apparent_transition_ratio_ohm": 0.05719412576740156,
+        "ratio_is_intrinsic_resistance": false
+      },
+      "first_ten_loaded_samples": [
+        {
+          "excel_row": 17400,
+          "date_naive_local": "2019-11-22T20:51:23.772000",
+          "test_time_s": 17396.498808,
+          "step_time_s": 1.0001,
+          "step": 5,
+          "voltage_v": 3.3245275020599365,
+          "current_a": -15.00225830078125,
+          "skin_temperature_c": 4.7960124015808105
+        },
+        {
+          "excel_row": 17401,
+          "date_naive_local": "2019-11-22T20:51:24.773000",
+          "test_time_s": 17397.499808,
+          "step_time_s": 2.0011,
+          "step": 5,
+          "voltage_v": 3.305727005004883,
+          "current_a": -15.002029418945312,
+          "skin_temperature_c": 4.7960124015808105
+        },
+        {
+          "excel_row": 17402,
+          "date_naive_local": "2019-11-22T20:51:25.774000",
+          "test_time_s": 17398.500308,
+          "step_time_s": 3.0016,
+          "step": 5,
+          "voltage_v": 3.2927777767181396,
+          "current_a": -15.002059936523438,
+          "skin_temperature_c": 4.821583576210017
+        },
+        {
+          "excel_row": 17403,
+          "date_naive_local": "2019-11-22T20:51:26.773000",
+          "test_time_s": 17399.499608,
+          "step_time_s": 4.0009,
+          "step": 5,
+          "voltage_v": 3.2822957038879395,
+          "current_a": -15.001564025878906,
+          "skin_temperature_c": 4.8215861320495605
+        },
+        {
+          "excel_row": 17404,
+          "date_naive_local": "2019-11-22T20:51:27.772000",
+          "test_time_s": 17400.498907999998,
+          "step_time_s": 5.0002,
+          "step": 5,
+          "voltage_v": 3.2733359336853027,
+          "current_a": -15.001708984375,
+          "skin_temperature_c": 4.84294677601353
+        },
+        {
+          "excel_row": 17405,
+          "date_naive_local": "2019-11-22T20:51:28.773000",
+          "test_time_s": 17401.499207999997,
+          "step_time_s": 6.0005,
+          "step": 5,
+          "voltage_v": 3.265326499938965,
+          "current_a": -15.001564025878906,
+          "skin_temperature_c": 4.842948913574219
+        },
+        {
+          "excel_row": 17406,
+          "date_naive_local": "2019-11-22T20:51:29.773000",
+          "test_time_s": 17402.499008,
+          "step_time_s": 7.0003,
+          "step": 5,
+          "voltage_v": 3.258084774017334,
+          "current_a": -15.002647399902344,
+          "skin_temperature_c": 4.842948913574219
+        },
+        {
+          "excel_row": 17407,
+          "date_naive_local": "2019-11-22T20:51:30.773000",
+          "test_time_s": 17403.499408,
+          "step_time_s": 8.0007,
+          "step": 5,
+          "voltage_v": 3.251392126083374,
+          "current_a": -15.001884460449219,
+          "skin_temperature_c": 4.855692386627197
+        },
+        {
+          "excel_row": 17408,
+          "date_naive_local": "2019-11-22T20:51:31.772000",
+          "test_time_s": 17404.499008,
+          "step_time_s": 9.0003,
+          "step": 5,
+          "voltage_v": 3.245513916015625,
+          "current_a": -15.00079345703125,
+          "skin_temperature_c": 4.855692386627197
+        },
+        {
+          "excel_row": 17409,
+          "date_naive_local": "2019-11-22T20:51:32.774000",
+          "test_time_s": 17405.500008,
+          "step_time_s": 10.0013,
+          "step": 5,
+          "voltage_v": 3.2407286167144775,
+          "current_a": -15.001655578613281,
+          "skin_temperature_c": 4.855692386627197
+        }
+      ],
+      "recorded_first_ten_current_range_a": [
+        -15.002647399902344,
+        -15.00079345703125
+      ],
+      "exact_duplicate_times": 0,
+      "duplicate_time_conflicts": 0
+    },
+    {
+      "source": {
+        "filename": "NMC_k1_5C_05degC.xlsx",
+        "bytes": 1384317,
+        "sha256": "0786864dff33d33e40a7d7184a70046e4ba0b754b40a5cfe0f2a0bf6e051dcf3",
+        "inflated_bytes": 7657680
+      },
+      "nominal_rate_label_c": 5.0,
+      "nominal_chamber_label_celsius": 5,
+      "measurement_rows": 20849,
+      "recorded_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "post_discharge_rest_recorded": true,
+      "recorded_earlier_high_rate_files": [
+        "NMC_k1_3C_25degC.xlsx",
+        "NMC_k1_5C_25degC.xlsx",
+        "NMC_k1_2C_25degC.xlsx",
+        "NMC_k1_5C_35degC.xlsx",
+        "NMC_k1_3C_35degC.xlsx",
+        "NMC_k1_2C_35degC.xlsx",
+        "NMC_k1_2C_05degC.xlsx",
+        "NMC_k1_3C_05degC.xlsx"
+      ],
+      "pre_discharge_rest": {
+        "first": {
+          "excel_row": 13590,
+          "date_naive_local": "2019-11-23T04:02:13.049000",
+          "test_time_s": 13587.21234,
+          "step_time_s": 1.0006,
+          "step": 4,
+          "voltage_v": 4.19649600982666,
+          "current_a": 0.0,
+          "skin_temperature_c": 4.769965171813965
+        },
+        "last": {
+          "excel_row": 17190,
+          "date_naive_local": "2019-11-23T05:02:12.050000",
+          "test_time_s": 17186.21314,
+          "step_time_s": 3600.0014,
+          "step": 4,
+          "voltage_v": 4.182196140289307,
+          "current_a": 0.0,
+          "skin_temperature_c": 4.8077712059021
+        },
+        "rows": 3601,
+        "maximum_absolute_current_a": 0.0
+      },
+      "preceding_cv_end": {
+        "excel_row": 13589,
+        "date_naive_local": "2019-11-23T04:02:12.009000",
+        "test_time_s": 13586.172664,
+        "step_time_s": 6971.7489,
+        "step": 3,
+        "voltage_v": 4.200131416320801,
+        "current_a": 0.04999906197190285,
+        "skin_temperature_c": 4.769965171813965
+      },
+      "rest_to_discharge": {
+        "steps": [
+          4,
+          5
+        ],
+        "left": {
+          "excel_row": 17190,
+          "date_naive_local": "2019-11-23T05:02:12.050000",
+          "test_time_s": 17186.21314,
+          "step_time_s": 3600.0014,
+          "step": 4,
+          "voltage_v": 4.182196140289307,
+          "current_a": 0.0,
+          "skin_temperature_c": 4.8077712059021
+        },
+        "right": {
+          "excel_row": 17191,
+          "date_naive_local": "2019-11-23T05:02:13.095000",
+          "test_time_s": 17187.257095999998,
+          "step_time_s": 1.0004,
+          "step": 5,
+          "voltage_v": 2.782402276992798,
+          "current_a": -25.00262451171875,
+          "skin_temperature_c": 4.786404609680176
+        },
+        "source_sample_gap_s": 1.0439559999977064,
+        "current_change_a": -25.00262451171875,
+        "voltage_change_v": -1.3997938632965088,
+        "apparent_transition_ratio_ohm": 0.05598587710823815,
+        "ratio_is_intrinsic_resistance": false
+      },
+      "first_ten_loaded_samples": [
+        {
+          "excel_row": 17191,
+          "date_naive_local": "2019-11-23T05:02:13.095000",
+          "test_time_s": 17187.257095999998,
+          "step_time_s": 1.0004,
+          "step": 5,
+          "voltage_v": 2.782402276992798,
+          "current_a": -25.00262451171875,
+          "skin_temperature_c": 4.786404609680176
+        },
+        {
+          "excel_row": 17192,
+          "date_naive_local": "2019-11-23T05:02:14.095000",
+          "test_time_s": 17188.256696,
+          "step_time_s": 2.0,
+          "step": 5,
+          "voltage_v": 2.759739875793457,
+          "current_a": -25.002052307128906,
+          "skin_temperature_c": 4.786404609680176
+        },
+        {
+          "excel_row": 17193,
+          "date_naive_local": "2019-11-23T05:02:15.095000",
+          "test_time_s": 17189.257496,
+          "step_time_s": 3.0008,
+          "step": 5,
+          "voltage_v": 2.742788314819336,
+          "current_a": -25.002891540527344,
+          "skin_temperature_c": 4.786404609680176
+        },
+        {
+          "excel_row": 17194,
+          "date_naive_local": "2019-11-23T05:02:16.095000",
+          "test_time_s": 17190.256696,
+          "step_time_s": 4.0,
+          "step": 5,
+          "voltage_v": 2.7272775173187256,
+          "current_a": -25.003265380859375,
+          "skin_temperature_c": 4.8035502433776855
+        },
+        {
+          "excel_row": 17195,
+          "date_naive_local": "2019-11-23T05:02:17.095000",
+          "test_time_s": 17191.256896,
+          "step_time_s": 5.0002,
+          "step": 5,
+          "voltage_v": 2.715200662612915,
+          "current_a": -25.002159118652344,
+          "skin_temperature_c": 4.8035502433776855
+        },
+        {
+          "excel_row": 17196,
+          "date_naive_local": "2019-11-23T05:02:18.096000",
+          "test_time_s": 17192.258296,
+          "step_time_s": 6.0016,
+          "step": 5,
+          "voltage_v": 2.7034528255462646,
+          "current_a": -25.001800537109375,
+          "skin_temperature_c": 4.8035502433776855
+        },
+        {
+          "excel_row": 17197,
+          "date_naive_local": "2019-11-23T05:02:19.095000",
+          "test_time_s": 17193.256696,
+          "step_time_s": 7.0,
+          "step": 5,
+          "voltage_v": 2.6918880939483643,
+          "current_a": -25.002159118652344,
+          "skin_temperature_c": 4.863990783691406
+        },
+        {
+          "excel_row": 17198,
+          "date_naive_local": "2019-11-23T05:02:20.096000",
+          "test_time_s": 17194.257896,
+          "step_time_s": 8.0012,
+          "step": 5,
+          "voltage_v": 2.6814701557159424,
+          "current_a": -25.001853942871094,
+          "skin_temperature_c": 4.863990783691406
+        },
+        {
+          "excel_row": 17199,
+          "date_naive_local": "2019-11-23T05:02:21.095000",
+          "test_time_s": 17195.256996,
+          "step_time_s": 9.0003,
+          "step": 5,
+          "voltage_v": 2.6722023487091064,
+          "current_a": -25.000885009765625,
+          "skin_temperature_c": 4.960946392354439
+        },
+        {
+          "excel_row": 17200,
+          "date_naive_local": "2019-11-23T05:02:22.096000",
+          "test_time_s": 17196.257496,
+          "step_time_s": 10.0008,
+          "step": 5,
+          "voltage_v": 2.6624951362609863,
+          "current_a": -25.002197265625,
+          "skin_temperature_c": 4.96095609664917
+        }
+      ],
+      "recorded_first_ten_current_range_a": [
+        -25.003265380859375,
+        -25.000885009765625
+      ],
+      "exact_duplicate_times": 0,
+      "duplicate_time_conflicts": 0
+    }
+  ],
+  "total_measurement_rows": 530735,
+  "rest_phase_counts": {
+    "six_phases": 13,
+    "five_phases_without_final_rest": 2
+  }
+}
