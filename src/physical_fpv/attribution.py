@@ -90,6 +90,23 @@ _DATASETS = {
             "Duplicate conflicts and source quality warnings are retained in the reports."
         ),
     },
+    "stanford2021": {
+        "title": "Catenaro and Onori experimental galvanostatic battery data, version 2",
+        "authors": ["Edoardo Catenaro", "Simona Onori"],
+        "doi": "10.17632/kxsbr4x3j2.2",
+        "source_url": "https://data.mendeley.com/datasets/kxsbr4x3j2/2",
+        "paper_doi": "10.1016/j.dib.2021.106894",
+        "license": "CC-BY-4.0",
+        "license_url": CC_BY_4_URL,
+        "modifications": (
+            "Original XLSX workbooks are retained unchanged and checked against official "
+            "file SHA256 digests. Inspection describes every contiguous protocol step. "
+            "Derived discharge exports preserve the measured step clock and current sign "
+            "and convert surface temperature from Celsius to Kelvin. No smoothing, "
+            "initial-SOC fitting, time stretching or inferred points fill the missing start. "
+            "Derived summaries are not new physical measurements or a validation claim."
+        ),
+    },
     "oregan2022_parameters": {
         "title": "O'Regan et al. thermal-electrochemical parameter measurements",
         "authors_basis": "Related source-paper authors; record-level creator list not refreshed.",
@@ -134,7 +151,8 @@ _PYBAMM = {
 def write_evidence_attribution(output_dir: str | Path, datasets: Iterable[str]) -> dict:
     """Write portable JSON/Markdown attribution and any required full source notice.
 
-    Dataset IDs are ``chen2020``, ``tec_validation`` and ``oregan2022_parameters``.
+    Dataset IDs include ``chen2020``, ``tec_validation``, ``oregan2022_parameters``
+    and ``stanford2021``.
     Callers select the sources actually used; an empty iterable covers code-only output.
     Repeated IDs are included once. All IDs are validated before creating output files.
     This records source licenses and does not select a license for original project code.

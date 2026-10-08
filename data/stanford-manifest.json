@@ -148,6 +148,29 @@
     "last_modified_date": "2021-02-02T22:29:36.151Z",
     "status": "COMPLETED"
   },
-  "chronology_status": "Not yet verified from workbook headers; repository upload dates are not experimental dates",
-  "independence": "External laboratory/author cohort; original Chen/ORegan parameter-study provenance is distinct. This is not yet a qualified independent validation fixture."
+  "chronology_status": "k1 within-workbook chronology verified. Order relative to high-rate/other-temperature tests and other cells remains unverified; upload dates are not experimental dates.",
+  "independence": "External laboratory/author cohort; original Chen/ORegan parameter-study provenance is distinct. This is not yet a qualified independent validation fixture.",
+  "pilot_acquisition": {
+    "files_verified": [
+      "NMC_k1_1C_25degC.xlsx",
+      "manufactuer_specifications.xlsx"
+    ],
+    "official_sizes_and_sha256_match": true,
+    "measurement_rows": 28669,
+    "contiguous_step_sequence": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "measurement_dates_naive_local": [
+      "2019-09-02",
+      "2019-09-03"
+    ],
+    "recorded_discharge_current_a": -5.000325282873757,
+    "first_discharge_observation_step_time_s": 1.0006,
+    "model_runs": 0
+  }
 }

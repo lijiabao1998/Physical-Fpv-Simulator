@@ -21,11 +21,14 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-          cache-dependency-path: requirements-lock.txt
+          cache-dependency-path: |
+            requirements-lock.txt
+            requirements-data-lock.txt
       - name: Install pinned dependencies
         run: |
           python -m pip install -r requirements-lock.txt
           python -m pip install --no-deps -e .
+          python -m pip install --index-url https://pypi.org/simple --only-binary=:all: --no-deps --require-hashes -r requirements-data-lock.txt
       - name: Lint and format
         run: |
           ruff check src tests scripts
@@ -35,6 +38,7 @@ jobs:
           physical-fpv fetch-data
           physical-fpv thermal-fetch-data
           physical-fpv thermal-inspect
+          python scripts/inspect_stanford_pilot.py --fetch
       - name: Unit and physical-invariant tests
         run: pytest -q
       - name: Record full DFN numerical and empirical benchmark

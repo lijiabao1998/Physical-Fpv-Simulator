@@ -42,7 +42,7 @@ Lumped thermal simulation is explicitly **unvalidated**: several built-in Chen20
 
 ## Current results
 
-Software checks pass (85 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
+Software checks pass (94 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
 
 ## Thermal reconstruction: inspect the second cohort
 
@@ -99,3 +99,14 @@ Each arrow requires a validated method and a declared domain. Missing physics st
 This project is not affiliated with or endorsed by the laboratories, authors, manufacturers or software projects cited. Dependency and dataset licenses remain their own. No open-source license for this repository's original code has been selected yet.
 
 The unchanged-state cell790 polarization diagnostic completed in780.04seconds within its frozen1200-second/4GB budget. Voltage decomposition and electrode-inventory checks passed, and the previous120-point curve was reproduced within5.64e−8V. The largest modeled cutoff loss is338.65mV from negative-particle concentration polarization. This explains the frozen model’s behavior; it does not identify the real cell’s unique failure mechanism or repair the30/36 experimental failures. See [the findings](docs/polarization-findings.md), [exact evidence](docs/benchmarks/polarization-grid120-summary.json) and [predeclared protocol](docs/polarization-protocol.md).
+
+## External experimental-data acquisition
+
+The Stanford Catenaro–Onori exact-M50 manifest now pins six25°C/1C workbooks with official sizes and SHA256 hashes. The predeclared k1 pilot and manufacturer workbook have been retrieved and verified. Its28,669 measured records contain all six protocol steps; the recorded discharge is approximately5.000325A despite the4.85Ah specification, and its first discharge sample is1.0006s after the commanded start. These facts are preserved without time-zero alignment or fitting.
+
+```sh
+python -m pip install --index-url https://pypi.org/simple --only-binary=:all: --no-deps --require-hashes -r requirements-data-lock.txt
+python scripts/inspect_stanford_pilot.py --fetch
+```
+
+This command inspects real measurements and exports their observed discharge segment. It does not solve a model. Prior high-rate exposure and full campaign chronology remain open; independent predictive validation is not yet established. See [source manifest](data/stanford-manifest.json), [predeclared acquisition protocol](docs/stanford-acquisition-protocol.md), [pilot findings](docs/stanford-pilot-findings.md) and [inspection JSON](docs/benchmarks/stanford-k1-inspection.json).
