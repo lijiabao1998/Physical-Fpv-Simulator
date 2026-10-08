@@ -42,7 +42,7 @@ Lumped thermal simulation is explicitly **unvalidated**: several built-in Chen20
 
 ## Current results
 
-Software checks pass (80 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
+Software checks pass (85 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
 
 ## Thermal reconstruction: inspect the second cohort
 
@@ -97,3 +97,5 @@ Each arrow requires a validated method and a declared domain. Missing physics st
 - [Dependency license inventory](docs/dependency-licenses.json)
 
 This project is not affiliated with or endorsed by the laboratories, authors, manufacturers or software projects cited. Dependency and dataset licenses remain their own. No open-source license for this repository's original code has been selected yet.
+
+The next unchanged-state cell790 polarization diagnostic is frozen in [its protocol](docs/polarization-protocol.md). Its new observable exports are tested on a coarse mesh for accounting only; a fine-grid result must be reported separately after the bounded run completes.
