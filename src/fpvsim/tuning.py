@@ -46,7 +46,8 @@ AXES = ("roll", "pitch", "yaw")
 NOISE_BAND = (100.0, 1000.0)  # Hz
 OVERSHOOT_LIMIT = 0.15  # our design target for the step-response peak, not an industry standard
 NOISE_FACTOR_LIMIT = 1.5
-MAX_EXTENSIONS = 3  # rows/columns the sweep may add when the recommendation sits on its edge
+MAX_EXTENSIONS = 3  # rounds of grid extension when the recommendation sits on the sweep edge
+DIRECTION_ZH = {"PD+": "PD 再加", "PD-": "PD 再減", "D+": "D 再加", "D-": "D 再減"}
 
 
 NOISE_RAMP = 2.5  # s, level throttle ramp at the end of the sweep flight
@@ -168,6 +169,7 @@ class TuningStudy:
     baseline_log: object = None  # the baseline candidate's tuning-flight log
     ff_off: dict | None = None  # metrics of the tuning flight at baseline gains with F = 0 on every axis
     extensions: tuple[str, ...] = ()  # grid extensions made, e.g. ("PD 1.45",)
+    extension_rounds: int = 0  # rounds of extension (one round may extend both PD and D)
 
     @property
     def baseline_candidate(self) -> Candidate | None:
@@ -228,7 +230,7 @@ def _infeasible_reason(c: Candidate, study: "TuningStudy") -> str:
     if not math.isfinite(m.get("overshoot_max_rp", math.nan)) or m["overshoot_max_rp"] > OVERSHOOT_LIMIT:
         return f"超調 {m.get('overshoot_max_rp', math.nan):.1%} 超過 {OVERSHOOT_LIMIT:.0%}"
     if base is not None and m["motor_noise"] > NOISE_FACTOR_LIMIT * base.metrics["motor_noise"]:
-        return f"馬達雜訊是基準的 {m['motor_noise'] / base.metrics['motor_noise']:.1f} 倍（上限 {NOISE_FACTOR_LIMIT:g} 倍）"
+        return f"馬達雜訊是基準的 {m['motor_noise'] / base.metrics['motor_noise']:.2f} 倍（上限 {NOISE_FACTOR_LIMIT:g} 倍）"
     return ""
 
 
@@ -342,8 +344,8 @@ def run_study(
     # it: add the next row (PD) or column (D) and select again, a bounded
     # number of times, as one would in a second round on the bench.
     pd_values, d_values = sorted(pd_values), sorted(d_values)
-    extensions = []
-    while len(extensions) < MAX_EXTENSIONS:
+    extensions, rounds = [], 0
+    while rounds < MAX_EXTENSIONS:
         moves = _edge_moves(recommended, pd_values, d_values)
         if not moves:
             break
@@ -361,6 +363,7 @@ def run_study(
                     if not any(c.pd == pd and c.d == d for c in candidates + new)]
         if not new:
             break
+        rounds += 1
         jobs = [{"build": build_path, "cfg": c.cfg, "maneuver": tune, "log_rate": 2000.0, "seed": seed, "label": c.label,
                  "noise_window": window} for c in new]
         for cand, res in zip(new, _run(jobs, workers)):
@@ -368,4 +371,4 @@ def run_study(
         candidates = sorted(candidates + new, key=lambda c: (c.pd, c.d))
         recommended, rule = select(candidates)
     return TuningStudy(cfg, noise_runs, candidates, recommended, rule, seed, tuple(pd_values), tuple(d_values), baseline_log,
-                       ff_off, tuple(extensions))
+                       ff_off, tuple(extensions), rounds)

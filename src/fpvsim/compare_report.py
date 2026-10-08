@@ -17,7 +17,7 @@ from .compare import COMPARE_METRICS, Comparison, forward_drag_split, summarise_
 from .performance import METRICS
 from .report import fmt_metric, fmt_probability, git_version, md_table, measurement_method, rel_path, verdict
 from .geometry import PROP_MARGIN, PROP_TIP_MARGIN
-from .tuning import ff_dominated
+from .tuning import DIRECTION_ZH, ff_dominated
 
 AXES = ("roll", "pitch", "yaw")
 AXIS_ZH = {"roll": "滾轉", "pitch": "俯仰", "yaw": "偏航"}
@@ -270,6 +270,9 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
             if spread_0 < 0.5 * spread_ff and heavier and all(os_roll[i] < os_roll[0] for i in range(1, len(vs))):
                 line += ("版本之間的差異主要來自 feedforward：它給的角加速度與 F 除以轉動慣量成正比，"
                          "慣量變大時同樣的 F 推得較少，超調跟著變小。")
+                if all(ff_roll[i] > ff_roll[0] for i in range(1, len(vs))):
+                    line += ("回授部分（F = 0）則相反，慣量較大的版本超調較大：同樣的 P、D 對較大的慣量等於較低的迴路增益，"
+                             "和第 7 節增益掃描中 PD 越低超調越大一致。")
         line += "各版本自己的調參建議見第 7 節。"
         add(line)
     clear_issues = [(tags[i], c, _clearance_risk(v)) for i, (v, c) in enumerate(zip(vs, cmp.clearance))
@@ -402,7 +405,7 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
                     rotor, body = forward_drag_split(acs[i], speed)
                     ratio.append(f"{tags[i]} {(rotor + body) / acs[i].weight:.3f}（槳盤阻力占 {rotor / (rotor + body):.0%}）")
                 add(f"\n前飛段末傾角：{'、'.join(tags[i] for i in lower)} 比基準重，傾角卻較小。定速前飛時 tan(傾角) ≈ 阻力 ÷ 重量；"
-                    f"在 {speed:.0f} m/s 時阻力以槳盤阻力為主，它隨推力的平方根增加，比重量增加得慢，所以阻力 ÷ 重量反而變小："
+                    f"在 {speed:.1f} m/s 時阻力以槳盤阻力為主，它隨推力的平方根增加，比重量增加得慢，所以阻力 ÷ 重量反而變小："
                     + "、".join(ratio) + "（一階估計，旋翼在懸停轉速）。\n")
         add("![Flight comparison](flight.png)\n")
         crashed = [t for t, v in zip(tags, vs) if v.flight_summary.get("crashed")]
@@ -443,9 +446,9 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
         add("各版本的掃描在建議值落在範圍邊緣時會自動擴大。建議值往各方向再走一格會碰到的限制：\n")
         for t, v in zip(tags, vs):
             st = v.tuning
-            reasons = "；".join(f"{d}（{n.label}）{reason}" for d, n, reason in st.binding()) or "—"
-            ext = f"自動擴大：{'、'.join(st.extensions)}。" if st.extensions else ""
-            edge = (f"**仍在掃描範圍邊緣（{'、'.join(st.at_grid_edge)}）**，下一輪應往 {'、'.join(st.widen_towards)} 的方向擴大。"
+            reasons = "；".join(f"{DIRECTION_ZH[d]}（{n.label}）{reason}" for d, n, reason in st.binding()) or "—"
+            ext = f"自動擴大 {st.extension_rounds} 輪（{'、'.join(st.extensions)}）。" if st.extensions else ""
+            edge = (f"**仍在掃描範圍邊緣（{'、'.join(st.at_grid_edge)}）**，下一輪應往 {'、'.join(st.widen_towards)}的方向擴大。"
                     if st.at_grid_edge else "")
             add(f"- {t}：{ext}{edge}{reasons}。")
         add("")

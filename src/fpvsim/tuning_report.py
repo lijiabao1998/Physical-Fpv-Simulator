@@ -14,13 +14,12 @@ from .design import Build
 from .filters import chain_response, group_delay, make_lowpass
 from .flightcontroller import dump_fc_config
 from .report import git_version, md_table, rel_path
-from .tuning import NOISE_BAND, OVERSHOOT_LIMIT, TuningStudy, ff_dominated, filter_delay, robust_alternative
+from .tuning import DIRECTION_ZH, NOISE_BAND, OVERSHOOT_LIMIT, TuningStudy, ff_dominated, filter_delay, robust_alternative
 
 AXES = ("roll", "pitch", "yaw")
 AXIS_ZH = {"roll": "滾轉", "pitch": "俯仰", "yaw": "偏航"}
 
 
-_DIRECTION_ZH = {"PD+": "PD 再加", "PD-": "PD 再減", "D+": "D 再加", "D-": "D 再減"}
 MARGIN_WARN = 0.02  # flag a recommendation closer than this to the overshoot limit
 
 
@@ -184,15 +183,15 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
         add(f"- **{names}的超調主要來自 feedforward：**" + "；".join(parts)
             + f"。PD 掃描改變不了這部分{rule_note}；下一輪應單獨掃描{names}的 F，在超調與上升時間之間取捨。")
     if study.extensions:
-        add(f"- **掃描範圍自動擴大了 {len(study.extensions)} 次**（{'、'.join(study.extensions)}）：原本的建議值落在掃描範圍邊緣。")
+        add(f"- **掃描範圍自動擴大了 {study.extension_rounds} 輪**（{'、'.join(study.extensions)}）：原本的建議值落在掃描範圍邊緣。")
     if study.at_grid_edge:
         add(f"- **建議值仍落在掃描範圍邊緣（{'、'.join(study.at_grid_edge)}）**"
-            + (f"，已自動擴大 {len(study.extensions)} 次（上限）" if study.extensions else "")
+            + (f"，已自動擴大 {study.extension_rounds} 輪（上限）" if study.extensions else "")
             + "，更好的設定可能在範圍外，下一輪應往該方向擴大掃描。")
     binding = study.binding()
     if binding:
         add("- **建議值的限制**（往各方向再走一格的候選）：" + "；".join(
-            f"{_DIRECTION_ZH[d]}（{n.label}）{reason}" for d, n, reason in binding) + "。")
+            f"{DIRECTION_ZH[d]}（{n.label}）{reason}" for d, n, reason in binding) + "。")
     worst = max(study.candidates, key=lambda c: c.metrics["motor_noise"])
     if base:
         add(f"- 雜訊最高的候選（{worst.label}）馬達雜訊 {worst.metrics['motor_noise']:.3f}%，是基準的 "
@@ -290,7 +289,7 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
     if study.at_grid_edge:
         caution = (f"；同時留意雜訊，{worst.label} 的馬達雜訊已是基準的 "
                    f"{worst.metrics['motor_noise'] / base.metrics['motor_noise']:.1f} 倍" if base else "")
-        add(f"1. 以建議值為中心、往 {'、'.join(study.widen_towards)} 的方向擴大掃描{caution}。")
+        add(f"1. 以建議值為中心、往 {'、'.join(study.widen_towards)}的方向擴大掃描{caution}。")
     add(f"{2 if study.at_grid_edge else 1}. 用實機錄一段未濾波陀螺儀的 Blackbox log，辨識振動參數，讓雜訊的絕對數值可以採信。")
     add(f"{3 if study.at_grid_edge else 2}. 在建議設定下，評估「RPM 濾波 + 較輕的低通」能否在雜訊可接受時換到更低的延遲。\n")
 
