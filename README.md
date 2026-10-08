@@ -164,10 +164,19 @@ The [parameter-source audit](docs/oregan-kinetics-provenance.md) compares all 80
 
 ## Six-cell measured-source comparison
 
-All six preselected Stanford25°C/1C workbooks have now been checked, with all15 source-to-source pairs retained. k1 and k6 have similar loaded-voltage traces (12.99mV RMSE); k2–k5 differ from k1 by136.69–174.24mV. Their actual CC/CV histories and skin temperatures differ, while manufacturing batch, prior exposure for k2–k6 and measurement/fixture uncertainty remain unresolved. These are two observed patterns, with no causal classes or model-accuracy claim for the five additional specimens. No new battery model was solved or fitted.
+All six preselected Stanford25°C/1C workbooks have now been checked, with all15 source-to-source pairs retained. k1 and k6 have similar loaded-voltage traces (12.99mV RMSE); k2–k5 differ from k1 by136.69–174.24mV. Their actual CC/CV histories and skin temperatures differ, while manufacturing batch, unpublished exposure and measurement/fixture uncertainty remain unresolved. These are two observed patterns, with no causal classes or model-accuracy claim for the five additional specimens. No new battery model was solved or fitted.
 
 [Full source report, intervals and qualifications](docs/stanford-cohort-findings.md) · [Machine-readable evidence](docs/benchmarks/stanford-six-cell-comparison.json)
 
 ![All15 measured-source voltage comparisons](docs/benchmarks/stanford-six-cell-voltage-differences.svg)
 
 The original k1 numerical PASS and191.474mV empirical FAIL remain unchanged, together with Chen6/12 and ORegan30/36 failures. Data inspection does not establish identical initialization or independent full-cell validation.
+
+
+## Selected history test: source acquisition incomplete
+
+The frozen k2/k6 history inspection verified 27/30 files and 995,676 measurement rows before a CONNECT tunnel returned 403. All 15 k2 records qualify: only its 25°C/0.05C experiment precedes the selected 1C target in the published campaign. Three k6/5C records remain unavailable, so the proposed prior-high-rate contrast is **UNRESOLVED**. The missing chronology is not inferred from upload dates or other specimens. Successfully verified source files are retained; no retry or replacement source was used.
+
+[Partial findings and all recorded intervals](docs/stanford-k2-k6-history-findings.md) · [Provenance, quality and missing-file evidence](docs/benchmarks/stanford-k2-k6-history-partial.json) · [Frozen protocol](docs/stanford-k2-k6-history-protocol.md)
+
+The implementation passed 309 software tests. This data-only inspection ran no model or fit and leaves the existing numerical PASS and empirical FAIL outcomes intact.
