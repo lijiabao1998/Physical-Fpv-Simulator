@@ -1,0 +1,153 @@
+{
+  "dataset_doi": "10.17632/kxsbr4x3j2.2",
+  "dataset_url": "https://data.mendeley.com/datasets/kxsbr4x3j2/2",
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "authors": [
+    "Edoardo Catenaro",
+    "Simona Onori"
+  ],
+  "institution": "Stanford Energy Control Laboratory",
+  "model": "LG Chem INR21700-M50",
+  "nominal_capacity_ah": 4.85,
+  "publication_sources": [
+    "https://pangea.stanford.edu/ERE/pdf/OnoriPDF/Journals/57.pdf",
+    "https://pangea.stanford.edu/ERE/pdf/OnoriPDF/Journals/60.pdf"
+  ],
+  "author_linked_repository": "https://onorilab.stanford.edu/products/code-and-data-set",
+  "official_folder_id": "63c23156-0f46-4522-87bb-cbfc6b1b0ee9",
+  "conditions": "NMC/25degC/1C; replay actual measured A rather than assuming5A",
+  "model_outputs_viewed": false,
+  "selection_rule": "Before model errors, retain all6official1C25Cfiles; lexicographic k1 is parser/chronology pilot, not a best-fit choice",
+  "total_selected_workbook_bytes": 10973677,
+  "files": [
+    {
+      "filename": "NMC_k1_1C_25degC.xlsx",
+      "id": "a71c2191-2c62-4b38-88ff-7ee87038b69b",
+      "folder_id": "63c23156-0f46-4522-87bb-cbfc6b1b0ee9",
+      "content_details": {
+        "id": "41f3da09-fe7b-4011-8b06-47251617596e",
+        "sha256_hash": "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6",
+        "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "size": 1868963,
+        "created_date": "2021-02-02T22:29:21.767Z",
+        "download_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/a71c2191-2c62-4b38-88ff-7ee87038b69b/file_downloaded",
+        "view_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/a71c2191-2c62-4b38-88ff-7ee87038b69b/file_viewed",
+        "download_expiry_time": "2126-10-08T02:23:25.496631583Z"
+      },
+      "size": 1868963,
+      "last_modified_date": "2021-02-02T22:29:21.767Z",
+      "status": "COMPLETED"
+    },
+    {
+      "filename": "NMC_k2_1C_25degC.xlsx",
+      "id": "0c5e4899-e558-4c82-9535-fa8eda79c746",
+      "folder_id": "63c23156-0f46-4522-87bb-cbfc6b1b0ee9",
+      "content_details": {
+        "id": "864b18f2-0439-48cb-9e2d-0fbcf8a228a6",
+        "sha256_hash": "20ec90e107e228515a95346dc3159d08df62e78bb0f371d10161e62de49e8086",
+        "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "size": 1802458,
+        "created_date": "2021-02-02T22:29:22.63Z",
+        "download_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/0c5e4899-e558-4c82-9535-fa8eda79c746/file_downloaded",
+        "view_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/0c5e4899-e558-4c82-9535-fa8eda79c746/file_viewed",
+        "download_expiry_time": "2126-10-08T02:23:25.496661234Z"
+      },
+      "size": 1802458,
+      "last_modified_date": "2021-02-02T22:29:22.63Z",
+      "status": "COMPLETED"
+    },
+    {
+      "filename": "NMC_k3_1C_25degC.xlsx",
+      "id": "2290adb1-f0c0-49be-9ded-d404e55b8fcd",
+      "folder_id": "63c23156-0f46-4522-87bb-cbfc6b1b0ee9",
+      "content_details": {
+        "id": "c9ccb9af-a209-4080-9138-c0f0b382bd86",
+        "sha256_hash": "7cf8168771c033405f6cf343240762c47322de4c7773e231c35d0d13b714515d",
+        "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "size": 1815535,
+        "created_date": "2021-02-02T22:29:23.412Z",
+        "download_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/2290adb1-f0c0-49be-9ded-d404e55b8fcd/file_downloaded",
+        "view_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/2290adb1-f0c0-49be-9ded-d404e55b8fcd/file_viewed",
+        "download_expiry_time": "2126-10-08T02:23:25.496691355Z"
+      },
+      "size": 1815535,
+      "last_modified_date": "2021-02-02T22:29:23.412Z",
+      "status": "COMPLETED"
+    },
+    {
+      "filename": "NMC_k4_1C_25degC.xlsx",
+      "id": "0a450815-63c5-418a-85aa-9c8efbc0c5ce",
+      "folder_id": "63c23156-0f46-4522-87bb-cbfc6b1b0ee9",
+      "content_details": {
+        "id": "9eaa631d-635f-486f-8369-642eac940473",
+        "sha256_hash": "f03e1bf2cc25ab8bfb631666768abc85947e47a21473041e92bb622067686a86",
+        "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "size": 1799620,
+        "created_date": "2021-02-02T22:29:24.765Z",
+        "download_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/0a450815-63c5-418a-85aa-9c8efbc0c5ce/file_downloaded",
+        "view_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/0a450815-63c5-418a-85aa-9c8efbc0c5ce/file_viewed",
+        "download_expiry_time": "2126-10-08T02:23:25.496721766Z"
+      },
+      "size": 1799620,
+      "last_modified_date": "2021-02-02T22:29:24.765Z",
+      "status": "COMPLETED"
+    },
+    {
+      "filename": "NMC_k5_1C_25degC.xlsx",
+      "id": "ab88e6db-dfd3-4c1b-8c48-cfd4bc047cc5",
+      "folder_id": "63c23156-0f46-4522-87bb-cbfc6b1b0ee9",
+      "content_details": {
+        "id": "db350948-71df-498d-a428-80a0302dd1ec",
+        "sha256_hash": "43088a9b15950868fd505cdb9281e02750d0765f7cf1bdfc9b50260c397228b5",
+        "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "size": 1810452,
+        "created_date": "2021-02-02T22:29:26.074Z",
+        "download_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/ab88e6db-dfd3-4c1b-8c48-cfd4bc047cc5/file_downloaded",
+        "view_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/ab88e6db-dfd3-4c1b-8c48-cfd4bc047cc5/file_viewed",
+        "download_expiry_time": "2126-10-08T02:23:25.496751157Z"
+      },
+      "size": 1810452,
+      "last_modified_date": "2021-02-02T22:29:26.074Z",
+      "status": "COMPLETED"
+    },
+    {
+      "filename": "NMC_k6_1C_25degC.xlsx",
+      "id": "d2966fa3-f4f2-4592-be85-b9b75426ca71",
+      "folder_id": "63c23156-0f46-4522-87bb-cbfc6b1b0ee9",
+      "content_details": {
+        "id": "5269445a-0b0d-44bf-b4ab-99dc4639b6bb",
+        "sha256_hash": "8d1042224f8ba2e96da341dfd15e6d7542039c36c937d777d550c378e66c1fe1",
+        "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "size": 1876649,
+        "created_date": "2021-02-02T22:29:27.584Z",
+        "download_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/d2966fa3-f4f2-4592-be85-b9b75426ca71/file_downloaded",
+        "view_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/d2966fa3-f4f2-4592-be85-b9b75426ca71/file_viewed",
+        "download_expiry_time": "2126-10-08T02:23:25.496780828Z"
+      },
+      "size": 1876649,
+      "last_modified_date": "2021-02-02T22:29:27.584Z",
+      "status": "COMPLETED"
+    }
+  ],
+  "manufacturer_specification": {
+    "filename": "manufactuer_specifications.xlsx",
+    "id": "67a08c71-c0b4-4229-bc87-cbe4722cc404",
+    "folder_id": "3f9eba85-0a16-48f0-989d-48dd35de8320",
+    "content_details": {
+      "id": "860ecafe-f6ff-4da9-ab65-efcd76850bf1",
+      "sha256_hash": "7aa23d91f866ebdce4c0e9e0ebb485dcaac73cbc1ec691d86f7a0e0c317aa8c6",
+      "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "size": 9877,
+      "created_date": "2021-02-02T22:29:36.151Z",
+      "download_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/67a08c71-c0b4-4229-bc87-cbe4722cc404/file_downloaded",
+      "view_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/67a08c71-c0b4-4229-bc87-cbe4722cc404/file_viewed",
+      "download_expiry_time": "2126-10-08T02:23:25.844827164Z"
+    },
+    "size": 9877,
+    "last_modified_date": "2021-02-02T22:29:36.151Z",
+    "status": "COMPLETED"
+  },
+  "chronology_status": "Not yet verified from workbook headers; repository upload dates are not experimental dates",
+  "independence": "External laboratory/author cohort; original Chen/ORegan parameter-study provenance is distinct. This is not yet a qualified independent validation fixture."
+}
