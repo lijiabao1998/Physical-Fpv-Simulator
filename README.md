@@ -42,7 +42,7 @@ Lumped thermal simulation is explicitly **unvalidated**: several built-in Chen20
 
 ## Current results
 
-Software checks pass (208 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
+Software checks pass (211 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
 
 ## Thermal reconstruction: inspect the second cohort
 
@@ -115,11 +115,11 @@ The [recorded chronology](docs/stanford-chronology-findings.md) shows that some 
 
 ## Prospective external-current pilot
 
-The first [frozen Stanford k1 run](docs/stanford-validation-protocol.md) exhausted its20-minute budget while integrating mesh80; it produced no prediction curve, and mesh120 never started. Its [verified execution evidence](docs/benchmarks/stanford-k1-verified-evidence.json) is preserved. Experimental agreement and numerical convergence for this external pilot remain **NOT EVALUATED**, distinct from the existing30/36 ORegan empirical failures.
+The first [frozen Stanford k1 run](docs/stanford-validation-protocol.md) exhausted its20-minute budget while integrating mesh80; it produced no prediction curve, and mesh120 never started. Its [verified execution evidence](docs/benchmarks/stanford-k1-verified-evidence.json) is preserved. That first attempt left experimental agreement and numerical convergence **NOT EVALUATED**. The completed third attempt below now establishes a numerical PASS and an empirical FAIL; the existing30/36 ORegan empirical failures also remain.
 
 A [predeclared60-second scheduling experiment](docs/stanford-scheduling-diagnostic.md) held the mesh, complete measured-current interpolant, parameters, tolerance and72 output times identical. Native integration took47.789s with61 stops versus1.535s with two endpoints. Maximum differences were2.07microvolts,0.000000754K and0.00000000376Ah; both physical audits passed. This identifies substantial restart overhead for the prefix, not full-discharge validity. See [exact evidence](docs/benchmarks/stanford-scheduling-prefix.json).
 
-The [scheduling addendum](docs/stanford-scheduling-addendum.md) changes only integration stops, preserves every forcing/output point, and requests the same single80→120 pilot under the original20-minute/4GB budget. The second attempt completed mesh80 with electrical RMSE190.899mV, failing the50mV gate. Capacity error1.685%, energy error4.280% and98.315% coverage passed; temperature-proxy RMSE2.097K and maximum5.556K failed. Mesh120 then exhausted the4GB address-space limit during spatial-interpolation postprocessing, so80→120 verification is still unavailable. No curve is fitted or gate relaxed; Stanford cooling remains an unidentified boundary, and temperature comparison remains a skin-versus-average proxy.
+The [scheduling addendum](docs/stanford-scheduling-addendum.md) changes only integration stops, preserves every forcing/output point, and requests the same single80→120 pilot under the original20-minute/4GB budget. The second attempt completed mesh80 with electrical RMSE190.899mV, failing the50mV gate. Capacity error1.685%, energy error4.280% and98.315% coverage passed; temperature-proxy RMSE2.097K and maximum5.556K failed. In that second attempt, mesh120 exhausted the4GB address-space limit during spatial-interpolation postprocessing, leaving80→120 verification unavailable at that stage. No curve is fitted or gate relaxed; Stanford cooling remains an unidentified boundary, and temperature comparison remains a skin-versus-average proxy.
 
 The preceding constant-current numerical regression at a8eb171 completed in480.08s and passed. Its curve differed from the original120-point curve by at most5.64e-8V and8.70e-8K, with identical physical parameter fingerprints. [Regression evidence](docs/benchmarks/constant-profile-regression.json) and the original880-second evidence are retained separately.
 
@@ -136,16 +136,23 @@ python scripts/render_stanford_measurements.py
 
 [Plotting dependency sources and declared licenses](docs/plot-dependency-licenses.json) are separate from the numerical lock and source-data licenses.
 
-## Preserve failed predictions while completing the audit
+## Completed numerical audit; empirical disagreement remains
 
-![Preliminary Stanford mesh80 comparison: electrical FAIL and spatial verification unavailable](docs/benchmarks/stanford-k1-partial-comparison.svg)
+![Stanford actual measured and predicted curves: electrical FAIL, spatial PASS](docs/benchmarks/stanford-k1-comparison.svg)
 
-[The second-attempt evidence](docs/benchmarks/stanford-k1-v2-verified-evidence.json) distinguishes its completed80-point prediction from the unsaved120-point result. The error occurred allocating453MiB of spatial interpolation padding, after integration; it was not a20-minute timeout.
+The [native-audit continuation](docs/stanford-memory-addendum.md) completed at da65a9e in [CI37734574725](https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/37734574725), within900.070s of its1200s/4GB budget. Peak process RSS was2.05GiB. It reused the authenticated3989-row mesh80 curve and ran only the previously unsaved120-point case. Every native120×120×3989 concentration value per electrode, explicit surface concentration and physical audit remained included.
 
-The [native-audit continuation](docs/stanford-memory-addendum.md) reads the same physical node and surface values without constructing plotting buffers. A small-grid test forbids those buffers and confirms exact equality with the full representation. All bounds and conservation gates remain. The complete3989-row mesh80 curve, original report and failed gates are authenticated by [fixed hashes](docs/benchmarks/stanford-k1-mesh80-reference.json) and reused; only the unsaved120-point case is requested again under20minutes/4GB. This continuation is pending and cannot yet establish spatial convergence.
+**Spatial80→120 PASS:** maximum differences3.23494mV and0.0175543K, with0.0034589% cutoff-capacity difference. Their peaks occur at142.0001s and924.0013s, away from cutoff. **Electrical empirical FAIL:** the120-point voltage RMSE is191.474mV against50mV. Capacity error1.688%, energy error4.294% and98.312% coverage pass. **Temperature-proxy FAIL:** RMSE2.093K and maximum5.551K; unknown fixture cooling and skin-versus-average comparison prevent independent thermal qualification. Numerical stability does not repair the failed physical prediction.
 
-To render the actual preliminary evidence after downloading the v2 CI artifact:
+[Complete verified evidence](docs/benchmarks/stanford-k1-v3-verified-evidence.json) contains actual reports, unchanged gates, code/data hashes, memory use and artifact provenance. The full120-point time-series CSV is retained with its checksum in a [gzip archive](docs/benchmarks/stanford-k1-mesh120-v3.csv.gz). [The historical second attempt](docs/benchmarks/stanford-k1-v2-verified-evidence.json) and its [partial plot](docs/benchmarks/stanford-k1-partial-comparison.svg) remain available. Exact calculation fingerprints permit result-only commits to reuse the completed outcome, including its failures, without repeating the solve.
+
+The constant-current regression at the same commit also completed in850.063s:3.32093mV/0.0180177K, physical and numerical checks PASS. [Its current evidence](docs/benchmarks/grid120-verified-evidence.json) preserves earlier source results separately. Neither single case establishes whole-cohort convergence or repairs Chen6/12 and ORegan30/36 empirical failures.
+
+A [no-solve residual and source diagnostic](docs/stanford-residual-findings.md) identifies a large loaded-voltage discrepancy despite a−5.40mV initial rest-OCV difference. The measured transition ratio is61.3mΩ, similar in scale to the authors' published59mΩ pulse average; different measurement definitions prevent attributing that value to contact resistance. No corrective resistor, voltage offset or initial-SOC fit is applied.
+
+To render the actual complete evidence after downloading the v3 CI artifact, or to reproduce the source diagnostic:
 
 ```sh
-python scripts/render_stanford_comparison.py --partial --evidence-dir results/stanford-k1-v2-ci/stanford-k1-pilot --out results/stanford-k1-partial.svg
+python scripts/render_stanford_comparison.py --evidence-dir results/stanford-k1-v3-ci/stanford-k1-pilot --out results/stanford-k1-comparison.svg
+python scripts/diagnose_stanford_residuals.py
 ```

@@ -1,0 +1,609 @@
+{
+  "ci_run_id": 37734574725,
+  "commit_sha": "da65a9e9ce3498b9b7b185d49a79181a67234da0",
+  "ci_url": "https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/37734574725",
+  "artifact_id": 11531981622,
+  "artifact_zip_bytes": 865487,
+  "artifact_zip_sha256": "78ee00401440362d6d37f8de35dd12b65c2e61bdfd967354c1170e71fe76938f",
+  "source_sha256": {
+    "src/physical_fpv/core.py": "1295d1b51e0989021b037ecc8a5b7b66d8e38da43958cfd1df98bc1c031f506b",
+    "src/physical_fpv/current_profile.py": "9324ed84ee6ddd5bd142db99383ee69116b0d51bde759cd503680acde144d5d7",
+    "src/physical_fpv/stanford_benchmark.py": "7e4390422670056f5afe9b4ec9039ff7171d32f0224be3f1ed9b059710841a1f",
+    "src/physical_fpv/stanford_data.py": "a0df0f6203ae433e7d5db3336a52c7626953d7133dfcedab7d755b274b108f6f",
+    "src/physical_fpv/stanford_reference.py": "e3c44cde83b7eb9923cc873e12a519ae1237d98f7278a778c29ed062dcb4c803",
+    "src/physical_fpv/thermal_benchmark.py": "cd7f101bb67b0e6d6dfe2da54727ff89286cfee788307a367461a3e6664a2ba4",
+    "src/physical_fpv/validation.py": "e7fd1abeb8d47b7c522bd60668c5fb1dcd5b1a68ad5e542f9b9a1a2c37cb425c",
+    "scripts/run_stanford_pilot.py": "dc000d47161198bf4bb9ddd917d312e7ba4b32f15170d3872acb5fa0124184cb",
+    "docs/stanford-validation-protocol.md": "009f64f52b889c56fed15e085007a82c24ed58e8b926c49e5f964f9e185f53b0",
+    "docs/stanford-scheduling-addendum.md": "d3ce12b439053f88df50f8cc6448c318c139a302cd3421755a505aa6dec1d27e",
+    "docs/stanford-memory-addendum.md": "20a232abec94c8210e48efdb24bad18471a6664a29f0a4fee1adf19aab22bc28",
+    "docs/benchmarks/stanford-k1-mesh80-reference.json": "f49fc31cea8683e194599e2203237a12916ba810e1b927ca062eb3483c1aa787",
+    "docs/benchmarks/stanford-k1-mesh80-v2.csv.gz": "92c90c495a880c458e4470234881e4bec8985c758995141a1d8f0e7742461215",
+    "docs/benchmarks/stanford-k1-mesh80-v2.json": "9a4000d2627adc21638a399a62d5f11accd0a808ef3aba031b02b7100378eb31",
+    "data/stanford-manifest.json": "94bde5dd872de039d145abf33f66fc81c38897b4666d68586f00c950478dc482",
+    "docs/benchmarks/stanford-k1-chronology.json": "de79d969085540981cb2c34ff39947c9ca3472733a8168b780ce599717908e69",
+    "requirements-lock.txt": "99e788261bf013158962b719b1710fde854c864ab67fac1c72dc69902830a20b",
+    "requirements-data-lock.txt": "ce63f4e1fcc9fd16eff0e59a4468a6b8e50fb896fc728ec2ed38e300710e080e",
+    "pyproject.toml": "b9407d6c6afafb0d0ab4ae96176f13133600a4b2fe373fe6803c11c95034077d"
+  },
+  "supervisor_status": {
+    "status": "completed",
+    "return_code": 0,
+    "elapsed_s": 900.0701707399999,
+    "budget_s": 1200,
+    "missing_numerical_stage_is_unverified": false,
+    "empirical_disagreement_is_separate_from_execution_status": true
+  },
+  "report": {
+    "inputs": {
+      "config": {
+        "model": "DFN",
+        "thermal": "lumped",
+        "parameter_set": "ORegan2022",
+        "initial_temperature_k": 298.33794059753416,
+        "heat_transfer_coefficient_w_m2_k": 15,
+        "current_a": 5.000325282873757,
+        "ambient_temperature_k": 298.15,
+        "mesh_points": 80,
+        "tolerance": 1e-07,
+        "sample_period_s": 5,
+        "max_temperature_k": 333.15
+      },
+      "source_sha256": {
+        "src/physical_fpv/core.py": "1295d1b51e0989021b037ecc8a5b7b66d8e38da43958cfd1df98bc1c031f506b",
+        "src/physical_fpv/current_profile.py": "9324ed84ee6ddd5bd142db99383ee69116b0d51bde759cd503680acde144d5d7",
+        "src/physical_fpv/stanford_benchmark.py": "7e4390422670056f5afe9b4ec9039ff7171d32f0224be3f1ed9b059710841a1f",
+        "src/physical_fpv/stanford_data.py": "a0df0f6203ae433e7d5db3336a52c7626953d7133dfcedab7d755b274b108f6f",
+        "src/physical_fpv/stanford_reference.py": "e3c44cde83b7eb9923cc873e12a519ae1237d98f7278a778c29ed062dcb4c803",
+        "src/physical_fpv/thermal_benchmark.py": "cd7f101bb67b0e6d6dfe2da54727ff89286cfee788307a367461a3e6664a2ba4",
+        "src/physical_fpv/validation.py": "e7fd1abeb8d47b7c522bd60668c5fb1dcd5b1a68ad5e542f9b9a1a2c37cb425c",
+        "scripts/run_stanford_pilot.py": "dc000d47161198bf4bb9ddd917d312e7ba4b32f15170d3872acb5fa0124184cb",
+        "docs/stanford-validation-protocol.md": "009f64f52b889c56fed15e085007a82c24ed58e8b926c49e5f964f9e185f53b0",
+        "docs/stanford-scheduling-addendum.md": "d3ce12b439053f88df50f8cc6448c318c139a302cd3421755a505aa6dec1d27e",
+        "docs/stanford-memory-addendum.md": "20a232abec94c8210e48efdb24bad18471a6664a29f0a4fee1adf19aab22bc28",
+        "docs/benchmarks/stanford-k1-mesh80-reference.json": "f49fc31cea8683e194599e2203237a12916ba810e1b927ca062eb3483c1aa787",
+        "docs/benchmarks/stanford-k1-mesh80-v2.csv.gz": "92c90c495a880c458e4470234881e4bec8985c758995141a1d8f0e7742461215",
+        "docs/benchmarks/stanford-k1-mesh80-v2.json": "9a4000d2627adc21638a399a62d5f11accd0a808ef3aba031b02b7100378eb31",
+        "data/stanford-manifest.json": "94bde5dd872de039d145abf33f66fc81c38897b4666d68586f00c950478dc482",
+        "docs/benchmarks/stanford-k1-chronology.json": "de79d969085540981cb2c34ff39947c9ca3472733a8168b780ce599717908e69",
+        "requirements-lock.txt": "99e788261bf013158962b719b1710fde854c864ab67fac1c72dc69902830a20b",
+        "requirements-data-lock.txt": "ce63f4e1fcc9fd16eff0e59a4468a6b8e50fb896fc728ec2ed38e300710e080e",
+        "pyproject.toml": "b9407d6c6afafb0d0ab4ae96176f13133600a4b2fe373fe6803c11c95034077d"
+      },
+      "source_commit_sha": "da65a9e9ce3498b9b7b185d49a79181a67234da0",
+      "python_version": "3.12.14",
+      "pybamm_version": "26.9.0.0",
+      "numpy_version": "2.5.3",
+      "memory_budget_bytes": 4000000000,
+      "wall_budget_s": 1200,
+      "assumptions": {
+        "source": {
+          "filename": "NMC_k1_1C_25degC.xlsx",
+          "bytes": 1868963,
+          "sha256": "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6",
+          "inflated_bytes": 10538544
+        },
+        "observed_interval_s": [
+          1.0006,
+          3390.3968
+        ],
+        "missing_initial_interval_s": [
+          0,
+          1.0006
+        ],
+        "initial_interval_current_assumption_a": 5.000240325927734,
+        "assumed_initial_charge_ah": 0.0013897890194786919,
+        "initial_interval_is_measured": false,
+        "initial_interval_bound_status": "Declared time extent and CC hypothesis, not an empirical current bound",
+        "explicit_unobserved_continuation_s": [
+          3390.3968,
+          6000.0
+        ],
+        "continuation_current_assumption_a": 5.0003557205200195,
+        "current_profile_sha256": "ec1aac9bbe4bb889ad06fb215ff0462c214d66870054e814605aff1850bb9353",
+        "current_interpolation": "all source samples; piecewise linear; no smoothing",
+        "initial_temperature_source": "final zero-current pre-rest skin temperature, assumed initially uniform",
+        "cooling_coefficient_status": "ORegan h=15 prior hypothesis; not identified for Stanford fixture",
+        "ambient_temperature_status": "nominal chamber setpoint; ambient sensor time series unavailable",
+        "temperature_observable": "predicted volume average versus measured central skin proxy",
+        "independent_thermal_validation_established": false,
+        "parameter_fitting_performed": false
+      },
+      "fitting_performed": false,
+      "initial_concentrations_mol_m3": {
+        "negative": 28866.0,
+        "positive": 13975.0
+      },
+      "profile_schedule": "adaptive",
+      "scheduling_addendum_sha256": "d3ce12b439053f88df50f8cc6448c318c139a302cd3421755a505aa6dec1d27e",
+      "memory_addendum_sha256": "20a232abec94c8210e48efdb24bad18471a6664a29f0a4fee1adf19aab22bc28",
+      "reused_mesh80": {
+        "csv_gzip_file": "docs/benchmarks/stanford-k1-mesh80-v2.csv.gz",
+        "csv_gzip_sha256": "92c90c495a880c458e4470234881e4bec8985c758995141a1d8f0e7742461215",
+        "csv_sha256": "76a8e07b2be05d5da5fc27888eac9f7106e38cec13e90c02187b392f8bdc4fed",
+        "csv_uncompressed_bytes": 498690,
+        "report_file": "docs/benchmarks/stanford-k1-mesh80-v2.json",
+        "report_sha256": "9a4000d2627adc21638a399a62d5f11accd0a808ef3aba031b02b7100378eb31",
+        "source_commit_sha": "be1cb751d78ea92ee0486966f3a5e66687797e63",
+        "ci_run_id": 37729197529,
+        "artifact_zip_sha256": "f644dd2e9436fdff281919a6ae0de5259864b62251cc7e3979dac7a9f699eb89",
+        "scope": "Completed mesh80 solution and passed physical audit reused exactly; empirical failure retained.",
+        "residual_sha256": "e315215a9dcfdc8882b6cd10a88e1b3472be75a83200653899f954b304c5e23b",
+        "reused": true,
+        "new_solve_performed": false,
+        "rechecked_from_recorded_observables": {
+          "charge_integral_error_ah": 2.11445849718217e-08,
+          "lithium_inventory_relative_drift": 2.1625837271106654e-14
+        },
+        "spatial_and_heat_audits": "original source report; unavailable raw states were not rebuilt",
+        "empirical_result": "original report retained without changing thresholds or gate labels"
+      },
+      "new_simulated_meshes": [
+        120
+      ]
+    },
+    "cases": {
+      "80": {
+        "cell": "Stanford k1",
+        "source_sha256": "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6",
+        "protocol_sha256": "009f64f52b889c56fed15e085007a82c24ed58e8b926c49e5f964f9e185f53b0",
+        "scheduling_addendum_sha256": "d3ce12b439053f88df50f8cc6448c318c139a302cd3421755a505aa6dec1d27e",
+        "model": {
+          "config": {
+            "model": "DFN",
+            "thermal": "lumped",
+            "parameter_set": "ORegan2022",
+            "initial_temperature_k": 298.33794059753416,
+            "heat_transfer_coefficient_w_m2_k": 15,
+            "current_a": 5.000325282873757,
+            "ambient_temperature_k": 298.15,
+            "mesh_points": 80,
+            "tolerance": 1e-07,
+            "sample_period_s": 5,
+            "max_temperature_k": 333.15
+          },
+          "pybamm_version": "26.9.0.0",
+          "parameter_set": "ORegan2022",
+          "parameter_fingerprint": "cfd16d9a930ff6a6268a9579430423e288d833b22a608ce2b62b025188537ebe",
+          "compiled_template_cache": {
+            "hit": false,
+            "templates": 0,
+            "maximum_templates": 6,
+            "state_reset": "fresh initial conditions every solve",
+            "profile_template_reused": false
+          },
+          "current_protocol": {
+            "type": "explicit piecewise-linear discharge current",
+            "fingerprint_sha256": "ec1aac9bbe4bb889ad06fb215ff0462c214d66870054e814605aff1850bb9353",
+            "time_units": "s",
+            "current_units": "A; positive discharge",
+            "current_range_a": [
+              5.000240325927734,
+              5.000385761260986
+            ],
+            "profile_end_time_s": 6000.0,
+            "implicit_extrapolation": false,
+            "solver_stops_at_profile_knots": false,
+            "integration_schedule": "adaptive"
+          },
+          "initial_state": "ORegan2022 initial concentrations; no SOC fit",
+          "termination": "event: Minimum voltage [V]",
+          "voltage_cutoff_reached": true,
+          "endpoint_time_s": 3333.2915326846605,
+          "cutoff_capacity_ah": 4.629872482686162,
+          "capacity_ah": 4.629872482686162,
+          "physical_audit": {
+            "lithium_inventory_relative_drift": 2.1625837271106654e-14,
+            "charge_integral_error_ah": 2.11445849718217e-08,
+            "concentration_bounds": {
+              "negative": {
+                "node_min_mol_m3": 1211.87635150154,
+                "node_max_mol_m3": 28866.0,
+                "surface_min_mol_m3": 1150.0973148625471,
+                "surface_max_mol_m3": 28866.000000000007,
+                "node_array_shape": [
+                  80,
+                  80,
+                  3989
+                ],
+                "min_mol_m3": 1150.0973148625471,
+                "max_mol_m3": 28866.000000000007,
+                "limit_mol_m3": 29583.0,
+                "passed": true
+              },
+              "positive": {
+                "node_min_mol_m3": 13975.0,
+                "node_max_mol_m3": 51466.003188837676,
+                "surface_min_mol_m3": 13975.0,
+                "surface_max_mol_m3": 51535.47200933967,
+                "node_array_shape": [
+                  80,
+                  80,
+                  3989
+                ],
+                "min_mol_m3": 13975.0,
+                "max_mol_m3": 51535.47200933967,
+                "limit_mol_m3": 51765.0,
+                "passed": true
+              }
+            },
+            "electrolyte_min_mol_m3": 716.5753314222097,
+            "thermal_energy_balance": {
+              "stored_energy_j": 705.1578043536875,
+              "integrated_net_heat_j": 705.157628684531,
+              "absolute_residual_j": 0.00017566915653333126,
+              "relative_residual": 2.491203464653431e-07,
+              "relative_to_generated_heat": 8.214332139260865e-08,
+              "passed": true,
+              "note": "trapezoidal sampled-output audit, not experimental validation"
+            },
+            "passed": true
+          },
+          "temperature_status": "lumped volume-average prediction; empirical qualification reported separately",
+          "scope": "fresh LG M50 benchmark; not certified for FPV, abuse, aging or safety",
+          "outside_benchmark_temperature": false,
+          "concentration_audit_scope": "finite-volume nodes and surface states at output times; no plotting ghost points"
+        },
+        "comparison_role": "preselected external-source pilot; no new fit; not a blinded six-cell validation",
+        "fitting_performed": false,
+        "common_observed_interval_s": [
+          1.0006,
+          3333.2915326846605
+        ],
+        "voltage_rmse_v": 0.19089933729045996,
+        "voltage_max_absolute_error_v": 0.2208545247846354,
+        "temperature_proxy_rmse_k": 2.0973313902701998,
+        "temperature_proxy_max_absolute_error_k": 5.556296540294625,
+        "measured_observed_capacity_ah": 4.707800975704511,
+        "predicted_window_capacity_ah": 4.628482709657078,
+        "capacity_relative_error": 0.016848262374890004,
+        "measured_observed_energy_wh": 15.593060645071155,
+        "predicted_window_energy_wh": 16.260504700975435,
+        "energy_relative_error": 0.042803915863384646,
+        "observed_time_coverage": 0.9831517875321453,
+        "measured_endpoint_time_s": 3390.3968,
+        "predicted_endpoint_time_s": 3333.2915326846605,
+        "predicted_voltage_cutoff_time_s": 3333.2915326846605,
+        "unobserved_late_continuation_used_s": 0.0,
+        "initial_assumed_charge_excluded_from_metrics_ah": 0.0013897890194786919,
+        "electrical_gates": {
+          "voltage_rmse": false,
+          "voltage_max": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "voltage_cutoff_reached": true,
+          "physical_audit": true
+        },
+        "electrical_gates_passed": false,
+        "thermal_proxy_gates": {
+          "rmse": false,
+          "maximum_error": false
+        },
+        "independent_thermal_validation_established": false,
+        "temperature_domains": {
+          "ranges": {
+            "surface_measurement_c": [
+              25.18794059753418,
+              31.163291931152344
+            ],
+            "volume_average_prediction_c": [
+              25.18794059753418,
+              36.485320981134294
+            ]
+          },
+          "measurement_domains_c": {
+            "solid_diffusion_measurements": [
+              5.0,
+              45.0
+            ],
+            "exchange_current_measurements": [
+              15.0,
+              45.0
+            ],
+            "heat_capacity_measurements": [
+              25.0,
+              100.0
+            ]
+          },
+          "breaches": [],
+          "inside_all_listed_measurement_domains": true,
+          "note": "measurement domains are not proof of universal model validity"
+        },
+        "empirical_thresholds": {
+          "voltage_rmse_v": 0.05,
+          "voltage_max_error_v": 0.3,
+          "temperature_rmse_k": 2.0,
+          "temperature_max_error_k": 5.0,
+          "capacity_relative_error": 0.05,
+          "energy_relative_error": 0.05,
+          "min_coverage": 0.95,
+          "numerical_temperature_max_difference_k": 0.1
+        },
+        "elapsed_s": 162.374979504
+      },
+      "120": {
+        "cell": "Stanford k1",
+        "source_sha256": "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6",
+        "protocol_sha256": "009f64f52b889c56fed15e085007a82c24ed58e8b926c49e5f964f9e185f53b0",
+        "scheduling_addendum_sha256": "d3ce12b439053f88df50f8cc6448c318c139a302cd3421755a505aa6dec1d27e",
+        "memory_addendum_sha256": "20a232abec94c8210e48efdb24bad18471a6664a29f0a4fee1adf19aab22bc28",
+        "model": {
+          "config": {
+            "model": "DFN",
+            "thermal": "lumped",
+            "parameter_set": "ORegan2022",
+            "initial_temperature_k": 298.33794059753416,
+            "heat_transfer_coefficient_w_m2_k": 15,
+            "current_a": 5.000325282873757,
+            "ambient_temperature_k": 298.15,
+            "mesh_points": 120,
+            "tolerance": 1e-07,
+            "sample_period_s": 5,
+            "max_temperature_k": 333.15
+          },
+          "pybamm_version": "26.9.0.0",
+          "parameter_set": "ORegan2022",
+          "parameter_fingerprint": "cfd16d9a930ff6a6268a9579430423e288d833b22a608ce2b62b025188537ebe",
+          "compiled_template_cache": {
+            "hit": false,
+            "templates": 0,
+            "maximum_templates": 6,
+            "state_reset": "fresh initial conditions every solve",
+            "profile_template_reused": false
+          },
+          "current_protocol": {
+            "type": "explicit piecewise-linear discharge current",
+            "fingerprint_sha256": "ec1aac9bbe4bb889ad06fb215ff0462c214d66870054e814605aff1850bb9353",
+            "time_units": "s",
+            "current_units": "A; positive discharge",
+            "current_range_a": [
+              5.000240325927734,
+              5.000385761260986
+            ],
+            "profile_end_time_s": 6000.0,
+            "implicit_extrapolation": false,
+            "solver_stops_at_profile_knots": false,
+            "integration_schedule": "adaptive"
+          },
+          "initial_state": "ORegan2022 initial concentrations; no SOC fit",
+          "termination": "event: Minimum voltage [V]",
+          "voltage_cutoff_reached": true,
+          "endpoint_time_s": 3333.1762168201794,
+          "cutoff_capacity_ah": 4.629712347250995,
+          "capacity_ah": 4.629712347250995,
+          "physical_audit": {
+            "lithium_inventory_relative_drift": 2.869582253281471e-14,
+            "charge_integral_error_ah": 2.2044960079625753e-08,
+            "concentration_bounds": {
+              "negative": {
+                "node_min_mol_m3": 1192.8110807194903,
+                "node_max_mol_m3": 28866.0,
+                "surface_min_mol_m3": 1149.8060153556564,
+                "surface_max_mol_m3": 28866.000000000007,
+                "node_array_shape": [
+                  120,
+                  120,
+                  3989
+                ],
+                "min_mol_m3": 1149.8060153556564,
+                "max_mol_m3": 28866.000000000007,
+                "limit_mol_m3": 29583.0,
+                "passed": true
+              },
+              "positive": {
+                "node_min_mol_m3": 13975.0,
+                "node_max_mol_m3": 51490.14303785363,
+                "surface_min_mol_m3": 13975.000000000002,
+                "surface_max_mol_m3": 51536.05368848228,
+                "node_array_shape": [
+                  120,
+                  120,
+                  3989
+                ],
+                "min_mol_m3": 13975.0,
+                "max_mol_m3": 51536.05368848228,
+                "limit_mol_m3": 51765.0,
+                "passed": true
+              }
+            },
+            "electrolyte_min_mol_m3": 718.4791863825353,
+            "thermal_energy_balance": {
+              "stored_energy_j": 704.7467738028499,
+              "integrated_net_heat_j": 704.7467647940947,
+              "absolute_residual_j": 9.008755228023801e-06,
+              "relative_residual": 1.2782967674207424e-08,
+              "relative_to_generated_heat": 4.217668414415277e-09,
+              "passed": true,
+              "note": "trapezoidal sampled-output audit, not experimental validation"
+            },
+            "passed": true
+          },
+          "temperature_status": "lumped volume-average prediction; empirical qualification reported separately",
+          "scope": "fresh LG M50 benchmark; not certified for FPV, abuse, aging or safety",
+          "outside_benchmark_temperature": false,
+          "concentration_audit_scope": "finite-volume nodes and surface states via observe_raw at output times; no plotting ghost points or spatial interpolation buffers"
+        },
+        "comparison_role": "preselected external-source pilot; no new fit; not a blinded six-cell validation",
+        "fitting_performed": false,
+        "common_observed_interval_s": [
+          1.0006,
+          3333.1762168201794
+        ],
+        "voltage_rmse_v": 0.1914735217065252,
+        "voltage_max_absolute_error_v": 0.2204182364874363,
+        "temperature_proxy_rmse_k": 2.0931498525490437,
+        "temperature_proxy_max_absolute_error_k": 5.550845996697603,
+        "measured_observed_capacity_ah": 4.707800975704511,
+        "predicted_window_capacity_ah": 4.628322538022481,
+        "capacity_relative_error": 0.016882284975977848,
+        "measured_observed_energy_wh": 15.593060645071155,
+        "predicted_window_energy_wh": 16.26269157297422,
+        "energy_relative_error": 0.042944162351778545,
+        "observed_time_coverage": 0.9831177649931216,
+        "measured_endpoint_time_s": 3390.3968,
+        "predicted_endpoint_time_s": 3333.1762168201794,
+        "predicted_voltage_cutoff_time_s": 3333.1762168201794,
+        "unobserved_late_continuation_used_s": 0.0,
+        "initial_assumed_charge_excluded_from_metrics_ah": 0.0013897890194786919,
+        "electrical_gates": {
+          "voltage_rmse": false,
+          "voltage_max": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "voltage_cutoff_reached": true,
+          "physical_audit": true
+        },
+        "electrical_gates_passed": false,
+        "thermal_proxy_gates": {
+          "rmse": false,
+          "maximum_error": false
+        },
+        "independent_thermal_validation_established": false,
+        "temperature_domains": {
+          "ranges": {
+            "surface_measurement_c": [
+              25.18794059753418,
+              31.163291931152344
+            ],
+            "volume_average_prediction_c": [
+              25.18794059753418,
+              36.47891744203747
+            ]
+          },
+          "measurement_domains_c": {
+            "solid_diffusion_measurements": [
+              5.0,
+              45.0
+            ],
+            "exchange_current_measurements": [
+              15.0,
+              45.0
+            ],
+            "heat_capacity_measurements": [
+              25.0,
+              100.0
+            ]
+          },
+          "breaches": [],
+          "inside_all_listed_measurement_domains": true,
+          "note": "measurement domains are not proof of universal model validity"
+        },
+        "empirical_thresholds": {
+          "voltage_rmse_v": 0.05,
+          "voltage_max_error_v": 0.3,
+          "temperature_rmse_k": 2.0,
+          "temperature_max_error_k": 5.0,
+          "capacity_relative_error": 0.05,
+          "energy_relative_error": 0.05,
+          "min_coverage": 0.95,
+          "numerical_temperature_max_difference_k": 0.1
+        },
+        "elapsed_s": 896.212586544,
+        "peak_process_rss_kib": 2149016
+      }
+    },
+    "spatial_numerical_check": {
+      "voltage_max_difference_v": 0.003234943375430177,
+      "capacity_relative_difference": 3.458863600074973e-05,
+      "temperature_max_difference_k": 0.017554289155725655,
+      "coarse_mesh": 80,
+      "fine_mesh": 120,
+      "coarse_tolerance": 1e-07,
+      "fine_tolerance": 1e-07,
+      "passed": true,
+      "voltage_peak_difference_time_s": 142.0001,
+      "temperature_peak_difference_time_s": 924.0013,
+      "coarse_cutoff_time_s": 3333.2915326846605,
+      "fine_cutoff_time_s": 3333.1762168201794
+    },
+    "electrical_pilot_gates_passed": false,
+    "independent_thermal_validation_established": false,
+    "whole_cohort_validation_established": false,
+    "existing_oregan_empirical_failures": "30/36; unchanged",
+    "fitting_performed": false
+  },
+  "artifact_files": {
+    "mesh80-timeseries.csv": {
+      "bytes": 498690,
+      "sha256": "76a8e07b2be05d5da5fc27888eac9f7106e38cec13e90c02187b392f8bdc4fed"
+    },
+    "source-attribution.json": {
+      "bytes": 2855,
+      "sha256": "ac790f158275e3dd0d179f331d8136801f8025ff3f994cc4066227b48e37fe06"
+    },
+    "ATTRIBUTION.md": {
+      "bytes": 2366,
+      "sha256": "f729de2eb277ff54bc8f1927a38355a079d56f29445268b23bf47d332c918e68"
+    },
+    "mesh120-report.json": {
+      "bytes": 6449,
+      "sha256": "09cc5da42997976a3efb9421519bce9ba2fd38d85c7ec0ccef4f381065d46e82"
+    },
+    "mesh120-timeseries.csv": {
+      "bytes": 498690,
+      "sha256": "84e181cd1c04180be660791abb42790862d35d4b5f2bd99b38fa5332b03d326d"
+    },
+    "mesh80-residuals.csv": {
+      "bytes": 698326,
+      "sha256": "e315215a9dcfdc8882b6cd10a88e1b3472be75a83200653899f954b304c5e23b"
+    },
+    "mesh120-residuals.csv": {
+      "bytes": 698352,
+      "sha256": "867824efa0fa8a08a05fae76e9a46540e03e2c6b65865ad2f8adb07bcebb1253"
+    },
+    "status.json": {
+      "bytes": 220,
+      "sha256": "4eaaebbf150a54b9bf3b07765acaf5372d4ffa13d1166ebfa19373111b53d0c3"
+    },
+    "progress.json": {
+      "bytes": 151,
+      "sha256": "8c3fb7337576a7627fb12eb0c183bf127e12fcc4f24401f4b7bdfb5f184ba5d4"
+    },
+    "solver.log": {
+      "bytes": 15360,
+      "sha256": "c93a0c5c81c21ec49d37d36f8036a9fa0f7deec6c214e5964a842223fe05ce28"
+    },
+    "report.json": {
+      "bytes": 20994,
+      "sha256": "ccc6635e28b67c41d54d2722077f7002330765ea35e41aec548f51ad412c1251"
+    },
+    "mesh80-report.json": {
+      "bytes": 6253,
+      "sha256": "9a4000d2627adc21638a399a62d5f11accd0a808ef3aba031b02b7100378eb31"
+    },
+    "forcing.csv": {
+      "bytes": 169686,
+      "sha256": "29322ff9428cf1ac1d7e700ee61c1ae14003e681659026534e00ad06a8b574a8"
+    },
+    "stage.json": {
+      "bytes": 63,
+      "sha256": "d3d31614364b4d0b10e42f7d652943ff2ca6ff6285a513100c2ec6e8f304b0b9"
+    },
+    "input.json": {
+      "bytes": 5832,
+      "sha256": "2e4ccede8927723c2b50157405b973509a1e69f6af78f1a36deb7c5c1de52a2f"
+    }
+  },
+  "preserved_mesh120_curve": {
+    "path": "docs/benchmarks/stanford-k1-mesh120-v3.csv.gz",
+    "gzip_bytes": 143966,
+    "gzip_sha256": "b88bee993c17315197598f50f19ed72d6023d158b0bb8b1ea8c6e86761a611ba",
+    "csv_bytes": 498690,
+    "csv_sha256": "84e181cd1c04180be660791abb42790862d35d4b5f2bd99b38fa5332b03d326d",
+    "columns": "time_s,voltage_v,capacity_ah,temperature_k,lithium_inventory_mol",
+    "data_rows": 3989
+  },
+  "measurement_attribution": {
+    "authors": [
+      "Edoardo Catenaro",
+      "Simona Onori"
+    ],
+    "doi": "10.17632/kxsbr4x3j2.2",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "changes": "Unfitted model comparison with exact recorded current and preserved failed gates"
+  },
+  "previous_attempt": "docs/benchmarks/stanford-k1-v2-verified-evidence.json"
+}
