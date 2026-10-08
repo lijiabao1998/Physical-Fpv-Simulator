@@ -6,11 +6,16 @@ on:
       - src/physical_fpv/current_profile.py
       - src/physical_fpv/stanford_benchmark.py
       - src/physical_fpv/stanford_data.py
+      - src/physical_fpv/stanford_reference.py
       - src/physical_fpv/thermal_benchmark.py
       - src/physical_fpv/validation.py
       - scripts/run_stanford_pilot.py
       - docs/stanford-validation-protocol.md
       - docs/stanford-scheduling-addendum.md
+      - docs/stanford-memory-addendum.md
+      - docs/benchmarks/stanford-k1-mesh80-reference.json
+      - docs/benchmarks/stanford-k1-mesh80-v2.csv.gz
+      - docs/benchmarks/stanford-k1-mesh80-v2.json
       - data/stanford-manifest.json
       - docs/benchmarks/stanford-k1-chronology.json
       - requirements-lock.txt
@@ -18,7 +23,7 @@ on:
       - pyproject.toml
       - .github/workflows/stanford-pilot.yml
       - scripts/stanford_evidence_cache.py
-      - docs/benchmarks/stanford-k1-v2-verified-evidence.json
+      - docs/benchmarks/stanford-k1-v3-verified-evidence.json
   workflow_dispatch:
 permissions:
   contents: read
@@ -55,7 +60,7 @@ jobs:
       - name: Acquire the checksum-pinned source pilot
         if: steps.saved.outputs.reuse != 'true'
         run: python scripts/inspect_stanford_pilot.py --fetch
-      - name: Run one external record with a shared two-grid twenty-minute budget
+      - name: Complete only mesh120 within twenty minutes and reuse the authenticated mesh80 result
         if: steps.saved.outputs.reuse != 'true'
         run: python scripts/run_stanford_pilot.py --timeout 1200
       - name: Keep incomplete reused execution distinct from scientific disagreement

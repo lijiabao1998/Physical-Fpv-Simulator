@@ -15,6 +15,7 @@ from physical_fpv.thermal_benchmark import THERMAL_GATES, piecewise_error, tempe
 
 PROTOCOL_SHA256 = "009f64f52b889c56fed15e085007a82c24ed58e8b926c49e5f964f9e185f53b0"
 SCHEDULING_ADDENDUM_SHA256 = "d3ce12b439053f88df50f8cc6448c318c139a302cd3421755a505aa6dec1d27e"
+MEMORY_ADDENDUM_SHA256 = "20a232abec94c8210e48efdb24bad18471a6664a29f0a4fee1adf19aab22bc28"
 SOURCE_SHA256 = "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6"
 
 
@@ -204,6 +205,7 @@ def evaluate_pilot(
         "source_sha256": SOURCE_SHA256,
         "protocol_sha256": PROTOCOL_SHA256,
         "scheduling_addendum_sha256": SCHEDULING_ADDENDUM_SHA256,
+        "memory_addendum_sha256": MEMORY_ADDENDUM_SHA256,
         "model": model.metadata(),
         "comparison_role": (
             "preselected external-source pilot; no new fit; not a blinded six-cell validation"
@@ -242,6 +244,9 @@ def verify_protocol(root: Path) -> dict:
     addendum = root / "docs/stanford-scheduling-addendum.md"
     if hashlib.sha256(addendum.read_bytes()).hexdigest() != SCHEDULING_ADDENDUM_SHA256:
         raise ValueError("Frozen Stanford scheduling addendum changed")
+    memory = root / "docs/stanford-memory-addendum.md"
+    if hashlib.sha256(memory.read_bytes()).hexdigest() != MEMORY_ADDENDUM_SHA256:
+        raise ValueError("Frozen Stanford native-audit addendum changed")
     chronology = json.loads((root / "docs/benchmarks/stanford-k1-chronology.json").read_text())
     if (
         not chronology["recorded_order_qualified"]

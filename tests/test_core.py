@@ -84,3 +84,41 @@ def test_bounded_oregan_representative_grid_extension():
     ModelConfig(parameter_set="ORegan2022", mesh_points=120).validate()
     with pytest.raises(ValueError):
         ModelConfig(parameter_set="ORegan2022", mesh_points=121).validate()
+
+
+@pytest.mark.integration
+def test_native_concentration_audit_matches_full_values_without_interpolation_buffers(monkeypatch):
+    from pybamm.solvers.processed_variable import ProcessedVariable1D, ProcessedVariable2D
+
+    from physical_fpv.core import _simulation_template
+
+    def forbid_padding(*args, **kwargs):
+        raise AssertionError("Spatial interpolation buffers must not be built for native audits")
+
+    config = ModelConfig(model="DFN", mesh_points=10)
+    with monkeypatch.context() as scoped:
+        scoped.setattr(ProcessedVariable1D, "_interp_setup", forbid_padding)
+        scoped.setattr(ProcessedVariable2D, "_interp_setup", forbid_padding)
+        result = simulate(config)
+    assert result.physical_audit["passed"]
+    solution = _simulation_template(
+        config.model,
+        config.thermal,
+        config.parameter_set,
+        config.mesh_points,
+        config.tolerance,
+        config.max_temperature_k,
+        config.heat_transfer_coefficient_w_m2_k,
+    ).solution
+    for electrode in ("Negative", "Positive"):
+        native = solution[f"{electrode} particle concentration [mol.m-3]"]
+        surface = solution[f"{electrode} particle surface concentration [mol.m-3]"]
+        assert not native.entries_raw_initialized
+        assert not surface.entries_raw_initialized
+        np.testing.assert_array_equal(native.observe_raw(), native.entries)
+        np.testing.assert_array_equal(surface.observe_raw(), surface.entries)
+        audit = result.physical_audit["concentration_bounds"][electrode.lower()]
+        assert audit["node_min_mol_m3"] == native.entries.min()
+        assert audit["node_max_mol_m3"] == native.entries.max()
+        assert audit["surface_min_mol_m3"] == surface.entries.min()
+        assert audit["surface_max_mol_m3"] == surface.entries.max()

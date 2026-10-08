@@ -129,7 +129,8 @@ class SimulationResult:
             "scope": "fresh LG M50 benchmark; not certified for FPV, abuse, aging or safety",
             "outside_benchmark_temperature": self.config.ambient_temperature_k != 298.15,
             "concentration_audit_scope": (
-                "finite-volume nodes and surface states at output times; no plotting ghost points"
+                "finite-volume nodes and surface states via observe_raw at output times; "
+                "no plotting ghost points or spatial interpolation buffers"
             ),
         }
 
@@ -314,11 +315,11 @@ def simulate(
     concentration_bounds = {}
     for electrode in ("Negative", "Positive"):
         concentration = np.asarray(
-            solution[f"{electrode} particle concentration [mol.m-3]"].entries
+            solution[f"{electrode} particle concentration [mol.m-3]"].observe_raw()
         )
         maximum = parameters[f"Maximum concentration in {electrode.lower()} electrode [mol.m-3]"]
         surface = np.asarray(
-            solution[f"{electrode} particle surface concentration [mol.m-3]"].entries
+            solution[f"{electrode} particle surface concentration [mol.m-3]"].observe_raw()
         )
         lower = min(float(np.min(concentration)), float(np.min(surface)))
         upper = max(float(np.max(concentration)), float(np.max(surface)))
@@ -338,7 +339,9 @@ def simulate(
                 and upper <= maximum + 1e-6
             ),
         }
-    electrolyte = np.asarray(solution["Electrolyte concentration [mol.m-3]"].entries)
+        # Retain extrema, not both electrodes' dense space-time arrays or plotting buffers.
+        del concentration, surface
+    electrolyte = np.asarray(solution["Electrolyte concentration [mol.m-3]"].observe_raw())
     drift = float(np.max(np.abs(lithium - lithium[0])) / lithium[0])
     expected_charge = (
         config.current_a * time / 3600

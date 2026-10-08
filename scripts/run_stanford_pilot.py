@@ -14,11 +14,16 @@ CALCULATION_FILES = (
     "src/physical_fpv/current_profile.py",
     "src/physical_fpv/stanford_benchmark.py",
     "src/physical_fpv/stanford_data.py",
+    "src/physical_fpv/stanford_reference.py",
     "src/physical_fpv/thermal_benchmark.py",
     "src/physical_fpv/validation.py",
     "scripts/run_stanford_pilot.py",
     "docs/stanford-validation-protocol.md",
     "docs/stanford-scheduling-addendum.md",
+    "docs/stanford-memory-addendum.md",
+    "docs/benchmarks/stanford-k1-mesh80-reference.json",
+    "docs/benchmarks/stanford-k1-mesh80-v2.csv.gz",
+    "docs/benchmarks/stanford-k1-mesh80-v2.json",
     "data/stanford-manifest.json",
     "docs/benchmarks/stanford-k1-chronology.json",
     "requirements-lock.txt",
@@ -65,13 +70,15 @@ def run_worker(args):
     import pybamm
 
     from physical_fpv.attribution import write_evidence_attribution
-    from physical_fpv.core import simulate
+    from physical_fpv.core import parameter_fingerprint, simulate
     from physical_fpv.stanford_benchmark import (
+        MEMORY_ADDENDUM_SHA256,
         SCHEDULING_ADDENDUM_SHA256,
         evaluate_pilot,
         prepare_pilot,
         verify_protocol,
     )
+    from physical_fpv.stanford_reference import load_mesh80_reference
     from physical_fpv.thermal_benchmark import thermal_numerics
     from physical_fpv.validation import write_timeseries
 
@@ -87,6 +94,22 @@ def run_worker(args):
     }
     if initial_concentrations != {"negative": 28866.0, "positive": 13975.0}:
         raise ValueError("Published initial concentrations differ from the frozen protocol")
+    parameters.update(
+        {
+            "Current function [A]": config.current_a,
+            "Ambient temperature [K]": config.ambient_temperature_k,
+            "Initial temperature [K]": config.initial_temperature_k,
+            "Total heat transfer coefficient [W.m-2.K-1]": config.heat_transfer_coefficient_w_m2_k,
+        }
+    )
+    fingerprint = hashlib.sha256(
+        (
+            parameter_fingerprint(parameters)
+            + ":piecewise-linear-current:"
+            + profile.fingerprint_sha256
+        ).encode()
+    ).hexdigest()
+    reference = load_mesh80_reference(Path.cwd(), config, profile, fingerprint)
     inputs = {
         "config": asdict(config),
         "source_sha256": sources,
@@ -101,6 +124,9 @@ def run_worker(args):
         "initial_concentrations_mol_m3": initial_concentrations,
         "profile_schedule": "adaptive",
         "scheduling_addendum_sha256": SCHEDULING_ADDENDUM_SHA256,
+        "memory_addendum_sha256": MEMORY_ADDENDUM_SHA256,
+        "reused_mesh80": reference.metadata()["recorded_reference"],
+        "new_simulated_meshes": [120],
     }
     write_json(args.out / "input.json", inputs)
     write_evidence_attribution(args.out, ["stanford2021", "oregan2022_parameters"])
@@ -111,8 +137,53 @@ def run_worker(args):
         header="time_s,positive_discharge_current_a",
         comments="",
     )
-    reports, results = {}, {}
-    for mesh in (80, 120):
+    reports, results = {"80": reference.empirical_report}, {80: reference}
+    write_json(args.out / "mesh80-report.json", reports["80"])
+    write_timeseries(args.out / "mesh80-timeseries.csv", reference)
+    ref_index = json.loads(Path("docs/benchmarks/stanford-k1-mesh80-reference.json").read_text())
+    if (
+        hashlib.sha256((args.out / "mesh80-timeseries.csv").read_bytes()).hexdigest()
+        != ref_index["csv_sha256"]
+    ):
+        raise ValueError("Reused mesh80 serialization differs from the exact source curve")
+    # Only regenerate the deterministic residual export from authenticated observations/curve.
+    # Preserve the original report and its failed empirical gate without recalculating acceptance.
+    start, stop = reports["80"]["common_observed_interval_s"]
+    common = np.unique(
+        np.r_[
+            start,
+            observed[(observed[:, 0] > start) & (observed[:, 0] < stop), 0],
+            reference.time_s[(reference.time_s > start) & (reference.time_s < stop)],
+            stop,
+        ]
+    )
+    measured_v = np.interp(common, observed[:, 0], observed[:, 2])
+    measured_t = np.interp(common, observed[:, 0], observed[:, 3])
+    predicted_v = np.interp(common, reference.time_s, reference.voltage_v)
+    predicted_t = np.interp(common, reference.time_s, reference.temperature_k)
+    np.savetxt(
+        args.out / "mesh80-residuals.csv",
+        np.column_stack(
+            (
+                common,
+                measured_v,
+                predicted_v,
+                predicted_v - measured_v,
+                measured_t,
+                predicted_t,
+                predicted_t - measured_t,
+            )
+        ),
+        delimiter=",",
+        comments="",
+        header="time_s,measured_voltage_v,predicted_voltage_v,voltage_error_v,measured_skin_k,predicted_average_k,temperature_proxy_error_k",
+    )
+    if (
+        hashlib.sha256((args.out / "mesh80-residuals.csv").read_bytes()).hexdigest()
+        != ref_index["residual_sha256"]
+    ):
+        raise ValueError("Reused mesh80 residual export differs from original evidence")
+    for mesh in (120,):
         gc.collect()
         started = time.monotonic()
         write_json(args.out / "stage.json", {"status": "running", "mesh": mesh})
@@ -122,6 +193,7 @@ def run_worker(args):
         write_timeseries(args.out / f"mesh{mesh}-timeseries.csv", result)
         report = evaluate_pilot(observed, profile, result, args.out / f"mesh{mesh}-residuals.csv")
         report["elapsed_s"] = time.monotonic() - started
+        report["peak_process_rss_kib"] = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
         write_json(args.out / f"mesh{mesh}-report.json", report)
         reports[str(mesh)], results[mesh] = report, result
         print(
@@ -213,7 +285,7 @@ def main():
                 "status": status,
                 "elapsed_s": elapsed,
                 "budget_s": args.timeout,
-                "scope": "one Stanford k1 record; grids80and120",
+                "scope": "one Stanford k1 mesh120 continuation; verified mesh80 reused",
             }
             write_json(args.out / "progress.json", progress)
             print(json.dumps(progress), flush=True)

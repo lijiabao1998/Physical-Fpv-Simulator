@@ -42,7 +42,7 @@ Lumped thermal simulation is explicitly **unvalidated**: several built-in Chen20
 
 ## Current results
 
-Software checks pass (169 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
+Software checks pass (208 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
 
 ## Thermal reconstruction: inspect the second cohort
 
@@ -119,7 +119,7 @@ The first [frozen Stanford k1 run](docs/stanford-validation-protocol.md) exhaust
 
 A [predeclared60-second scheduling experiment](docs/stanford-scheduling-diagnostic.md) held the mesh, complete measured-current interpolant, parameters, tolerance and72 output times identical. Native integration took47.789s with61 stops versus1.535s with two endpoints. Maximum differences were2.07microvolts,0.000000754K and0.00000000376Ah; both physical audits passed. This identifies substantial restart overhead for the prefix, not full-discharge validity. See [exact evidence](docs/benchmarks/stanford-scheduling-prefix.json).
 
-The [scheduling addendum](docs/stanford-scheduling-addendum.md) changes only integration stops, preserves every forcing/output point, and requests the same single80→120 pilot under the original20-minute/4GB budget. Full results are pending. No curve is fitted or gate relaxed; Stanford cooling remains an unidentified boundary, and temperature comparison remains a skin-versus-average proxy.
+The [scheduling addendum](docs/stanford-scheduling-addendum.md) changes only integration stops, preserves every forcing/output point, and requests the same single80→120 pilot under the original20-minute/4GB budget. The second attempt completed mesh80 with electrical RMSE190.899mV, failing the50mV gate. Capacity error1.685%, energy error4.280% and98.315% coverage passed; temperature-proxy RMSE2.097K and maximum5.556K failed. Mesh120 then exhausted the4GB address-space limit during spatial-interpolation postprocessing, so80→120 verification is still unavailable. No curve is fitted or gate relaxed; Stanford cooling remains an unidentified boundary, and temperature comparison remains a skin-versus-average proxy.
 
 The preceding constant-current numerical regression at a8eb171 completed in480.08s and passed. Its curve differed from the original120-point curve by at most5.64e-8V and8.70e-8K, with identical physical parameter fingerprints. [Regression evidence](docs/benchmarks/constant-profile-regression.json) and the original880-second evidence are retained separately.
 
@@ -135,3 +135,17 @@ python scripts/render_stanford_measurements.py
 ```
 
 [Plotting dependency sources and declared licenses](docs/plot-dependency-licenses.json) are separate from the numerical lock and source-data licenses.
+
+## Preserve failed predictions while completing the audit
+
+![Preliminary Stanford mesh80 comparison: electrical FAIL and spatial verification unavailable](docs/benchmarks/stanford-k1-partial-comparison.svg)
+
+[The second-attempt evidence](docs/benchmarks/stanford-k1-v2-verified-evidence.json) distinguishes its completed80-point prediction from the unsaved120-point result. The error occurred allocating453MiB of spatial interpolation padding, after integration; it was not a20-minute timeout.
+
+The [native-audit continuation](docs/stanford-memory-addendum.md) reads the same physical node and surface values without constructing plotting buffers. A small-grid test forbids those buffers and confirms exact equality with the full representation. All bounds and conservation gates remain. The complete3989-row mesh80 curve, original report and failed gates are authenticated by [fixed hashes](docs/benchmarks/stanford-k1-mesh80-reference.json) and reused; only the unsaved120-point case is requested again under20minutes/4GB. This continuation is pending and cannot yet establish spatial convergence.
+
+To render the actual preliminary evidence after downloading the v2 CI artifact:
+
+```sh
+python scripts/render_stanford_comparison.py --partial --evidence-dir results/stanford-k1-v2-ci/stanford-k1-pilot --out results/stanford-k1-partial.svg
+```

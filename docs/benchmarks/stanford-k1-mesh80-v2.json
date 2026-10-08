@@ -1,0 +1,179 @@
+{
+  "cell": "Stanford k1",
+  "source_sha256": "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6",
+  "protocol_sha256": "009f64f52b889c56fed15e085007a82c24ed58e8b926c49e5f964f9e185f53b0",
+  "scheduling_addendum_sha256": "d3ce12b439053f88df50f8cc6448c318c139a302cd3421755a505aa6dec1d27e",
+  "model": {
+    "config": {
+      "model": "DFN",
+      "thermal": "lumped",
+      "parameter_set": "ORegan2022",
+      "initial_temperature_k": 298.33794059753416,
+      "heat_transfer_coefficient_w_m2_k": 15,
+      "current_a": 5.000325282873757,
+      "ambient_temperature_k": 298.15,
+      "mesh_points": 80,
+      "tolerance": 1e-07,
+      "sample_period_s": 5,
+      "max_temperature_k": 333.15
+    },
+    "pybamm_version": "26.9.0.0",
+    "parameter_set": "ORegan2022",
+    "parameter_fingerprint": "cfd16d9a930ff6a6268a9579430423e288d833b22a608ce2b62b025188537ebe",
+    "compiled_template_cache": {
+      "hit": false,
+      "templates": 0,
+      "maximum_templates": 6,
+      "state_reset": "fresh initial conditions every solve",
+      "profile_template_reused": false
+    },
+    "current_protocol": {
+      "type": "explicit piecewise-linear discharge current",
+      "fingerprint_sha256": "ec1aac9bbe4bb889ad06fb215ff0462c214d66870054e814605aff1850bb9353",
+      "time_units": "s",
+      "current_units": "A; positive discharge",
+      "current_range_a": [
+        5.000240325927734,
+        5.000385761260986
+      ],
+      "profile_end_time_s": 6000.0,
+      "implicit_extrapolation": false,
+      "solver_stops_at_profile_knots": false,
+      "integration_schedule": "adaptive"
+    },
+    "initial_state": "ORegan2022 initial concentrations; no SOC fit",
+    "termination": "event: Minimum voltage [V]",
+    "voltage_cutoff_reached": true,
+    "endpoint_time_s": 3333.2915326846605,
+    "cutoff_capacity_ah": 4.629872482686162,
+    "capacity_ah": 4.629872482686162,
+    "physical_audit": {
+      "lithium_inventory_relative_drift": 2.1625837271106654e-14,
+      "charge_integral_error_ah": 2.11445849718217e-08,
+      "concentration_bounds": {
+        "negative": {
+          "node_min_mol_m3": 1211.87635150154,
+          "node_max_mol_m3": 28866.0,
+          "surface_min_mol_m3": 1150.0973148625471,
+          "surface_max_mol_m3": 28866.000000000007,
+          "node_array_shape": [
+            80,
+            80,
+            3989
+          ],
+          "min_mol_m3": 1150.0973148625471,
+          "max_mol_m3": 28866.000000000007,
+          "limit_mol_m3": 29583.0,
+          "passed": true
+        },
+        "positive": {
+          "node_min_mol_m3": 13975.0,
+          "node_max_mol_m3": 51466.003188837676,
+          "surface_min_mol_m3": 13975.0,
+          "surface_max_mol_m3": 51535.47200933967,
+          "node_array_shape": [
+            80,
+            80,
+            3989
+          ],
+          "min_mol_m3": 13975.0,
+          "max_mol_m3": 51535.47200933967,
+          "limit_mol_m3": 51765.0,
+          "passed": true
+        }
+      },
+      "electrolyte_min_mol_m3": 716.5753314222097,
+      "thermal_energy_balance": {
+        "stored_energy_j": 705.1578043536875,
+        "integrated_net_heat_j": 705.157628684531,
+        "absolute_residual_j": 0.00017566915653333126,
+        "relative_residual": 2.491203464653431e-07,
+        "relative_to_generated_heat": 8.214332139260865e-08,
+        "passed": true,
+        "note": "trapezoidal sampled-output audit, not experimental validation"
+      },
+      "passed": true
+    },
+    "temperature_status": "lumped volume-average prediction; empirical qualification reported separately",
+    "scope": "fresh LG M50 benchmark; not certified for FPV, abuse, aging or safety",
+    "outside_benchmark_temperature": false,
+    "concentration_audit_scope": "finite-volume nodes and surface states at output times; no plotting ghost points"
+  },
+  "comparison_role": "preselected external-source pilot; no new fit; not a blinded six-cell validation",
+  "fitting_performed": false,
+  "common_observed_interval_s": [
+    1.0006,
+    3333.2915326846605
+  ],
+  "voltage_rmse_v": 0.19089933729045996,
+  "voltage_max_absolute_error_v": 0.2208545247846354,
+  "temperature_proxy_rmse_k": 2.0973313902701998,
+  "temperature_proxy_max_absolute_error_k": 5.556296540294625,
+  "measured_observed_capacity_ah": 4.707800975704511,
+  "predicted_window_capacity_ah": 4.628482709657078,
+  "capacity_relative_error": 0.016848262374890004,
+  "measured_observed_energy_wh": 15.593060645071155,
+  "predicted_window_energy_wh": 16.260504700975435,
+  "energy_relative_error": 0.042803915863384646,
+  "observed_time_coverage": 0.9831517875321453,
+  "measured_endpoint_time_s": 3390.3968,
+  "predicted_endpoint_time_s": 3333.2915326846605,
+  "predicted_voltage_cutoff_time_s": 3333.2915326846605,
+  "unobserved_late_continuation_used_s": 0.0,
+  "initial_assumed_charge_excluded_from_metrics_ah": 0.0013897890194786919,
+  "electrical_gates": {
+    "voltage_rmse": false,
+    "voltage_max": true,
+    "capacity": true,
+    "energy": true,
+    "coverage": true,
+    "voltage_cutoff_reached": true,
+    "physical_audit": true
+  },
+  "electrical_gates_passed": false,
+  "thermal_proxy_gates": {
+    "rmse": false,
+    "maximum_error": false
+  },
+  "independent_thermal_validation_established": false,
+  "temperature_domains": {
+    "ranges": {
+      "surface_measurement_c": [
+        25.18794059753418,
+        31.163291931152344
+      ],
+      "volume_average_prediction_c": [
+        25.18794059753418,
+        36.485320981134294
+      ]
+    },
+    "measurement_domains_c": {
+      "solid_diffusion_measurements": [
+        5.0,
+        45.0
+      ],
+      "exchange_current_measurements": [
+        15.0,
+        45.0
+      ],
+      "heat_capacity_measurements": [
+        25.0,
+        100.0
+      ]
+    },
+    "breaches": [],
+    "inside_all_listed_measurement_domains": true,
+    "note": "measurement domains are not proof of universal model validity"
+  },
+  "empirical_thresholds": {
+    "voltage_rmse_v": 0.05,
+    "voltage_max_error_v": 0.3,
+    "temperature_rmse_k": 2.0,
+    "temperature_max_error_k": 5.0,
+    "capacity_relative_error": 0.05,
+    "energy_relative_error": 0.05,
+    "min_coverage": 0.95,
+    "numerical_temperature_max_difference_k": 0.1
+  },
+  "elapsed_s": 162.374979504
+}

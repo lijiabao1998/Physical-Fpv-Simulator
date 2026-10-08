@@ -89,7 +89,7 @@ def main():
     parser.add_argument("--out", type=Path, default=Path("results/stanford-k1-pilot"))
     parser.add_argument("--github-output", type=Path)
     args = parser.parse_args()
-    path = Path("docs/benchmarks/stanford-k1-v2-verified-evidence.json")
+    path = Path("docs/benchmarks/stanford-k1-v3-verified-evidence.json")
     evidence = json.loads(path.read_text()) if path.exists() else None
     reuse = evidence is not None and reusable_attempt(Path.cwd(), evidence)
     if reuse:
