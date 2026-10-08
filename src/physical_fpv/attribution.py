@@ -109,7 +109,7 @@ _DATASETS = {
     },
     "oregan2022_parameters": {
         "title": "O'Regan et al. thermal-electrochemical parameter measurements",
-        "authors_basis": "Related source-paper authors; record-level creator list not refreshed.",
+        "authors_basis": "Official Zenodo record creator list verified on 2026-10-08.",
         "authors": [
             "O'Regan, Kieran",
             "Brosa-Planella, Ferran",
@@ -124,8 +124,9 @@ _DATASETS = {
         "modifications": (
             "Measurement-source provenance for the published ORegan2022 parameterization. "
             "The model uses the installed PyBaMM implementation of published functions "
-            "and corrections; no new parameter fitting is performed. Model outputs are "
-            "derived calculations, not redistributed parameter-measurement records. "
+            "and corrections; no new parameter fitting is performed. Exports distinguish "
+            "unchanged source CSV members, declared unit conversions, fixed-function "
+            "comparisons and derived model outputs. "
             "PyBaMM's BSD-3-Clause software license does not replace this data license."
         ),
     },

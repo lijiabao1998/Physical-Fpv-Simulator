@@ -42,7 +42,7 @@ Lumped thermal simulation is explicitly **unvalidated**: several built-in Chen20
 
 ## Current results
 
-Software checks pass (219 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
+Software checks pass (227 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
 
 ## Thermal reconstruction: inspect the second cohort
 
@@ -158,3 +158,5 @@ python scripts/diagnose_stanford_residuals.py
 ```
 
 The [same-cell transition audit](docs/stanford-transition-findings.md) checks all15 already-pinned k1 records with no new solve. It retains sampling delays, protocol/history and unknown measurement uncertainty. Apparent transient ratios span32.50–84.01mΩ; no fixed resistor or fitted correction is inferred. Thirteen files have a final rest; the25/35°C5C records do not.
+
+The [parameter-source audit](docs/oregan-kinetics-provenance.md) compares all 80 released half-cell kinetic points and checks the saved surface-state ranges. Both electrodes cross the sampled stoichiometry envelope during the recorded trajectory; crossing times are unavailable. Positive coating conductivity also extrapolates its measured temperature range. These annotations preserve the numerical PASS and empirical FAIL, without fitting or altering acceptance gates.

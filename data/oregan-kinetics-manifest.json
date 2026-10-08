@@ -1,0 +1,173 @@
+{
+  "dataset_doi": "10.5281/zenodo.5171874",
+  "source_url": "https://zenodo.org/records/5171874",
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "creators": [
+    "Kieran O'Regan",
+    "Ferran Brosa-Planella",
+    "W. Dhammika Widanage",
+    "Emma Kendrick"
+  ],
+  "attribution_basis": "Authors/Creators verified on the official version1.0 record on2026-10-08",
+  "archive": {
+    "size_bytes": 479705,
+    "md5": "eda6d33a47c4d64c580077077860c8ac",
+    "sha256": "1c5052e8af198429c29b6784681e7b1b7d8a4e48dfca03c6fc23df639ce084de",
+    "url": "https://zenodo.org/records/5171874/files/ORegan%202021%20Data%20Repository.zip?download=1"
+  },
+  "modifications": "Nine original CSV members retained byte-for-byte; manifest and scalar analyses added. Original code license is separate.",
+  "files": [
+    {
+      "archive_member": "ORegan 2021 Data Repository/Electronic Conductivity/Electronic_Conductivity_Positive_Electrode.csv",
+      "size_bytes": 109,
+      "sha256": "743742af324322f2faab3c976d08cc86d5a65eed6e0938d0ba7a90edd723773d",
+      "header": [
+        "Temperature / K",
+        "Electronic Conductivity / S m-1"
+      ],
+      "path": "data/oregan/kinetics/Electronic_Conductivity_Positive_Electrode.csv",
+      "kind": "electronic_conductivity"
+    },
+    {
+      "archive_member": "ORegan 2021 Data Repository/Exchange Current/Exchange_Current_Negative_Electrode_15deg.csv",
+      "size_bytes": 232,
+      "sha256": "eb4f4d379d11781e850fa8603ebd094a7c7240b3ffce8b6a5d65e4b6d94843a4",
+      "header": [
+        "Stoichiometry",
+        "Exchange Current Density / mA cm-2"
+      ],
+      "path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_15deg.csv",
+      "kind": "exchange_current",
+      "electrode": "negative",
+      "temperature_C": 15
+    },
+    {
+      "archive_member": "ORegan 2021 Data Repository/Exchange Current/Exchange_Current_Negative_Electrode_25deg.csv",
+      "size_bytes": 233,
+      "sha256": "d8533e95500a4e90691217886a2da0e47ad01370d1138d43b4545192071988cc",
+      "header": [
+        "Stoichiometry",
+        "Exchange Current Density / mA cm-2"
+      ],
+      "path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_25deg.csv",
+      "kind": "exchange_current",
+      "electrode": "negative",
+      "temperature_C": 25
+    },
+    {
+      "archive_member": "ORegan 2021 Data Repository/Exchange Current/Exchange_Current_Negative_Electrode_35deg.csv",
+      "size_bytes": 233,
+      "sha256": "a7d1a11091bc90ca6eba4cbc9bad9f1853c1ee74757cc390fcf38f1ed9850fc7",
+      "header": [
+        "Stoichiometry",
+        "Exchange Current Density / mA cm-2"
+      ],
+      "path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_35deg.csv",
+      "kind": "exchange_current",
+      "electrode": "negative",
+      "temperature_C": 35
+    },
+    {
+      "archive_member": "ORegan 2021 Data Repository/Exchange Current/Exchange_Current_Negative_Electrode_45deg.csv",
+      "size_bytes": 232,
+      "sha256": "4d2209923ae00204a4de194a742b4a7199a3a5de27caafd81f5b2c39cb9e8dfa",
+      "header": [
+        "Stoichiometry",
+        "Exchange Current Density / mA cm-2"
+      ],
+      "path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_45deg.csv",
+      "kind": "exchange_current",
+      "electrode": "negative",
+      "temperature_C": 45
+    },
+    {
+      "archive_member": "ORegan 2021 Data Repository/Exchange Current/Exchange_Current_Positive_Electrode_15deg.csv",
+      "size_bytes": 249,
+      "sha256": "631e6bc26dec530fa0c9fb353c9e5ca321a71600d555b2dcda2affef09f23a0e",
+      "header": [
+        "Stoichiometry",
+        "Exchange Current Density / mA cm-2"
+      ],
+      "path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_15deg.csv",
+      "kind": "exchange_current",
+      "electrode": "positive",
+      "temperature_C": 15
+    },
+    {
+      "archive_member": "ORegan 2021 Data Repository/Exchange Current/Exchange_Current_Positive_Electrode_25deg.csv",
+      "size_bytes": 249,
+      "sha256": "e5d744607e8e6f4d05f4223caf4fa87e6793d3860a17c2ccbb85feb1f94f4bdc",
+      "header": [
+        "Stoichiometry",
+        "Exchange Current Density / mA cm-2"
+      ],
+      "path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_25deg.csv",
+      "kind": "exchange_current",
+      "electrode": "positive",
+      "temperature_C": 25
+    },
+    {
+      "archive_member": "ORegan 2021 Data Repository/Exchange Current/Exchange_Current_Positive_Electrode_35deg.csv",
+      "size_bytes": 248,
+      "sha256": "d8ef88f12936b5d1a4a390e33ce258d08ce8f8d8037511578fcf10d43c9008ff",
+      "header": [
+        "Stoichiometry",
+        "Exchange Current Density / mA cm-2"
+      ],
+      "path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_35deg.csv",
+      "kind": "exchange_current",
+      "electrode": "positive",
+      "temperature_C": 35
+    },
+    {
+      "archive_member": "ORegan 2021 Data Repository/Exchange Current/Exchange_Current_Positive_Electrode_45deg.csv",
+      "size_bytes": 246,
+      "sha256": "e0d4b505e9836b1d2986435b40efa75f45a22903a83f7a42579841cb9336d282",
+      "header": [
+        "Stoichiometry",
+        "Exchange Current Density / mA cm-2"
+      ],
+      "path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_45deg.csv",
+      "kind": "exchange_current",
+      "electrode": "positive",
+      "temperature_C": 45
+    }
+  ],
+  "comparison_conditions": {
+    "electrolyte_concentration_mol_m3": 1000.0,
+    "temperature_K": "filename degC + 273.15",
+    "unit_conversion": "released mA cm-2 multiplied by 10 gives A m-2",
+    "residual_definition": "installed fixed function minus released EIS-derived point; does not identify a code error",
+    "model_solve": false,
+    "fit_performed": false
+  },
+  "manuscript_url": "https://wrap.warwick.ac.uk/id/eprint/196287/2/WRAP-Thermal-electrochemical-parameters-high-energy-22.pdf",
+  "manuscript_sha256": "79a1fa2c42b84949cd4963df09301c140f28ab1db17cbeb223bce03ce50515da",
+  "parameter_source_sha256": "c0c8111cb37fd4e79726f17e0d02f0aaac6d06532060a677efb5743c92a0b259",
+  "pybamm_version": "26.9.0.0",
+  "electrode_stoichiometry_is_full_cell_soc": false,
+  "record_metadata_verification": {
+    "api_url": "https://zenodo.org/api/records/5171874",
+    "api_response_sha256": "bac4420ad533b6b23dce55b4c876dd75c3cd00436cbb54403ebe92a7b30c9c3f",
+    "retrieval_date_utc": "2026-10-08",
+    "license_id": "cc-by-4.0",
+    "creator_list_verified": true
+  },
+  "positive_electronic_conductivity_measurement_conditions": {
+    "nominal_temperature_range_c": [
+      15.0,
+      35.0
+    ],
+    "raw_csv_kelvin_labels": [
+      288,
+      293,
+      298,
+      303,
+      308
+    ],
+    "approximate_positive_stoichiometry_at_preparation": 0.9,
+    "stoichiometry_dependence_measured": false,
+    "source": "Manuscript section1.3.3 Electronic Conductivity, PDF page25; Table8"
+  }
+}
