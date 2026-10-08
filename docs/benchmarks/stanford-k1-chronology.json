@@ -1,0 +1,908 @@
+{
+  "dataset_doi": "10.17632/kxsbr4x3j2.2",
+  "license": "CC-BY-4.0",
+  "authors": [
+    "Edoardo Catenaro",
+    "Simona Onori"
+  ],
+  "target_filename": "NMC_k1_1C_25degC.xlsx",
+  "expected_files": 15,
+  "inspected_files": 15,
+  "missing_files": [],
+  "complete": true,
+  "recorded_order_qualified": true,
+  "ordered_intervals": [
+    {
+      "filename": "NMC_k1_0_05C_25degC.xlsx",
+      "source_sha256": "e5870c6989c94995de10e053f04efcf96951790e3c26e51d4c537261ba847ec5",
+      "nominal_rate_c": 0.05,
+      "nominal_ambient_c": 25,
+      "start_naive_local": "2019-08-30T20:17:34.898000",
+      "end_naive_local": "2019-08-31T21:51:21.088000",
+      "clock_qualified": true,
+      "measurement_clock_audit": {
+        "backwards_date_intervals": 0,
+        "max_relative_date_test_clock_discrepancy_s": 0.005271999994874932,
+        "date_test_clock_jumps_above_1s": 0,
+        "first_backwards_date_excel_row_pairs": [],
+        "first_clock_jump_excel_row_pairs": [],
+        "timezone": "Unspecified in source; timestamps are not converted to UTC"
+      },
+      "source_step_clock_qualified": true,
+      "canonical_six_step_sequence": true,
+      "measurement_rows": 92031,
+      "discharges": [
+        {
+          "current_a": {
+            "min": -0.25004470348358154,
+            "max": -0.24999845027923584,
+            "time_weighted_mean": -0.25000930522880127
+          },
+          "measurement_dates_naive_local": [
+            "2019-08-31T01:24:42.158000",
+            "2019-08-31T20:51:20.949000"
+          ],
+          "commanded_step_time_range_s": [
+            1.001,
+            69999.7917
+          ],
+          "surface_temperature_c": {
+            "initial": 25.057647705078125,
+            "final": 25.532352447509766,
+            "min": 24.977590560913086,
+            "max": 27.57188606262207
+          },
+          "endpoint_voltage_v": [
+            4.170588493347168,
+            2.499969244003296
+          ],
+          "observed_charge_ah": 4.861208063823132,
+          "duplicate_time_conflicts": 0
+        }
+      ],
+      "relation_to_target": "recorded before target"
+    },
+    {
+      "filename": "NMC_k1_1C_25degC.xlsx",
+      "source_sha256": "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6",
+      "nominal_rate_c": 1.0,
+      "nominal_ambient_c": 25,
+      "start_naive_local": "2019-09-02T19:10:54.152000",
+      "end_naive_local": "2019-09-03T03:08:38.439000",
+      "clock_qualified": true,
+      "measurement_clock_audit": {
+        "backwards_date_intervals": 0,
+        "max_relative_date_test_clock_discrepancy_s": 0.002419999997073319,
+        "date_test_clock_jumps_above_1s": 0,
+        "first_backwards_date_excel_row_pairs": [],
+        "first_clock_jump_excel_row_pairs": [],
+        "timezone": "Unspecified in source; timestamps are not converted to UTC"
+      },
+      "source_step_clock_qualified": true,
+      "canonical_six_step_sequence": true,
+      "measurement_rows": 28669,
+      "discharges": [
+        {
+          "current_a": {
+            "min": -5.000385761260986,
+            "max": -5.000240325927734,
+            "time_weighted_mean": -5.000325282873757
+          },
+          "measurement_dates_naive_local": [
+            "2019-09-03T01:12:08.903000",
+            "2019-09-03T02:08:38.300000"
+          ],
+          "commanded_step_time_range_s": [
+            1.0006,
+            3390.3968
+          ],
+          "surface_temperature_c": {
+            "initial": 25.18794059753418,
+            "final": 31.138418197631836,
+            "min": 25.18794059753418,
+            "max": 31.163291931152344
+          },
+          "endpoint_voltage_v": [
+            3.8799378871917725,
+            2.49998140335083
+          ],
+          "observed_charge_ah": 4.707800975704515,
+          "duplicate_time_conflicts": 0
+        }
+      ],
+      "relation_to_target": "target"
+    },
+    {
+      "filename": "NMC_k1_3C_25degC.xlsx",
+      "source_sha256": "d517a8cda895347d62786b969f5238512ea914a480bb5b536dc5869344b9870e",
+      "nominal_rate_c": 3.0,
+      "nominal_ambient_c": 25,
+      "start_naive_local": "2019-09-05T08:17:05.145000",
+      "end_naive_local": "2019-09-05T11:49:51.526000",
+      "clock_qualified": true,
+      "measurement_clock_audit": {
+        "backwards_date_intervals": 0,
+        "max_relative_date_test_clock_discrepancy_s": 0.0009439999994356185,
+        "date_test_clock_jumps_above_1s": 0,
+        "first_backwards_date_excel_row_pairs": [],
+        "first_clock_jump_excel_row_pairs": [],
+        "timezone": "Unspecified in source; timestamps are not converted to UTC"
+      },
+      "source_step_clock_qualified": true,
+      "canonical_six_step_sequence": true,
+      "measurement_rows": 12772,
+      "discharges": [
+        {
+          "current_a": {
+            "min": -15.003150939941406,
+            "max": -14.995277404785156,
+            "time_weighted_mean": -14.997451029987387
+          },
+          "measurement_dates_naive_local": [
+            "2019-09-05T10:31:38.071000",
+            "2019-09-05T10:49:51.385000"
+          ],
+          "commanded_step_time_range_s": [
+            1.0002,
+            1094.314
+          ],
+          "surface_temperature_c": {
+            "initial": 24.4696139125377,
+            "final": 61.11709213256836,
+            "min": 24.4696139125377,
+            "max": 61.11709213256836
+          },
+          "endpoint_voltage_v": [
+            3.6884849071502686,
+            2.499969005584717
+          ],
+          "observed_charge_ah": 4.554700048863728,
+          "duplicate_time_conflicts": 0
+        }
+      ],
+      "relation_to_target": "recorded after target"
+    },
+    {
+      "filename": "NMC_k1_5C_25degC.xlsx",
+      "source_sha256": "a4a45800742500ef6e78c03cb69f9ef6ae014907d1e07c7f236e7cb27fc80f5a",
+      "nominal_rate_c": 5.0,
+      "nominal_ambient_c": 25,
+      "start_naive_local": "2019-09-05T13:02:16.155000",
+      "end_naive_local": "2019-09-05T18:38:09.289000",
+      "clock_qualified": true,
+      "measurement_clock_audit": {
+        "backwards_date_intervals": 0,
+        "max_relative_date_test_clock_discrepancy_s": 0.0010480000019015279,
+        "date_test_clock_jumps_above_1s": 0,
+        "first_backwards_date_excel_row_pairs": [],
+        "first_clock_jump_excel_row_pairs": [],
+        "timezone": "Unspecified in source; timestamps are not converted to UTC"
+      },
+      "source_step_clock_qualified": true,
+      "canonical_six_step_sequence": false,
+      "measurement_rows": 20157,
+      "discharges": [
+        {
+          "current_a": {
+            "min": -25.004249572753906,
+            "max": -24.995384216308594,
+            "time_weighted_mean": -24.99735507599608
+          },
+          "measurement_dates_naive_local": [
+            "2019-09-05T18:32:53.289000",
+            "2019-09-05T18:38:09.289000"
+          ],
+          "commanded_step_time_range_s": [
+            1.0004,
+            317.0011
+          ],
+          "surface_temperature_c": {
+            "initial": 24.418352127075195,
+            "final": 75.27815638034285,
+            "min": 24.418352127075195,
+            "max": 75.27815638034285
+          },
+          "endpoint_voltage_v": [
+            3.374490261077881,
+            2.744246482849121
+          ],
+          "observed_charge_ah": 2.194217139489813,
+          "duplicate_time_conflicts": 0
+        }
+      ],
+      "relation_to_target": "recorded after target"
+    },
+    {
+      "filename": "NMC_k1_2C_25degC.xlsx",
+      "source_sha256": "d4b766f4b3b98405c56b7846872052a79ee8ad666503b33f02083f1666da0b1d",
+      "nominal_rate_c": 2.0,
+      "nominal_ambient_c": 25,
+      "start_naive_local": "2019-09-18T09:31:03.299000",
+      "end_naive_local": "2019-09-18T15:27:20.267000",
+      "clock_qualified": true,
+      "measurement_clock_audit": {
+        "backwards_date_intervals": 0,
+        "max_relative_date_test_clock_discrepancy_s": 0.0007960000039020088,
+        "date_test_clock_jumps_above_1s": 0,
+        "first_backwards_date_excel_row_pairs": [],
+        "first_clock_jump_excel_row_pairs": [],
+        "timezone": "Unspecified in source; timestamps are not converted to UTC"
+      },
+      "source_step_clock_qualified": true,
+      "canonical_six_step_sequence": true,
+      "measurement_rows": 21383,
+      "discharges": [
+        {
+          "current_a": {
+            "min": -10.002639770507812,
+            "max": -9.995704650878906,
+            "time_weighted_mean": -9.998337303976973
+          },
+          "measurement_dates_naive_local": [
+            "2019-09-18T14:00:18.999000",
+            "2019-09-18T14:27:20.129000"
+          ],
+          "commanded_step_time_range_s": [
+            1.0007,
+            1622.1313
+          ],
+          "surface_temperature_c": {
+            "initial": 24.994874954223633,
+            "final": 48.523807525634766,
+            "min": 24.994874954223633,
+            "max": 48.523807525634766
+          },
+          "endpoint_voltage_v": [
+            3.699338912963867,
+            2.4998269081115723
+          ],
+          "observed_charge_ah": 4.502391820166267,
+          "duplicate_time_conflicts": 0
+        }
+      ],
+      "relation_to_target": "recorded after target"
+    },
+    {
+      "filename": "NMC_k1_0_05C_35degC.xlsx",
+      "source_sha256": "669dfdfe4626234f63f66d99eefead590b7f7d405a95e4e3b7d2abc42645418c",
+      "nominal_rate_c": 0.05,
+      "nominal_ambient_c": 35,
+      "start_naive_local": "2019-10-04T16:04:30.115000",
+      "end_naive_local": "2019-10-05T17:34:35.865000",
+      "clock_qualified": true,
+      "measurement_clock_audit": {
+        "backwards_date_intervals": 0,
+        "max_relative_date_test_clock_discrepancy_s": 0.005092000006698072,
+        "date_test_clock_jumps_above_1s": 0,
+        "first_backwards_date_excel_row_pairs": [],
+        "first_clock_jump_excel_row_pairs": [],
+        "timezone": "Unspecified in source; timestamps are not converted to UTC"
+      },
+      "source_step_clock_qualified": true,
+      "canonical_six_step_sequence": true,
+      "measurement_rows": 91811,
+      "discharges": [
+        {
+          "current_a": {
+            "min": -0.2500494122505188,
+            "max": -0.250002920627594,
+            "time_weighted_mean": -0.250011081771844
+          },
+          "measurement_dates_naive_local": [
+            "2019-10-04T21:10:56.831000",
+            "2019-10-05T16:34:35.724000"
+          ],
+          "commanded_step_time_range_s": [
+            1.0009,
+            69819.8938
+          ],
+          "surface_temperature_c": {
+            "initial": 35.26378631591797,
+            "final": 35.40467834472656,
+            "min": 35.05641174316406,
+            "max": 35.45775604248047
+          },
+          "endpoint_voltage_v": [
+            4.168070316314697,
+            2.499990940093994
+          ],
+          "observed_charge_ah": 4.848749150567089,
+          "duplicate_time_conflicts": 0
+        }
+      ],
+      "relation_to_target": "recorded after target"
+    },
+    {
+      "filename": "NMC_k1_1C_35degC.xlsx",
+      "source_sha256": "d8349933f31ff649d6d8a51eb9c4f9aa625945c39ee920ac111a63d3224d911f",
+      "nominal_rate_c": 1.0,
+      "nominal_ambient_c": 35,
+      "start_naive_local": "2019-10-06T15:44:54.215000",
+      "end_naive_local": "2019-10-06T22:59:56.922000",
+      "clock_qualified": true,
+      "measurement_clock_audit": {
+        "backwards_date_intervals": 0,
+        "max_relative_date_test_clock_discrepancy_s": 0.0019479999973555095,
+        "date_test_clock_jumps_above_1s": 0,
+        "first_backwards_date_excel_row_pairs": [],
+        "first_clock_jump_excel_row_pairs": [],
+        "timezone": "Unspecified in source; timestamps are not converted to UTC"
+      },
+      "source_step_clock_qualified": true,
+      "canonical_six_step_sequence": true,
+      "measurement_rows": 26107,
+      "discharges": [
+        {
+          "current_a": {
+            "min": -5.00047492980957,
+            "max": -5.000272274017334,
+            "time_weighted_mean": -5.000329464879578
+          },
+          "measurement_dates_naive_local": [
+            "2019-10-06T21:04:08.187000",
+            "2019-10-06T21:59:56.782000"
+          ],
+          "commanded_step_time_range_s": [
+            1.0012,
+            3349.5957
+          ],
+          "surface_temperature_c": {
+            "initial": 35.14968490600586,
+            "final": 41.88694381713867,
+            "min": 35.13058090209961,
+            "max": 41.91886901855469
+          },
+          "endpoint_voltage_v": [
+            3.8135910034179688,
+            2.4999899864196777
+          ],
+          "observed_charge_ah": 4.651132151189915,
+          "duplicate_time_conflicts": 0
+        }
+      ],
+      "relation_to_target": "recorded after target"
+    },
+    {
+      "filename": "NMC_k1_5C_35degC.xlsx",
+      "source_sha256": "79b1d7088a231421fc20d4673afb3141b291f9aae828cd32cb73acf1d65f7f37",
+      "nominal_rate_c": 5.0,
+      "nominal_ambient_c": 35,
+      "start_naive_local": "2019-10-08T13:48:11.554000",
+      "end_naive_local": "2019-10-08T18:44:09.384000",
+      "clock_qualified": true,
+      "measurement_clock_audit": {
+        "backwards_date_intervals": 0,
+        "max_relative_date_test_clock_discrepancy_s": 0.0019120000033581164,
+        "date_test_clock_jumps_above_1s": 0,
+        "first_backwards_date_excel_row_pairs": [],
+        "first_clock_jump_excel_row_pairs": [],
+        "timezone": "Unspecified in source; timestamps are not converted to UTC"
+      },
+      "source_step_clock_qualified": true,
+      "canonical_six_step_sequence": false,
+      "measurement_rows": 17762,
+      "discharges": [
+        {
+          "current_a": {
+            "min": -25.004356384277344,
+            "max": -24.995384216308594,
+            "time_weighted_mean": -24.997266392587747
+          },
+          "measurement_dates_naive_local": [
+            "2019-10-08T18:38:04.385000",
+            "2019-10-08T18:44:09.384000"
+          ],
+          "commanded_step_time_range_s": [
+            1.0006,
+            366.0002
+          ],
+          "surface_temperature_c": {
+            "initial": 34.70345687866211,
+            "final": 74.78038787841797,
+            "min": 34.70345687866211,
+            "max": 74.78038787841797
+          },
+          "endpoint_voltage_v": [
+            3.279304265975952,
+            2.615274667739868
+          ],
+          "observed_charge_ah": 2.534442287329986,
+          "duplicate_time_conflicts": 0
+        }
+      ],
+      "relation_to_target": "recorded after target"
+    },
+    {
+      "filename": "NMC_k1_3C_35degC.xlsx",
+      "source_sha256": "0e59071c1308c113feee285a4fa27721c775fcc0a9504392c7f4d616aecb0c2a",
+      "nominal_rate_c": 3.0,
+      "nominal_ambient_c": 35,
+      "start_naive_local": "2019-10-09T09:53:45.084000",
+      "end_naive_local": "2019-10-09T14:34:18.610000",
+      "clock_qualified": true,
+      "measurement_clock_audit": {
+        "backwards_date_intervals": 0,
+        "max_relative_date_test_clock_discrepancy_s": 0.0009919999993144302,
+        "date_test_clock_jumps_above_1s": 0,
+        "first_backwards_date_excel_row_pairs": [],
+        "first_clock_jump_excel_row_pairs": [],
+        "timezone": "Unspecified in source; timestamps are not converted to UTC"
+      },
+      "source_step_clock_qualified": true,
+      "canonical_six_step_sequence": true,
+      "measurement_rows": 16839,
+      "discharges": [
+        {
+          "current_a": {
+            "min": -15.004478454589844,
+            "max": -14.995697021484375,
+            "time_weighted_mean": -14.997723708960274
+          },
+          "measurement_dates_naive_local": [
+            "2019-10-09T13:16:54.260000",
+            "2019-10-09T13:34:18.470000"
+          ],
+          "commanded_step_time_range_s": [
+            1.0007,
+            1045.2106
+          ],
+          "surface_temperature_c": {
+            "initial": 34.66096878051758,
+            "final": 59.37287521362305,
+            "min": 34.66096878051758,
+            "max": 59.37287521362305
+          },
+          "endpoint_voltage_v": [
+            3.6277952194213867,
+            2.4999871253967285
+          ],
+          "observed_charge_ah": 4.350214326211399,
+          "duplicate_time_conflicts": 0
+        }
+      ],
+      "relation_to_target": "recorded after target"
+    },
+    {
+      "filename": "NMC_k1_2C_35degC.xlsx",
+      "source_sha256": "14cbdcf9caee0493d502e6ac552b421785c1624cee3ea865623798ae6f1b4daf",
+      "nominal_rate_c": 2.0,
+      "nominal_ambient_c": 35,
+      "start_naive_local": "2019-10-09T16:06:47.186000",
+      "end_naive_local": "2019-10-09T22:12:42.232000",
+      "clock_qualified": true,
+      "measurement_clock_audit": {
+        "backwards_date_intervals": 0,
+        "max_relative_date_test_clock_discrepancy_s": 0.00122400000327616,
+        "date_test_clock_jumps_above_1s": 0,
+        "first_backwards_date_excel_row_pairs": [],
+        "first_clock_jump_excel_row_pairs": [],
+        "timezone": "Unspecified in source; timestamps are not converted to UTC"
+      },
+      "source_step_clock_qualified": true,
+      "canonical_six_step_sequence": true,
+      "measurement_rows": 21960,
+      "discharges": [
+        {
+          "current_a": {
+            "min": -10.002861022949219,
+            "max": -9.996452331542969,
+            "time_weighted_mean": -9.998046030852176
+          },
+          "measurement_dates_naive_local": [
+            "2019-10-09T20:45:21.747000",
+            "2019-10-09T21:12:42.094000"
+          ],
+          "commanded_step_time_range_s": [
+            1.0001,
+            1641.3472
+          ],
+          "surface_temperature_c": {
+            "initial": 34.68322707006027,
+            "final": 48.442955017089844,
+            "min": 34.68322707006027,
+            "max": 48.4779167175293
+          },
+          "endpoint_voltage_v": [
+            3.8081679344177246,
+            2.4999289512634277
+          ],
+          "observed_charge_ah": 4.5556293923263524,
+          "duplicate_time_conflicts": 0
+        }
+      ],
+      "relation_to_target": "recorded after target"
+    },
+    {
+      "filename": "NMC_k1_0_05C_05degC.xlsx",
+      "source_sha256": "4849142bdb17640c9a73ab83cb1acea15790d2e390ba7b53f9a443b29f5a662d",
+      "nominal_rate_c": 0.05,
+      "nominal_ambient_c": 5,
+      "start_naive_local": "2019-10-25T08:33:37.075000",
+      "end_naive_local": "2019-10-26T10:00:49.612000",
+      "clock_qualified": true,
+      "measurement_clock_audit": {
+        "backwards_date_intervals": 0,
+        "max_relative_date_test_clock_discrepancy_s": 0.006743999998434447,
+        "date_test_clock_jumps_above_1s": 0,
+        "first_backwards_date_excel_row_pairs": [],
+        "first_clock_jump_excel_row_pairs": [],
+        "timezone": "Unspecified in source; timestamps are not converted to UTC"
+      },
+      "source_step_clock_qualified": true,
+      "canonical_six_step_sequence": true,
+      "measurement_rows": 91638,
+      "discharges": [
+        {
+          "current_a": {
+            "min": -0.25004881620407104,
+            "max": -0.25000858306884766,
+            "time_weighted_mean": -0.2500146364920424
+          },
+          "measurement_dates_naive_local": [
+            "2019-10-25T14:16:04.756000",
+            "2019-10-26T09:00:49.473000"
+          ],
+          "commanded_step_time_range_s": [
+            1.0007,
+            67485.7177
+          ],
+          "surface_temperature_c": {
+            "initial": 5.783782482147217,
+            "final": 7.048153877258301,
+            "min": 4.6219282150268555,
+            "max": 7.257294654846191
+          },
+          "endpoint_voltage_v": [
+            4.1604485511779785,
+            2.4999890327453613
+          ],
+          "observed_charge_ah": 4.686713052645377,
+          "duplicate_time_conflicts": 0
+        }
+      ],
+      "relation_to_target": "recorded after target"
+    },
+    {
+      "filename": "NMC_k1_1C_05degC.xlsx",
+      "source_sha256": "3feab141169dcbd7320f096b39a826dac9f148b9714bd361841d167c8cf5541c",
+      "nominal_rate_c": 1.0,
+      "nominal_ambient_c": 5,
+      "start_naive_local": "2019-10-26T14:58:41.337000",
+      "end_naive_local": "2019-10-26T22:27:58.910000",
+      "clock_qualified": true,
+      "measurement_clock_audit": {
+        "backwards_date_intervals": 0,
+        "max_relative_date_test_clock_discrepancy_s": 0.0016920000016398262,
+        "date_test_clock_jumps_above_1s": 0,
+        "first_backwards_date_excel_row_pairs": [],
+        "first_clock_jump_excel_row_pairs": [],
+        "timezone": "Unspecified in source; timestamps are not converted to UTC"
+      },
+      "source_step_clock_qualified": true,
+      "canonical_six_step_sequence": true,
+      "measurement_rows": 26962,
+      "discharges": [
+        {
+          "current_a": {
+            "min": -5.000460624694824,
+            "max": -5.000333309173584,
+            "time_weighted_mean": -5.00039849146004
+          },
+          "measurement_dates_naive_local": [
+            "2019-10-26T20:35:46.102000",
+            "2019-10-26T21:27:58.772000"
+          ],
+          "commanded_step_time_range_s": [
+            1.0003,
+            3133.6708
+          ],
+          "surface_temperature_c": {
+            "initial": 8.352569580078125,
+            "final": 20.17087745666504,
+            "min": 8.344942092895508,
+            "max": 20.17087745666504
+          },
+          "endpoint_voltage_v": [
+            3.7837541103363037,
+            2.49997878074646
+          ],
+          "observed_charge_ah": 4.35127801178927,
+          "duplicate_time_conflicts": 0
+        }
+      ],
+      "relation_to_target": "recorded after target"
+    },
+    {
+      "filename": "NMC_k1_2C_05degC.xlsx",
+      "source_sha256": "8f3c24b5000b746c045b48ba25f9d98b955772c37bfa3516207449fefc83c00c",
+      "nominal_rate_c": 2.0,
+      "nominal_ambient_c": 5,
+      "start_naive_local": "2019-11-21T10:03:24.565000",
+      "end_naive_local": "2019-11-21T15:35:45.406000",
+      "clock_qualified": true,
+      "measurement_clock_audit": {
+        "backwards_date_intervals": 0,
+        "max_relative_date_test_clock_discrepancy_s": 0.0011960000010731164,
+        "date_test_clock_jumps_above_1s": 0,
+        "first_backwards_date_excel_row_pairs": [],
+        "first_clock_jump_excel_row_pairs": [],
+        "timezone": "Unspecified in source; timestamps are not converted to UTC"
+      },
+      "source_step_clock_qualified": true,
+      "canonical_six_step_sequence": true,
+      "measurement_rows": 19946,
+      "discharges": [
+        {
+          "current_a": {
+            "min": -10.002670288085938,
+            "max": -9.995880126953125,
+            "time_weighted_mean": -9.997702501691895
+          },
+          "measurement_dates_naive_local": [
+            "2019-11-21T14:13:19.512000",
+            "2019-11-21T14:35:45.268000"
+          ],
+          "commanded_step_time_range_s": [
+            1.0006,
+            1346.756
+          ],
+          "surface_temperature_c": {
+            "initial": 7.060642242431641,
+            "final": 16.11114501953125,
+            "min": 7.056433200836182,
+            "max": 16.577844619750977
+          },
+          "endpoint_voltage_v": [
+            3.6448380947113037,
+            2.4999706745147705
+          ],
+          "observed_charge_ah": 3.7373505914570493,
+          "duplicate_time_conflicts": 0
+        }
+      ],
+      "relation_to_target": "recorded after target"
+    },
+    {
+      "filename": "NMC_k1_3C_05degC.xlsx",
+      "source_sha256": "60e957fee71abb80b2f12ce89f7909a85c14b741fa1adf4b333fbe3af253334e",
+      "nominal_rate_c": 3.0,
+      "nominal_ambient_c": 5,
+      "start_naive_local": "2019-11-22T16:01:28.274000",
+      "end_naive_local": "2019-11-22T22:05:32.763000",
+      "clock_qualified": true,
+      "measurement_clock_audit": {
+        "backwards_date_intervals": 0,
+        "max_relative_date_test_clock_discrepancy_s": 0.0009399999980814755,
+        "date_test_clock_jumps_above_1s": 0,
+        "first_backwards_date_excel_row_pairs": [],
+        "first_clock_jump_excel_row_pairs": [],
+        "timezone": "Unspecified in source; timestamps are not converted to UTC"
+      },
+      "source_step_clock_qualified": true,
+      "canonical_six_step_sequence": true,
+      "measurement_rows": 21849,
+      "discharges": [
+        {
+          "current_a": {
+            "min": -15.002647399902344,
+            "max": -14.995109558105469,
+            "time_weighted_mean": -14.998525973116664
+          },
+          "measurement_dates_naive_local": [
+            "2019-11-22T20:51:23.772000",
+            "2019-11-22T21:05:32.624000"
+          ],
+          "commanded_step_time_range_s": [
+            1.0001,
+            849.8513
+          ],
+          "surface_temperature_c": {
+            "initial": 4.7960124015808105,
+            "final": 12.656848907470703,
+            "min": 4.7960124015808105,
+            "max": 13.992260932922363
+          },
+          "endpoint_voltage_v": [
+            3.3245275020599365,
+            2.4999992847442627
+          ],
+          "observed_charge_ah": 3.536532436253113,
+          "duplicate_time_conflicts": 0
+        }
+      ],
+      "relation_to_target": "recorded after target"
+    },
+    {
+      "filename": "NMC_k1_5C_05degC.xlsx",
+      "source_sha256": "0786864dff33d33e40a7d7184a70046e4ba0b754b40a5cfe0f2a0bf6e051dcf3",
+      "nominal_rate_c": 5.0,
+      "nominal_ambient_c": 5,
+      "start_naive_local": "2019-11-23T00:15:46.838000",
+      "end_naive_local": "2019-11-23T06:03:10.590000",
+      "clock_qualified": true,
+      "measurement_clock_audit": {
+        "backwards_date_intervals": 0,
+        "max_relative_date_test_clock_discrepancy_s": 0.0017040000020642765,
+        "date_test_clock_jumps_above_1s": 0,
+        "first_backwards_date_excel_row_pairs": [],
+        "first_clock_jump_excel_row_pairs": [],
+        "timezone": "Unspecified in source; timestamps are not converted to UTC"
+      },
+      "source_step_clock_qualified": true,
+      "canonical_six_step_sequence": true,
+      "measurement_rows": 20849,
+      "discharges": [
+        {
+          "current_a": {
+            "min": -25.003265380859375,
+            "max": -24.99749755859375,
+            "time_weighted_mean": -24.999809942577386
+          },
+          "measurement_dates_naive_local": [
+            "2019-11-23T05:02:13.095000",
+            "2019-11-23T05:03:10.453000"
+          ],
+          "commanded_step_time_range_s": [
+            1.0004,
+            58.3582
+          ],
+          "surface_temperature_c": {
+            "initial": 4.786404609680176,
+            "final": 7.57533073425293,
+            "min": 4.786404609680176,
+            "max": 7.57533073425293
+          },
+          "endpoint_voltage_v": [
+            2.782402276992798,
+            2.4999887943267822
+          ],
+          "observed_charge_ah": 0.3983150274234458,
+          "duplicate_time_conflicts": 0
+        }
+      ],
+      "relation_to_target": "recorded after target"
+    }
+  ],
+  "overlaps": [],
+  "provisional_earlier_files": [
+    "NMC_k1_0_05C_25degC.xlsx"
+  ],
+  "provisional_earlier_high_rate_files": [],
+  "fresh_target_established": false,
+  "unrecorded_history": "Unknown manufacturing, storage and unpublished exposure history",
+  "termination_note": "The publication specifies 2.5V discharge cutoff and 75C emergency skin-temperature stop. Endpoint voltage and temperature are retained; a low-capacity high-rate record may be thermally censored. No termination cause is inferred from filename.",
+  "model_runs": 0,
+  "independent_validation_established": false,
+  "protocol_sha256": "1983cb1f458667b874caae4d39d62f4faafb42e3ead09a0400c939d6d59e47c3",
+  "manifest_sha256": "d0ba632f37af43e8359aa195f45b73960235c9ffafefeaa6ccdafe78be9037b3",
+  "elapsed_s": 163.79665955500968,
+  "error": null,
+  "verified_acquisitions": [
+    {
+      "filename": "NMC_k1_0_05C_05degC.xlsx",
+      "bytes": 6144093,
+      "sha256": "4849142bdb17640c9a73ab83cb1acea15790d2e390ba7b53f9a443b29f5a662d",
+      "inflated_bytes": 34566812,
+      "already_cached": false
+    },
+    {
+      "filename": "NMC_k1_0_05C_25degC.xlsx",
+      "bytes": 6096861,
+      "sha256": "e5870c6989c94995de10e053f04efcf96951790e3c26e51d4c537261ba847ec5",
+      "inflated_bytes": 34684956,
+      "already_cached": false
+    },
+    {
+      "filename": "NMC_k1_0_05C_35degC.xlsx",
+      "bytes": 6137061,
+      "sha256": "669dfdfe4626234f63f66d99eefead590b7f7d405a95e4e3b7d2abc42645418c",
+      "inflated_bytes": 34633212,
+      "already_cached": false
+    },
+    {
+      "filename": "NMC_k1_1C_05degC.xlsx",
+      "bytes": 1800071,
+      "sha256": "3feab141169dcbd7320f096b39a826dac9f148b9714bd361841d167c8cf5541c",
+      "inflated_bytes": 9965409,
+      "already_cached": false
+    },
+    {
+      "filename": "NMC_k1_1C_25degC.xlsx",
+      "bytes": 1868963,
+      "sha256": "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6",
+      "inflated_bytes": 10538544,
+      "already_cached": true
+    },
+    {
+      "filename": "NMC_k1_1C_35degC.xlsx",
+      "bytes": 1730248,
+      "sha256": "d8349933f31ff649d6d8a51eb9c4f9aa625945c39ee920ac111a63d3224d911f",
+      "inflated_bytes": 9648930,
+      "already_cached": false
+    },
+    {
+      "filename": "NMC_k1_2C_05degC.xlsx",
+      "bytes": 1320944,
+      "sha256": "8f3c24b5000b746c045b48ba25f9d98b955772c37bfa3516207449fefc83c00c",
+      "inflated_bytes": 7325204,
+      "already_cached": false
+    },
+    {
+      "filename": "NMC_k1_2C_25degC.xlsx",
+      "bytes": 1435703,
+      "sha256": "d4b766f4b3b98405c56b7846872052a79ee8ad666503b33f02083f1666da0b1d",
+      "inflated_bytes": 7867402,
+      "already_cached": false
+    },
+    {
+      "filename": "NMC_k1_2C_35degC.xlsx",
+      "bytes": 1440771,
+      "sha256": "14cbdcf9caee0493d502e6ac552b421785c1624cee3ea865623798ae6f1b4daf",
+      "inflated_bytes": 8078257,
+      "already_cached": false
+    },
+    {
+      "filename": "NMC_k1_3C_05degC.xlsx",
+      "bytes": 1456599,
+      "sha256": "60e957fee71abb80b2f12ce89f7909a85c14b741fa1adf4b333fbe3af253334e",
+      "inflated_bytes": 8034955,
+      "already_cached": false
+    },
+    {
+      "filename": "NMC_k1_3C_25degC.xlsx",
+      "bytes": 780921,
+      "sha256": "d517a8cda895347d62786b969f5238512ea914a480bb5b536dc5869344b9870e",
+      "inflated_bytes": 4558257,
+      "already_cached": false
+    },
+    {
+      "filename": "NMC_k1_3C_35degC.xlsx",
+      "bytes": 1096831,
+      "sha256": "0e59071c1308c113feee285a4fa27721c775fcc0a9504392c7f4d616aecb0c2a",
+      "inflated_bytes": 6152143,
+      "already_cached": false
+    },
+    {
+      "filename": "NMC_k1_5C_05degC.xlsx",
+      "bytes": 1384317,
+      "sha256": "0786864dff33d33e40a7d7184a70046e4ba0b754b40a5cfe0f2a0bf6e051dcf3",
+      "inflated_bytes": 7657680,
+      "already_cached": false
+    },
+    {
+      "filename": "NMC_k1_5C_25degC.xlsx",
+      "bytes": 1312960,
+      "sha256": "a4a45800742500ef6e78c03cb69f9ef6ae014907d1e07c7f236e7cb27fc80f5a",
+      "inflated_bytes": 7400469,
+      "already_cached": false
+    },
+    {
+      "filename": "NMC_k1_5C_35degC.xlsx",
+      "bytes": 1176345,
+      "sha256": "79b1d7088a231421fc20d4673afb3141b291f9aae828cd32cb73acf1d65f7f37",
+      "inflated_bytes": 6546376,
+      "already_cached": false
+    }
+  ],
+  "newly_downloaded_bytes": 33313725,
+  "acquisition_code_commit": "98141849eea6528a1b4b4abff4785b48c3b051cf",
+  "summary_note": "Additional chronology fields derived from the same retained inspection reports; no new download or model solve.",
+  "inspection_report_sha256": {
+    "NMC_k1_0_05C_05degC.json": "aa8b6bb0dd9c920678acd1851cf1d62c768464b95024b9f98346b71e15d97013",
+    "NMC_k1_0_05C_25degC.json": "13eaeddfb43b23a51fde8fc687904369e189787c66ad16df068eb43fa1b2a73a",
+    "NMC_k1_0_05C_35degC.json": "0700a7082c090ffe124938f059b8d5a889e5d4c50ea70ed2705c8f1b4d029092",
+    "NMC_k1_1C_05degC.json": "5ed5083d9a1f79af28e9843e0e04d16b8e24704f63ce76b5f595669907818d62",
+    "NMC_k1_1C_25degC.json": "53fb26ae705b9ea3e538009e2b030a34ebd53d2e070fb72f7fd585136fc2299a",
+    "NMC_k1_1C_35degC.json": "749bcc8c7bb9cb1a28a4bf088f4018357d053b63b035f007507deebe338d1e59",
+    "NMC_k1_2C_05degC.json": "e460409d961d4fdf017873132ca783cf5fbec2d2e37787b47ee384a7264ae8d1",
+    "NMC_k1_2C_25degC.json": "42c95727fa1902e084b280fa09b842d69b7075a9912b039634d56506ab8d15f7",
+    "NMC_k1_2C_35degC.json": "d238856a9614e7e498d3e285943c2580b5bfd3ca92b4d31056e46c9541cfdd07",
+    "NMC_k1_3C_05degC.json": "ffc8ca955784f31cef0b8cead640641b401439d14ab171e2ef93f694636d7018",
+    "NMC_k1_3C_25degC.json": "626ad96e0d4774cd9377dce651a55342ece0f757985ca72a5d58f79ec1d51573",
+    "NMC_k1_3C_35degC.json": "cb95569ef59086ca6636a9c7430c4fe5b6716facbb22c0c7bf59a515bb8cce4b",
+    "NMC_k1_5C_05degC.json": "52bd167bc472b72bc372d41a8a870a77b3907f7c0059e71e9960b3b837cd1964",
+    "NMC_k1_5C_25degC.json": "eb7adbcb409ccd419ec9be26202b70ad5fcf4983383fd25cab1562fa59008225",
+    "NMC_k1_5C_35degC.json": "c39a49ecad5b61366192fee5ec71ef498809796704f4f283726d264281468430"
+  },
+  "summary_implementation_sha256": "4086a41a8c78d3c0459e7b7dffe61b5581338cb47c10c273872a23a185fbb350"
+}

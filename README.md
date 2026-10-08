@@ -42,7 +42,7 @@ Lumped thermal simulation is explicitly **unvalidated**: several built-in Chen20
 
 ## Current results
 
-Software checks pass (94 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
+Software checks pass (103 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
 
 ## Thermal reconstruction: inspect the second cohort
 
@@ -109,4 +109,6 @@ python -m pip install --index-url https://pypi.org/simple --only-binary=:all: --
 python scripts/inspect_stanford_pilot.py --fetch
 ```
 
-This command inspects real measurements and exports their observed discharge segment. It does not solve a model. Prior high-rate exposure and full campaign chronology remain open; independent predictive validation is not yet established. See [source manifest](data/stanford-manifest.json), [predeclared acquisition protocol](docs/stanford-acquisition-protocol.md), [pilot findings](docs/stanford-pilot-findings.md) and [inspection JSON](docs/benchmarks/stanford-k1-inspection.json).
+This command inspects real measurements and exports their observed discharge segment. It does not solve a model. The bounded 15-file k1 chronology inspection is now complete: 530,735 records, verified checksums and consistent clocks. Only a 25°C/0.05C record precedes the selected 1C pilot in this published campaign. Unrecorded history remains unknown, and independent predictive validation is not yet established. See [source manifest](data/stanford-manifest.json), [predeclared acquisition protocol](docs/stanford-acquisition-protocol.md), [pilot findings](docs/stanford-pilot-findings.md) and [inspection JSON](docs/benchmarks/stanford-k1-inspection.json).
+
+The [recorded chronology](docs/stanford-chronology-findings.md) shows that some later high-rate records ended near the published thermal stop instead of 2.5 V. Treat these as repeated measurements of one cell and retain their prior exposure and possible thermal curtailment. Run `python scripts/inspect_stanford_chronology.py --fetch` to reproduce the bounded inspection.

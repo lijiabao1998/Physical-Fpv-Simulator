@@ -101,6 +101,15 @@ def main():
             "newly_downloaded_bytes": sum(d["bytes"] for d in downloads if not d["already_cached"]),
         }
     )
+    summary["inspection_report_sha256"] = {
+        (Path(r["source"]["filename"]).stem + ".json"): hashlib.sha256(
+            (args.out / (Path(r["source"]["filename"]).stem + ".json")).read_bytes()
+        ).hexdigest()
+        for r in reports
+    }
+    summary["summary_implementation_sha256"] = hashlib.sha256(
+        Path("src/physical_fpv/stanford_chronology.py").read_bytes()
+    ).hexdigest()
     (args.out / "chronology.json").write_text(json.dumps(summary, indent=2, allow_nan=False) + "\n")
     write_evidence_attribution(args.out, ["stanford2021"])
     print(

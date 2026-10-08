@@ -36,11 +36,19 @@ def summarize_chronology(reports: list[dict], manifest: dict) -> dict:
                     and audit["max_relative_date_test_clock_discrepancy_s"] <= 1.0
                 ),
                 "measurement_clock_audit": audit,
+                "source_step_clock_qualified": all(
+                    s.get("backwards_step_clock_intervals") == 0
+                    and s.get("negative_step_clock_records") == 0
+                    and s.get("clock_relation_max_deviation_s", float("inf")) <= 1.0
+                    for s in steps
+                ),
                 "canonical_six_step_sequence": report["canonical_six_step_sequence"],
                 "measurement_rows": report["measurement_rows"],
                 "discharges": [
                     {
                         "current_a": d["current_a"],
+                        "measurement_dates_naive_local": d["measurement_dates_naive_local"],
+                        "commanded_step_time_range_s": d["commanded_step_time_range_s"],
                         "surface_temperature_c": d["surface_temperature_c"],
                         "endpoint_voltage_v": d["endpoint_voltage_v"],
                         "observed_charge_ah": -d["signed_observed_charge_ah"],
@@ -74,6 +82,18 @@ def summarize_chronology(reports: list[dict], manifest: dict) -> dict:
     earlier = []
     if target is not None:
         earlier = [r for r in intervals if r["end_naive_local"] < target["start_naive_local"]]
+    for interval in intervals:
+        if interval is target:
+            relation = "target"
+        elif target is None or not interval["clock_qualified"] or not target["clock_qualified"]:
+            relation = "unresolved"
+        elif interval["end_naive_local"] < target["start_naive_local"]:
+            relation = "recorded before target"
+        elif interval["start_naive_local"] > target["end_naive_local"]:
+            relation = "recorded after target"
+        else:
+            relation = "overlapping target"
+        interval["relation_to_target"] = relation
     return {
         "dataset_doi": manifest["dataset_doi"],
         "license": manifest["license"],

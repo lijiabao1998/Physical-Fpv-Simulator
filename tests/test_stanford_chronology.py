@@ -1,4 +1,6 @@
 import copy
+import json
+from pathlib import Path
 
 import pytest
 
@@ -72,3 +74,16 @@ def test_duplicate_report_cannot_count_as_another_experiment():
     reports.append(copy.deepcopy(reports[0]))
     with pytest.raises(ValueError, match="Duplicate"):
         summarize_chronology(reports, manifest)
+
+
+def test_recorded_campaign_keeps_repeated_cell_and_nonvalidation_labels():
+    result = json.loads(Path("docs/benchmarks/stanford-k1-chronology.json").read_text())
+    assert result["complete"] and result["recorded_order_qualified"]
+    assert result["inspected_files"] == 15
+    assert len(result["inspection_report_sha256"]) == 15
+    assert result["provisional_earlier_files"] == ["NMC_k1_0_05C_25degC.xlsx"]
+    assert result["provisional_earlier_high_rate_files"] == []
+    assert sum(x["measurement_rows"] for x in result["ordered_intervals"]) == 530735
+    assert not result["fresh_target_established"]
+    assert not result["independent_validation_established"]
+    assert result["model_runs"] == 0

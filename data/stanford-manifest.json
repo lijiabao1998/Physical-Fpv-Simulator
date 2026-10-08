@@ -148,7 +148,7 @@
     "last_modified_date": "2021-02-02T22:29:36.151Z",
     "status": "COMPLETED"
   },
-  "chronology_status": "k1 within-workbook chronology verified. Order relative to high-rate/other-temperature tests and other cells remains unverified; upload dates are not experimental dates.",
+  "chronology_status": "k1 all15published experiment intervals qualified: only25C/0.05C precedes fixed25C/1C target; no recorded priorhighrate. Unrecorded history remainsunknown. k2-k6 chronology unverified.",
   "independence": "External laboratory/author cohort; original Chen/ORegan parameter-study provenance is distinct. This is not yet a qualified independent validation fixture.",
   "pilot_acquisition": {
     "files_verified": [
@@ -172,5 +172,6 @@
     "recorded_discharge_current_a": -5.000325282873757,
     "first_discharge_observation_step_time_s": 1.0006,
     "model_runs": 0
-  }
+  },
+  "chronology_evidence": "docs/benchmarks/stanford-k1-chronology.json"
 }
