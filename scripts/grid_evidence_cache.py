@@ -8,6 +8,7 @@ from pathlib import Path
 
 CALCULATION_FILES = (
     "src/physical_fpv/core.py",
+    "src/physical_fpv/current_profile.py",
     "scripts/verify_thermal_grid.py",
     "requirements-lock.txt",
     "pyproject.toml",

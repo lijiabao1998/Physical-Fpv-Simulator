@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - src/physical_fpv/core.py
+      - src/physical_fpv/current_profile.py
       - scripts/verify_thermal_grid.py
       - scripts/grid_evidence_cache.py
       - src/physical_fpv/validation.py

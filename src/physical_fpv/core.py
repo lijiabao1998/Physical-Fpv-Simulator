@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import os
 from dataclasses import asdict, dataclass
 from functools import lru_cache
@@ -13,6 +14,8 @@ os.environ.setdefault("OMP_NUM_THREADS", "1")
 
 import numpy as np  # noqa: E402
 import pybamm  # noqa: E402
+
+from physical_fpv.current_profile import CurrentProfile  # noqa: E402
 
 MODEL_TYPES = {
     "SPM": pybamm.lithium_ion.SPM,
@@ -93,6 +96,7 @@ class SimulationResult:
     physical_audit: dict
     parameter_fingerprint: str
     solver_cache_info: dict | None = None
+    current_protocol: dict | None = None
 
     def metadata(self) -> dict:
         return {
@@ -101,6 +105,11 @@ class SimulationResult:
             "parameter_set": self.config.parameter_set,
             "parameter_fingerprint": self.parameter_fingerprint,
             "compiled_template_cache": self.solver_cache_info,
+            "current_protocol": self.current_protocol
+            or {
+                "type": "constant discharge",
+                "current_a": self.config.current_a,
+            },
             "initial_state": f"{self.config.parameter_set} initial concentrations; no SOC fit",
             "termination": self.termination,
             "voltage_cutoff_reached": "Minimum voltage" in self.termination,
@@ -171,8 +180,18 @@ def _simulation_template(
     return pybamm.Simulation(model, parameter_values=parameters, var_pts=var_pts, solver=solver)
 
 
-def simulate(config: ModelConfig) -> SimulationResult:
+def simulate(
+    config: ModelConfig, current_profile: CurrentProfile | None = None
+) -> SimulationResult:
     config.validate()
+    duration = min(86400.0, 1.5 * 5.0 / config.current_a * 3600)
+    if current_profile is not None:
+        if not isinstance(current_profile, CurrentProfile):
+            raise TypeError("Expected an immutable CurrentProfile")
+        current_profile.require_coverage(duration)
+        maximum_current = 7.5 if config.parameter_set == "Chen2020" else 10.0
+        if current_profile.min_current_a < 0.5 or current_profile.max_current_a > maximum_current:
+            raise ValueError("Current profile leaves the parameter-set research envelope")
     parameters = pybamm.ParameterValues(config.parameter_set)
     parameters.update(
         {
@@ -190,23 +209,73 @@ def simulate(config: ModelConfig) -> SimulationResult:
             {"Total heat transfer coefficient [W.m-2.K-1]": config.heat_transfer_coefficient_w_m2_k}
         )
     cache_before = _simulation_template.cache_info()
-    simulation = _simulation_template(
-        config.model,
-        config.thermal,
-        config.parameter_set,
-        config.mesh_points,
-        config.tolerance,
-        config.max_temperature_k,
-        config.heat_transfer_coefficient_w_m2_k,
-    )
-    inputs = {
-        key: parameters[key]
-        for key in ("Current function [A]", "Ambient temperature [K]", "Initial temperature [K]")
-    }
-    duration = min(86400.0, 1.5 * 5.0 / config.current_a * 3600)
+    fingerprint = parameter_fingerprint(parameters)
+    if current_profile is None:
+        simulation = _simulation_template(
+            config.model,
+            config.thermal,
+            config.parameter_set,
+            config.mesh_points,
+            config.tolerance,
+            config.max_temperature_k,
+            config.heat_transfer_coefficient_w_m2_k,
+        )
+        inputs = {
+            key: parameters[key]
+            for key in (
+                "Current function [A]",
+                "Ambient temperature [K]",
+                "Initial temperature [K]",
+            )
+        }
+    else:
+        model = MODEL_TYPES[config.model](options={"thermal": config.thermal})
+        model.events.append(
+            pybamm.Event(
+                "Research temperature envelope",
+                config.max_temperature_k - model.variables["Volume-averaged cell temperature [K]"],
+            )
+        )
+        parameters.update(
+            {
+                "Current function [A]": pybamm.Interpolant(
+                    current_profile.time_s,
+                    current_profile.current_a,
+                    pybamm.t,
+                    interpolator="linear",
+                    extrapolate=False,
+                )
+            }
+        )
+        simulation = pybamm.Simulation(
+            model,
+            parameter_values=parameters,
+            var_pts={
+                "x_n": config.mesh_points,
+                "x_s": max(5, config.mesh_points // 2),
+                "x_p": config.mesh_points,
+                "r_n": config.mesh_points,
+                "r_p": config.mesh_points,
+            },
+            solver=pybamm.IDAKLUSolver(
+                rtol=config.tolerance, atol=config.tolerance, options={"num_threads": 1}
+            ),
+        )
+        # Profile-specific equations are never mixed into the constant-current cache.
+        inputs = {}
+        fingerprint = hashlib.sha256(
+            (
+                fingerprint + ":piecewise-linear-current:" + current_profile.fingerprint_sha256
+            ).encode()
+        ).hexdigest()
     output_time = np.arange(0, duration + config.sample_period_s, config.sample_period_s)
     output_time = output_time[output_time <= duration]
-    solution = simulation.solve([0, duration], t_interp=output_time, inputs=inputs)
+    integration_stops = (
+        [0, duration]
+        if current_profile is None
+        else np.unique(np.r_[current_profile.time_s[current_profile.time_s < duration], duration])
+    )
+    solution = simulation.solve(integration_stops, t_interp=output_time, inputs=inputs)
     time = np.asarray(solution.t)
 
     def get(name):
@@ -261,7 +330,12 @@ def simulate(config: ModelConfig) -> SimulationResult:
         }
     electrolyte = np.asarray(solution["Electrolyte concentration [mol.m-3]"].entries)
     drift = float(np.max(np.abs(lithium - lithium[0])) / lithium[0])
-    charge_error = float(np.max(np.abs(capacity - config.current_a * time / 3600)))
+    expected_charge = (
+        config.current_a * time / 3600
+        if current_profile is None
+        else current_profile.charge_integral_ah(time)
+    )
+    charge_error = float(np.max(np.abs(capacity - expected_charge)))
     thermal_residual = None
     if config.thermal == "lumped":
         # Cooling is signed. Integrate temperature-dependent heat capacity along the trajectory.
@@ -304,11 +378,27 @@ def simulate(config: ModelConfig) -> SimulationResult:
         heat_capacity,
         str(solution.termination),
         audit,
-        parameter_fingerprint(parameters),
+        fingerprint,
         {
-            "hit": _simulation_template.cache_info().hits > cache_before.hits,
+            "hit": current_profile is None
+            and _simulation_template.cache_info().hits > cache_before.hits,
             "templates": _simulation_template.cache_info().currsize,
             "maximum_templates": 6,
             "state_reset": "fresh initial conditions every solve",
+            "profile_template_reused": False,
         },
+        (
+            None
+            if current_profile is None
+            else {
+                "type": "explicit piecewise-linear discharge current",
+                "fingerprint_sha256": current_profile.fingerprint_sha256,
+                "time_units": "s",
+                "current_units": "A; positive discharge",
+                "current_range_a": [current_profile.min_current_a, current_profile.max_current_a],
+                "profile_end_time_s": current_profile.end_time_s,
+                "implicit_extrapolation": False,
+                "solver_stops_at_profile_knots": True,
+            }
+        ),
     )
