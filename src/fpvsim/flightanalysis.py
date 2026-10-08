@@ -136,13 +136,11 @@ def step_metrics(t: np.ndarray, y: np.ndarray, band: float = 0.05, reference: fl
         return {"rise_time": math.nan, "overshoot": math.nan, "peak_time": math.nan, "settling_time": math.nan,
                 "final": final, "settled": 0.0}
     yn = y / ref
-    i10 = int(np.argmax(yn >= 0.1))
-    i90 = int(np.argmax(yn >= 0.9))
     outside = np.nonzero(np.abs(yn - 1.0) > band)[0]
     settled = not len(outside) or outside[-1] + 1 < len(t)
     settle = t[outside[-1] + 1] if len(outside) and settled else (t[-1] if len(outside) else 0.0)
     return {
-        "rise_time": float(t[i90] - t[i10]),
+        "rise_time": _rise_time(t, yn),
         "overshoot": float(max(0.0, yn.max() - 1.0)),
         "peak_time": float(t[int(np.argmax(yn))]),
         "settling_time": float(settle),
@@ -151,14 +149,23 @@ def step_metrics(t: np.ndarray, y: np.ndarray, band: float = 0.05, reference: fl
     }
 
 
+def _rise_time(t: np.ndarray, y: np.ndarray) -> float:
+    """10-90 % rise time of a normalised response; NaN if 90 % is never reached."""
+    above10, above90 = y >= 0.1, y >= 0.9
+    if not above90.any() or not above10.any():
+        return math.nan
+    return float(t[int(np.argmax(above90))] - t[int(np.argmax(above10))])
+
+
 @dataclass(frozen=True)
 class EdgeSteps:
     """Step response measured directly at known stick edges."""
 
     response: StepResponse  # normalised response (0 before, 1 = new setpoint), mean and spread over edges
     overshoot: np.ndarray  # per edge
-    rise_time: np.ndarray  # per edge, s
+    rise_time: np.ndarray  # per edge, s (NaN if 90 % was never reached)
     settling_time: np.ndarray  # per edge, s (inf if never within the band)
+    saturated_edges: int = 0  # edges dropped because the mixer saturated during them
 
 
 def edge_steps(
@@ -168,6 +175,7 @@ def edge_steps(
     edges: list[tuple[float, float]],
     min_step: float = 20.0,
     band: float = 0.05,
+    saturated: np.ndarray | None = None,
 ) -> EdgeSteps | None:
     """Step response from scripted steps whose timing is known.
 
@@ -177,9 +185,12 @@ def edge_steps(
     so overshoot, rise time and settling time are read directly with no
     deconvolution. Steps smaller than ``min_step`` deg/s are skipped.
     The steps should stay out of mixer saturation, or the result describes
-    the saturated (non-linear) response instead.
+    the saturated (non-linear) response instead: with ``saturated`` (the
+    log's mixer-saturation flag), edges during which it was set are dropped
+    and counted.
     """
     curves, overshoot, rise, settle = [], [], [], []
+    dropped = 0
     dt = float(np.median(np.diff(t)))
     for t0, t1 in edges:
         before = (t >= t0 - 0.03) & (t < t0)
@@ -191,11 +202,13 @@ def edge_steps(
         step = final - start
         if abs(step) < min_step:
             continue
+        if saturated is not None and np.any(saturated[window]):
+            dropped += 1
+            continue
         y = (gyro[window] - start) / step
         tt = t[window] - t0
         overshoot.append(max(0.0, float(y.max()) - 1.0))
-        i10, i90 = int(np.argmax(y >= 0.1)), int(np.argmax(y >= 0.9))
-        rise.append(float(tt[i90] - tt[i10]))
+        rise.append(_rise_time(tt, y))
         outside = np.nonzero(np.abs(y - 1.0) > band)[0]
         settle.append(float(tt[outside[-1] + 1]) if len(outside) and outside[-1] + 1 < len(tt) else
                       (0.0 if not len(outside) else math.inf))
@@ -205,7 +218,7 @@ def edge_steps(
     n = min(len(c) for c in curves)
     arr = np.array([c[:n] for c in curves])
     response = StepResponse(np.arange(n) * dt, arr.mean(axis=0), arr.std(axis=0), len(curves))
-    return EdgeSteps(response, np.array(overshoot), np.array(rise), np.array(settle))
+    return EdgeSteps(response, np.array(overshoot), np.array(rise), np.array(settle), dropped)
 
 
 def latency(setpoint: np.ndarray, gyro: np.ndarray, fs: float, max_lag: float = 0.1) -> float:

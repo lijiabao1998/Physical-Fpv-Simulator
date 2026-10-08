@@ -54,3 +54,10 @@ metric = "cg_offset"
 max = 5
 unit = "mm"
 rationale = "重心偏離推力中心會讓懸停時前後馬達負載不均"
+
+[[requirements]]
+id = "R7"
+metric = "prop_clearance"
+min = 0
+unit = "mm"
+rationale = "每個零件要在槳盤外 3 mm 以上（槳的半徑公差與馬達軸偏擺），或離槳平面 10 mm 以上（槳葉受力上翹與振動）；餘量是最差的零件在較容易的方向上還能移動多少。包含安裝位置的不確定度"

@@ -77,7 +77,8 @@ class Comparison:
     changes: list[list[Change]]  # per non-base version, against the base
     code_version: str = ""  # git commit when the analysis started
     sensitivity: list[dict] = field(default_factory=list)  # per non-base version: metric -> [DeltaBar]
-    clearance: list[list] = field(default_factory=list)  # per version: prop clearance problems
+    clearance: list = field(default_factory=list)  # per version: worst prop-clearance pair at nominal (or None)
+    clearance_failures: list = field(default_factory=list)  # per version: {part: samples where it breaks the rule}
 
     @property
     def base(self) -> VersionResult:
@@ -91,6 +92,16 @@ class Comparison:
         base = self.base.mc.outputs[metric]
         with np.errstate(divide="ignore", invalid="ignore"):
             return self.delta(index, metric) / np.abs(base)
+
+
+def _fmt_shape(shape) -> str:
+    from .mass import BoxShape, CylinderShape
+
+    if isinstance(shape, BoxShape):
+        return f"方塊 {1000 * shape.lx:.0f}×{1000 * shape.ly:.0f}×{1000 * shape.lz:.0f} mm"
+    if isinstance(shape, CylinderShape):
+        return f"圓柱 直徑 {2000 * shape.radius:.0f} mm × 高 {1000 * shape.height:.0f} mm"
+    return "質點"
 
 
 def _fmt_vec(v: np.ndarray) -> str:
@@ -124,8 +135,12 @@ def design_changes(base: Build, variant: Build) -> list[Change]:
         a, b = bp[name], vp[name]
         if not np.allclose(a.position, b.position) or not np.allclose(a.rotation, b.rotation):
             changes.append(Change("moved", name, _fmt_vec(a.position), _fmt_vec(b.position)))
-        if a.mass_key != b.mass_key or type(a.shape) is not type(b.shape) or a.shape != b.shape:
-            changes.append(Change("replaced", name, a.mass_key, b.mass_key))
+        if a.component_id != b.component_id:  # a part made from another (or edited) component file
+            changes.append(Change("component", name, a.component or "行內零件", b.component or "行內零件"))
+        elif a.mass_key != b.mass_key or type(a.shape) is not type(b.shape) or a.shape != b.shape:
+            changes.append(Change("replaced", name, _fmt_shape(a.shape), _fmt_shape(b.shape)))
+        if a.mounted_on != b.mounted_on:
+            changes.append(Change("mount", name, a.mounted_on or "機架", b.mounted_on or "機架"))
     for role, path in variant.component_files.items():
         if base.component_files.get(role) != path:
             changes.append(Change("component", role, base.component_files[role].name, path.name))
@@ -146,9 +161,37 @@ def design_changes(base: Build, variant: Build) -> list[Change]:
         a, b = base.params[key], variant.params[key]
         if (a.value, a.u, a.dist, a.source) != (b.value, b.u, b.dist, b.source):
             changes.append(Change("value", key, _fmt_param(a), _fmt_param(b)))
-    order = {"component": 0, "spec": 1, "added": 2, "removed": 3, "moved": 4, "replaced": 5,
-             "param_added": 6, "param_removed": 7, "value": 8}
+    order = {"component": 0, "spec": 1, "added": 2, "removed": 3, "moved": 4, "replaced": 5, "mount": 6,
+             "param_added": 7, "param_removed": 8, "value": 9}
     return sorted(changes, key=lambda c: (order[c.kind], c.item))
+
+
+def _clearance_failures(v: VersionResult) -> dict[str, int]:
+    """Which part is the worst one in each Monte Carlo sample that breaks
+    the prop-clearance rule (re-realised from the stored sample inputs)."""
+    from .geometry import clearance_margin
+
+    margin = v.mc.outputs.get("prop_clearance")
+    if margin is None:
+        return {}
+    counts: dict[str, int] = {}
+    for i in np.nonzero(margin < 0.0)[0]:
+        worst = clearance_margin(v.build.realize({k: x[i] for k, x in v.mc.inputs.items()}))
+        if worst is not None:
+            counts[worst.part] = counts.get(worst.part, 0) + 1
+    return dict(sorted(counts.items(), key=lambda kv: -kv[1]))
+
+
+def forward_drag_split(ac, speed: float) -> tuple[float, float]:
+    """(rotor drag, body drag) in N at ``speed`` m/s of level forward flight,
+    rotors at hover speed: a first-order split of what sets the cruise tilt
+    (tan(tilt) ~ drag / weight)."""
+    from .dynamics import QuadModel
+
+    m = QuadModel(ac, ac.extras)
+    rotor = m.n * m.k_rotor_drag * m.hover_omega * speed
+    cda_x = ac.extras.cda[0] + sum(areas[0] for _, areas in ac.extras.drag_points)
+    return rotor, 0.5 * ac.env.rho * speed * speed * cda_x
 
 
 def _window(log: FlightLog, t0: float, t1: float) -> np.ndarray:
@@ -225,32 +268,31 @@ class DeltaBar:
 def delta_sensitivity(base: Build, variant: Build, metrics: tuple[str, ...]) -> dict[str, list[DeltaBar]]:
     """One-at-a-time +/-1 sigma sensitivity of (variant - base) for each metric.
 
-    A parameter that is the same physical item in both builds (same random
-    stream) moves in both at once, as it does in the paired Monte Carlo;
-    otherwise it moves only in the build it belongs to."""
+    Inputs are grouped by random stream, exactly as the paired Monte Carlo
+    couples them: every parameter on one stream (the same physical item, in
+    one build or both) moves together; a stream found in both builds is
+    "shared", otherwise it belongs to the build it appears in."""
     def delta(over_base: dict, over_var: dict) -> dict[str, float]:
         vb, vv = evaluate(base.realize(over_base)), evaluate(variant.realize(over_var))
         return {m: vv[m] - vb[m] for m in metrics}
 
-    inputs = []
-    for key in sorted(set(base.params.params) | set(variant.params.params)):
-        pb, pv = base.params.params.get(key), variant.params.params.get(key)
-        if pb is not None and pv is not None and pb.stream == pv.stream:
-            if pb.uncertain:
-                inputs.append((key, "shared", pb, pv))
-            continue
-        if pb is not None and pb.uncertain:
-            inputs.append((key, "base", pb, None))
-        if pv is not None and pv.uncertain:
-            inputs.append((key, "variant", None, pv))
+    groups: dict[str, tuple[list, list]] = {}
+    for p in base.params:
+        if p.uncertain:
+            groups.setdefault(p.stream or p.key, ([], []))[0].append(p)
+    for p in variant.params:
+        if p.uncertain:
+            groups.setdefault(p.stream or p.key, ([], []))[1].append(p)
     bars: dict[str, list[DeltaBar]] = {m: [] for m in metrics}
-    for key, scope, pb, pv in inputs:
-        lo = delta({key: pb.value - pb.u} if pb else {}, {key: pv.value - pv.u} if pv else {})
-        hi = delta({key: pb.value + pb.u} if pb else {}, {key: pv.value + pv.u} if pv else {})
+    for in_base, in_var in groups.values():
+        scope = "shared" if in_base and in_var else ("base" if in_base else "variant")
+        key = " + ".join(sorted({p.key for p in in_base + in_var}))
+        lo = delta({p.key: p.value - p.u for p in in_base}, {p.key: p.value - p.u for p in in_var})
+        hi = delta({p.key: p.value + p.u for p in in_base}, {p.key: p.value + p.u for p in in_var})
         for m in metrics:
             bars[m].append(DeltaBar(key, scope, lo[m], hi[m]))
     for m in metrics:
-        bars[m].sort(key=lambda b: b.span, reverse=True)
+        bars[m].sort(key=lambda b: (-b.span, b.key))
     return bars
 
 
@@ -275,7 +317,7 @@ def compare(
 ) -> Comparison:
     if len(build_paths) < 2:
         raise ValueError("compare needs a base build and at least one other version")
-    from .geometry import prop_clearance
+    from .geometry import clearance_margin
     from .report import git_version
 
     if maneuver and maneuver not in MANEUVERS:
@@ -298,8 +340,9 @@ def compare(
             v.tuning = run_study(path, fc, seed=seed, workers=workers)
     changes = [design_changes(builds[0], b) for b in builds[1:]]
     sensitivity = [delta_sensitivity(builds[0], b, SENSITIVITY_METRICS) for b in builds[1:]]
-    clearance = [prop_clearance(b.realize()) for b in builds]
-    return Comparison(versions, fc, seed, samples, man, changes, code_version, sensitivity, clearance)
+    clearance = [clearance_margin(b.realize()) for b in builds]
+    clearance_failures = [_clearance_failures(v) for v in versions]
+    return Comparison(versions, fc, seed, samples, man, changes, code_version, sensitivity, clearance, clearance_failures)
 
 
 def summarise_delta(values: np.ndarray) -> tuple[float, float, float]:

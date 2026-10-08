@@ -8,7 +8,28 @@ import numpy as np
 
 from .mass import BoxShape, CylinderShape, MassItem
 
-PROP_MARGIN = 0.010  # m, minimum vertical gap between a part over a prop disk and the prop plane
+PROP_MARGIN = 0.010  # m, minimum vertical gap between a part over (or next to) a prop disk and the prop plane
+PROP_TIP_MARGIN = 0.003  # m, minimum plan-view distance from the disk edge: prop radius tolerance and shaft runout (blade flex is vertical, covered by PROP_MARGIN)
+
+
+@dataclass(frozen=True)
+class Clearance:
+    """Clearance of one part to one prop.
+
+    A part is clear if it stays PROP_TIP_MARGIN outside the prop disk in
+    plan view, or PROP_MARGIN away from the prop plane. ``margin`` is the
+    larger of the two surpluses, so it is negative only when both rules are
+    broken, and its size is how far the part can move (in the easier
+    direction) before it is."""
+
+    part: str
+    rotor: int
+    horizontal: float  # m, plan-view distance of the footprint from the disk edge (< 0 = over the disk)
+    vertical: float  # m, vertical gap to the prop plane (0 = cuts through it)
+
+    @property
+    def margin(self) -> float:
+        return max(self.horizontal - PROP_TIP_MARGIN, self.vertical - PROP_MARGIN)
 
 
 @dataclass(frozen=True)
@@ -49,12 +70,11 @@ def _distance_to_polygon(point: np.ndarray, poly: np.ndarray) -> float:
     return 0.0 if inside else best
 
 
-def prop_clearance(ac, margin: float = PROP_MARGIN) -> list[ClearanceProblem]:
-    """Parts (other than frame and propulsion) that sit over a prop disk
-    closer than ``margin`` to the prop plane, or cut through it."""
+def clearances(ac) -> list[Clearance]:
+    """Every (part, prop) pair, for parts other than frame and propulsion."""
     props = [i for i in ac.items if i.mass_key == "prop.mass"]
     radius = ac.powertrain.prop.radius
-    problems = []
+    out = []
     for item in ac.items:
         if item.group in ("frame", "propulsion"):
             continue
@@ -63,10 +83,20 @@ def prop_clearance(ac, margin: float = PROP_MARGIN) -> list[ClearanceProblem]:
             continue
         zmin, zmax = corners[:, 2].min(), corners[:, 2].max()
         for k, prop in enumerate(props):
-            if _distance_to_polygon(prop.position[:2], corners[:, :2]) >= radius:
-                continue
+            horizontal = _distance_to_polygon(prop.position[:2], corners[:, :2]) - radius
             zp = prop.position[2]
-            gap = 0.0 if zmin <= zp <= zmax else float(min(abs(zp - zmax), abs(zmin - zp)))
-            if gap < margin:
-                problems.append(ClearanceProblem(item.name, k, gap))
-    return problems
+            vertical = 0.0 if zmin <= zp <= zmax else float(min(abs(zp - zmax), abs(zmin - zp)))
+            out.append(Clearance(item.name, k, horizontal, vertical))
+    return out
+
+
+def clearance_margin(ac) -> Clearance | None:
+    """The worst (part, prop) pair."""
+    pairs = clearances(ac)
+    return min(pairs, key=lambda c: c.margin) if pairs else None
+
+
+def prop_clearance(ac) -> list[ClearanceProblem]:
+    """Parts that break both clearance rules: within PROP_TIP_MARGIN of a
+    prop disk in plan view and closer than PROP_MARGIN to the prop plane."""
+    return [ClearanceProblem(c.part, c.rotor, c.vertical) for c in clearances(ac) if c.margin < 0.0]

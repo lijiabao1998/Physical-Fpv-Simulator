@@ -19,6 +19,7 @@ name = "action_camera"
 component = "../components/payloads/generic-action-camera-full.toml"
 # in front of the battery on the top plate (top surface z = -27 mm), on an 8 mm mount
 position = { value = [36, 0, -60.5], unit = "mm" }
+mounted_on = "camera_mount"
 position_u = { value = [2, 1, 1], unit = "mm", source = "estimate", note = "鎖在上板的相機座，位置比綁帶固定準確" }
 
 [[parts]]

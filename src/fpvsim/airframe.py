@@ -7,7 +7,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class AirframeExtras:
-    cda: tuple[float, float, float]  # m^2, frame drag area along body x, y, z, acting at the CG
+    cda: tuple[float, float, float]  # m^2, frame drag area along body x, y, z, acting at cda_center
     # parts with their own drag: (position in the body frame / mount origin, drag areas x, y, z),
     # each acting at its own position so a camera high above the CG adds a pitching moment
     drag_points: tuple[tuple[tuple[float, float, float], tuple[float, float, float]], ...]
@@ -18,6 +18,9 @@ class AirframeExtras:
     contact_stiffness: float  # N/m per contact point
     contact_damping: float  # N s/m per contact point
     ground_friction: float  # Coulomb coefficient
+    # where the frame's drag acts (mount origin frame, m): a fixed point of the airframe,
+    # so moving the CG (a payload) changes the frame drag's moment arm; None = at the CG
+    cda_center: tuple[float, float, float] | None = None
 
 
 @dataclass(frozen=True)

@@ -25,7 +25,7 @@ rm = { value = 82, unit = "mohm", source = "measured", u = 1.5, ref = "2026-10-1
 
 ## 零件檔（`schema = "fpvsim.component/1"`）
 
-`mass`、`shape`、`cg_offset` 是頂層鍵，**必須寫在第一個 `[表格]` 之前**，否則 TOML 會把它們歸到前一個表格；載入器會偵測這個錯誤。
+`mass`、`shape`、`cg_offset`、`drag_center` 是頂層鍵，**必須寫在第一個 `[表格]` 之前**，否則 TOML 會把它們歸到前一個表格；載入器會偵測這個錯誤。
 
 ```toml
 schema = "fpvsim.component/1"
@@ -49,7 +49,7 @@ name = "..."
 | `prop` | `diameter`、`pitch`、`spin_inertia`、`rotor_drag_factor` | `[config] blades`；`[coefficients]`（實測）或 `[bemt]`（幾何估計） |
 | `esc` | `r_on`、`quiescent_power`、`max_current`、`drive_current_limit`、`brake_current_limit` | |
 | `battery` | `capacity`、`r0_cell`、`r1_cell`、`tau1`、`c_rating` | `[config] series, parallel`；`[ocv] soc, cell_voltage, source` |
-| `frame` | `thrust_interference`、`cda_x/y/z`、`contact_stiffness`、`contact_damping`、`ground_friction`、`vib_amp_1/2/3`、`vib_ref_speed`、`vib_exponent`、`vib_yaw_ratio` | `[[rotors]]` 安裝點與轉向；`[[contacts]]` 地面接觸點（至少 3 個）；`[[parts]]` 機架零件與 `placements` |
+| `frame` | `thrust_interference`、`cda_x/y/z`（作用在頂層鍵 `drag_center`）、`contact_stiffness`、`contact_damping`、`ground_friction`、`vib_amp_1/2/3`、`vib_ref_speed`、`vib_exponent`、`vib_yaw_ratio` | `[[rotors]]` 安裝點與轉向；`[[contacts]]` 地面接觸點（至少 3 個）；`[[parts]]` 機架零件與 `placements` |
 | `avionics` | 無 | `power`（W，穩壓端功率）會計入航電負載；飛控板需有 `gyro_noise_density` |
 
 組裝檔的 `[flight_controller]` 需要 `board`（飛控板的零件名稱）與 `motor_idle`。
@@ -99,7 +99,9 @@ position = { value = [-45, 15, 0], unit = "mm" }
 
 馬達與槳會自動放在機架的 `[[rotors]]` 安裝點上，加上各自的 `cg_offset`。
 
-零件可以帶阻力面積 `cda_x`、`cda_y`、`cda_z`（零件檔的 `[params]`，或行內零件的鍵），會加到機架的阻力面積上。
+零件可以帶阻力面積 `cda_x`、`cda_y`、`cda_z`（零件檔的 `[params]`，或行內零件的鍵），作用在零件自己的位置；機架本身的阻力作用在機架檔的 `drag_center`。
+
+零件的安裝位置可以標示標準不確定度 `position_u = { value = [ux, uy, uz], unit = "mm", source = ..., note = ... }`。疊裝在另一個零件上的零件寫 `mounted_on = "<零件名稱>"`：它會跟著母零件的位置誤差一起移動，自己的 `position_u` 則是相對母零件的誤差。
 
 ### 版本檔
 

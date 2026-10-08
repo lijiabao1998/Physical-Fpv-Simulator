@@ -21,9 +21,10 @@ them, so a variant may live in another directory.
 from __future__ import annotations
 
 import hashlib
+import json
 import math
 import tomllib
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -83,7 +84,7 @@ def _read_toml(path: Path, schema: str) -> dict[str, Any]:
         raise DesignError(f"file not found: {path}") from None
     if data.get("schema") != schema:
         raise DesignError(f"{path}: expected schema = {schema!r}, got {data.get('schema')!r}")
-    misplaced = {"mass", "shape", "cg_offset"} & set(data.get("meta", {}))
+    misplaced = {"mass", "shape", "cg_offset", "drag_center"} & set(data.get("meta", {}))
     if misplaced:
         raise DesignError(f"{path}: {sorted(misplaced)} ended up inside [meta]; put top-level keys before the first table")
     return data
@@ -140,12 +141,17 @@ class PartTemplate:
     rotation: np.ndarray
     power_key: str | None = None  # W drawn from the regulated rail, if any
     drag_keys: tuple[str | None, str | None, str | None] = (None, None, None)  # the part's own CdA per body axis
-    offset_keys: tuple[str, str, str] | None = None  # placement uncertainty (x, y, z), m
+    offset_keys: tuple[str, str, str] | None = None  # the part's own placement uncertainty (x, y, z), m
+    mounted_on: str | None = None  # parent part: this part moves with the parent's placement error
+    inherited_offsets: tuple[tuple[str, str, str], ...] = ()  # the parent chain's offset keys, resolved at load
+    component: str | None = None  # component file the part is made from (file name), None for inline parts
+    component_id: str | None = None  # its identity (id and content hash), as used for the random streams
 
     def placed(self, v) -> np.ndarray:
-        if self.offset_keys is None:
+        chain = self.inherited_offsets + ((self.offset_keys,) if self.offset_keys else ())
+        if not chain:
             return self.position
-        return self.position + np.array([v(k) for k in self.offset_keys])
+        return self.position + sum(np.array([v(k) for k in keys]) for keys in chain)
 
 
 @dataclass(frozen=True)
@@ -232,6 +238,7 @@ class Build:
     parts: list[PartTemplate]
     rotors: list[RotorMount]
     contacts: list[np.ndarray]
+    drag_center: np.ndarray  # where the frame's own drag acts, mount origin frame, m
     fc_board: str
     battery_series: int
     battery_parallel: int
@@ -312,6 +319,7 @@ class Build:
             ),
             extras=AirframeExtras(
                 cda=tuple(v(f"frame.cda_{axis}") for axis in "xyz"),
+                cda_center=tuple(float(x) for x in self.drag_center),
                 drag_points=tuple(
                     (
                         tuple(float(x) for x in p.placed(v)),
@@ -401,7 +409,14 @@ def _load_component(path: Path, role: str, category: str, params: ParamSet) -> d
 
 
 def _component_id(path: Path, data: Mapping[str, Any]) -> str:
-    return str(data.get("meta", {}).get("id") or path.stem)
+    """Identity of a component file as a physical item, for paired sampling:
+    its id (or file name) plus a hash of its parsed contents (comments and
+    formatting do not count). The same file in two builds is the same item;
+    a copied file with edited values is a different item even if it kept the
+    id, so it gets independent random errors."""
+    canonical = json.dumps(data, sort_keys=True, ensure_ascii=False, default=str)
+    digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
+    return f"{data.get('meta', {}).get('id') or path.stem}#{digest}"
 
 
 def _absolute(base: Path, value: Any) -> str:
@@ -520,6 +535,7 @@ def load_build(path: str | Path) -> Build:
 
     for i, entry in enumerate(data.get("parts", [])):
         parts.append(_build_part(path, base, i, entry, comp, params, files))
+    parts = _resolve_mounts(path, parts)
     for role in ("battery", "esc"):
         placed = sum(1 for p in parts if p.mass_key == f"{role}.mass")
         if placed != 1:
@@ -533,6 +549,9 @@ def load_build(path: str | Path) -> Build:
     ]
     if len(contacts) < 3:
         raise DesignError(f"{component_files['frame']}: a frame needs at least 3 [[contacts]] ground contact points")
+    if "drag_center" not in comp["frame"]:
+        raise DesignError(f"{component_files['frame']}: needs drag_center, the point where the frame's drag acts")
+    drag_center = parse_vector(f"{component_files['frame']}: drag_center", comp["frame"]["drag_center"])
 
     battery_cfg = comp["battery"].get("config", {})
     ocv = comp["battery"].get("ocv", {})
@@ -552,6 +571,7 @@ def load_build(path: str | Path) -> Build:
         parts=parts,
         rotors=rotors,
         contacts=contacts,
+        drag_center=drag_center,
         fc_board=board,
         battery_series=_int(str(component_files["battery"]), battery_cfg, "series"),
         battery_parallel=_int(str(component_files["battery"]), battery_cfg, "parallel"),
@@ -717,7 +737,11 @@ def _build_part(
         raise DesignError(f"{where}: part name {name!r} is reserved; choose another name")
     position = parse_vector(f"{where}.position", entry.get("position"))
     rotation = _rotation(where, entry.get("rotation_deg"))
+    component = component_id = None
     offset_keys = _placement_uncertainty(where, name, entry.get("position_u"), params)
+    mounted_on = entry.get("mounted_on")
+    if mounted_on is not None and (not isinstance(mounted_on, str) or mounted_on == name):
+        raise DesignError(f"{where}: mounted_on must name another part")
     power_key = None
     drag = {}
     for axis in "xyz":  # inline drag areas, e.g. cda_x = { value = ..., unit = "cm^2", ... }
@@ -744,15 +768,17 @@ def _build_part(
             raise DesignError(f"{comp_path}: needs mass")
         mass_key = f"{name}.mass"
         cid = _component_id(comp_path, data)
-        params.add(parse_param(mass_key, data["mass"], component_stream(cid, "mass")))
+        # the stream is scoped to the part name: two parts made from one file are two items
+        params.add(parse_param(mass_key, data["mass"], component_stream(cid, f"{name}.mass")))
         for key, value in data.get("params", {}).items():
-            added = params.add(parse_param(f"{name}.{key}", value, component_stream(cid, key)))
+            added = params.add(parse_param(f"{name}.{key}", value, component_stream(cid, f"{name}.{key}")))
             if key in ("cda_x", "cda_y", "cda_z"):
                 drag[key[-1]] = added.key
         if f"{name}.power" in params:
             power_key = f"{name}.power"
         shape = _parse_shape(str(comp_path), data.get("shape"))
         group = entry.get("group", data.get("meta", {}).get("category", "avionics"))
+        component, component_id = comp_path.name, cid
     else:  # inline part
         mass_key = f"{name}.mass"
         params.add(parse_param(mass_key, entry.get("mass")))
@@ -760,10 +786,31 @@ def _build_part(
         group = entry.get("group", "misc")
 
     drag_keys = tuple(drag.get(axis) for axis in "xyz")
-    return PartTemplate(name, str(group), mass_key, shape, position, rotation, power_key, drag_keys, offset_keys)
+    return PartTemplate(name, str(group), mass_key, shape, position, rotation, power_key, drag_keys, offset_keys, mounted_on,
+                        component=component, component_id=component_id)
 
 
 _RESERVED_PREFIXES = {"frame", "motor", "prop", "electrical", "flight_controller", "env", "criteria"}
+
+
+def _resolve_mounts(path: Path, parts: list[PartTemplate]) -> list[PartTemplate]:
+    """``mounted_on = "battery"``: the part is fixed to another part, so its
+    placement error is the parent's (and the parent's parent's) plus its own
+    ``position_u``, which is then relative to the parent."""
+    by_name = {p.name: p for p in parts}
+
+    def chain(p: PartTemplate, seen: tuple[str, ...]) -> tuple[tuple[str, str, str], ...]:
+        if p.mounted_on is None:
+            return ()
+        if p.mounted_on in seen:
+            raise DesignError(f"{path}: mounted_on forms a loop: {' -> '.join(seen + (p.mounted_on,))}")
+        parent = by_name.get(p.mounted_on)
+        if parent is None:
+            raise DesignError(f"{path}: part {p.name!r} is mounted_on unknown part {p.mounted_on!r}")
+        own = (parent.offset_keys,) if parent.offset_keys else ()
+        return chain(parent, seen + (parent.name,)) + own
+
+    return [replace(p, inherited_offsets=chain(p, (p.name,))) if p.mounted_on else p for p in parts]
 
 
 def _placement_uncertainty(where: str, name: str, entry: Any, params: ParamSet) -> tuple[str, str, str] | None:

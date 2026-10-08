@@ -1,0 +1,26 @@
+# Version C: version A's strap-on camera moved back over the CG.
+schema = "fpvsim.build/1"
+
+[meta]
+extends = "ref-5in-6s-freestyle-actioncam-a.toml"
+id = "ref-5in-6s-freestyle-actioncam-c"
+name = "版本 C：相機綁在電池上方、移到重心正上方"
+description = "沿用版本 A 的綁帶式相機座，但整組往後移到重心正上方，讓重心回到推力中心；電池位置不變，所以不會靠近後槳。代價是重心比版本 B 高，鏡頭也比較後面，畫面下緣可能看到前槳。"
+change = "相機與相機座往後移 24 mm，位於重心正上方"
+
+[[parts]]
+name = "action_camera"
+component = "../components/payloads/generic-action-camera-full.toml"
+# centred over the CG on top of the battery (top surface z = -65 mm), on the same 8 mm mount
+position = { value = [6, 0, -98.5], unit = "mm" }
+mounted_on = "camera_mount"
+position_u = { value = [1, 1, 1], unit = "mm", source = "estimate", note = "鎖在 TPU 座上，相對相機座的位置" }
+
+[[parts]]
+name = "camera_mount"
+group = "payload"
+mass = { value = 12, unit = "g", source = "estimate", u = 3, note = "TPU 相機座與綁帶" }
+shape = { type = "box", size = [40, 60, 8], unit = "mm" }
+position = { value = [6, 0, -69], unit = "mm" }
+mounted_on = "battery"
+position_u = { value = [3, 1, 1], unit = "mm", source = "estimate", note = "相對電池的位置，綁法因人而異；加上電池本身的誤差（4 / 2 / 1 mm），總計約 5 / 2.2 / 1.4 mm" }

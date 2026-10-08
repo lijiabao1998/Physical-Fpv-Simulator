@@ -14,6 +14,8 @@
    One more flight at the baseline gains with feedforward off shows how much
    of each axis's overshoot comes from feedforward, which the PD sweep
    cannot change.
+   If the recommendation lands on the edge of the grid, the next row or
+   column is added and the selection repeated (at most MAX_EXTENSIONS times).
 3. Recommendation: among candidates whose roll and pitch overshoot are each
    within the limit and whose motor noise is at most a set multiple of the baseline's,
    the one with the lowest roll/pitch tracking error on the same scripted
@@ -44,6 +46,7 @@ AXES = ("roll", "pitch", "yaw")
 NOISE_BAND = (100.0, 1000.0)  # Hz
 OVERSHOOT_LIMIT = 0.15  # our design target for the step-response peak, not an industry standard
 NOISE_FACTOR_LIMIT = 1.5
+MAX_EXTENSIONS = 3  # rows/columns the sweep may add when the recommendation sits on its edge
 
 
 NOISE_RAMP = 2.5  # s, level throttle ramp at the end of the sweep flight
@@ -83,14 +86,16 @@ def flight_metrics(log, noise_window: tuple[float, float] | None = None, maneuve
         sp, gy = log[f"setpoint_{axis}"], log[f"gyro_{axis}"]
         edges = maneuver.step_edges(axis) if maneuver else []
         if edges:  # scripted steps with known timing: measure each edge directly
-            es = fa.edge_steps(t, sp, gy, edges)
+            es = fa.edge_steps(t, sp, gy, edges, saturated=log["saturated"])
             sr = es.response if es else None
             metrics = {
                 "overshoot": float(np.median(es.overshoot)),
                 "overshoot_spread": float(np.percentile(es.overshoot, 75) - np.percentile(es.overshoot, 25)),
-                "rise_time": float(np.median(es.rise_time)),
+                "rise_time": _nanmedian(es.rise_time),
                 "settling_time": float(np.median(es.settling_time)),
                 "settled": float(np.mean(np.isfinite(es.settling_time))),
+                "edges": len(es.overshoot),
+                "edges_saturated": es.saturated_edges,
                 "method": "edges",
             } if es else {}
         else:  # free flight: deconvolution
@@ -111,10 +116,16 @@ def flight_metrics(log, noise_window: tuple[float, float] | None = None, maneuve
     out["crashed"] = bool(log.meta.get("crashed"))
     rp = [out["axes"][a] for a in ("roll", "pitch")]
     out["overshoot_rp"] = float(np.mean([a.get("overshoot", math.nan) for a in rp]))
-    out["overshoot_max_rp"] = float(max(a.get("overshoot", math.nan) for a in rp))
+    rp_overshoot = [a.get("overshoot", math.nan) for a in rp]  # both axes must be measured
+    out["overshoot_max_rp"] = float(max(rp_overshoot)) if all(map(math.isfinite, rp_overshoot)) else math.nan
     out["settling_rp"] = float(np.mean([a.get("settling_time", math.nan) for a in rp]))
     out["tracking_rp"] = float(np.mean([a["tracking_rms"] for a in rp]))
     return out
+
+
+def _nanmedian(x: np.ndarray) -> float:
+    x = np.asarray(x, dtype=float)
+    return float(np.median(x[np.isfinite(x)])) if np.isfinite(x).any() else math.nan
 
 
 def _fly(job: dict) -> dict:
@@ -156,6 +167,7 @@ class TuningStudy:
     d_values: tuple[float, ...] = ()
     baseline_log: object = None  # the baseline candidate's tuning-flight log
     ff_off: dict | None = None  # metrics of the tuning flight at baseline gains with F = 0 on every axis
+    extensions: tuple[str, ...] = ()  # grid extensions made, e.g. ("PD 1.45",)
 
     @property
     def baseline_candidate(self) -> Candidate | None:
@@ -163,15 +175,61 @@ class TuningStudy:
 
     @property
     def at_grid_edge(self) -> list[str]:
-        """Which multipliers of the recommendation sit on the sweep boundary."""
-        if self.recommended is None:
+        """Which boundary of the sweep the recommendation sits on, e.g. "PD 上限"."""
+        return [f"{axis} {'上限' if direction > 0 else '下限'}"
+                for axis, direction in _edge_moves(self.recommended, self.pd_values, self.d_values)]
+
+    @property
+    def widen_towards(self) -> list[str]:
+        """Direction to widen the next sweep, e.g. "PD 增加"."""
+        return [f"{axis} {'增加' if direction > 0 else '減少'}"
+                for axis, direction in _edge_moves(self.recommended, self.pd_values, self.d_values)]
+
+    def binding(self) -> list[tuple[str, Candidate, str]]:
+        """What stops the recommendation from moving one grid step further in
+        each direction: (direction, neighbour, reason). The reason is the
+        constraint the neighbour breaks, or that its tracking is no better."""
+        rec = self.recommended
+        if rec is None:
             return []
-        edges = []
-        if len(self.pd_values) > 1 and self.recommended.pd in (min(self.pd_values), max(self.pd_values)):
-            edges.append("PD")
-        if len(self.d_values) > 1 and self.recommended.d in (min(self.d_values), max(self.d_values)):
-            edges.append("D")
-        return edges
+        grid = {(c.pd, c.d): c for c in self.candidates}
+        out = []
+        for name, values, index in (("PD", self.pd_values, 0), ("D", self.d_values, 1)):
+            vals = sorted(values)
+            here = vals.index((rec.pd, rec.d)[index])
+            for step, direction in ((1, "+"), (-1, "-")):
+                if not 0 <= here + step < len(vals):
+                    continue
+                key = (vals[here + step], rec.d) if index == 0 else (rec.pd, vals[here + step])
+                n = grid.get(key)
+                if n is not None:
+                    out.append((name + direction, n, _infeasible_reason(n, self) or "追蹤誤差沒有更好"))
+        return out
+
+
+def _edge_moves(rec: Candidate | None, pd_values, d_values) -> list[tuple[str, int]]:
+    """(axis, +1/-1) for each sweep boundary the recommendation sits on."""
+    if rec is None:
+        return []
+    moves = []
+    for axis, values, x in (("PD", pd_values, rec.pd), ("D", d_values, rec.d)):
+        if len(values) > 1 and x == max(values):
+            moves.append((axis, 1))
+        elif len(values) > 1 and x == min(values):
+            moves.append((axis, -1))
+    return moves
+
+
+def _infeasible_reason(c: Candidate, study: "TuningStudy") -> str:
+    base = study.baseline_candidate
+    m = c.metrics
+    if m.get("crashed"):
+        return "墜機"
+    if not math.isfinite(m.get("overshoot_max_rp", math.nan)) or m["overshoot_max_rp"] > OVERSHOOT_LIMIT:
+        return f"超調 {m.get('overshoot_max_rp', math.nan):.1%} 超過 {OVERSHOOT_LIMIT:.0%}"
+    if base is not None and m["motor_noise"] > NOISE_FACTOR_LIMIT * base.metrics["motor_noise"]:
+        return f"馬達雜訊是基準的 {m['motor_noise'] / base.metrics['motor_noise']:.1f} 倍（上限 {NOISE_FACTOR_LIMIT:g} 倍）"
+    return ""
 
 
 def select(candidates: list[Candidate]) -> tuple[Candidate | None, str]:
@@ -192,7 +250,7 @@ def select(candidates: list[Candidate]) -> tuple[Candidate | None, str]:
         f"滾轉與俯仰的超調各自 ≤ {OVERSHOOT_LIMIT:.0%}（本專案的設計目標，不是業界標準；兩軸分別檢查，避免平均值掩蓋較差的一軸），"
         f"且馬達輸出雜訊（{NOISE_BAND[0]:.0f}–{NOISE_BAND[1]:.0f} Hz RMS）不超過基準設定的 {NOISE_FACTOR_LIMIT:g} 倍；"
         "符合條件者中，取同一段調參飛行中滾轉與俯仰追蹤誤差 (RMS) 最小的。"
-        "超調取每一軸 12 次小幅度步階的中位數。"
+        "超調取每一軸小幅度步階的中位數（0 → ±a 與 ±a → 0；不含 +a → −a 的反向步階，也不含混控飽和的步階）。"
     )
     return recommended, rule
 
@@ -279,5 +337,35 @@ def run_study(
         baseline_log = res.get("log", baseline_log)
 
     recommended, rule = select(candidates)
+
+    # A recommendation on the sweep boundary says the optimum may lie outside
+    # it: add the next row (PD) or column (D) and select again, a bounded
+    # number of times, as one would in a second round on the bench.
+    pd_values, d_values = sorted(pd_values), sorted(d_values)
+    extensions = []
+    while len(extensions) < MAX_EXTENSIONS:
+        moves = _edge_moves(recommended, pd_values, d_values)
+        if not moves:
+            break
+        new = []
+        for axis, direction in moves:
+            values = pd_values if axis == "PD" else d_values
+            step = values[-1] - values[-2] if direction > 0 else values[1] - values[0]
+            value = round(values[-1] + step if direction > 0 else values[0] - step, 4)
+            if value <= 0.0:
+                continue
+            values.insert(len(values) if direction > 0 else 0, value)
+            extensions.append(f"{axis} {value:g}")
+            pairs = [(value, d) for d in d_values] if axis == "PD" else [(pd, value) for pd in pd_values]
+            new += [Candidate(f"PD×{pd:g} D×{d:g}", pd, d, cfg.with_gains(pd=pd, d=d)) for pd, d in pairs
+                    if not any(c.pd == pd and c.d == d for c in candidates + new)]
+        if not new:
+            break
+        jobs = [{"build": build_path, "cfg": c.cfg, "maneuver": tune, "log_rate": 2000.0, "seed": seed, "label": c.label,
+                 "noise_window": window} for c in new]
+        for cand, res in zip(new, _run(jobs, workers)):
+            cand.metrics = res["metrics"]
+        candidates = sorted(candidates + new, key=lambda c: (c.pd, c.d))
+        recommended, rule = select(candidates)
     return TuningStudy(cfg, noise_runs, candidates, recommended, rule, seed, tuple(pd_values), tuple(d_values), baseline_log,
-                       ff_off)
+                       ff_off, tuple(extensions))

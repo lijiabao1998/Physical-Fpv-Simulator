@@ -104,10 +104,13 @@ class QuadModel:
         self.v_induced_hover = math.sqrt(ac.weight / (self.n * 2.0 * rho * prop.disk_area))
         self.hover_omega = hover.omega if hover else 0.0
 
-        self.cda = extras.cda
+        # frame drag acts at a fixed point of the airframe (cda_center), part drag at each part:
+        # all of them as drag points relative to the CG
+        frame_point = cg if extras.cda_center is None else np.array(extras.cda_center)
         self.drag_points = [
             (tuple(float(x) for x in (np.array(pos) - cg)), tuple(float(a) for a in areas))
-            for pos, areas in extras.drag_points
+            for pos, areas in (((frame_point, extras.cda),) + tuple(extras.drag_points))
+            if any(areas)
         ]
         self.k_contact = extras.contact_stiffness
         self.c_contact = extras.contact_damping
@@ -261,12 +264,7 @@ class QuadModel:
                 thrusts[i] = thrust
                 js[i] = J
 
-        # body drag, per axis: the frame at the CG, parts with their own drag at their position
-        speed = math.sqrt(ub * ub + vb * vb + wb * wb)
-        q_dyn = 0.5 * rho * speed
-        fx -= q_dyn * self.cda[0] * ub
-        fy -= q_dyn * self.cda[1] * vb
-        fz -= q_dyn * self.cda[2] * wb
+        # body drag, per axis: the frame at its drag centre, parts with their own drag at their position
         for (px, py, pz), (ax_, ay_, az_) in self.drag_points:
             lu = ub + wy * pz - wz * py
             lv = vb + wz * px - wx * pz

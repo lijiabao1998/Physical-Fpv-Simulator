@@ -13,9 +13,10 @@ from pathlib import Path
 import numpy as np
 
 from . import __version__, plots, units
-from .compare import COMPARE_METRICS, Comparison, summarise_delta
+from .compare import COMPARE_METRICS, Comparison, forward_drag_split, summarise_delta
 from .performance import METRICS
 from .report import fmt_metric, fmt_probability, git_version, md_table, measurement_method, rel_path, verdict
+from .geometry import PROP_MARGIN, PROP_TIP_MARGIN
 from .tuning import ff_dominated
 
 AXES = ("roll", "pitch", "yaw")
@@ -24,7 +25,8 @@ KIND_ZH = {
     "added": "新增零件",
     "removed": "移除零件",
     "moved": "移動",
-    "replaced": "更換",
+    "replaced": "更換外形",
+    "mount": "安裝方式（mounted_on）",
     "component": "更換零件檔",
     "spec": "更換規格",
     "param_added": "新增參數",
@@ -49,6 +51,54 @@ FLIGHT_ROWS = (
 )
 def labels(n: int) -> list[str]:
     return ["base"] + [chr(ord("A") + i) for i in range(n - 1)]
+
+
+def _vibration_bias(tags, acs) -> str:
+    """Direction of the vibration-noise error per version, from its inertia
+    against the base's: larger on every axis -> conservative."""
+    base = np.diag(acs[0].mass_props.inertia)
+    verdicts: dict[str, list[str]] = {}
+    for tag, ac in zip(tags[1:], acs[1:]):
+        inertia = np.diag(ac.mass_props.inertia)
+        if np.all(inertia > base):
+            key = "的三軸慣量都比基準大，雜訊估計偏保守"
+        elif np.all(inertia < base):
+            key = "的三軸慣量都比基準小，雜訊估計偏樂觀"
+        else:
+            key = "的慣量有的軸較大、有的較小，偏差方向不確定"
+        verdicts.setdefault(key, []).append(tag)
+    return "；".join(f"{'、'.join(t)} {key}" for key, t in verdicts.items())
+
+
+def _evolution(base, build) -> str:
+    """The version's ``extends`` steps after the comparison base, when the
+    base is one of its ancestors; otherwise say that it is not derived
+    from the base (the changes against the base are in section 1)."""
+    root = [str(step["path"]) for step in base.lineage]
+    chain = [str(step["path"]) for step in build.lineage]
+    if chain[: len(root)] == root:
+        steps = build.lineage[len(root):]
+        return " → ".join(step["change"] or step["id"] for step in steps) or "與基準相同"
+    return "不是由基準衍生的版本（相對基準的變更見第 1 節）"
+
+
+def _mm(x: float, signed: bool = False) -> str:
+    return f"{1000 * x:+.1f} mm" if signed else f"{1000 * x:.1f} mm"
+
+
+def _clearance_risk(v) -> float:
+    """Monte Carlo probability that some part breaks the clearance rule."""
+    margin = v.mc.outputs.get("prop_clearance")
+    return float(np.mean(margin < 0.0)) if margin is not None else math.nan
+
+
+def _size_example(vs) -> str:
+    """Example sentence for the header, built from the first version's
+    actual mass change rather than a fixed number."""
+    dm = units.from_si(vs[1].nominal["auw"] - vs[0].nominal["auw"], "g")
+    if abs(dm) < 0.5:
+        return "例如槳的效率決定了同樣的變更要多耗多少電"
+    return f"例如槳的效率決定了{'多' if dm > 0 else '少'} {abs(dm):.0f} g 要{'多耗' if dm > 0 else '省下'}多少電"
 
 
 def _pct(x: float, signed: bool = False) -> str:
@@ -156,14 +206,13 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
     reqs = base.build.spec.requirements
     add("# 設計迭代比較報告\n")
     add("> 由 `fpvsim compare` 自動產生。所有版本用相同的設定分析：同一個隨機種子、相同的蒙地卡羅樣本數、同一份規格、"
-        "相同的飛控設定與飛行腳本。蒙地卡羅是**成對**的：在第 i 組樣本中，各版本共有的零件（同一個零件檔、同樣數值的參數）"
+        "相同的飛控設定與飛行腳本。蒙地卡羅是**成對**的：在第 i 組樣本中，各版本共有的零件（同一個零件檔與零件名稱、同樣數值的參數）"
         "取相同的值，所以差異是逐組直接算出來的，不受兩次獨立抽樣的雜訊干擾。"
-        "但共有零件仍會影響變更的**大小**（例如槳的效率決定了多 165 g 要多耗多少電），所以差異的區間也包含它們的不確定度，見第 3 節的敏感度分析。\n")
+        f"但共有零件仍會影響變更的**大小**（{_size_example(vs)}），所以差異的區間也包含它們的不確定度，見第 3 節的敏感度分析。\n")
     add(md_table(["代號", "版本", "設計檔", "相對基準的變更（演進順序）", "輸入檔雜湊"], [
         [tag, v.build.name, f"`{rel_path(v.build.path, root)}`",
-         " → ".join(step["change"] or step["id"] for step in v.build.lineage[1:]) or "基準設計",
-         f"`{v.build.input_hash()[:12]}`"]
-        for tag, v in zip(tags, vs)
+         "基準設計" if i == 0 else _evolution(base.build, v.build), f"`{v.build.input_hash()[:12]}`"]
+        for i, (tag, v) in enumerate(zip(tags, vs))
     ]))
     add("")
     add(md_table(["項目", "內容"], [
@@ -212,15 +261,23 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
         ixx = [ac.mass_props.inertia[0, 0] for ac in acs]
         parts = "、".join(f"{tags[i]} {_pct(os_roll[i])}" for i in range(1, len(vs)))
         line = f"- **控制：** 用相同的基準增益，滾轉超調在基準為 {_pct(os_roll[0])}，{parts}。"
-        consistent = all((ixx[i] > ixx[0]) == (os_roll[i] < os_roll[0]) for i in range(1, len(vs)))
-        if consistent and all(ixx[i] > ixx[0] for i in range(1, len(vs))):
-            line += "轉動慣量變大，同樣的增益等於較低的迴路增益，所以超調變小。"
+        ff_roll = [v.tuning.ff_off["axes"]["roll"].get("overshoot", math.nan) if v.tuning.ff_off else math.nan for v in vs]
+        if all(map(math.isfinite, ff_roll)):
+            line += ("把 F 設為 0 再飛一次，滾轉超調是 "
+                     + "、".join(f"{t} {_pct(o)}" for t, o in zip(tags, ff_roll)) + "。")
+            spread_ff, spread_0 = max(os_roll) - min(os_roll), max(ff_roll) - min(ff_roll)
+            heavier = all(ixx[i] > ixx[0] for i in range(1, len(vs)))
+            if spread_0 < 0.5 * spread_ff and heavier and all(os_roll[i] < os_roll[0] for i in range(1, len(vs))):
+                line += ("版本之間的差異主要來自 feedforward：它給的角加速度與 F 除以轉動慣量成正比，"
+                         "慣量變大時同樣的 F 推得較少，超調跟著變小。")
         line += "各版本自己的調參建議見第 7 節。"
         add(line)
-    clear_issues = [(tags[i], p) for i, problems in enumerate(cmp.clearance) for p in problems]
+    clear_issues = [(tags[i], c, _clearance_risk(v)) for i, (v, c) in enumerate(zip(vs, cmp.clearance))
+                    if c is not None and (c.margin < 0.0 or _clearance_risk(v) > 0.05)]
     if clear_issues:
-        add("- **幾何檢查：** " + "；".join(f"{t} 的 `{p.part}` 與第 {p.rotor + 1} 顆槳的槳平面只差 {1000 * p.gap:.1f} mm"
-                                          for t, p in clear_issues) + "（見第 4 節）。")
+        add("- **槳葉間隙：** " + "；".join(
+            f"{t} 的 `{c.part}` 離第 {c.rotor + 1} 顆槳的槳盤 {_mm(c.horizontal)}、離槳平面 {_mm(c.vertical)}（標稱值），"
+            f"考慮安裝位置的不確定度，間隙不足的機率 {_pct(risk)}" for t, c, risk in clear_issues) + "（見第 4 節）。")
     add("")
 
     # 1 changes ------------------------------------------------------------
@@ -289,17 +346,23 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
                       " / ".join(f"{c * 1e4:.0f}" for c in drag)])
     add(md_table(["版本", "全備重量", "重心偏移（前 + / 右 +）", "重心高於槳平面", "Ixx / Iyy / Izz (g·m²)",
                   "Ixz (g·m²)", "阻力面積 x / y / z (cm²)"], table))
-    add("\n- 重心高於槳平面時，前飛的槳盤阻力作用在重心下方、指向後方，會產生**低頭**力矩，傾向加大前傾；"
-        "零件自己的阻力（例如相機）作用在零件位置，裝得越高，前飛時的抬頭力矩越大。兩者都由飛控修正，且都已包含在飛行模擬中。")
+    add("\n- 前飛時的阻力力矩：重心高於槳平面時，槳盤阻力作用在重心下方、指向後方，產生**低頭**力矩；"
+        "機架本身的阻力作用在機架上的固定點（機架檔的 `drag_center`），重心升高後它也在重心下方，同樣產生低頭力矩；"
+        "零件自己的阻力（例如相機）作用在零件位置，裝得比重心高時產生**抬頭**力矩。三者都由飛控修正，且都已包含在飛行模擬中。")
     add("- Ixz 是滾轉與偏航之間的慣性積（張量形式），不為零時兩軸的運動會互相耦合；裝在高處且偏前的零件會讓它變大。")
-    problems = [(tags[i], p) for i, ps in enumerate(cmp.clearance) for p in ps]
-    if problems:
-        add("- **槳葉間隙檢查未通過：** " + "；".join(
-            f"{t} 的 `{p.part}` 在第 {p.rotor + 1} 顆槳的槳盤範圍內，離槳平面 {1000 * p.gap:.1f} mm" for t, p in problems)
-            + "（門檻 10 mm）。")
-    else:
-        add("- 槳葉間隙檢查通過：沒有零件位於槳盤範圍內且離槳平面不到 10 mm。")
-    add("\n![Side views](side_views.png)\n")
+    add(f"\n**槳葉間隙：** 每個零件（機架與動力系統以外）要在槳盤外 {_mm(PROP_TIP_MARGIN)} 以上，或離槳平面 {_mm(PROP_MARGIN)} 以上。"
+        "餘量是最差的零件在較容易的方向上還能移動多少，負值表示兩條都不滿足。"
+        "間隙不足的機率取自蒙地卡羅樣本，包含零件安裝位置的不確定度（`position_u`）。\n")
+    failures = cmp.clearance_failures or [{} for _ in vs]
+    add(md_table(["版本", "餘量（標稱值）", "標稱值最接近的零件", "離槳盤邊緣 / 離槳平面", "間隙不足的機率", "不足時的零件（樣本數）"], [
+        [tag, _mm(c.margin, signed=True), f"`{c.part}`（第 {c.rotor + 1} 顆槳）",
+         f"{_mm(c.horizontal, signed=True)} / {_mm(c.vertical)}", fmt_probability(_clearance_risk(v), v.mc),
+         "、".join(f"`{part}` {n}" for part, n in f.items()) or "—"]
+        if c is not None else [tag, "—", "—", "—", "—", "—"]
+        for tag, v, c, f in zip(tags, vs, cmp.clearance, failures)
+    ]))
+    add("\n離槳盤邊緣為負值表示零件在俯視圖上位於槳盤範圍內。\n")
+    add("![Side views](side_views.png)\n")
 
     # 5 endurance ----------------------------------------------------------
     add("## 5. 懸停續航\n")
@@ -308,21 +371,39 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
          fmt_metric("hover_current", v.nominal["hover_current"]), fmt_metric("hover_duty", v.nominal["hover_duty"])]
         for tag, v in zip(tags, vs)
     ]))
-    add("\n懸停續航只取決於重量與動力系統，與重心位置無關，所以重量相同的版本續航相同。\n")
+    groups: dict[int, list[int]] = {}
+    for i, v in enumerate(vs):  # versions with equal weight and equal hover endurance (within 0.1 g, 0.5 s)
+        groups.setdefault(round(v.nominal["auw"] * 1e4), []).append(i)
+    same = ["、".join(tags[i] for i in g) for g in groups.values()
+            if len(g) > 1 and max(vs[i].endurance.endurance for i in g) - min(vs[i].endurance.endurance for i in g) < 0.5]
+    add("\n懸停續航取決於重量、動力系統與航電耗電，與重心位置無關"
+        + (f"；{'；'.join(same)} 的重量與耗電相同，所以懸停續航相同。\n" if same else "。\n"))
     add("![Endurance](endurance.png)\n")
 
     # 6 flight -------------------------------------------------------------
     if flown:
         add("## 6. 飛行測試對照\n")
         add("相同的飛控設定（基準增益）、相同的飛行腳本與隨機種子。**這是每個版本一次、所有參數取標稱值的飛行，沒有不確定度。**"
-            "阻力面積、槳盤阻力係數、ESC 電流限制與振動等參數只影響這一節；它們的不確定度還沒有傳遞到飛行結果。\n")
+            "阻力面積、槳盤阻力係數、ESC 電流限制與振動等參數只用於模擬飛行（本節與第 7 節的調參）；"
+            "它們的不確定度還沒有傳遞到飛行結果。\n")
         table = []
         for key, title, unit, fmt in FLIGHT_ROWS:
             if not all(key in v.flight_summary for v in vs):
                 continue
             table.append([title] + [fmt.format(v.flight_summary[key]) + ("" if unit == "%" else f" {unit}") for v in vs])
         add(md_table(["項目"] + tags, table))
-        add("\n前飛段末傾角：重量變大但阻力增加較少時，維持同樣速度需要的傾角反而較小。\n")
+        if all("forward_pitch" in v.flight_summary and "forward_speed" in v.flight_summary for v in vs):
+            lower = [i for i in range(1, len(vs)) if vs[i].nominal["auw"] > base.nominal["auw"]
+                     and vs[i].flight_summary["forward_pitch"] < base.flight_summary["forward_pitch"]]
+            if lower:
+                speed = base.flight_summary["forward_speed"]
+                ratio = []
+                for i in [0] + lower:
+                    rotor, body = forward_drag_split(acs[i], speed)
+                    ratio.append(f"{tags[i]} {(rotor + body) / acs[i].weight:.3f}（槳盤阻力占 {rotor / (rotor + body):.0%}）")
+                add(f"\n前飛段末傾角：{'、'.join(tags[i] for i in lower)} 比基準重，傾角卻較小。定速前飛時 tan(傾角) ≈ 阻力 ÷ 重量；"
+                    f"在 {speed:.0f} m/s 時阻力以槳盤阻力為主，它隨推力的平方根增加，比重量增加得慢，所以阻力 ÷ 重量反而變小："
+                    + "、".join(ratio) + "（一階估計，旋翼在懸停轉速）。\n")
         add("![Flight comparison](flight.png)\n")
         crashed = [t for t, v in zip(tags, vs) if v.flight_summary.get("crashed")]
         if crashed:
@@ -332,8 +413,9 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
     if tuned:
         add("## 7. 控制響應與調參\n")
         add("圖中是所有版本都用**基準增益**時的步階響應，取自各版本調參研究中的基準候選。"
-            "調參飛行的每一軸都有固定時間的小幅度步階（不讓混控飽和），步階的時刻已知，所以直接在每一次步階量測，不必反卷積；"
-            "表中是 12 次步階的中位數，括號為四分位距。陰影是各次步階之間的標準差。\n")
+            "調參飛行的每一軸都有固定時間的小幅度步階，步階的時刻已知，所以直接在每一次步階量測，不必反卷積；"
+            "表中是各次步階的中位數，括號為四分位距；+a → −a 的反向步階（兩倍幅度）與混控飽和的步階不計入。"
+            "陰影是各次步階之間的標準差。\n")
         add("![Step responses](steps.png)\n")
         table = []
         for tag, v, s in zip(tags, vs, steps):
@@ -358,9 +440,15 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
             add("超調主要來自 feedforward 的軸（基準增益下 F 設為 0 再飛一次的對照）："
                 + "；".join(f"{t}：" + "、".join(f"{AXIS_ZH[a]} {_pct(o)} → {_pct(o0)}" for a, o, o0, _, _ in axes) for t, axes in ff)
                 + "。PD 掃描改變不了這部分，應單獨調整該軸的 F。\n")
-        edges = [f"{t}（{'、'.join(v.tuning.at_grid_edge)}）" for t, v in zip(tags, vs) if v.tuning.at_grid_edge]
-        if edges:
-            add(f"建議值落在掃描範圍邊緣的有：{'、'.join(edges)}，下一輪應往該方向擴大掃描。\n")
+        add("各版本的掃描在建議值落在範圍邊緣時會自動擴大。建議值往各方向再走一格會碰到的限制：\n")
+        for t, v in zip(tags, vs):
+            st = v.tuning
+            reasons = "；".join(f"{d}（{n.label}）{reason}" for d, n, reason in st.binding()) or "—"
+            ext = f"自動擴大：{'、'.join(st.extensions)}。" if st.extensions else ""
+            edge = (f"**仍在掃描範圍邊緣（{'、'.join(st.at_grid_edge)}）**，下一輪應往 {'、'.join(st.widen_towards)} 的方向擴大。"
+                    if st.at_grid_edge else "")
+            add(f"- {t}：{ext}{edge}{reasons}。")
+        add("")
 
     # 8 next steps ---------------------------------------------------------
     add("## 8. 下一步\n")
@@ -388,13 +476,17 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
 
     # 9 method -------------------------------------------------------------
     add("## 9. 方法與限制\n")
-    add("- 成對蒙地卡羅：每個參數的亂數流由（種子，零件身分）決定：零件檔的參數以零件檔的 id 為身分，其他參數以名稱、數值與不確定度為身分。"
-        "所以同一個零件在各版本的第 i 組樣本中取值相同；換了零件或改了數值，就視為不同的物品，誤差彼此獨立。")
+    add("- 成對蒙地卡羅：每個參數的亂數流由（種子，物品身分）決定：零件檔的參數以零件檔（id 與檔案內容）加上零件名稱為身分，"
+        "其他參數以名稱、數值、不確定度、分布與來源為身分。所以同一個零件在各版本的第 i 組樣本中取值相同；"
+        "換了零件檔、改了檔案內容或數值、或用了新的零件名稱，就視為不同的物品，誤差彼此獨立。")
     add("- 差異的區間包含共有參數的影響：它們不會被成對抽樣消去，因為變更的效果大小本身就取決於它們（見第 3 節敏感度）。")
-    add("- 阻力以零件疊加估計：機架的阻力作用在重心，零件的阻力作用在零件位置；零件之間的干擾與相機傾角對阻力的影響未計。")
+    add("- 阻力以零件疊加估計：機架的阻力作用在機架上的固定點（`drag_center`，估計值），零件的阻力作用在零件位置；"
+        "零件之間的干擾、相機傾角對阻力的影響，以及電池移動造成的機架阻力中心變化都未計。")
     add("- 相機視為剛性安裝；TPU 軟座的振動隔離與畫面果凍效應不在模型內。相機在前槳上方時對進氣的遮擋也未計。")
-    add("- 陀螺儀振動模型的振幅沿用基準設計。實際上同樣的不平衡力作用在較大的慣性上，角速度振動會較小，所以變更後版本的雜訊估計偏保守。")
+    add("- 陀螺儀振動模型的振幅以角速度表示、只隨轉速變化，所以各版本沿用同一組數值。實際上同樣的不平衡力作用在較大的慣性上，"
+        "角速度振動會較小：" + _vibration_bias(tags, acs) + "。")
     add("- 推重比只計入維持水平所能用的推力：重心偏離推力中心時，靠近重心那側的馬達先到滿載。")
+    add("- 零件可以標示 `mounted_on`（例如相機座綁在電池上）：它的安裝位置誤差等於母零件的誤差加上自己相對母零件的誤差。")
     add("- 所有版本使用同一份規格；若版本的規格不同，`fpvsim compare` 會拒絕比較。")
     path = out_dir / "report.md"
     path.write_text("\n".join(md) + "\n", encoding="utf-8")

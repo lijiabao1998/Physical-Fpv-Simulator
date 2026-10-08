@@ -67,6 +67,27 @@ def test_drag_above_the_cg_pitches_the_nose_up_in_forward_flight(builds):
     assert gain * with_points.inertia[1][1] == pytest.approx(lever * drag, rel=0.05)
 
 
+def test_frame_drag_acts_at_a_fixed_point_of_the_airframe(builds):
+    """The frame's drag centre does not move with the payload: with the CG raised by
+    the camera, frame drag acts below the CG and pitches the nose down in forward flight."""
+    from dataclasses import replace
+    from fpvsim.dynamics import QuadModel
+
+    base, a, _ = builds
+    ac = a.realize()
+    assert ac.extras.cda_center == base.realize().extras.cda_center
+    clean = QuadModel(ac, replace(ac.extras, drag_points=(), cda=(0.0, 0.0, 0.0)))
+    frame = QuadModel(ac, replace(ac.extras, drag_points=()))
+    s = frame.initial_state(position=(0, 0, -50.0))
+    s[3] = 15.0  # flying north, level, motors stopped
+    gain = frame.derivative(s, [0.0] * 4)[11] - clean.derivative(s, [0.0] * 4)[11]
+    lever = ac.extras.cda_center[2] - ac.mass_props.cg[2]  # > 0: drag centre below the CG
+    assert lever > 0.01
+    drag = 0.5 * ac.env.rho * 15.0**2 * ac.extras.cda[0]
+    assert gain < 0.0
+    assert -gain * frame.inertia[1][1] == pytest.approx(lever * drag, rel=0.05)
+
+
 def test_trimmed_thrust_to_weight(builds):
     from fpvsim.performance import full_throttle_point, trim_factor
 
@@ -187,6 +208,20 @@ def test_swapped_component_gets_independent_errors(tmp_path):
     assert not np.allclose(a["battery.mass"], b["battery.mass"])  # independent parts
     assert np.std(b["battery.mass"] - a["battery.mass"]) == pytest.approx(np.sqrt(2) * base.params["battery.mass"].u, rel=0.15)
     assert np.array_equal(a["motor.kv"], b["motor.kv"])  # the unchanged motor stays paired
+
+
+def test_copied_component_file_with_edited_values_is_a_different_item(tmp_path):
+    """A part file copied and edited without changing its id must not share the original's errors."""
+    battery = ROOT / "data" / "components" / "batteries" / "generic-6s-1300mah.toml"
+    text = battery.read_text(encoding="utf-8")
+    bigger = tmp_path / "bigger-6s.toml"  # same id, edited capacity
+    bigger.write_text(text.replace("value = 1300", "value = 1500", 1), encoding="utf-8")
+    assert "value = 1500" in bigger.read_text(encoding="utf-8")
+    variant = _variant(tmp_path, f'[meta]\nextends = "{REFERENCE_BUILD}"\nid = "bigger"\n[components]\nbattery = "{bigger}"\n')
+    base, changed = load_build(REFERENCE_BUILD), load_build(variant)
+    assert base.params["battery.capacity"].stream != changed.params["battery.capacity"].stream
+    assert base.params["battery.r0_cell"].stream != changed.params["battery.r0_cell"].stream  # the whole pack is new
+    assert base.params["motor.kv"].stream == changed.params["motor.kv"].stream
 
 
 def test_revalued_inline_parameter_gets_its_own_stream(tmp_path):

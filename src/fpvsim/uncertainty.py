@@ -3,8 +3,9 @@
 * Monte Carlo (GUM Supplement 1 approach): every uncertain input is drawn
   from its distribution, the full analysis runs on each sample, and the
   output distribution gives percentiles and the probability of meeting each
-  requirement. Inputs are treated as independent. Draws are keyed by
-  parameter, so sample i of two builds shares every common input value
+  requirement. Inputs are treated as independent. Draws are keyed by the
+  physical item a parameter belongs to (ParamSet.sample, docs/iteration.md),
+  so sample i of two builds shares the values of every item both contain
   (paired comparison, see compare.py).
 * One-at-a-time sensitivity (tornado): each input is moved by +/- one
   standard uncertainty with all others nominal. It shows which measurement

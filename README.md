@@ -29,7 +29,7 @@ Physics-first FPV simulator built from real physical properties.
 - [參考機設計報告](reports/ref-5in-6s-freestyle/report.md)（第 1–4 階段）
 - [調參報告](reports/tune-acro-5in-baseline/report.md)（第 5 階段）
 - [飛行測試報告：綜合飛行](reports/flight-freestyle/report.md)（第 6 階段）
-- [設計迭代：加掛運動相機的兩個版本](reports/compare-actioncam/report.md)（第 7 階段）
+- [設計迭代：加掛運動相機的三個版本](reports/compare-actioncam/report.md)（第 7 階段）
 
 ## 快速開始
 
@@ -67,6 +67,7 @@ python -m venv .venv
 ```bash
 .venv/bin/fpvsim compare data/builds/ref-5in-6s-freestyle.toml \
     data/builds/ref-5in-6s-freestyle-actioncam-a.toml data/builds/ref-5in-6s-freestyle-actioncam-b.toml \
+    data/builds/ref-5in-6s-freestyle-actioncam-c.toml \
     --fc data/fc/acro-5in-baseline.toml
 ```
 

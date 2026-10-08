@@ -20,7 +20,19 @@ AXES = ("roll", "pitch", "yaw")
 AXIS_ZH = {"roll": "滾轉", "pitch": "俯仰", "yaw": "偏航"}
 
 
+_DIRECTION_ZH = {"PD+": "PD 再加", "PD-": "PD 再減", "D+": "D 再加", "D-": "D 再減"}
 MARGIN_WARN = 0.02  # flag a recommendation closer than this to the overshoot limit
+
+
+def _edge_count_text(cand) -> str:
+    """How many step edges per axis went into the medians of a candidate."""
+    if cand is None:
+        return "每一軸的小幅度步階"
+    ax = cand.metrics["axes"]
+    used = "、".join(f"{AXIS_ZH[a]} {ax[a].get('edges', 0)} 次" for a in ("roll", "pitch", "yaw"))
+    dropped = sum(ax[a].get("edges_saturated", 0) for a in ("roll", "pitch", "yaw"))
+    note = f"；另有 {dropped} 次因混控飽和排除" if dropped else ""
+    return f"基準設定：{used}{note}；+a → −a 的反向步階是兩倍幅度，不計入"
 
 
 def _pct(x: float) -> str:
@@ -150,9 +162,18 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
             add(line)
         if bo["roll"] - bo["pitch"] > 0.05:
             inertia = build.realize().mass_props.inertia * 1000
-            add(f"- **滾轉比俯仰更容易超調**（基準設定 {_pct(bo['roll'])} 對 {_pct(bo['pitch'])}），"
-                f"與兩軸慣性不同一致（Ixx = {inertia[0, 0]:.2f}、Iyy = {inertia[1, 1]:.2f} g·m²，"
-                "同樣的增益在慣性較小的軸上等於較高的迴路增益）。本次掃描對三軸使用相同倍數，下一輪應分軸調整。")
+            line = f"- **滾轉比俯仰更容易超調**（基準設定 {_pct(bo['roll'])} 對 {_pct(bo['pitch'])}）。"
+            if study.ff_off:
+                f0 = {a: study.ff_off["axes"][a].get("overshoot", math.nan) for a in ("roll", "pitch")}
+                line += f"F = 0 時是 {_pct(f0['roll'])} 對 {_pct(f0['pitch'])}"
+                if abs(f0["roll"] - f0["pitch"]) < 0.5 * (bo["roll"] - bo["pitch"]):
+                    line += (f"，所以差異來自 feedforward：滾轉的慣量較小（Ixx = {inertia[0, 0]:.2f}、Iyy = {inertia[1, 1]:.2f} g·m²），"
+                             "同樣的 F 帶來較大的角加速度。下一輪應分軸調整 F。")
+                else:
+                    line += "，差異不只來自 feedforward。本次掃描對三軸使用相同倍數，下一輪應分軸調整。"
+            else:
+                line += "本次掃描對三軸使用相同倍數，下一輪應分軸調整。"
+            add(line)
     elif not rec:
         add("- **沒有候選設定符合條件。** 請擴大掃描範圍或放寬條件。")
     ff_axes = ff_dominated(study)
@@ -162,11 +183,20 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
         rule_note = "，而且偏航不在判定規則內" if any(a[0] == "yaw" for a in ff_axes) else ""
         add(f"- **{names}的超調主要來自 feedforward：**" + "；".join(parts)
             + f"。PD 掃描改變不了這部分{rule_note}；下一輪應單獨掃描{names}的 F，在超調與上升時間之間取捨。")
+    if study.extensions:
+        add(f"- **掃描範圍自動擴大了 {len(study.extensions)} 次**（{'、'.join(study.extensions)}）：原本的建議值落在掃描範圍邊緣。")
     if study.at_grid_edge:
-        add(f"- **建議值落在掃描範圍邊緣（{'、'.join(study.at_grid_edge)}）**，更好的設定可能在範圍外，下一輪應往該方向擴大掃描。")
+        add(f"- **建議值仍落在掃描範圍邊緣（{'、'.join(study.at_grid_edge)}）**"
+            + (f"，已自動擴大 {len(study.extensions)} 次（上限）" if study.extensions else "")
+            + "，更好的設定可能在範圍外，下一輪應往該方向擴大掃描。")
+    binding = study.binding()
+    if binding:
+        add("- **建議值的限制**（往各方向再走一格的候選）：" + "；".join(
+            f"{_DIRECTION_ZH[d]}（{n.label}）{reason}" for d, n, reason in binding) + "。")
     worst = max(study.candidates, key=lambda c: c.metrics["motor_noise"])
-    add(f"- 增益最高的設定（{worst.label}）馬達雜訊 {worst.metrics['motor_noise']:.3f}%，是基準的 "
-        f"{worst.metrics['motor_noise'] / base.metrics['motor_noise']:.0f} 倍：增益再往上就會碰到雜訊放大的懸崖。" if base else "")
+    if base:
+        add(f"- 雜訊最高的候選（{worst.label}）馬達雜訊 {worst.metrics['motor_noise']:.3f}%，是基準的 "
+            f"{worst.metrics['motor_noise'] / base.metrics['motor_noise']:.1f} 倍。")
     add("- **可信度：** 振動模型的振幅是估計值，所以雜訊的**絕對數值**尚未確認；"
         "但同一個模型下，不同設定之間的**相對比較**是有意義的。用實機的未濾波陀螺儀 log 辨識振動參數後，絕對數值才能採信。\n")
 
@@ -201,9 +231,12 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
         + "、".join(f"{h * rpm_hz:.0f} Hz" for h in range(1, cfg.rpm_harmonics + 1)) + "。\n")
 
     add("## 3. 增益掃描\n")
-    add("以基準設定為中心，P 與 D 一起乘上「PD 倍數」，D 再另外乘上「D 倍數」，I 與 F 不變。"
-        "每個候選飛同一段調參飛行：每一軸有固定時間、小幅度（不讓混控飽和）的正反向步階。"
-        "步階的時刻已知，所以直接在每一次步階量測超調、上升時間與安定時間，取 12 次的中位數。"
+    add("以基準設定為中心，P 與 D 一起乘上「PD 倍數」，D 再另外乘上「D 倍數」，I 與 F 不變；"
+        "建議值落在範圍邊緣時，自動往那個方向多加一排候選再選一次"
+        f"（PD 倍數 {', '.join(f'{x:g}' for x in study.pd_values)}；D 倍數 {', '.join(f'{x:g}' for x in study.d_values)}；共 {len(study.candidates)} 組）。"
+        "每個候選飛同一段調參飛行：每一軸有固定時間、小幅度的正反向步階。"
+        "步階的時刻已知，所以直接在每一次步階量測超調、上升時間與安定時間，取中位數"
+        f"（{_edge_count_text(base)}）。"
         "雜訊只在最後一段平飛油門爬升中量測，因為步階本身的訊號也落在同一個頻帶。\n")
     add(f"**判定規則：** {study.rule}\n")
     rows = []
@@ -256,8 +289,8 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
     add("\n下一步：")
     if study.at_grid_edge:
         caution = (f"；同時留意雜訊，{worst.label} 的馬達雜訊已是基準的 "
-                   f"{worst.metrics['motor_noise'] / base.metrics['motor_noise']:.0f} 倍" if base else "")
-        add(f"1. 以建議值為中心、往 {'、'.join(study.at_grid_edge)} 增加的方向擴大掃描{caution}。")
+                   f"{worst.metrics['motor_noise'] / base.metrics['motor_noise']:.1f} 倍" if base else "")
+        add(f"1. 以建議值為中心、往 {'、'.join(study.widen_towards)} 的方向擴大掃描{caution}。")
     add(f"{2 if study.at_grid_edge else 1}. 用實機錄一段未濾波陀螺儀的 Blackbox log，辨識振動參數，讓雜訊的絕對數值可以採信。")
     add(f"{3 if study.at_grid_edge else 2}. 在建議設定下，評估「RPM 濾波 + 較輕的低通」能否在雜訊可接受時換到更低的延遲。\n")
 

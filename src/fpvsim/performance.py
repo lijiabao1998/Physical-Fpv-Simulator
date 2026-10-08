@@ -23,6 +23,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from .battery import BatteryState
+from .geometry import clearance_margin
 from .powertrain import OperatingPoint
 
 if TYPE_CHECKING:  # design imports this module; avoid the cycle at runtime
@@ -58,6 +59,7 @@ METRICS: dict[str, Metric] = {
         Metric("full_throttle_cell_voltage", "全油門單芯電壓（滿電）", "Full-throttle cell voltage", "V", ".2f"),
         Metric("tip_mach", "全油門槳尖馬赫數", "Full-throttle tip Mach", "1", ".3f"),
         Metric("disk_loading", "懸停槳盤負載", "Hover disk loading", "Pa", ".1f"),
+        Metric("prop_clearance", "槳葉間隙餘量（最差的零件）", "Prop clearance margin", "mm", ".1f"),
     )
 }
 
@@ -179,6 +181,7 @@ def evaluate(ac: "Aircraft", dt: float = 1.0) -> dict[str, float]:
         "full_throttle_cell_voltage": full.v_bus / ac.battery.series if full else nan,
         "tip_mach": ac.powertrain.prop.tip_mach(full.omega, ac.env.speed_of_sound) if full else nan,
         "disk_loading": ac.weight / (n * ac.powertrain.prop.disk_area),
+        "prop_clearance": worst.margin if (worst := clearance_margin(ac)) else nan,
     }
 
 

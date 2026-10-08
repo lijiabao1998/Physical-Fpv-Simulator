@@ -61,6 +61,12 @@ def fmt_probability(p: float, mc: MonteCarloResult) -> str:
     return f"{p:.1%} ± {mc.probability_stderr(p):.1%}"
 
 
+def fmt_u_rel(p) -> str:
+    """Relative standard uncertainty as a percentage; '—' when the value is
+    zero (placement offsets), where a relative figure has no meaning."""
+    return f"{p.u_rel:.0%}" if math.isfinite(p.u_rel) else "—"
+
+
 def md_table(header: list[str], rows: list[list[str]]) -> str:
     lines = ["| " + " | ".join(header) + " |", "|" + "|".join("---" for _ in header) + "|"]
     lines += ["| " + " | ".join(str(c).replace("|", "\\|") for c in row) + " |" for row in rows]
@@ -92,11 +98,16 @@ def verdict(p: float, mc: MonteCarloResult | None = None) -> str:
     two Monte Carlo standard errors of a threshold is marked as borderline,
     because another seed could put it on the other side."""
     label = "符合" if p >= 0.95 else ("有風險" if p >= 0.5 else "不符合")
-    if mc is not None and 0.0 < p < 1.0:
+    if mc is None:
+        return label
+    if p >= 1.0:  # no failures: the rule-of-three bound may still lie below 95 % for small n
+        borderline = 1.0 - 3.0 / mc.n < 0.95
+    elif p <= 0.0:  # no passes: likewise against the 50 % threshold
+        borderline = 3.0 / mc.n > 0.5
+    else:
         se = mc.probability_stderr(p)
-        if any(abs(p - t) < 2.0 * se for t in (0.95, 0.5)):
-            return f"{label}（臨界）"
-    return label
+        borderline = any(abs(p - t) < 2.0 * se for t in (0.95, 0.5))
+    return f"{label}（臨界）" if borderline else label
 
 
 _MEASUREMENT_METHODS = (
@@ -389,7 +400,8 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
         "不影響本報告的穩態分析，所以它們在敏感度分析中的影響為零。\n")
     rows = []
     for p in sorted(build.params, key=lambda p: p.key):
-        u = "—" if not p.uncertain else f"±{p.display_u:.3g}（{p.u_rel:.0%}{'，均勻' if p.dist == 'uniform' else ''}）"
+        rel = "" if not math.isfinite(p.u_rel) else f"（{p.u_rel:.0%}{'，均勻' if p.dist == 'uniform' else ''}）"
+        u = "—" if not p.uncertain else f"±{p.display_u:.3g}{rel or ('（均勻）' if p.dist == 'uniform' else '')}"
         rows.append([f"`{p.key}`", fmt_param(p), u, p.source.label_zh, " ".join(x for x in (p.note, p.ref) if x)])
     add(md_table(["參數", "數值", "不確定度", "來源", "說明"], rows))
     add("")
@@ -442,5 +454,6 @@ def _priorities(build: Build, bars, nominal) -> list[list[str]]:
             m = METRICS[metric]
             effects.append(f"±{abs(units.from_si(hi, m.unit) - units.from_si(lo, m.unit)) / 2:{m.fmt}}"
                            + ("" if m.unit == "1" else f" {m.unit}"))
-        rows.append([str(i), f"`{key}`", p.source.label_zh, f"{p.u_rel:.0%}", effects[0], effects[1], measurement_method(key)])
+        rows.append([str(i), f"`{key}`", p.source.label_zh, fmt_u_rel(p) if math.isfinite(p.u_rel) else f"±{p.display_u:.3g} {p.unit}",
+                     effects[0], effects[1], measurement_method(key)])
     return rows

@@ -3,6 +3,12 @@
 # on the motor mounting plane (top surface of the arms).
 schema = "fpvsim.component/1"
 
+# Where the frame's own drag (cda_x/y/z below) acts: roughly the centroid of the frontal and top
+# areas (battery on the top plate, plates and stack, arms). A fixed point of the airframe, so a
+# payload that raises the CG changes this drag's moment arm. Estimate; identify from flight tests
+# (trim pitch against airspeed) together with the drag areas.
+drag_center = { value = [0, 0, -25], unit = "mm" }
+
 [meta]
 id = "generic-5in-freestyle-225"
 category = "frame"

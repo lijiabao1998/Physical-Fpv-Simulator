@@ -59,10 +59,15 @@ class Maneuver:
         """(start, end) of the scripted step segments of ``axis``."""
         return [(s.start, s.end) for s in self.segments if s.tag == f"step:{axis}"]
 
-    def axis_spans(self, axis: str, before: float = 0.3, after: float = 1.0) -> list[tuple[float, float]] | None:
+    def axis_spans(self, axis: str, before: float = 0.3, after: float = 1.0,
+                   min_length: float = 2.5) -> list[tuple[float, float]] | None:
         """Time spans in which ``axis`` is being stepped by the script (merged),
-        or None if the script never overrides it."""
-        spans = sorted((s.start - before, s.end + after) for s in self.segments if axis in s.sticks)
+        or None if the script never overrides it. Each span is at least
+        ``min_length`` long (the 2 s deconvolution window plus its 0.5 s hop),
+        extended after the override, so a short override still gives one
+        analysis window."""
+        spans = sorted((s.start - before, max(s.end + after, s.start - before + min_length))
+                       for s in self.segments if axis in s.sticks)
         if not spans:
             return None
         merged = [list(spans[0])]
@@ -83,15 +88,17 @@ def step_test(amplitudes=(0.3, 0.5), cycles: int = 2, start: float = 1.0, gap: f
 
     The axis is under script control for the whole block, so every edge is a
     clean step from a settled level and the test pilot's corrections never
-    enter it; a +a / -a pair leaves the attitude about where it started. The
-    amplitudes keep the mixer out of saturation (small-signal response).
-    Segments are tagged "step:<axis>". Returns the segments and the end time."""
+    enter it; a +a / -a pair leaves the attitude about where it started.
+    The measured edges are 0 -> +a and -a -> 0, steps of size a, tagged
+    "step:<axis>". The +a -> -a reversal is a step of 2a, outside the
+    small-signal range the amplitudes are chosen for, so it is tagged
+    "reverse:<axis>" and not measured. Returns the segments and the end time."""
     segments, t = [], start
     for axis in ("roll", "pitch", "yaw"):
         for amp in amplitudes:
             for _ in range(cycles):
-                for value, hold in ((amp, STEP_HOLD), (-amp, STEP_HOLD), (0.0, STEP_REST)):
-                    segments.append(Segment(t, t + hold, {axis: value}, tag=f"step:{axis}"))
+                for value, hold, kind in ((amp, STEP_HOLD, "step"), (-amp, STEP_HOLD, "reverse"), (0.0, STEP_REST, "step")):
+                    segments.append(Segment(t, t + hold, {axis: value}, tag=f"{kind}:{axis}"))
                     t += hold
         t += gap  # the pilot levels out before the next axis
     return segments, t

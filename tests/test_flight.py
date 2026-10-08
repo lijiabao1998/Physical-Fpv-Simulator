@@ -15,7 +15,7 @@ from fpvsim.flightcontroller import AxisRates, FlightController, dump_fc_config,
 from fpvsim.performance import hover_point
 from fpvsim.pilot import MANEUVERS
 from fpvsim.sim import SimSettings, simulate
-from fpvsim.tuning import Candidate, TuningStudy, ff_dominated, robust_alternative, select
+from fpvsim.tuning import Candidate, TuningStudy, _edge_moves, ff_dominated, robust_alternative, select
 
 from conftest import ROOT
 
@@ -58,7 +58,8 @@ def test_free_fall_is_exact_without_drag(aircraft):
 
 
 def test_terminal_velocity_matches_drag_balance(aircraft):
-    m = model(aircraft)
+    # drag centre at the CG: an offset drag centre pitches the falling quad over (tested in test_variants)
+    m = model(aircraft, cda_center=tuple(float(x) for x in aircraft.mass_props.cg))
     s = run(m, m.initial_state(position=(0, 0, -5000.0)), [0.0] * 4, 2e-3, 20.0)
     cda_z = aircraft.extras.cda[2]
     v_t = math.sqrt(2 * aircraft.mass_props.mass * aircraft.env.g / (aircraft.env.rho * cda_z))
@@ -387,6 +388,23 @@ def test_ff_dominated_names_axes_whose_overshoot_feedforward_causes():
     assert ff_dominated(TuningStudy(None, [], [base], None, "", 1)) == []
 
 
+def test_sweep_edge_and_binding_constraints():
+    grid = {}
+    for pd in (0.85, 1.0, 1.15):
+        for d in (1.0, 1.25):
+            noise = 0.04 * pd * d * (3.0 if (pd, d) == (1.15, 1.25) else 1.0)
+            grid[(pd, d)] = _candidate(f"PD×{pd:g} D×{d:g}", pd, d, 0.10, noise, 10.0 - pd + 0.5 * (d - 1.0))
+    cands = list(grid.values())
+    rec, _ = select(cands)
+    assert rec.label == "PD×1.15 D×1"  # PD×1.15 D×1.25 is too noisy
+    assert _edge_moves(rec, (0.85, 1.0, 1.15), (1.0, 1.25)) == [("PD", 1), ("D", -1)]
+    study = TuningStudy(None, [], cands, rec, "", 1, (0.85, 1.0, 1.15), (1.0, 1.25))
+    reasons = {direction: reason for direction, _, reason in study.binding()}
+    assert set(reasons) == {"PD-", "D+"}
+    assert "雜訊" in reasons["D+"]
+    assert reasons["PD-"] == "追蹤誤差沒有更好"
+
+
 def test_edge_steps_read_known_response_exactly():
     """Scripted steps with known timing: overshoot is read directly per edge."""
     fs = 2000.0
@@ -411,7 +429,31 @@ def test_step_test_blocks_cover_each_axis():
     from fpvsim.tuning import sweep_maneuver
 
     segments, end = step_test(amplitudes=(0.3,), cycles=1)
-    assert [s.tag for s in segments] == ["step:roll"] * 3 + ["step:pitch"] * 3 + ["step:yaw"] * 3
+    assert [s.tag for s in segments] == [f"{kind}:{axis}" for axis in ("roll", "pitch", "yaw") for kind in ("step", "reverse", "step")]
     assert [s.sticks for s in segments[:3]] == [{"roll": 0.3}, {"roll": -0.3}, {"roll": 0.0}]
     man, window = sweep_maneuver()
-    assert len(man.step_edges("roll")) == 12 and window[0] > man.step_edges("yaw")[-1][1]
+    # measured edges are 0 -> +a and -a -> 0 (size a); the +a -> -a reversal (2a) is not
+    assert len(man.step_edges("roll")) == 8 and window[0] > man.step_edges("yaw")[-1][1]
+
+
+def test_axis_spans_fit_at_least_one_deconvolution_window():
+    from fpvsim.pilot import MANEUVERS
+
+    for name in ("flip", "freestyle"):
+        spans = MANEUVERS[name].axis_spans("roll")
+        assert spans and all(t1 - t0 >= 2.5 - 1e-9 for t0, t1 in spans)
+
+
+def test_edge_steps_drop_saturated_edges_and_flag_unreached_rise():
+    fs = 2000.0
+    b, a, _ = _second_order(fs, delay=0.004)
+    t = np.arange(int(3 * fs)) / fs
+    sp = np.where(t >= 0.5, 200.0, 0.0) - np.where(t >= 1.5, 200.0, 0.0)
+    gyro = lfilter(b, a, np.concatenate([np.zeros(8), sp])[: len(sp)])
+    edges = [(0.5, 1.5), (1.5, 2.5)]
+    saturated = (t >= 1.5) & (t < 1.52)  # the second edge saturates the mixer
+    es = fa.edge_steps(t, sp, gyro, edges, saturated=saturated)
+    assert len(es.overshoot) == 1 and es.saturated_edges == 1
+    sluggish = fa.edge_steps(t, sp, 0.7 * gyro, edges[:1])  # peaks near 81 %: never reaches 90 %
+    assert math.isnan(sluggish.rise_time[0])
+    assert math.isnan(fa.step_metrics(t[:1000], 0.85 * (1 - np.exp(-t[:1000] / 0.01)))["rise_time"])
