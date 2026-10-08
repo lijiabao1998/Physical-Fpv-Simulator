@@ -42,7 +42,7 @@ Lumped thermal simulation is explicitly **unvalidated**: several built-in Chen20
 
 ## Current results
 
-Software checks pass (227 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
+Software checks pass (263 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
 
 ## Thermal reconstruction: inspect the second cohort
 
@@ -160,3 +160,14 @@ python scripts/diagnose_stanford_residuals.py
 The [same-cell transition audit](docs/stanford-transition-findings.md) checks all15 already-pinned k1 records with no new solve. It retains sampling delays, protocol/history and unknown measurement uncertainty. Apparent transient ratios span32.50–84.01mΩ; no fixed resistor or fitted correction is inferred. Thirteen files have a final rest; the25/35°C5C records do not.
 
 The [parameter-source audit](docs/oregan-kinetics-provenance.md) compares all 80 released half-cell kinetic points and checks the saved surface-state ranges. Both electrodes cross the sampled stoichiometry envelope during the recorded trajectory; crossing times are unavailable. Positive coating conductivity also extrapolates its measured temperature range. These annotations preserve the numerical PASS and empirical FAIL, without fitting or altering acceptance gates.
+
+
+## Six-cell measured-source comparison
+
+All six preselected Stanford25°C/1C workbooks have now been checked, with all15 source-to-source pairs retained. k1 and k6 have similar loaded-voltage traces (12.99mV RMSE); k2–k5 differ from k1 by136.69–174.24mV. Their actual CC/CV histories and skin temperatures differ, while manufacturing batch, prior exposure for k2–k6 and measurement/fixture uncertainty remain unresolved. These are two observed patterns, with no causal classes or model-accuracy claim for the five additional specimens. No new battery model was solved or fitted.
+
+[Full source report, intervals and qualifications](docs/stanford-cohort-findings.md) · [Machine-readable evidence](docs/benchmarks/stanford-six-cell-comparison.json)
+
+![All15 measured-source voltage comparisons](docs/benchmarks/stanford-six-cell-voltage-differences.svg)
+
+The original k1 numerical PASS and191.474mV empirical FAIL remain unchanged, together with Chen6/12 and ORegan30/36 failures. Data inspection does not establish identical initialization or independent full-cell validation.
