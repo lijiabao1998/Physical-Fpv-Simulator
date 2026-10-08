@@ -257,12 +257,22 @@ class DeltaBar:
     scope: str  # "shared", "base" or "variant"
     low: float
     high: float
+    nominal: float = math.nan  # the difference with every input nominal
 
     @property
     def span(self) -> float:
         if not (math.isfinite(self.low) and math.isfinite(self.high)):
             return math.inf
         return abs(self.high - self.low)
+
+    @property
+    def effect(self) -> float:
+        """Largest one-sided change of the difference (inputs can act one-sidedly,
+        e.g. a placement error that moves the CG away from the centre either way)."""
+        if not math.isfinite(self.nominal):
+            return self.span / 2
+        changes = [abs(x - self.nominal) for x in (self.low, self.high)]
+        return math.inf if not all(map(math.isfinite, changes)) else max(changes)
 
 
 def delta_sensitivity(base: Build, variant: Build, metrics: tuple[str, ...]) -> dict[str, list[DeltaBar]]:
@@ -284,15 +294,16 @@ def delta_sensitivity(base: Build, variant: Build, metrics: tuple[str, ...]) -> 
         if p.uncertain:
             groups.setdefault(p.stream or p.key, ([], []))[1].append(p)
     bars: dict[str, list[DeltaBar]] = {m: [] for m in metrics}
+    nominal = delta({}, {})
     for in_base, in_var in groups.values():
         scope = "shared" if in_base and in_var else ("base" if in_base else "variant")
         key = " + ".join(sorted({p.key for p in in_base + in_var}))
         lo = delta({p.key: p.value - p.u for p in in_base}, {p.key: p.value - p.u for p in in_var})
         hi = delta({p.key: p.value + p.u for p in in_base}, {p.key: p.value + p.u for p in in_var})
         for m in metrics:
-            bars[m].append(DeltaBar(key, scope, lo[m], hi[m]))
+            bars[m].append(DeltaBar(key, scope, lo[m], hi[m], nominal[m]))
     for m in metrics:
-        bars[m].sort(key=lambda b: (-b.span, b.key))
+        bars[m].sort(key=lambda b: (-b.effect, b.key))
     return bars
 
 

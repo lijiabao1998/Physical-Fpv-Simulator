@@ -37,7 +37,7 @@ import numpy as np
 
 from . import flightanalysis as fa
 from .design import load_build
-from .filters import chain_response, group_delay, make_lowpass
+from .filters import Biquad, chain_response, group_delay, make_lowpass
 from .flightcontroller import FcConfig, FilterSpec
 from .pilot import MANEUVERS, Maneuver, Segment, step_test
 from .sim import SimSettings, simulate
@@ -72,6 +72,21 @@ def filter_delay(specs: tuple[FilterSpec, ...], fs: float, f: float = 50.0) -> f
     freqs = np.array([0.9 * f, f, 1.1 * f])
     h = chain_response([make_lowpass(s.kind, s.cutoff, fs) for s in specs], freqs, fs)
     return float(group_delay(h, freqs)[1])
+
+
+def rpm_filter_delay(cfg: FcConfig, rotor_hz: list[float], fs: float, f: float = 50.0) -> float:
+    """Group delay (s) at frequency f of the RPM notch bank as the flight
+    controller builds it: every harmonic of every motor between rpm_min_hz
+    and 0.48 fs, at the given rotor frequencies. Each Q-notch adds about
+    1/(2 pi Q f0) at low frequency, so a dozen of them add up."""
+    if not cfg.rpm_harmonics:
+        return 0.0
+    notches = [Biquad.notch(h * r, fs, cfg.rpm_q) for r in rotor_hz for h in range(1, cfg.rpm_harmonics + 1)
+               if cfg.rpm_min_hz <= h * r < 0.48 * fs]
+    if not notches:
+        return 0.0
+    freqs = np.array([0.9 * f, f, 1.1 * f])
+    return float(group_delay(chain_response(notches, freqs, fs), freqs)[1])
 
 
 def flight_metrics(log, noise_window: tuple[float, float] | None = None, maneuver: Maneuver | None = None) -> dict:
@@ -252,7 +267,7 @@ def select(candidates: list[Candidate]) -> tuple[Candidate | None, str]:
         f"滾轉與俯仰的超調各自 ≤ {OVERSHOOT_LIMIT:.0%}（本專案的設計目標，不是業界標準；兩軸分別檢查，避免平均值掩蓋較差的一軸），"
         f"且馬達輸出雜訊（{NOISE_BAND[0]:.0f}–{NOISE_BAND[1]:.0f} Hz RMS）不超過基準設定的 {NOISE_FACTOR_LIMIT:g} 倍；"
         "符合條件者中，取同一段調參飛行中滾轉與俯仰追蹤誤差 (RMS) 最小的。"
-        "超調取每一軸小幅度步階的中位數（0 → ±a 與 ±a → 0；不含 +a → −a 的反向步階，也不含混控飽和的步階）。"
+        "超調取每一軸小幅度步階的中位數（0 → ±a 與 ±a → 0，正負方向各半；不含 ±a → ∓a 的反向步階，也不含混控飽和的步階）。"
     )
     return recommended, rule
 

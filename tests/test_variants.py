@@ -292,3 +292,13 @@ def test_compare_report_signs_a_lighter_version(tmp_path):
     report = (out / "report.md").read_text(encoding="utf-8")
     assert "全備重量 -6 g" in report and "+-" not in report
     assert "拿掉線材" in report
+
+
+def test_delta_bar_effect_is_one_sided():
+    """A placement error that pushes the CG off-centre either way acts one-sidedly;
+    the ranking uses the larger side, not half the span."""
+    from fpvsim.compare import DeltaBar
+
+    bar = DeltaBar("battery.offset_x", "shared", low=-2.906, high=-3.439, nominal=-2.896)
+    assert bar.effect == pytest.approx(0.543)
+    assert bar.span / 2 == pytest.approx(0.2665)

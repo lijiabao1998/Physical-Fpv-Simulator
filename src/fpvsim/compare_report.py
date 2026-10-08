@@ -82,6 +82,24 @@ def _evolution(base, build) -> str:
     return "不是由基準衍生的版本（相對基準的變更見第 1 節）"
 
 
+def _nominal_clearance_failures(ac) -> list[str]:
+    """Every part that breaks the prop-clearance rule at its nominal position,
+    with the props involved and its worst pair."""
+    from .geometry import clearances
+
+    by_part: dict[str, list] = {}
+    for c in clearances(ac):
+        if c.margin < 0.0:
+            by_part.setdefault(c.part, []).append(c)
+    out = []
+    for part, pairs in sorted(by_part.items(), key=lambda kv: min(c.margin for c in kv[1])):
+        worst = min(pairs, key=lambda c: c.margin)
+        rotors = "、".join(str(c.rotor + 1) for c in sorted(pairs, key=lambda c: c.rotor))
+        out.append(f"`{part}`（第 {rotors} 顆槳：離槳盤邊緣 {_mm(worst.horizontal)}、離槳平面 {_mm(worst.vertical)}，"
+                   f"餘量 {_mm(worst.margin, signed=True)}）")
+    return out
+
+
 def _mm(x: float, signed: bool = False) -> str:
     return f"{1000 * x:+.1f} mm" if signed else f"{1000 * x:.1f} mm"
 
@@ -227,18 +245,28 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
 
     # summary --------------------------------------------------------------
     add("## 摘要\n")
+    add("數值是標稱值的變化；括號裡的區間取自成對蒙地卡羅樣本。成對樣本的中位數與標稱值相差超過 1 個百分點時另外列出"
+        "（非線性的指標，例如含重心配平的推重比，標稱值不等於中位數）。\n")
     for i in range(1, len(vs)):
         v = vs[i]
         dm = v.nominal["auw"] - base.nominal["auw"]
+        end_nom = v.nominal["endurance"] / base.nominal["endurance"] - 1.0
+        tw_nom = v.nominal["thrust_to_weight"] / base.nominal["thrust_to_weight"] - 1.0
         end_lo, end_mid, end_hi = summarise_delta(cmp.relative_delta(i, "endurance"))
-        _, tw_mid, _ = summarise_delta(cmp.relative_delta(i, "thrust_to_weight"))
+        tw_lo, tw_mid, tw_hi = summarise_delta(cmp.relative_delta(i, "thrust_to_weight"))
+
+        def nominal_and_median(nom, mid, lo, hi):
+            text = f"{_pct(nom, True)}（90% 區間 {_pct(lo, True)} 至 {_pct(hi, True)}"
+            return text + (f"，中位數 {_pct(mid, True)}）" if abs(mid - nom) > 0.01 else "）")
+
         failed = [r.id for r in reqs if v.compliance[r.id] < 0.5]
         risky = [r.id for r in reqs if 0.5 <= v.compliance[r.id] < 0.95]
         base_failed = {r.id for r in reqs if base.compliance[r.id] < 0.5}
         newly = [x for x in failed if x not in base_failed]
         line = (f"- **{tags[i]}（{v.build.name}）**：全備重量 {units.from_si(dm, 'g'):+.0f} g（{_pct(dm / base.nominal['auw'], True)}），"
-                f"懸停續航 {_pct(end_mid, True)}（90% 區間 {_pct(end_lo, True)} 至 {_pct(end_hi, True)}），"
-                f"推重比 {_pct(tw_mid, True)}，重心偏移 {fmt_metric('cg_offset', v.nominal['cg_offset'])}。")
+                f"懸停續航 {nominal_and_median(end_nom, end_mid, end_lo, end_hi)}，"
+                f"推重比 {nominal_and_median(tw_nom, tw_mid, tw_lo, tw_hi)}，"
+                f"重心偏移 {fmt_metric('cg_offset', v.nominal['cg_offset'])}。")
         if newly:
             line += f"新增不符合的規格：{'、'.join(newly)}。"
         if risky:
@@ -263,24 +291,32 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
         line = f"- **控制：** 用相同的基準增益，滾轉超調在基準為 {_pct(os_roll[0])}，{parts}。"
         ff_roll = [v.tuning.ff_off["axes"]["roll"].get("overshoot", math.nan) if v.tuning.ff_off else math.nan for v in vs]
         if all(map(math.isfinite, ff_roll)):
-            line += ("把 F 設為 0 再飛一次，滾轉超調是 "
-                     + "、".join(f"{t} {_pct(o)}" for t, o in zip(tags, ff_roll)) + "。")
+            effect = [o - o0 for o, o0 in zip(os_roll, ff_roll)]
+            line += ("把 F 設為 0 再飛一次，滾轉超調是 " + "、".join(f"{t} {_pct(o)}" for t, o in zip(tags, ff_roll))
+                     + "；feedforward 對超調的影響（有 F 減 F = 0）是 "
+                     + "、".join(f"{t} {100 * e:+.1f}" for t, e in zip(tags, effect)) + " 個百分點。")
             spread_ff, spread_0 = max(os_roll) - min(os_roll), max(ff_roll) - min(ff_roll)
-            heavier = all(ixx[i] > ixx[0] for i in range(1, len(vs)))
-            if spread_0 < 0.5 * spread_ff and heavier and all(os_roll[i] < os_roll[0] for i in range(1, len(vs))):
+            order = sorted(range(len(vs)), key=lambda i: ixx[i])
+            falls = all(effect[b] <= effect[a] + 0.01 for a, b in zip(order, order[1:]))  # non-increasing with Ixx
+            if spread_0 < 0.5 * spread_ff and falls:
                 line += ("版本之間的差異主要來自 feedforward：它給的角加速度與 F 除以轉動慣量成正比，"
-                         "慣量變大時同樣的 F 推得較少，超調跟著變小。")
-                if all(ff_roll[i] > ff_roll[0] for i in range(1, len(vs))):
-                    line += ("回授部分（F = 0）則相反，慣量較大的版本超調較大：同樣的 P、D 對較大的慣量等於較低的迴路增益，"
-                             "和第 7 節增益掃描中 PD 越低超調越大一致。")
+                         "所以它對超調的影響隨滾轉慣量變大而變小")
+                line += ("，在慣量較大的版本甚至變成負的（有 F 時的超調比 F = 0 還低）。"
+                         if min(effect) < -0.01 else "。")
         line += "各版本自己的調參建議見第 7 節。"
         add(line)
-    clear_issues = [(tags[i], c, _clearance_risk(v)) for i, (v, c) in enumerate(zip(vs, cmp.clearance))
-                    if c is not None and (c.margin < 0.0 or _clearance_risk(v) > 0.05)]
-    if clear_issues:
-        add("- **槳葉間隙：** " + "；".join(
-            f"{t} 的 `{c.part}` 離第 {c.rotor + 1} 顆槳的槳盤 {_mm(c.horizontal)}、離槳平面 {_mm(c.vertical)}（標稱值），"
-            f"考慮安裝位置的不確定度，間隙不足的機率 {_pct(risk)}" for t, c, risk in clear_issues) + "（見第 4 節）。")
+    failures = cmp.clearance_failures or [{} for _ in vs]
+    clear_lines = []
+    for t, v, ac, fails in zip(tags, vs, acs, failures):
+        nominal = _nominal_clearance_failures(ac)
+        risk = _clearance_risk(v)
+        if nominal:
+            clear_lines.append(f"{t} 在標稱位置就不符合：" + "、".join(nominal))
+        elif risk > 0.05:
+            main = "、".join(f"`{part}`" for part in fails) or "—"
+            clear_lines.append(f"{t} 的標稱位置符合，但考慮安裝位置的不確定度，間隙不足的機率 {_pct(risk)}（{main}）")
+    if clear_lines:
+        add("- **槳葉間隙（R7）：** " + "；".join(clear_lines) + "（見第 4 節）。")
     add("")
 
     # 1 changes ------------------------------------------------------------
@@ -322,16 +358,18 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
     if cmp.sensitivity:
         add("### 差異的敏感度\n")
         add("每次只把一個參數移動 ±1σ，看差異（版本減基準）改變多少。共有參數在兩個版本同時移動，和成對抽樣一致。"
-            "列出對續航差與推重比差影響最大的參數：\n")
+            "列出對續航差與推重比差影響最大的參數（依較大的一側排序）；兩側不對稱時，"
+            "表示這個參數的影響是非線性的，例如安裝位置的誤差不論往哪邊偏，都讓重心離中心更遠：\n")
         for i in range(1, len(vs)):
             rows = []
             for metric in ("endurance", "thrust_to_weight"):
                 m = METRICS[metric]
                 for bar in cmp.sensitivity[i - 1][metric][:4]:
-                    half = abs(units.from_si(bar.high, m.unit) - units.from_si(bar.low, m.unit)) / 2
-                    rows.append([m.title, f"`{bar.key}`", SCOPE_ZH[bar.scope], f"±{half:{m.fmt}}" + ("" if m.unit == "1" else f" {m.unit}")])
+                    unit = "" if m.unit == "1" else f" {m.unit}"
+                    lo, hi = (units.from_si(x, m.unit) - units.from_si(bar.nominal, m.unit) for x in (bar.low, bar.high))
+                    rows.append([m.title, f"`{bar.key}`", SCOPE_ZH[bar.scope], f"{lo:+{m.fmt}} / {hi:+{m.fmt}}{unit}"])
             add(f"**{tags[i]}**：\n")
-            add(md_table(["差異", "參數", "屬於", "對差異的影響 (±1σ)"], rows))
+            add(md_table(["差異", "參數", "屬於", "差異的改變（−1σ / +1σ）"], rows))
             add("")
 
     # 4 mass ---------------------------------------------------------------
@@ -356,7 +394,6 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
     add(f"\n**槳葉間隙：** 每個零件（機架與動力系統以外）要在槳盤外 {_mm(PROP_TIP_MARGIN)} 以上，或離槳平面 {_mm(PROP_MARGIN)} 以上。"
         "餘量是最差的零件在較容易的方向上還能移動多少，負值表示兩條都不滿足。"
         "間隙不足的機率取自蒙地卡羅樣本，包含零件安裝位置的不確定度（`position_u`）。\n")
-    failures = cmp.clearance_failures or [{} for _ in vs]
     add(md_table(["版本", "餘量（標稱值）", "標稱值最接近的零件", "離槳盤邊緣 / 離槳平面", "間隙不足的機率", "不足時的零件（樣本數）"], [
         [tag, _mm(c.margin, signed=True), f"`{c.part}`（第 {c.rotor + 1} 顆槳）",
          f"{_mm(c.horizontal, signed=True)} / {_mm(c.vertical)}", fmt_probability(_clearance_risk(v), v.mc),
@@ -364,7 +401,12 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
         if c is not None else [tag, "—", "—", "—", "—", "—"]
         for tag, v, c, f in zip(tags, vs, cmp.clearance, failures)
     ]))
-    add("\n離槳盤邊緣為負值表示零件在俯視圖上位於槳盤範圍內。\n")
+    add("\n離槳盤邊緣為負值表示零件在俯視圖上位於槳盤範圍內。")
+    for t, ac in zip(tags, acs):
+        nominal = _nominal_clearance_failures(ac)
+        if nominal:
+            add(f"{t} 在標稱位置就不符合規則的零件：" + "；".join(nominal) + "。")
+    add("")
     add("![Side views](side_views.png)\n")
 
     # 5 endurance ----------------------------------------------------------

@@ -84,20 +84,23 @@ STEP_REST = 0.5  # s at centre stick after each +/- pair
 
 
 def step_test(amplitudes=(0.3, 0.5), cycles: int = 2, start: float = 1.0, gap: float = 1.0) -> tuple[list[Segment], float]:
-    """Step-test blocks, one per axis: +a, -a, 0 held for fixed times.
+    """Step-test blocks, one per axis: +a, -a, 0 held for fixed times, with
+    the sign alternating from cycle to cycle (-a, +a, 0 on the next).
 
     The axis is under script control for the whole block, so every edge is a
     clean step from a settled level and the test pilot's corrections never
     enter it; a +a / -a pair leaves the attitude about where it started.
-    The measured edges are 0 -> +a and -a -> 0, steps of size a, tagged
-    "step:<axis>". The +a -> -a reversal is a step of 2a, outside the
-    small-signal range the amplitudes are chosen for, so it is tagged
-    "reverse:<axis>" and not measured. Returns the segments and the end time."""
+    The measured edges are 0 -> +/-a and -/+a -> 0, steps of size a, tagged
+    "step:<axis>"; the alternation measures as many steps in each direction.
+    The +a -> -a reversal is a step of 2a, outside the small-signal range the
+    amplitudes are chosen for, so it is tagged "reverse:<axis>" and not
+    measured. Returns the segments and the end time."""
     segments, t = [], start
     for axis in ("roll", "pitch", "yaw"):
         for amp in amplitudes:
-            for _ in range(cycles):
-                for value, hold, kind in ((amp, STEP_HOLD, "step"), (-amp, STEP_HOLD, "reverse"), (0.0, STEP_REST, "step")):
+            for cycle in range(cycles):
+                a = amp if cycle % 2 == 0 else -amp
+                for value, hold, kind in ((a, STEP_HOLD, "step"), (-a, STEP_HOLD, "reverse"), (0.0, STEP_REST, "step")):
                     segments.append(Segment(t, t + hold, {axis: value}, tag=f"{kind}:{axis}"))
                     t += hold
         t += gap  # the pilot levels out before the next axis

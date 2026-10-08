@@ -432,8 +432,22 @@ def test_step_test_blocks_cover_each_axis():
     assert [s.tag for s in segments] == [f"{kind}:{axis}" for axis in ("roll", "pitch", "yaw") for kind in ("step", "reverse", "step")]
     assert [s.sticks for s in segments[:3]] == [{"roll": 0.3}, {"roll": -0.3}, {"roll": 0.0}]
     man, window = sweep_maneuver()
-    # measured edges are 0 -> +a and -a -> 0 (size a); the +a -> -a reversal (2a) is not
+    # measured edges are 0 -> +/-a and -/+a -> 0 (size a); the reversal (2a) is not
     assert len(man.step_edges("roll")) == 8 and window[0] > man.step_edges("yaw")[-1][1]
+    two, _ = step_test(amplitudes=(0.3,), cycles=2)
+    assert [s.sticks["roll"] for s in two[:6]] == [0.3, -0.3, 0.0, -0.3, 0.3, 0.0]  # both directions measured
+
+
+def test_rpm_filter_delay_matches_the_notch_approximation():
+    """At low frequency a notch at f0 with quality Q delays by about 1/(2 pi Q f0)."""
+    from fpvsim.flightcontroller import load_fc_config
+    from fpvsim.tuning import rpm_filter_delay
+
+    cfg = load_fc_config(ROOT / "data" / "fc" / "acro-5in-baseline.toml")
+    rotor = [150.0] * 4
+    expected = sum(1 / (2 * math.pi * cfg.rpm_q * h * f0) for f0 in rotor for h in range(1, cfg.rpm_harmonics + 1))
+    assert rpm_filter_delay(cfg, rotor, cfg.pid_rate, f=5.0) == pytest.approx(expected, rel=0.05)
+    assert rpm_filter_delay(cfg.without_rpm_filter(), rotor, cfg.pid_rate) == 0.0
 
 
 def test_axis_spans_fit_at_least_one_deconvolution_window():

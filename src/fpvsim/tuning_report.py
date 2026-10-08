@@ -14,7 +14,8 @@ from .design import Build
 from .filters import chain_response, group_delay, make_lowpass
 from .flightcontroller import dump_fc_config
 from .report import git_version, md_table, rel_path
-from .tuning import DIRECTION_ZH, NOISE_BAND, OVERSHOOT_LIMIT, TuningStudy, ff_dominated, filter_delay, robust_alternative
+from .tuning import (DIRECTION_ZH, NOISE_BAND, OVERSHOOT_LIMIT, TuningStudy, ff_dominated, filter_delay, robust_alternative,
+                     rpm_filter_delay)
 
 AXES = ("roll", "pitch", "yaw")
 AXIS_ZH = {"roll": "滾轉", "pitch": "俯仰", "yaw": "偏航"}
@@ -135,9 +136,11 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
     add("")
 
     add("## 摘要\n")
+    rotor_hz = [float(np.median(log[f"rpm_{i}"])) / 60.0 for i in range(len(build.rotors))]
     no_rpm = study.noise_runs[1]["metrics"]["motor_noise"]
     with_rpm = base_noise["metrics"]["motor_noise"]
-    add(f"- **RPM 濾波是最重要的濾波器：** 關閉它，馬達輸出雜訊從 {with_rpm:.3f}% 升到 {no_rpm:.3f}%（{no_rpm / with_rpm:.0f} 倍）。")
+    add(f"- **RPM 濾波是最重要的濾波器：** 關閉它，雜訊調查（油門掃描飛行）中的馬達輸出雜訊從 {with_rpm:.3f}% 升到 "
+        f"{no_rpm:.3f}%（{no_rpm / with_rpm:.0f} 倍）；代價是 50 Hz 約 {_ms(rpm_filter_delay(cfg, rotor_hz, fs))} 的延遲（見第 1 節）。")
     if rec and base:
         bm, rm = base.metrics, rec.metrics
         bo = {a: bm["axes"][a].get("overshoot", math.nan) for a in ("roll", "pitch")}
@@ -145,7 +148,7 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
         add(f"- **建議增益：** {rec.label}。滾轉超調 {_pct(bo['roll'])} → {_pct(ro['roll'])}，"
             f"俯仰超調 {_pct(bo['pitch'])} → {_pct(ro['pitch'])}，"
             f"追蹤誤差 {bm['tracking_rp']:.1f} → {rm['tracking_rp']:.1f} deg/s，"
-            f"馬達輸出雜訊 {bm['motor_noise']:.3f}% → {rm['motor_noise']:.3f}%。設定檔：`recommended_fc.toml`。")
+            f"調參飛行油門爬升段的馬達輸出雜訊 {bm['motor_noise']:.3f}% → {rm['motor_noise']:.3f}%。設定檔：`recommended_fc.toml`。")
         margin = OVERSHOOT_LIMIT - rm["overshoot_max_rp"]
         if margin < MARGIN_WARN:
             axis = max(("roll", "pitch"), key=lambda a: ro[a])
@@ -208,19 +211,28 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
     for run in study.noise_runs:
         m = run["metrics"]
         c = run["cfg"]
+        rpm_delay = rpm_filter_delay(c, rotor_hz, fs)
         rows.append([
             run["label"],
             f"{m['axes']['roll']['gyro_raw_noise']:.2f}",
             f"{m['axes']['roll']['gyro_noise']:.3f}",
             f"{m['axes']['roll']['dterm_noise']:.2f}",
             f"{m['motor_noise']:.3f}",
-            _ms(filter_delay(c.gyro_lowpass, fs)),
-            _ms(filter_delay(c.gyro_lowpass + c.dterm_lowpass, fs)),
+            _ms(rpm_delay),
+            _ms(rpm_delay + filter_delay(c.gyro_lowpass, fs)),
+            _ms(rpm_delay + filter_delay(c.gyro_lowpass + c.dterm_lowpass, fs)),
         ])
     add(md_table(["濾波設定", "原始陀螺儀 (deg/s)", "濾波後陀螺儀 (deg/s)", "D 項 (PID 單位)", "馬達輸出 (%)",
-                  "陀螺儀濾波延遲", "D 項總延遲"], rows))
+                  "RPM 濾波延遲", "陀螺儀濾波總延遲", "D 項總延遲"], rows))
+    rpm_base = rpm_filter_delay(cfg, rotor_hz, fs)
+    lp_base = filter_delay(cfg.gyro_lowpass, fs)
+    n_notch = len(build.rotors) * cfg.rpm_harmonics
+    compare_lp = "比陀螺儀低通濾波器還大" if rpm_base > lp_base else "比陀螺儀低通濾波器小"
     add(f"\n雜訊為 {NOISE_BAND[0]:.0f}–{NOISE_BAND[1]:.0f} Hz 的 RMS（滾轉軸；馬達為四顆平均）。延遲為 50 Hz 的群延遲；"
-        "D 項總延遲包含陀螺儀濾波與 D 項濾波。RPM 濾波的陷波器很窄，在 50 Hz 附近幾乎不增加延遲。\n")
+        "陀螺儀濾波總延遲包含 RPM 濾波與陀螺儀低通，D 項總延遲再加上 D 項低通。"
+        f"RPM 濾波每一軸有 {n_notch} 個陷波器（{len(build.rotors)} 顆馬達 × {cfg.rpm_harmonics} 個諧波），"
+        f"每個在低頻約增加 1/(2π·Q·f0) 的延遲；以這次飛行的轉速中位數計算，合計在 50 Hz 約 {_ms(rpm_base)}，"
+        f"{compare_lp}（{_ms(lp_base)}）。轉速越低，陷波頻率越低，延遲越大。它換來的是第一列與第二列之間的雜訊差異。\n")
 
     add("## 2. 濾波器\n")
     add("![Filters](filters.png)\n")
