@@ -18,6 +18,15 @@ from physical_fpv.validation import run_benchmark, write_timeseries
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Physical FPV battery research core")
     sub = parser.add_subparsers(dest="command", required=True)
+    verify = sub.add_parser(
+        "verify-replay", help="Verify saved replay ZIPs offline; never solve or download"
+    )
+    verify.add_argument("--receipt", type=Path, required=True)
+    verify.add_argument("--inputs", type=Path, required=True)
+    verify.add_argument("--outputs", type=Path, required=True)
+    verify.add_argument("--out", type=Path, help="Optional JSON verification report")
+    verify.add_argument("--require-numerical-pass", action="store_true")
+    verify.add_argument("--require-empirical-pass", action="store_true")
     fetch = sub.add_parser("fetch-data", help="Download three checksum-pinned CC-BY-4.0 traces")
     fetch.add_argument("--data-dir", type=Path, default=Path("data/raw"))
     sim = sub.add_parser("simulate", help="Run bounded single-cell constant-current simulation")
@@ -63,7 +72,24 @@ def main(argv: list[str] | None = None) -> int:
     thermal_bench.add_argument("--require-pass", action="store_true")
     args = parser.parse_args(argv)
     try:
-        if args.command == "fetch-data":
+        if args.command == "verify-replay":
+            from physical_fpv.replay_verification import verify_replay
+
+            if args.out and args.out.resolve() in {
+                p.resolve() for p in (args.receipt, args.inputs, args.outputs)
+            }:
+                raise ValueError("Verification output must not overwrite input evidence")
+            report = verify_replay(args.receipt, args.inputs, args.outputs)
+            text = json.dumps(report, indent=2, allow_nan=False)
+            if args.out:
+                args.out.parent.mkdir(parents=True, exist_ok=True)
+                args.out.write_text(text + "\n", encoding="utf-8")
+            print(text)
+            if args.require_numerical_pass and report["numerical"]["passed"] is not True:
+                return 2
+            if args.require_empirical_pass and report["empirical"]["passed"] is not True:
+                return 2
+        elif args.command == "fetch-data":
             print(json.dumps(download_data(args.data_dir), indent=2))
         elif args.command == "simulate":
             result = simulate(

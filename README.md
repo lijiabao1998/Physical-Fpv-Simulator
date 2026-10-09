@@ -40,6 +40,12 @@ physical-fpv material-method-check
 
 Lumped thermal simulation is explicitly **unvalidated**: several built-in Chen2020 thermal properties are generic defaults, entropy terms are zero, and some transport laws lack temperature dependence. Isothermal temperature is an imposed assumption, not a predicted temperature. Numerical heat-balance checks do not establish agreement with measured temperature.
 
+## Offline evidence verification
+
+Use `physical-fpv verify-replay --receipt RECEIPT.json --inputs INPUTS.zip --outputs OUTPUTS.zip`
+to check saved replay artifacts and reproduce their voltage/numerical metrics
+without downloading data or solving a model. [Usage, exit codes and limits](docs/offline-replay-verification.md).
+
 ## Current results
 
 The [current-profile arithmetic correction](docs/current-profile-arithmetic.md)
