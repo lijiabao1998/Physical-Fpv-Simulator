@@ -1,0 +1,21 @@
+{
+  "schema": "physical-fpv-source-audit-v1",
+  "status": "preregistered_before_acquisition",
+  "question": "Do the published Figure 10 and Figure 14 workbooks contain measured electrode OCP or synchronized experimental GITT channels sufficient to propose an independently constrained battery test?",
+  "record": "https://zenodo.org/records/14995785",
+  "source_url": "https://zenodo.org/records/14995785/files/Source_Data.zip?download=1",
+  "file_name": "Source_Data.zip",
+  "published_md5": "686c44f88eb26d26956a06c3d144409f",
+  "displayed_size": "10.8 MB",
+  "exact_bytes_before_acquisition": null,
+  "license": "CC-BY-4.0",
+  "license_evidence": "Official record Rights control visibly reads Creative Commons Attribution 4.0 International; cloud browser inspection 2026-10-09T22:34:02Z.",
+  "acquisition": {"attempts": 1, "timeout_seconds": 120, "accepted_max_bytes": 12000000, "route": "official source link through supported cloud browser download; no alternative route after denial"},
+  "analysis": {"timeout_seconds": 120, "memory_bytes": 536870912, "max_archive_members": 200, "max_total_expanded_bytes": 150000000, "max_workbook_expanded_bytes": 100000000, "max_sheet_rows": 200000, "max_sheet_columns": 100, "selected_figures": [10, 14], "read_only": true},
+  "integrity": ["Verify published MD5 before opening ZIP", "Record exact byte count and SHA256", "Reject encrypted, unsafe-path, duplicate or oversized archive members", "Do not execute scripts, workbook formulas, macros or external links"],
+  "observables": ["Exact member and sheet names", "Headers, units, row counts and series labels", "Explicit experimental versus simulated/fitted labels", "Presence and monotonicity of time", "Time-step distribution only when time units and experimental provenance are explicit", "Presence of synchronized current, voltage and measured temperature", "OCP electrode, lithiation/delithiation and stoichiometry support labels"],
+  "decision_rules": ["Mixed or unlabeled series remain unresolved", "Figure data alone do not establish raw acquisition latency or synchronization", "Do not transfer the paper's 10 Hz RPT description to Figure 14 without matching provenance", "Electrode OCP curves do not determine Stanford k2 inventory or matched-cell identity", "No new validation, mechanism identification, parameter fit or solver run"],
+  "verification": "Independent reviewer checks protocol before acquisition and independently checks hashes, workbook labels and scientific interpretation before publication.",
+  "failure_behavior": "Preserve access, checksum, schema or resource failure; publish source audit and unresolved prerequisites without retrying download or inventing measurements.",
+  "historical_gates": "Unchanged; historical k2 55.00305419157363 mV remains FAIL against 50 mV."
+}

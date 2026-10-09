@@ -155,3 +155,15 @@ requirement is synchronized high-resolution interruption/pulse measurements with
 controlled inventory and characterized thermal/instrument uncertainty; an
 independent electrode/OCV constraint is needed to distinguish inventory from
 OCP-transfer error. No further model solve follows from this table.
+
+### Independent source qualification (2026-10-09)
+
+The [public-source audit](battery-independent-source-audit.md) acquired and
+checksum-verified the small Li2025 source-data archive under a reviewed bounded
+protocol. Its GITT figure workbooks distinguish experimental voltage/time from
+model curves, but do not provide synchronized current/temperature channels.
+Electrode OCP tables remain figure-series evidence with raw/fitted provenance
+limitations. No parameters or scientific gates changed. The concrete next input
+is the original synchronized acquisition record and conditioning/temperature
+metadata behind these figure arrays, or an independently qualified pulse dataset;
+voltage-only figure tables cannot justify a new input-driven solve.
