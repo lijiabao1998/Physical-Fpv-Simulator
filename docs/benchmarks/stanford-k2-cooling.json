@@ -1,0 +1,420 @@
+{
+  "protocol": "docs/stanford-k2-cooling-protocol.md",
+  "hashes": {
+    "docs/benchmarks/stanford-k2-rest-records.csv.gz": "513ad1debdf3fcf7eb9d716a8b34651a39349f136d1a6b23e84ed609fa2c2d6f",
+    "docs/stanford-k2-cooling-protocol.md": "9819380557fb03d6c3644b43075217dd13f0d3de1a38a1831b82d1bf99d3c4c0",
+    "scripts/characterize_stanford_k2_cooling.py": "57db7618d28cd12f0017db47097089da5c2843533e7c8516e84ad8e93cfa335e",
+    "src/physical_fpv/cooling_characterization.py": "9ea314497de165bd7fc22c13535b7bf168d305f748e5c8cec0947f7ff71c1495"
+  },
+  "workbook_sha256": "20ec90e107e228515a95346dc3159d08df62e78bb0f371d10161e62de49e8086",
+  "source_attribution": "Catenaro and Onori, DOI10.17632/kxsbr4x3j2.2, CC BY4.0",
+  "analyst_previewed_tail": true,
+  "blind_validation": false,
+  "check_windows_excluded_from_objective": true,
+  "new_downloads": 0,
+  "new_electrochemical_solves": 0,
+  "independent_thermal_validation": false,
+  "voltage_gate_changed": false,
+  "historical_k2_voltage_rmse_mv": 55.0030541916,
+  "historical_k2_voltage_rmse_gate_mv": 50.0,
+  "prior": {
+    "h_w_m2_k": 15.0,
+    "cooling_area_m2": 0.00531,
+    "heat_capacity_j_k_at_298_15k": 60.57806621645372,
+    "rate_per_s": 0.0013148323308208559,
+    "tau_s": 760.5532481663996,
+    "pybamm_version": "26.9.0.0",
+    "meaning": "Frozen constant-capacity zero-heat-source analytic approximation"
+  },
+  "pre_rest_baseline_interval_s": [
+    3000.0017,
+    3600.0017
+  ],
+  "pre_rest_skin_baseline_c": 24.36700454532077,
+  "initial_60s_skin_range_c": [
+    31.5452938079834,
+    32.38427734375
+  ],
+  "recorded_final_temperature_c": 24.373239517211914,
+  "nominal_25c_final_error_strict_lower_bound_k": 0.6267604827880859,
+  "nominal_25c_prediction_can_cross_below_asymptote": false,
+  "quadrature_8_vs_32_max_mse_difference_k2": 7.105427357601002e-15,
+  "scenarios": {
+    "nominal_25c": {
+      "fit": {
+        "baseline_c": 25.0,
+        "anchor_time_s": 60.0,
+        "anchor_temperature_c": 31.5452938079834,
+        "tau_s": 345.2559103125735,
+        "rate_per_s": 0.0028964022631637536,
+        "search_bounds_tau_s": [
+          10.0,
+          10000.0
+        ],
+        "boundary_optimum": false,
+        "calibration": {
+          "interval_s": [
+            60.0,
+            599.0003
+          ],
+          "coverage_fraction": 1.0,
+          "mse_k2": 0.0019780556459691903,
+          "rmse_k": 0.0444753375025889,
+          "maximum_absolute_error_k": 0.12418224667741384,
+          "mean_signed_error_k": -0.0028893359925247822,
+          "historical_thermal_proxy_gates": {
+            "rmse_2k": true,
+            "maximum_5k": true
+          },
+          "independent_thermal_validation": false
+        },
+        "identified_heat_transfer_coefficient": null
+      },
+      "calibration_check_gap_s": 0.9998999999999114,
+      "windows": {
+        "calibration": {
+          "fitted_decay": {
+            "interval_s": [
+              60.0,
+              599.0003
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.0019780556459691903,
+            "rmse_k": 0.0444753375025889,
+            "maximum_absolute_error_k": 0.12418224667741384,
+            "mean_signed_error_k": -0.0028893359925247822,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "frozen_prior": {
+            "interval_s": [
+              60.0,
+              599.0003
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 2.1807915757939793,
+            "rmse_k": 1.4767503430823976,
+            "maximum_absolute_error_k": 1.974504111379325,
+            "mean_signed_error_k": 1.3736125839010485,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "persistence": {
+            "interval_s": [
+              60.0,
+              599.0003
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 12.639284960647815,
+            "rmse_k": 3.555177205238554,
+            "maximum_absolute_error_k": 5.248260498046875,
+            "mean_signed_error_k": 3.229814635040909,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": false,
+              "maximum_5k": false
+            },
+            "independent_thermal_validation": false
+          }
+        },
+        "early_check": {
+          "fitted_decay": {
+            "interval_s": [
+              600.0002,
+              1800.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.12314616226623477,
+            "rmse_k": 0.35092187487564064,
+            "maximum_absolute_error_k": 0.5655121124677933,
+            "mean_signed_error_k": 0.32935341554149977,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "frozen_prior": {
+            "interval_s": [
+              600.0002,
+              1800.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 2.5276513143396944,
+            "rmse_k": 1.5898588976194379,
+            "maximum_absolute_error_k": 2.0207659944916365,
+            "mean_signed_error_k": 1.565918837521605,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "persistence": {
+            "interval_s": [
+              600.0002,
+              1800.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 42.37337847968059,
+            "rmse_k": 6.509483733728858,
+            "maximum_absolute_error_k": 7.0594940185546875,
+            "mean_signed_error_k": 6.492722505856248,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": false,
+              "maximum_5k": false
+            },
+            "independent_thermal_validation": false
+          }
+        },
+        "late_check": {
+          "fitted_decay": {
+            "interval_s": [
+              1800.0,
+              3600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.3148909553830469,
+            "rmse_k": 0.5611514549415754,
+            "maximum_absolute_error_k": 0.7062659909439901,
+            "mean_signed_error_k": 0.5529744834776477,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "frozen_prior": {
+            "interval_s": [
+              1800.0,
+              3600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.6444749883247641,
+            "rmse_k": 0.8027919956780611,
+            "maximum_absolute_error_k": 0.9866898419596986,
+            "mean_signed_error_k": 0.7992397201945751,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "persistence": {
+            "interval_s": [
+              1800.0,
+              3600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 50.281807262629435,
+            "rmse_k": 7.090966595791397,
+            "maximum_absolute_error_k": 7.251293182373047,
+            "mean_signed_error_k": 7.09018298600656,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": false,
+              "maximum_5k": false
+            },
+            "independent_thermal_validation": false
+          }
+        }
+      },
+      "improves_both_comparators_in_both_check_windows": true,
+      "eligible_for_further_study_only": true,
+      "physical_parameter_update_authorized_by_result": false
+    },
+    "preceding_rest_skin_proxy": {
+      "fit": {
+        "baseline_c": 24.36700454532077,
+        "anchor_time_s": 60.0,
+        "anchor_temperature_c": 31.5452938079834,
+        "tau_s": 402.1041495660451,
+        "rate_per_s": 0.0024869178820442666,
+        "search_bounds_tau_s": [
+          10.0,
+          10000.0
+        ],
+        "boundary_optimum": false,
+        "calibration": {
+          "interval_s": [
+            60.0,
+            599.0003
+          ],
+          "coverage_fraction": 1.0,
+          "mse_k2": 0.0018806894860992033,
+          "rmse_k": 0.04336691695404693,
+          "maximum_absolute_error_k": 0.14423311189185029,
+          "mean_signed_error_k": 0.005072324874464988,
+          "historical_thermal_proxy_gates": {
+            "rmse_2k": true,
+            "maximum_5k": true
+          },
+          "independent_thermal_validation": false
+        },
+        "identified_heat_transfer_coefficient": null
+      },
+      "calibration_check_gap_s": 0.9998999999999114,
+      "windows": {
+        "calibration": {
+          "fitted_decay": {
+            "interval_s": [
+              60.0,
+              599.0003
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.0018806894860992033,
+            "rmse_k": 0.04336691695404693,
+            "maximum_absolute_error_k": 0.14423311189185029,
+            "mean_signed_error_k": 0.005072324874464988,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "frozen_prior": {
+            "interval_s": [
+              60.0,
+              599.0003
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 1.6315875650579639,
+            "rmse_k": 1.2773361206268161,
+            "maximum_absolute_error_k": 1.6584957446585307,
+            "mean_signed_error_k": 1.1940992578675147,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "persistence": {
+            "interval_s": [
+              60.0,
+              599.0003
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 12.639284960647815,
+            "rmse_k": 3.555177205238554,
+            "maximum_absolute_error_k": 5.248260498046875,
+            "mean_signed_error_k": 3.229814635040909,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": false,
+              "maximum_5k": false
+            },
+            "independent_thermal_validation": false
+          }
+        },
+        "early_check": {
+          "fitted_decay": {
+            "interval_s": [
+              600.0002,
+              1800.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.009446790697465792,
+            "rmse_k": 0.09719460220334147,
+            "maximum_absolute_error_k": 0.2489874571322801,
+            "mean_signed_error_k": -0.08934295517400509,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "frozen_prior": {
+            "interval_s": [
+              600.0002,
+              1800.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 1.3040551795150597,
+            "rmse_k": 1.1419523543103975,
+            "maximum_absolute_error_k": 1.6784098155987834,
+            "mean_signed_error_k": 1.0894475866284947,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "persistence": {
+            "interval_s": [
+              600.0002,
+              1800.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 42.37337847968059,
+            "rmse_k": 6.509483733728858,
+            "maximum_absolute_error_k": 7.0594940185546875,
+            "mean_signed_error_k": 6.492722505856248,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": false,
+              "maximum_5k": false
+            },
+            "independent_thermal_validation": false
+          }
+        },
+        "late_check": {
+          "fitted_decay": {
+            "interval_s": [
+              1800.0,
+              3600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.011340111877018218,
+            "rmse_k": 0.10648996139081945,
+            "maximum_absolute_error_k": 0.3829905213875122,
+            "mean_signed_error_k": -0.06717363848540842,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "frozen_prior": {
+            "interval_s": [
+              1800.0,
+              3600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.044526205653141804,
+            "rmse_k": 0.21101233531038371,
+            "maximum_absolute_error_k": 0.4015249489861432,
+            "mean_signed_error_k": 0.19084250996593538,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "persistence": {
+            "interval_s": [
+              1800.0,
+              3600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 50.281807262629435,
+            "rmse_k": 7.090966595791397,
+            "maximum_absolute_error_k": 7.251293182373047,
+            "mean_signed_error_k": 7.09018298600656,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": false,
+              "maximum_5k": false
+            },
+            "independent_thermal_validation": false
+          }
+        }
+      },
+      "improves_both_comparators_in_both_check_windows": true,
+      "eligible_for_further_study_only": true,
+      "physical_parameter_update_authorized_by_result": false
+    }
+  },
+  "prediction_csv_sha256": "2c4e938fdf91a84a6967f6b7293e452ccce326b498409c52c88ed1e4ece29827",
+  "elapsed_s": 0.30162924999604
+}

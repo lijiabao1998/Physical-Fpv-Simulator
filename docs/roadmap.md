@@ -10,3 +10,7 @@
 Every stage needs a reproducible executable example, tests, data/parameter provenance, declared range, uncertainty and failed-case behavior. Expensive compute, new accounts/credentials, paid services and physical equipment require separate authorization. First software work stays CPU-bounded and uses no physical battery experiments.
 
 Implemented reproducibility tooling: the [offline replay verifier](offline-replay-verification.md) checks saved inputs, output integrity and selected scientific metrics independently of a solver run. Known empirical failures remain explicit.
+
+Implemented characterization: the [k2 cooling screen](stanford-k2-cooling-findings.md)
+fits only an effective skin decay on an early rest window, checks later windows,
+and separates improved observable prediction from unidentified physical parameters.
