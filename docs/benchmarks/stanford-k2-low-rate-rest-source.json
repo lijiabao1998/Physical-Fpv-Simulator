@@ -1,0 +1,21 @@
+{
+  "source_filename": "NMC_k2_0_05C_25degC.xlsx",
+  "source_workbook_bytes": 6029678,
+  "source_workbook_sha256": "6bfaeb45fe90b76b6bd5973f0cb481b5d42db81cd2729e9be44121b44296d174",
+  "selected_rows": 3602,
+  "excel_rows_inclusive": [
+    87815,
+    91416
+  ],
+  "records_gzip_sha256": "e1e16db21fa2e8408934ec758d8b1b5e713846a4b4149b337641634197e873d9",
+  "records_csv_sha256": "7e3dc60c5ab4f9a0fc64823a294ff75b5db591533d356cb0a798a155b73f99e1",
+  "protocol_sha256": "3025ddf13b794034cb7cd8a7e73cf5ae7a3b461b9fd4be65b74f453b9593beca",
+  "authors": [
+    "Edoardo Catenaro",
+    "Simona Onori"
+  ],
+  "doi": "10.17632/kxsbr4x3j2.2",
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "modifications": "Only select last step5 row and complete step6, add Excel row index, serialize dates and numerics; no measurement value change"
+}

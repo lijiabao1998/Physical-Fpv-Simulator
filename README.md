@@ -84,7 +84,7 @@ retains the conditional rate-gap mismatch at all nine predeclared Ah locations
 across four saved mesh combinations. This does not identify a unique physical
 cause or establish matched SOC; the high-rate empirical failure remains.
 
-Current local software and saved-evidence checks pass (718 tests, 7 skipped). In the historical refined Chen benchmark, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance remains **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
+Current local software and saved-evidence checks pass (727 tests, 7 skipped). In the historical refined Chen benchmark, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance remains **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
 
 ## Thermal reconstruction: inspect the second cohort
 
@@ -235,3 +235,8 @@ The zero-download six-cell audit retains all 24 charge/CV/discharge boundaries a
 All 349 software tests passed. The measured-source analysis used 6.98 seconds, with zero model runs or fitting; prior empirical failures and incomplete k6 history remain unchanged.
 
 Ordinary Battery CI now uses an [exact-manifest verified raw-input cache](docs/verified-raw-input-cache.md). Cache misses retain the original official acquisition; corrupt or incomplete hits fail closed. A seed still requires successful upstream acquisition.
+
+A [descriptive rest-timing table](docs/stanford-k2-rest-timing-findings.md) records
+continued voltage recovery at six fixed times with original source brackets.
+It preserves the distinction between finite rest and equilibrium and identifies
+the missing independent measurements; no parameter or acceptance gate changed.

@@ -1,0 +1,27 @@
+{
+  "protocol_sha256": "3025ddf13b794034cb7cd8a7e73cf5ae7a3b461b9fd4be65b74f453b9593beca",
+  "initial_single_pass": {
+    "elapsed_s": 3.5336209300003247,
+    "peak_rss_kib": 73464,
+    "wall_limit_s": 60,
+    "address_space_limit_bytes": 536870912,
+    "new_downloads": 0,
+    "new_model_solves": 0
+  },
+  "independent_verification": {
+    "status": "PASS",
+    "low_rows_verified": 3602,
+    "query_brackets_verified": 12,
+    "arithmetic": "independent60-digit Decimal calculation",
+    "max_value_difference": 3.2e-15,
+    "max_recovery_difference_v": 3.26e-16,
+    "max_weight_difference": 7.53e-14,
+    "corrected_pass_elapsed_s": 3.0751,
+    "prior_aborted_verifier_assumption_s": 0.18,
+    "peak_rss_kib": 87548,
+    "new_downloads": 0,
+    "new_model_solves": 0
+  },
+  "reproduction_implementation_sha256": "d83a2d201c99bc2abe55197691aeaf8094aabd0f434640f629c46304ff62a2c2",
+  "result_sha256": "f4126e1f12622a6fca98a243e9cfbc33839c8f58678caf263c1362dc79f777d4"
+}

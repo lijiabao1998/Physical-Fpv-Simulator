@@ -143,3 +143,15 @@ existing official acquisition only on a cache miss. Partial or corrupt caches
 fail closed. Source labels now identify the attempted input on retrieval errors.
 This is reliability engineering; cache population still requires a successful
 official acquisition and does not change any scientific acceptance gate.
+
+### Descriptive rest-timing characterization (2026-10-09)
+
+The [frozen six-query table](stanford-k2-rest-timing-findings.md) preserves every
+source interpolation bracket and separates the first recorded recovery from
+later drift. Low-rate voltage changes another 52.841 mV between 1800 and 3600 s;
+high-rate changes 17.646 mV. This is finite-rest characterization, not equilibrium
+OCV, resistance identification or independent validation. The next causal data
+requirement is synchronized high-resolution interruption/pulse measurements with
+controlled inventory and characterized thermal/instrument uncertainty; an
+independent electrode/OCV constraint is needed to distinguish inventory from
+OCP-transfer error. No further model solve follows from this table.

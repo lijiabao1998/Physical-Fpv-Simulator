@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "question": "How is observed cutoff-to-rest voltage recovery distributed between the first supported rest sample and fixed subsequent nominal rest times?",
+  "queries_nominal_rest_s": [2, 10, 60, 600, 1800, 3600],
+  "source_high_records_sha256": "513ad1debdf3fcf7eb9d716a8b34651a39349f136d1a6b23e84ed609fa2c2d6f",
+  "source_high_workbook_sha256": "20ec90e107e228515a95346dc3159d08df62e78bb0f371d10161e62de49e8086",
+  "source_low_workbook_sha256": "6bfaeb45fe90b76b6bd5973f0cb481b5d42db81cd2729e9be44121b44296d174",
+  "source_low_workbook_bytes": 6029678,
+  "selection": "Last recorded step5 row and every step6 row; require3601 rest rows per record and zero recorded rest current",
+  "interpolation": "Piecewise linear voltage and skin temperature between adjacent actual Step_Time(s) samples; retain full source brackets, fraction and Excel row IDs; no extrapolation",
+  "anchors": "Retain last loaded sample, first actual rest sample and last actual rest sample separately; nominal commanded rest time does not establish physical switching time or acquisition latency",
+  "observables": ["voltage_v", "raw_current_a", "skin_temperature_c", "voltage_minus_last_loaded_v", "voltage_minus_first_rest_v"],
+  "numerical_identity_tolerance_v": 1e-12,
+  "maximum_wall_s_per_offline_pass": 60,
+  "maximum_address_space_bytes": 536870912,
+  "new_source_downloads": 0,
+  "new_model_solves": 0,
+  "parameter_fitting": false,
+  "new_empirical_acceptance_threshold": false,
+  "causal_identification": false,
+  "independent_experimental_validation": false,
+  "stop": "Publish independently checked descriptive table; do not launch a new solve or fit from this result"
+}
