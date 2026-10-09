@@ -105,3 +105,15 @@ solver explanation or repaired high-rate model. The original coarse FAIL and
 historical 55.003 mV high-rate FAIL remain intact. Fine120 at the tested tighter
 tolerance is the next separately bounded spatial-convergence question; it was
 not launched by this diagnostic.
+
+### Fixed-tolerance mesh80/120 agreement (2026-10-09)
+
+The [single mesh120 comparison](stanford-k2-mesh120-findings.md) passes the
+unchanged numerical pair criteria at 1e-8 tolerance: 0.045787 mV maximum voltage
+difference, 0.00001963 K temperature difference and 0.00019027% endpoint-charge
+difference. Both physical audits and cutoff events pass; fine voltage RMSE is
+19.210536 mV. This is pair agreement for the previously viewed low-rate record,
+not independent physical validation or a convergence-order proof. Historical
+high-rate 55.003 mV FAIL remains. The next saved-data question is the predeclared
+conditional low/high-rate comparison, retaining inventory/history/temperature
+limits and without a new solve or parameter fit.

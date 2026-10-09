@@ -72,7 +72,14 @@ adds three measured zero-current anchors. It finds conditional joint
 inventory/OCP/rest-proxy discrepancies, without fitting SOC or identifying a
 unique physical cause, and specifies the missing independent constraints.
 
-Software checks pass (263 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
+The separate [low-rate mesh80/120 comparison](docs/stanford-k2-mesh120-findings.md)
+now passes the unchanged mesh-pair and record-level gates at fixed 1e-8 tolerance:
+0.045787 mV maximum mesh voltage difference and 19.210536 mV fine-grid voltage RMSE.
+Both physical audits and cutoff events pass. This previously viewed low-rate
+record does not establish independent validation or repair the historical
+high-rate failures; thermal-domain and history assumptions remain explicit.
+
+Current local software and saved-evidence checks pass (694 tests, 7 skipped). In the historical refined Chen benchmark, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance remains **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
 
 ## Thermal reconstruction: inspect the second cohort
 
