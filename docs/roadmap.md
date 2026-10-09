@@ -22,3 +22,12 @@ predeclared k1 windows, so no universal thermal-prior replacement is adopted.
 The [shared series-like voltage-term screen](stanford-series-loss-findings.md)
 finds disjoint50 mV feasible sets for archived k1/k2 trajectories. No resistor
 is selected and no physical correction is promoted from the algebraic screen.
+
+### Conditional k2 low-rate reference (2026-10-09)
+
+The [frozen low-rate comparison](stanford-k2-low-rate-findings.md) adds a separately
+measured 0.05C waveform to the saved 1C evidence. It constrains voltage differences
+on a conditional discharged-Ah alignment; temperature and inventory equivalence
+are unestablished. No parameters were fitted or promoted. The 50 mV terminal gate
+continues to fail. Next discriminating work should constrain initial inventory and
+thermal comparability before attributing the between-record gap to kinetics.
