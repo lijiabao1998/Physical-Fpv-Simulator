@@ -1,5 +1,9 @@
 # Low-rate experimental driver: implementation readiness
 
+Subsequent execution completed one coarse trajectory and failed the frozen
+charge-closure gate. See the [verified results](stanford-k2-low-rate-model-findings.md);
+the readiness checks below remain the pre-execution record.
+
 This package contains no new battery trajectory. It implements the
 [frozen k2 protocol](stanford-k2-low-rate-model-protocol.md) and an
 [inert workflow template](experiments/stanford-k2-low-rate-model.workflow.yml).

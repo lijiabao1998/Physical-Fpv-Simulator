@@ -1,0 +1,22 @@
+{
+  "artifact_id": 11624633682,
+  "run_id": 37948404436,
+  "source_commit": "208d34882acb79b32b48e578575760580675c868",
+  "archive_bytes": 13856564,
+  "archive_sha256": "f841d0016f9787186f129c5c563226696fd340ab5c6212fcc8c2eb59ae5546cb",
+  "parts": [
+    {
+      "path": "docs/benchmarks/stanford-k2-low-rate-model-evidence.zip.001",
+      "bytes": 8388608,
+      "sha256": "ff5ff020abc147f05ecab745f69a660e01c501d47f350537369068443a3677c2"
+    },
+    {
+      "path": "docs/benchmarks/stanford-k2-low-rate-model-evidence.zip.002",
+      "bytes": 5467956,
+      "sha256": "c95af66c31b75961def4404db789b4c12e8e5a7203c9b15c2bad9f8a8de96d7c"
+    }
+  ],
+  "format": "Concatenate numbered parts in listed order to recover byte-identical GitHub artifact ZIP",
+  "license": "Contains previously committed Stanford CC-BY4.0 observations and attributed model/repository inputs",
+  "original_artifact_url": "https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/37948404436/artifacts/11624633682"
+}

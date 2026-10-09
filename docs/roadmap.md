@@ -72,20 +72,24 @@ These are measured rate differences, not model errors or identified physics.
 A frozen model rate-response comparison is the next discriminant requiring its
 own bounded protocol; common-Ah state and thermal/history equivalence remain open.
 
-### Experimental low-rate model comparison: implementation only (2026-10-09)
+### Experimental low-rate model comparison and closure diagnosis (2026-10-09)
 
 The [frozen proposal](stanford-k2-low-rate-model-protocol.md) and separate low-rate
 driver reuse the pinned complete k2 record with unchanged physical parameters.
 Scalar-output storage preserves sampled spatial/energy audits within a hard
 4 GB worker cap. A shared 1200-second budget covers at most two sequential mesh
-solves, with durable inputs required first. The workflow is an inert review
-template outside the executable workflow directory. No scientific execution or
-low-rate validation is claimed by this implementation. Independent review accepted
-the bounded approach; explicit launch coordination remains required. The ordinary
-core current domain stays unchanged.
+solves, with durable inputs required first. The implementation was first published
+with an inert review template; reviewed one-shot triggers subsequently executed.
+The ordinary core current domain stays unchanged.
 
 The first managed attempt subsequently stopped before either solve because its
 immediate uploaded-artifact metadata lookup returned HTTP404. The preserved
 receipt and bounded visibility-check amendment are linked from the protocol.
-A separately reviewed replacement retains the original scientific limits;
-no low-rate trajectory or empirical improvement has yet been established.
+A separately reviewed replacement completed one mesh80 trajectory. Its
+[saved result and diagnosis](stanford-k2-low-rate-model-findings.md) report
+19.210 mV voltage RMSE but a failed 1.100296 microAh charge-closure audit against
+the unchanged 1 microAh limit. Mesh120 never ran, so no low-rate qualification
+or convergence is claimed. Independent rational integration and compiled-RHS
+checks locate the discrepancy in numerical capacity-state evolution/interpolation,
+without identifying a unique solver mechanism. A separately reviewed tolerance
+refinement is the next numerical question; no further solve follows automatically.
