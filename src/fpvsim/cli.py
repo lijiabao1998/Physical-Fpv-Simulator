@@ -129,7 +129,7 @@ def cmd_fit_battery(args) -> int:
         battery = build.realize().battery
         design = {"r0_cell": battery.r0_cell, "r1_cell": battery.r1_cell, "tau1": battery.tau1,
                   "activation_energy": battery.activation_energy, "ocv_soc": battery.ocv_soc,
-                  "ocv_cell": battery.ocv_cell, "name": build.name}
+                  "ocv_cell": battery.ocv_cell, "name": build.name, "t_ref": battery.r_ref_temperature}
     series = args.series or (battery.series if battery else None)
     capacity = args.capacity or (battery.capacity if battery else None)
     if series is None or capacity is None:
@@ -148,7 +148,7 @@ def cmd_fit_battery(args) -> int:
         fits.append(fit_hppc(data, series, capacity))
     arrhenius = None
     if len({round(f.temperature, 1) for f in fits}) >= 2:
-        arrhenius = fit_arrhenius(fits)
+        arrhenius = fit_arrhenius(fits, t_ref=design["t_ref"] if design else 298.15)
     flight = None
     if args.log:
         if battery is None:

@@ -35,7 +35,7 @@ def fmt_metric(key: str, value: float, with_unit: bool = True) -> str:
     text = format(units.from_si(value, m.unit), m.fmt)
     if not with_unit or m.unit == "1":
         return text
-    return f"{text}%" if m.unit == "%" else f"{text} {m.unit}"
+    return f"{text}%" if m.unit == "%" else f"{text} {unit_symbol(m.unit)}"
 
 
 _UNIT_SYMBOLS = {"mohm": "mΩ", "ohm": "Ω", "degC": "°C", "g*mm^2": "g·mm²", "kg*m^2": "kg·m²", "N*m": "N·m"}

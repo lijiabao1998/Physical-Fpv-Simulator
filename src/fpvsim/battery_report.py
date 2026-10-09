@@ -125,11 +125,15 @@ def generate(out_dir: Path, sources: list[str], fits: list[HppcFit], arrhenius: 
         add("\n不確定度包含兩部分：單一脈衝擬合的統計誤差，以及不同電量之間的差異。"
             "模型假設內阻不隨電量變化；如果各脈衝的值有系統性的趨勢（真實電池在低電量時內阻通常上升），"
             "這個差異就代表模型本身的誤差。\n")
-        main = fits[0]
+        # the test nearest the design's reference temperature is the one written back and shown in detail
+        t_ref = design.get("t_ref", 298.15) if design else 298.15
+        k_main = min(range(len(fits)), key=lambda k: abs(fits[k].temperature - t_ref))
+        main = fits[k_main]
         _plot_pulses(main, out_dir / "pulses.png")
         reference = {"soc": design["ocv_soc"], "cell": design["ocv_cell"]} if design else None
         _plot_soc(main, reference, out_dir / "soc.png")
-        add(f"`{sources[0]}` 的擬合（低、中、高電量各一個脈衝）：\n")
+        add(f"`{Path(sources[k_main]).name}`（{main.temperature - 273.15:.0f} °C，最接近設計的參考溫度）的擬合"
+            "（低、中、高電量各一個脈衝）：\n")
         add("![Pulse fits](pulses.png)\n")
         add("![Resistance and OCV](soc.png)\n")
         add(md_table(["電量", "開路電壓（單芯）", "R0 (mΩ)", "R1 (mΩ)", "τ1 (s)"], [
@@ -160,13 +164,14 @@ def generate(out_dir: Path, sources: list[str], fits: list[HppcFit], arrhenius: 
             ["τ1", f"{flight.tau.value:.1f} ± {flight.tau.u:.1f} s"],
             ["殘差（單芯 RMS）", f"{1000 * flight.residual_rms / series:.1f} mV"],
         ]))
-        add(f"\n誤差是擬合的統計誤差；{flight.r_total.note}。\n")
+        quiet = flight.residual_rms / series < 1e-4
+        add(f"\n誤差是{flight.r_total.note}。" + ("模擬的 log 沒有量測雜訊，所以統計誤差接近零。" if quiet else "") + "\n")
         add("![In-flight fit](flight.png)\n")
 
     if fits:
         add(f"## {4 if flight else 3}. 寫回零件檔\n")
-        main = fits[0]
-        ref = Path(sources[0]).name
+        ref = Path(sources[k_main]).name
+        add(f"取最接近設計參考溫度的測試（`{ref}`，{main.temperature - 273.15:.1f} °C）；`r_ref_temperature` 就是它的溫度。\n")
         lines = [
             f'r0_cell = {{ value = {1000 * main.r0_cell.value:.3f}, unit = "mohm", source = "measured", '
             f'u = {1000 * main.r0_cell.u:.3f}, ref = "{ref}", note = "HPPC，{main.temperature - 273.15:.0f} °C" }}',
@@ -177,7 +182,7 @@ def generate(out_dir: Path, sources: list[str], fits: list[HppcFit], arrhenius: 
         ]
         if arrhenius:
             lines.append(f'resistance_activation_energy = {{ value = {arrhenius.activation_energy.value / 1000:.2f}, unit = "kJ/mol", '
-                         f'source = "measured", u = {arrhenius.activation_energy.u / 1000:.2f}, ref = "{", ".join(sources)}" }}')
+                         f'source = "measured", u = {arrhenius.activation_energy.u / 1000:.2f}, ref = "{", ".join(Path(x).name for x in sources)}" }}')
         add("```toml\n[params]\n" + "\n".join(lines) + "\n```\n")
         add("開路電壓的量測點（電量 0% 需要另做完整放電測試）：\n")
         add("```toml\n[ocv]\nsource = \"measured\"\n"
@@ -194,7 +199,10 @@ def generate(out_dir: Path, sources: list[str], fits: list[HppcFit], arrhenius: 
                 rows.append(["活化能", f"{design['activation_energy'] / 1000:.1f} kJ/mol",
                              f"{arrhenius.activation_energy.value / 1000:.2f} ± {arrhenius.activation_energy.u / 1000:.2f} kJ/mol"])
             add(md_table(["參數", f"設計數據（{design.get('name', '')}）", "辨識結果"], rows))
-            add("\n設計數據的內阻是參考溫度下的值；比較時請確認測試溫度相同。\n")
+            if abs(main.temperature - t_ref) > 0.5:
+                add(f"\n注意：設計數據的內阻是 {t_ref - 273.15:.0f} °C 的值，辨識結果是 {main.temperature - 273.15:.0f} °C 的值，兩者不能直接比較。\n")
+            else:
+                add(f"\n兩者都是 {t_ref - 273.15:.0f} °C 的值。\n")
     path = out_dir / "report.md"
     path.write_text("\n".join(md) + "\n", encoding="utf-8")
     return path

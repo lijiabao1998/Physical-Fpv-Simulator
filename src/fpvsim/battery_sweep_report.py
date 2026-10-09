@@ -10,7 +10,7 @@ from .battery_sweep import SweepPoint, binding, recommend
 from .design import Build
 from .report import fmt_metric, git_version, md_table, rel_path
 
-ROWS = ("auw", "thrust_to_weight", "endurance", "full_throttle_time", "prop_clearance", "hover_max_temperature")
+ROWS = ("auw", "thrust_to_weight", "endurance", "full_throttle_time", "full_throttle_cell_voltage", "prop_clearance")
 
 
 def _band(points: list[SweepPoint], key: str, scale: float = 1.0):
@@ -89,7 +89,7 @@ def generate(build: Build, points: list[SweepPoint], out_dir: Path) -> Path:
             row.append(f"{fmt_metric(key, p.nominal[key])}（{fmt_metric(key, lo, False)} – {fmt_metric(key, hi, False)}）")
         row.append(f"{p.p_all:.0%}")
         rows.append(row)
-    add(md_table(["容量 mAh", "全備重量 g", "尺寸 mm", "推重比", "懸停續航", "全油門持續", "槳葉間隙餘量", "懸停最高電池溫度",
+    add(md_table(["容量 mAh", "全備重量 g", "尺寸 mm", "推重比", "懸停續航", "全油門持續", "全油門單芯電壓", "槳葉間隙餘量",
                   "符合全部規格"], rows))
     add("\n![Sweep](sweep.png)\n")
 
