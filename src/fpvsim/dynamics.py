@@ -34,6 +34,8 @@ v_hub = v + w x r_i in body axes:
 * props without geometry (legacy): T_i = Ct(J_i) rho n_i^2 D^4 with
   J_i = axial inflow / (n_i D), and momentum-theory rotor drag
   F_i = -k_rd omega_i v_hub,inplane;
+* ground effect: thrust times the Cheeseman-Bennett ratio for the hub's
+  distance to the ground along the rotor axis (wind.py);
 * reaction    M_z = -s_i tau_motor,i      (motor torque reacts on the frame).
 
 Body: I w' = sum(r_i x F_i) + M_reaction + M_ground - w x (I w + h_rotors),
@@ -62,6 +64,7 @@ from .airframe import AirframeExtras
 from .design import Aircraft
 from .performance import hover_point
 from .rotor_ff import CLASSICAL_LIMIT, anchored_rotor
+from .wind import ground_effect
 
 
 @dataclass
@@ -78,10 +81,11 @@ class Outputs:
     max_contact_speed: float
     edgewise_ratio: float = 0.0  # worst rotor advance ratio mu = V_inplane / (omega R), capped at 10
     off_design: bool = False  # a rotor beyond rotorcraft mu or |lambda| of 0.5 (low rpm, high speed)
+    ground_effect: float = 1.0  # largest thrust ratio in ground effect over the rotors
 
 
 class QuadModel:
-    def __init__(self, ac: Aircraft, extras: AirframeExtras):
+    def __init__(self, ac: Aircraft, extras: AirframeExtras, ground_effect: bool = True):
         pt = ac.powertrain
         mp = ac.mass_props
         self.ac = ac
@@ -158,6 +162,8 @@ class QuadModel:
         self.t_ambient = ac.env.temperature
         self.t_start = ac.battery_start_temperature
         self.n_state = 16 + self.n
+        self.ground_effect = ground_effect
+        self.ge_height = 5.0 * self.radius  # beyond this the ground effect is below 0.3 %
 
     # ------------------------------------------------------------------ helpers
 
@@ -286,6 +292,7 @@ class QuadModel:
         R = self.radius
         vh2 = self.v_induced_hover * self.v_induced_hover
         worst_mu = 0.0
+        ground_ratio = 1.0
         if fresh:
             self._off_design = False
         for i in range(n):
@@ -337,6 +344,12 @@ class QuadModel:
                 q_aero = cp * rho * n_rev * n_rev * D**5 / (2.0 * math.pi)
                 k = self.k_rotor_drag * w
                 frx, fry = -k * vhx, -k * vhy
+            if self.ground_effect and r22 > 0.1:  # rotor axis pointing at the ground
+                z_axis = -(s[2] + r20 * hx + r21 * hy + r22 * hz) / r22
+                if z_axis < self.ge_height:
+                    ge = ground_effect(z_axis / R)
+                    thrust *= ge
+                    ground_ratio = max(ground_ratio, ge)
             frz = -self.interference * thrust
             fx += frx
             fy += fry
@@ -430,6 +443,7 @@ class QuadModel:
             out.descent_ratio = worst_descent / self.v_induced_hover
             out.edgewise_ratio = worst_mu
             out.off_design = self._off_design
+            out.ground_effect = ground_ratio
             out.on_ground = on_ground
             out.max_contact_speed = max_contact_speed
 

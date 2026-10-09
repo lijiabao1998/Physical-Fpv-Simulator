@@ -61,7 +61,25 @@ def envelope(log: FlightLog, j_max: float, oblique: bool = False) -> list[Excurs
         _excursion(t, log["tip_mach"] > MACH_LIMIT, f"槳尖馬赫數 > {MACH_LIMIT:g}", "未計入壓縮性，推力與扭矩偏樂觀"),
         _excursion(t, log["saturated"] > 0.5, "混控飽和", "馬達已到 0% 或 100%，姿態控制能力受限；不是模型問題，是飛行限制"),
         _excursion(t, log["on_ground"] > 0.5, "接觸地面", "接地模型為簡化的彈簧阻尼與庫侖摩擦"),
+        _excursion(t, log["ground_effect"] > 1.02, "地面效應區（推力增加 > 2%）",
+                   "Cheeseman–Bennett 單槳模型；多旋翼槳與槳之間的干擾未建模"),
     ]
+
+
+def wind_text(meta: dict) -> str:
+    w = meta.get("wind") or {}
+    if not w or w.get("speed_m_s", 0.0) <= 0.0:
+        return "無風"
+    text = (f"{w['speed_m_s']:.1f} m/s（{w['ref_height_m']:g} m 高），來自 {w['from_deg']:.0f}°，"
+            f"對數風剖面 z0 = {w['roughness_m']:g} m")
+    if w.get("turbulence"):
+        from .wind import dryden_scales
+
+        sigma_w = dryden_scales(6.1, w["w20_m_s"])[5]
+        text += f"；Dryden 紊流（6.1 m 風速 {w['w20_m_s']:.1f} m/s，垂直強度 σ_w = {sigma_w:.2f} m/s）"
+    else:
+        text += "；無紊流"
+    return text
 
 
 def summary(log: FlightLog, cells: int) -> list[tuple[str, str]]:
@@ -83,7 +101,11 @@ def summary(log: FlightLog, cells: int) -> list[tuple[str, str]]:
         ("用電量", f"{log['mah'][-1]:.0f} mAh，{energy:.2f} Wh"),
         ("剩餘電量", f"{100 * log['soc'][-1]:.0f}%"),
         ("電池溫度（起飛 → 最高）", f"{log['batt_temp'][0]:.1f} → {log['batt_temp'].max():.1f} °C"),
-    ]
+    ] + ([
+        ("風（記錄值，水平平均 / 最大）", f"{np.hypot(log['wind_n'], log['wind_e']).mean():.1f} / "
+                                     f"{np.hypot(log['wind_n'], log['wind_e']).max():.1f} m/s，垂直 ±{np.abs(log['wind_d']).max():.1f} m/s"),
+        ("空速（平均 / 最大）", f"{log['airspeed'].mean():.1f} / {log['airspeed'].max():.1f} m/s"),
+    ] if np.any(log["wind_n"] != 0.0) or np.any(log["wind_e"] != 0.0) or np.any(log["wind_d"] != 0.0) else [])
 
 
 def generate(build: Build, cfg: FcConfig, log: FlightLog, title: str, out_dir: Path, j_max: float) -> Path:
@@ -122,6 +144,16 @@ def generate(build: Build, cfg: FcConfig, log: FlightLog, title: str, out_dir: P
         ],
         out_dir / "power.png",
     )
+    windy = bool(np.any(log["wind_n"] != 0.0) or np.any(log["wind_e"] != 0.0) or np.any(log["wind_d"] != 0.0))
+    if windy:
+        plots.timeseries(
+            [
+                {"title": "Wind at the aircraft (mean + turbulence)", "ylabel": "m/s",
+                 "series": [("north", t, log["wind_n"]), ("east", t, log["wind_e"]), ("down", t, log["wind_d"])]},
+                {"title": "Airspeed", "ylabel": "m/s", "series": [("airspeed", t, log["airspeed"])]},
+            ],
+            out_dir / "wind.png",
+        )
     plots.timeseries(
         [
             {"title": "Descent into own wake", "ylabel": "v_descent / v_i", "series": [("descent ratio", t, log["descent_ratio"])],
@@ -146,6 +178,8 @@ def generate(build: Build, cfg: FcConfig, log: FlightLog, title: str, out_dir: P
         ["程式版本", f"fpvsim {__version__}，git `{git_version(build.path.parent)}`"],
         ["輸入檔雜湊", f"`{log.meta.get('input_hash')}`"],
         ["隨機種子", str(log.meta.get("seed"))],
+        ["風", wind_text(log.meta)],
+        ["地面效應", "計入（Cheeseman–Bennett）" if log.meta.get("ground_effect", True) else "關閉"],
         ["更新率", f"物理 {log.meta['physics_rate_hz']:g} Hz，陀螺儀 {log.meta['gyro_rate_hz']:g} Hz，PID {log.meta['pid_rate_hz']:g} Hz，記錄 {log.meta['log_rate_hz']:g} Hz"],
         ["產生時間 (UTC)", _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M")],
     ]))
@@ -172,6 +206,8 @@ def generate(build: Build, cfg: FcConfig, log: FlightLog, title: str, out_dir: P
     add("## 2. 馬達與動力\n")
     add("![Motors](motors.png)\n")
     add("![Power](power.png)\n")
+    if windy:
+        add("![Wind](wind.png)\n")
 
     add("## 3. 模型適用範圍監測\n")
     add("模擬器會記錄飛行是否離開物理模型的適用範圍。超出範圍的片段，數值只能當作定性參考。\n")
@@ -187,6 +223,7 @@ def generate(build: Build, cfg: FcConfig, log: FlightLog, title: str, out_dir: P
     else:
         add("- 下降進入自身尾流時的渦環狀態與 propwash 抖動（只監測，不模擬）")
     add("- 機架彈性與共振；振動只進入陀螺儀量測，不影響剛體運動")
+    add("- 紊流的空間變化（各顆槳感受到的陣風相同，沒有旋轉紊流分量）；懸停時凍結紊流假設不成立")
     if oblique:
         add("- 槳的斜向氣流係數以剛性與自由揮舞兩個極限混合（`prop.flap_fraction`），尚未用風洞數據確認")
     else:

@@ -194,12 +194,34 @@ def cmd_fly(args) -> int:
             return 2
         source = MANEUVERS[args.maneuver]
         title = f"{source.title}（`{source.name}`）"
-    settings = SimSettings(log_rate=args.log_rate, seed=args.seed, start_altitude=args.altitude)
+    settings = SimSettings(log_rate=args.log_rate, seed=args.seed, start_altitude=args.altitude, wind=_wind_settings(args),
+                           ground_effect=not args.no_ground_effect)
     log = simulate(build, cfg, source, settings, duration=args.duration)
     out = Path(args.out) if args.out else Path("out") / f"fly-{getattr(source, 'name', 'sticks')}"
     path = generate(build, cfg, log, title, out, float(build.prop_curves.J[-1]))
     print(f"wrote {path}")
     return 0
+
+
+def _wind_arguments(p) -> None:
+    p.add_argument("--wind", type=float, default=0.0, help="mean wind at the reference height, m/s (default calm)")
+    p.add_argument("--wind-from", type=float, default=0.0, help="direction the wind comes from, deg clockwise from north")
+    p.add_argument("--wind-height", type=float, default=10.0, help="reference height of --wind, m (default 10, weather reports)")
+    p.add_argument("--roughness", type=float, default=0.03,
+                   help="terrain roughness length z0, m (0.03 open flat, 0.1 farmland, 0.5 suburbs)")
+    p.add_argument("--no-turbulence", action="store_true", help="mean wind only, no Dryden turbulence")
+    p.add_argument("--no-ground-effect", action="store_true", help="switch off the rotors' ground effect")
+
+
+def _wind_settings(args):
+    import math
+
+    from .wind import WindSettings
+
+    if args.wind < 0.0 or args.wind_height <= args.roughness or args.roughness <= 0.0:
+        raise SystemExit("error: need --wind >= 0 and 0 < --roughness < --wind-height")
+    return WindSettings(speed=args.wind, direction_from=math.radians(args.wind_from), ref_height=args.wind_height,
+                        roughness=args.roughness, turbulence=not args.no_turbulence)
 
 
 def cmd_tune(args) -> int:
@@ -300,6 +322,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--log-rate", type=float, default=1000.0, help="log rate, Hz (default 1000)")
     p.add_argument("--seed", type=int, default=1)
     p.add_argument("--out", help="output directory")
+    _wind_arguments(p)
     p.set_defaults(func=cmd_fly)
 
     p = sub.add_parser("tune", help="stage 5: noise survey, filter check and PID gain sweep")

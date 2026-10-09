@@ -7,6 +7,10 @@ constant between PID loops (zero-order hold), as an ESC would.
 
 Motor telemetry (rpm for the RPM filter) is the true rotor speed of the
 previous physics step, i.e. one step of latency and no quantisation.
+
+Wind (wind.py): the mean wind at the current height (log profile) plus
+Dryden turbulence, updated at the turbulence rate (default 1 kHz) and held
+between updates; the same air velocity acts on the whole aircraft.
 """
 
 from __future__ import annotations
@@ -25,6 +29,7 @@ from .performance import hover_point
 from .pilot import Maneuver, StickFile, TestPilot
 from .sensors import Gyro
 from .units import RADS_TO_RPM
+from .wind import Dryden, WindSettings
 
 DEG = 180.0 / math.pi
 AXES = ("roll", "pitch", "yaw")
@@ -36,7 +41,8 @@ class SimSettings:
     log_rate: float = 2000.0
     seed: int = 1
     start_altitude: float = 20.0  # m above ground, starting in trimmed hover
-    wind: tuple[float, float, float] = (0.0, 0.0, 0.0)  # NED, m/s
+    wind: WindSettings = WindSettings()  # calm by default
+    ground_effect: bool = True
     crash_speed: float = 3.0  # m/s, contact speed treated as a crash
 
 
@@ -61,6 +67,8 @@ def _define_columns(log: FlightLog, n: int) -> None:
     log.define("current", "A")
     log.define("mah", "mAh")
     log.define("batt_temp", "degC")
+    for name in ("wind_n", "wind_e", "wind_d", "airspeed"):
+        log.define(name, "m/s")
     # truth and physics, not available on a real aircraft
     for name, unit in (("pos_n", "m"), ("pos_e", "m"), ("alt", "m"), ("vel_n", "m/s"), ("vel_e", "m/s"), ("vel_d", "m/s")):
         log.define(name, unit)
@@ -73,7 +81,7 @@ def _define_columns(log: FlightLog, n: int) -> None:
     for i in range(n):
         log.define(f"thrust_{i}", "gf")
     for name in ("saturated", "on_ground", "descent_ratio", "max_advance_ratio", "max_edgewise_ratio", "rotor_off_design",
-                 "tip_mach", "soc"):
+                 "ground_effect", "tip_mach", "soc"):
         log.define(name, "1")
 
 
@@ -86,9 +94,11 @@ def simulate(
     duration: float | None = None,
 ) -> FlightLog:
     ac = build.realize(overrides)
-    model = QuadModel(ac, ac.extras)
+    model = QuadModel(ac, ac.extras, ground_effect=settings.ground_effect)
     n = model.n
     rng = np.random.default_rng(settings.seed)
+    # separate stream for the turbulence, so wind does not change the sensor noise of a flight
+    turbulence = Dryden(settings.wind, np.random.default_rng([settings.seed, 0x7E1B]))
     phys = settings.physics_rate
     for rate, name in ((cfg.gyro_rate, "gyro"), (cfg.pid_rate, "PID"), (settings.log_rate, "log")):
         if phys % rate:
@@ -96,6 +106,8 @@ def simulate(
     gyro_every = int(phys // cfg.gyro_rate)
     pid_every = int(phys // cfg.pid_rate)
     log_every = int(phys // settings.log_rate)
+    wind_every = max(1, int(round(phys / settings.wind.turbulence_rate)))
+    wind = (0.0, 0.0, 0.0)
     rc_every = max(1, int(round(phys / cfg.rc_link_rate)))
     dt = 1.0 / phys
 
@@ -139,6 +151,13 @@ def simulate(
         "log_rate_hz": settings.log_rate,
         "input_hash": build.input_hash()[:16],
         "overrides": dict(overrides or {}),
+        "wind": {
+            "speed_m_s": settings.wind.speed, "from_deg": math.degrees(settings.wind.direction_from) % 360.0,
+            "ref_height_m": settings.wind.ref_height, "roughness_m": settings.wind.roughness,
+            "turbulence": settings.wind.turbulence and not settings.wind.calm,
+            "w20_m_s": settings.wind.w20,
+        },
+        "ground_effect": settings.ground_effect,
     }
 
     steps = int(round(total * phys))
@@ -159,8 +178,15 @@ def simulate(
             rotor_hz = [w / (2.0 * math.pi) for w in state[13 : 13 + n]]
             duties = fc.update(sticks, gyro_raw_deg, rotor_hz)
 
+        if k % wind_every == 0 and not settings.wind.calm:
+            height = -state[2]
+            mean = settings.wind.mean_ned(height)
+            air = math.sqrt((state[3] - mean[0]) ** 2 + (state[4] - mean[1]) ** 2 + state[5] ** 2)
+            gust = turbulence.step(height, air)
+            wind = (mean[0] + gust[0], mean[1] + gust[1], mean[2] + gust[2])
+
         prev = state
-        state = model.step(state, duties, dt, settings.wind, out)
+        state = model.step(state, duties, dt, wind, out)
         for i in range(n):
             thetas[i] = (thetas[i] + prev[13 + i] * dt) % (2.0 * math.pi)
         mah += out.i_bus * dt / 3.6
@@ -179,6 +205,10 @@ def simulate(
                 "current": out.i_bus,
                 "mah": mah,
                 "batt_temp": prev[15 + n] - 273.15,
+                "wind_n": wind[0],
+                "wind_e": wind[1],
+                "wind_d": wind[2],
+                "airspeed": math.sqrt((prev[3] - wind[0]) ** 2 + (prev[4] - wind[1]) ** 2 + (prev[5] - wind[2]) ** 2),
                 "pos_n": prev[0],
                 "pos_e": prev[1],
                 "alt": -prev[2],
@@ -194,6 +224,7 @@ def simulate(
                 "max_advance_ratio": max(out.advance_ratio),
                 "max_edgewise_ratio": out.edgewise_ratio,
                 "rotor_off_design": 1.0 if out.off_design else 0.0,
+                "ground_effect": out.ground_effect,
                 "tip_mach": max(omegas) * radius / speed_of_sound,
                 "soc": prev[13 + n],
             }

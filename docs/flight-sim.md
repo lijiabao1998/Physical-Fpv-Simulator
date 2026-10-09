@@ -30,10 +30,11 @@
 fpvsim maneuvers                                   # 列出內建飛行腳本
 fpvsim fly  data/builds/ref-5in-6s-freestyle.toml --fc data/fc/acro-5in-baseline.toml --maneuver freestyle
 fpvsim fly  data/builds/ref-5in-6s-freestyle.toml --fc data/fc/acro-5in-baseline.toml --sticks my_sticks.csv
+fpvsim fly  data/builds/ref-5in-6s-freestyle.toml --fc data/fc/acro-5in-baseline.toml --wind 6 --wind-from 270
 fpvsim tune data/builds/ref-5in-6s-freestyle.toml --fc data/fc/acro-5in-baseline.toml
 ```
 
-`fly` 輸出飛行 log（CSV）與飛行測試報告；`tune` 約需 3–8 分鐘（至少 19 次試飛，平行執行；掃描自動擴大時更多），輸出調參報告與建議的飛控設定檔 `recommended_fc.toml`。
+`fly` 輸出飛行 log（CSV）與飛行測試報告。預設無風、計入地面效應；`--wind`（10 m 高的平均風速，m/s）、`--wind-from`（風吹來的方向，度）、`--wind-height`、`--roughness`（地表粗糙度 z₀）設定風，預設附帶相應強度的 Dryden 紊流（`--no-turbulence` 關閉），`--no-ground-effect` 關閉地面效應（模型見 [models.md](models.md)）。`tune` 約需 3–8 分鐘（至少 19 次試飛，平行執行；掃描自動擴大時更多），輸出調參報告與建議的飛控設定檔 `recommended_fc.toml`。
 
 搖桿輸入檔格式（取樣保持，可以用實機 Blackbox 的搖桿數據轉成這個格式）：
 
@@ -89,9 +90,11 @@ time [s],roll [1],pitch [1],yaw [1],throttle [1]
 | `p_*`、`i_*`、`d_*`、`f_*` | PID 各項（1000 = 滿油門範圍） | ✓ |
 | `motor_*`、`rpm_*` | 馬達指令（%）、轉速遙測 | ✓ |
 | `vbat`、`current`、`mah` | 電池電壓、電流、用電量 | ✓ |
+| `batt_temp` | 電池溫度 | 視電池感測器 |
+| `wind_n`、`wind_e`、`wind_d`、`airspeed` | 飛機所在位置的風（平均風 + 紊流，NED）與空速 | 模擬限定 |
 | `pos_*`、`alt`、`vel_*`、`att_*`、`rate_*` | 真實位置、速度、姿態、角速度 | 模擬限定 |
 | `motor_current_*`、`thrust_*` | 各馬達相電流、推力 | 模擬限定 |
-| `saturated`、`on_ground`、`descent_ratio`、`max_advance_ratio`、`max_edgewise_ratio`、`rotor_off_design`、`tip_mach`、`soc` | 混控飽和與模型適用範圍監測：渦環狀態區、軸向前進比 J、旋翼前進比 μ（以槳尖速度計，上限 10）、低轉速高速狀態（μ 或 \|λ\| > 0.5） | 模擬限定 |
+| `saturated`、`on_ground`、`descent_ratio`、`max_advance_ratio`、`max_edgewise_ratio`、`rotor_off_design`、`ground_effect`、`tip_mach`、`soc` | 混控飽和與模型適用範圍監測：渦環狀態區、軸向前進比 J、旋翼前進比 μ（以槳尖速度計，上限 10）、低轉速高速狀態（μ 或 \|λ\| > 0.5）、地面效應推力比（各槳最大值） | 模擬限定 |
 
 真機可得的欄位可以用相同的分析工具處理實機 Blackbox 數據（需先轉成同樣的欄位名稱與單位）。
 
@@ -101,11 +104,14 @@ time [s],roll [1],pitch [1],yaw [1],throttle [1]
 
 | 監測 | 門檻 | 原因 |
 |---|---|---|
-| 下降進入自身尾流 | 軸向下降速度 > 0.5 倍懸停誘導速度 | 動量理論失效；渦環狀態與 propwash 沒有模擬 |
-| 前進比超出槳係數表 | J ≥ 表格最大值 | 係數以最後一點外插 |
+| 渦環狀態區（有槳葉幾何時） | 軸向下降速度 > 0.5 倍懸停誘導速度，且水平速度低於懸停誘導速度 | 平均誘導速度用經驗曲線；propwash 推力脈動沒有模擬 |
+| 低轉速高速（有槳葉幾何時） | 旋翼前進比 μ 或 \|λ\| > 0.5（以槳尖速度計） | 葉片大部分失速或逆流，槳力來自平板失速模型 |
+| 下降進入自身尾流（只有係數表時） | 軸向下降速度 > 0.5 倍懸停誘導速度 | 動量理論失效；渦環狀態與 propwash 沒有模擬 |
+| 前進比超出槳係數表（只有係數表時） | J ≥ 表格最大值 | 係數以最後一點外插 |
 | 槳尖馬赫數 | > 0.7 | 未計入壓縮性 |
 | 混控飽和 | 任一馬達到 0% 或 100% | 飛行限制，不是模型問題 |
 | 接觸地面 | — | 接地模型簡化 |
+| 地面效應區 | 推力比 > 1.02 | 單槳 Cheeseman–Bennett 模型，槳間干擾未建模 |
 
 ## 調參流程（`fpvsim tune`）
 
