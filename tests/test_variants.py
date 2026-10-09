@@ -107,8 +107,11 @@ def test_placement_uncertainty_moves_the_cg(builds):
     assert base.params["battery.offset_x"].u == pytest.approx(0.004)
     nominal = base.realize().mass_props.cg[0]
     shifted = base.realize({"battery.offset_x": 0.004}).mass_props.cg[0]
-    battery = base.params["battery.mass"].value
-    assert shifted - nominal == pytest.approx(0.004 * battery / base.realize().mass_props.mass, rel=1e-9)
+    # the battery and the parts mounted on it (the strap) move together
+    moved = base.params["battery.mass"].value + sum(
+        base.params[p.mass_key].value for p in base.parts if p.mounted_on == "battery")
+    assert any(p.mounted_on == "battery" for p in base.parts)
+    assert shifted - nominal == pytest.approx(0.004 * moved / base.realize().mass_props.mass, rel=1e-9)
 
 
 def test_reserved_part_names_are_rejected(tmp_path):
