@@ -71,3 +71,15 @@ specimen contrast while similar 64.8–125.2 mV measured low/high-rate gaps rema
 These are measured rate differences, not model errors or identified physics.
 A frozen model rate-response comparison is the next discriminant requiring its
 own bounded protocol; common-Ah state and thermal/history equivalence remain open.
+
+### Experimental low-rate model comparison: implementation only (2026-10-09)
+
+The [frozen proposal](stanford-k2-low-rate-model-protocol.md) and separate low-rate
+driver reuse the pinned complete k2 record with unchanged physical parameters.
+Scalar-output storage preserves sampled spatial/energy audits within a hard
+4 GB worker cap. A shared 1200-second budget covers at most two sequential mesh
+solves, with durable inputs required first. The workflow is an inert review
+template outside the executable workflow directory. No scientific execution or
+low-rate validation is claimed by this implementation. Independent review accepted
+the bounded approach; explicit launch coordination remains required. The ordinary
+core current domain stays unchanged.
