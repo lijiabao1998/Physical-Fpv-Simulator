@@ -68,3 +68,12 @@ two sequential DFNs under one shared 1200-second deadline and a 4 GB worker cap.
 A resource failure remains UNVERIFIED, preserves available evidence, and cannot
 trigger a retry, budget extension or parameter adjustment. A workflow exit of
 zero never substitutes for numerical or empirical qualification.
+
+## First managed preflight outcome
+
+The first managed run uploaded its prepared inputs, then stopped on HTTP404
+from the immediate metadata verification call. Both scientific steps were
+skipped. The [protocol amendment](stanford-k2-low-rate-model-protocol.md#preflight-recovery-amendment-zero-scientific-work-in-the-first-attempt)
+describes a bounded same-endpoint visibility check and a separately identified
+replacement, without changing the scientific budget or input-persistence gate.
+The original workflow remains immutable and is not rerun.

@@ -1,10 +1,9 @@
 # Proposed bounded k2 low-rate model-response experiment
 
-Status: reviewed implementation, not launched. Independent physical/software
-review accepted this bounded protocol and implementation. Explicit launch
-coordination is still required before adding an execution trigger. Ordinary
-current-head CI recovery completed with unchanged pinned sources on its single
-authorized retry; this proposed experiment remains unlaunched.
+Status: reviewed physical implementation; first managed attempt stopped in
+preflight, before either battery solve. Independent physical/software review
+accepted the bounded model protocol. A separately identified replacement needs
+the reviewed preflight amendment below and explicit launch coordination.
 
 See the [implementation and resource checks](stanford-k2-low-rate-model-readiness.md).
 
@@ -199,3 +198,37 @@ Stop this experiment after that single bounded execution and verified report,
 whether it supports or challenges the model. Any further solve needs a new
 falsifiable plan. Ordinary CI must not silently trigger this experiment on a
 cache miss or pull-request update.
+
+## Preflight recovery amendment: zero scientific work in the first attempt
+
+[Run 37946424176](https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/37946424176)
+on `e99e9219b35324a3cc77ff3aa6e6e86e688dd7f3` uploaded all 53 prepared-input files,
+then its immediate artifact metadata GET returned HTTP404. Both scientific
+execution and scientific comparison steps were skipped. The later metadata read
+showed the correct artifact/run/head/digest; delayed visibility is consistent with
+these observations but is not established as the unique cause. Preserve the
+[terminal receipt](benchmarks/stanford-k2-low-rate-preflight-failure.json).
+No battery integration or shared scientific wall budget started. Setup/upload
+did consume ordinary runner time. Do not rerun that workflow.
+
+One separately named v2 replacement may proceed after reviewed software checks
+and CI. It must first verify the prior run still has attempt 1, the pinned head,
+terminal failure, exactly one job, and a skipped scientific execution step.
+Its own first-attempt/singleton guards remain required. No scientific settings,
+two-solve limit, shared 1200-second budget, or 4 GB worker cap changes.
+
+For the newly uploaded artifact, poll only its exact GitHub metadata endpoint
+for at most 60 seconds, at 5-second intervals with each request capped by remaining
+time and 10 seconds. A process alarm enforces the overall deadline. Only HTTP404
+is retryable within that preflight window. Authorization errors, other HTTP
+errors, redirects, malformed responses, or mismatched identities fail immediately.
+Require artifact ID, name, run ID, head SHA, nonexpired/nonempty metadata and an
+exact digest match against the upload action's returned SHA-256. This is a
+bounded metadata-read policy, not a scientific retry or a weakened persistence
+gate. A second preflight failure stops the replacement; no blind restart follows.
+
+The original input/evidence artifacts remain on GitHub. The connected artifact
+download tool produced a temporary file reference, but its cloud materialization
+returned HTTP403; that retrieval path was stopped. Zero-solve classification is
+based on completed GitHub job steps/logs, not a claim to have inspected ZIP
+members that were unavailable locally.

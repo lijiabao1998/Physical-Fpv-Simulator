@@ -35,6 +35,7 @@ SOURCE_FILES = (
     "src/physical_fpv/validation.py",
     "scripts/run_stanford_k2_low_rate_model.py",
     "scripts/compare_stanford_k2_rates.py",
+    "scripts/verify_managed_input_artifact.py",
     "requirements-lock.txt",
     "requirements-data-lock.txt",
     "pyproject.toml",
@@ -79,9 +80,10 @@ def source_digests():
     names = set(SOURCE_FILES) | {
         str(path.relative_to(ROOT)) for path in (ROOT / "src/physical_fpv").glob("*.py")
     }
-    workflow = ".github/workflows/k2-low-rate-model-20261009-v1.yml"
-    if (ROOT / workflow).exists():
-        names.add(workflow)
+    for version in (1, 2):
+        workflow = f".github/workflows/k2-low-rate-model-20261009-v{version}.yml"
+        if (ROOT / workflow).exists():
+            names.add(workflow)
     return {name: digest(ROOT / name) for name in sorted(names)}
 
 

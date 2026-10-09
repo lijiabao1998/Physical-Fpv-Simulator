@@ -83,3 +83,9 @@ template outside the executable workflow directory. No scientific execution or
 low-rate validation is claimed by this implementation. Independent review accepted
 the bounded approach; explicit launch coordination remains required. The ordinary
 core current domain stays unchanged.
+
+The first managed attempt subsequently stopped before either solve because its
+immediate uploaded-artifact metadata lookup returned HTTP404. The preserved
+receipt and bounded visibility-check amendment are linked from the protocol.
+A separately reviewed replacement retains the original scientific limits;
+no low-rate trajectory or empirical improvement has yet been established.
