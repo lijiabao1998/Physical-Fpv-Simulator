@@ -1,0 +1,1057 @@
+{
+  "protocol": "docs/stanford-cross-rate-onset-protocol.md",
+  "protocol_sha256": "717306f460fbd4f5b14a18bbad0dcb9bfb8cbd8373f05afe9a0047250522f1fd",
+  "source_sha256": {
+    "stanford-cross-rate-acquisition.json": "318a23c3e107df99f7f127b1617c5f9a0a6073df08d1e3d445e5e54a07873591",
+    "stanford-k1-onset-records.csv.gz": "0498bdbf4ef53271a43afceec5e1e084f3832e5319efda752c4f610a997905ef",
+    "stanford-k2-rest-records.csv.gz": "513ad1debdf3fcf7eb9d716a8b34651a39349f136d1a6b23e84ed609fa2c2d6f",
+    "stanford-k1-low-rate-onset-records.csv.gz": "378c2e17939e0721008f29d3053dc3cfd8a9c3524b83f1cf3c32787ed7121a10",
+    "stanford-k2-low-rate-onset-records.csv.gz": "8bc38714f31b007654960c22ed40ae3aea36c8f3e0b68fc5f147eed2b3023be4",
+    "stanford-onset-transfer-source.json": "ede4fa5c5524444ea7c4c59c8457cee3de79a20e3827d234ddc7273e61efdff6",
+    "stanford-cross-rate-source.json": "5c7bb5f8a9c724e9aee63f853ba05c5307dc709456885179de4528554087412a",
+    "stanford-k2-onset-source.json": "030f0615512df8de13de0389d3952e1cbbf838dc4f8faaa26adfe6cdf36f06ca"
+  },
+  "acquisition_receipt": "stanford-cross-rate-acquisition.json",
+  "analysis_source_sha256": {
+    "src/physical_fpv/onset_response.py": "6bd0377d1fd5ec44bde80e5d6f9d39c1804beca13ae78de08bb0f85c346d3cad",
+    "src/physical_fpv/cross_rate_response.py": "ef028d7fbf6fa73a621c851c0f870e7552fc6fceb3c40d2159cd539ecdb9f20d",
+    "scripts/check_stanford_k2_onset.py": "ba2bcc953b2ab5b0dbba18e4c6e5918e5f17d80f22358480671298e8ba1a6676",
+    "scripts/check_stanford_cross_rate.py": "7a4359db591085791078e3559ca0c2d8cefc79cbd475a1113460e78fddfd4156"
+  },
+  "source_doi": "10.17632/kxsbr4x3j2.2",
+  "license": "CC-BY-4.0",
+  "authors": [
+    "Edoardo Catenaro",
+    "Simona Onori"
+  ],
+  "comparison": {
+    "query_times_s": [
+      1.001,
+      2.0,
+      5.0,
+      10.0
+    ],
+    "cases": {
+      "k1_1c": {
+        "rest": {
+          "endpoint_v": 4.186448097229004,
+          "endpoint_skin_k": 298.33794059753416,
+          "tails_s": {
+            "10": {
+              "interval_s": [
+                3590.0009,
+                3600.0009
+              ],
+              "mean_v": 4.186497338966686,
+              "minimum_v": 4.186380386352539,
+              "maximum_v": 4.186629772186279,
+              "endpoint_change_v": -2.7205231356575155e-05,
+              "endpoint_change_per_second_v": -2.7205231356575155e-06
+            },
+            "60": {
+              "interval_s": [
+                3540.0009,
+                3600.0009
+              ],
+              "mean_v": 4.1865066736434375,
+              "minimum_v": 4.186339855194092,
+              "maximum_v": 4.186680793762207,
+              "endpoint_change_v": -0.0001181698188643665,
+              "endpoint_change_per_second_v": -1.9694969810727753e-06
+            }
+          },
+          "equilibrium_certified": false
+        },
+        "query_times_s": [
+          1.001,
+          2.0,
+          5.0,
+          10.0
+        ],
+        "voltage_v": [
+          3.8799356797165028,
+          3.8744225102306116,
+          3.8633604403982216,
+          3.8508388981807697
+        ],
+        "positive_current_a": [
+          5.000240330885354,
+          5.000252712539204,
+          5.000264648058435,
+          5.000282285831946
+        ],
+        "skin_k": [
+          298.33795498378225,
+          298.37388463838806,
+          298.3531522165079,
+          298.3646053314209
+        ],
+        "voltage_fall_v": [
+          0.30651241751250113,
+          0.31202558699839233,
+          0.32308765683078233,
+          0.33560919904823416
+        ],
+        "finite_time_apparent_response_ohm": [
+          0.06129953706809716,
+          0.06240196344795162,
+          0.06461411136633234,
+          0.06711805051470121
+        ],
+        "sampling_brackets": [
+          {
+            "neighbor_indices": [
+              0,
+              1
+            ],
+            "step_times_s": [
+              1.0006,
+              2.0009
+            ],
+            "interval_width_s": 1.0003000000000002,
+            "excel_rows": [
+              21679,
+              21680
+            ],
+            "naive_dates": [
+              "2019-09-03T01:12:08.903000",
+              "2019-09-03T01:12:09.904000"
+            ],
+            "test_times_s": [
+              21675.7522,
+              21676.7525
+            ]
+          },
+          {
+            "neighbor_indices": [
+              0,
+              1
+            ],
+            "step_times_s": [
+              1.0006,
+              2.0009
+            ],
+            "interval_width_s": 1.0003000000000002,
+            "excel_rows": [
+              21679,
+              21680
+            ],
+            "naive_dates": [
+              "2019-09-03T01:12:08.903000",
+              "2019-09-03T01:12:09.904000"
+            ],
+            "test_times_s": [
+              21675.7522,
+              21676.7525
+            ]
+          },
+          {
+            "neighbor_indices": [
+              3,
+              4
+            ],
+            "step_times_s": [
+              4.001,
+              5.0003
+            ],
+            "interval_width_s": 0.9992999999999999,
+            "excel_rows": [
+              21682,
+              21683
+            ],
+            "naive_dates": [
+              "2019-09-03T01:12:11.904000",
+              "2019-09-03T01:12:12.903000"
+            ],
+            "test_times_s": [
+              21678.7526,
+              21679.7519
+            ]
+          },
+          {
+            "neighbor_indices": [
+              8,
+              9
+            ],
+            "step_times_s": [
+              9.0009,
+              10.0001
+            ],
+            "interval_width_s": 0.9992000000000001,
+            "excel_rows": [
+              21687,
+              21688
+            ],
+            "naive_dates": [
+              "2019-09-03T01:12:16.904000",
+              "2019-09-03T01:12:17.903000"
+            ],
+            "test_times_s": [
+              21683.7525,
+              21684.7517
+            ]
+          }
+        ],
+        "pure_ohmic_identification": false,
+        "onset_current_support": {
+          "step_time_interval_s": [
+            1.0006,
+            10.0001
+          ],
+          "positive_current_min_a": 5.000240325927734,
+          "positive_current_max_a": 5.000288009643555,
+          "includes_first_sample_at_or_after_10s": true
+        },
+        "timing": {
+          "phase_clock_audits": {
+            "rest": {
+              "rows_checked": 3601,
+              "max_relative_date_test_discrepancy_s": 0.0010000000002037268,
+              "max_command_origin_deviation_s": 3.637978807091713e-12,
+              "strictly_increasing_dates_test_and_step_clocks": true
+            },
+            "discharge": {
+              "rows_checked": 10,
+              "max_relative_date_test_discrepancy_s": 0.0007000000003030138,
+              "max_command_origin_deviation_s": 3.637978807091713e-12,
+              "strictly_increasing_dates_test_and_step_clocks": true
+            }
+          },
+          "last_rest": {
+            "excel_row": 21678,
+            "date_naive": "2019-09-03T01:12:07.857000",
+            "test_time_s": 21674.70662,
+            "step_time_s": 3600.0009
+          },
+          "first_discharge": {
+            "excel_row": 21679,
+            "date_naive": "2019-09-03T01:12:08.903000",
+            "test_time_s": 21675.7522,
+            "step_time_s": 1.0006
+          },
+          "inferred_discharge_command_origin_test_s": 21674.7516,
+          "recorded_sample_bracket_test_s": [
+            21674.70662,
+            21675.7522
+          ],
+          "recorded_sample_bracket_width_s": 1.0455799999981537,
+          "command_origin_after_last_rest_s": 0.04497999999875901,
+          "physical_switching_time_verified": false,
+          "instrument_latency_known": false
+        }
+      },
+      "k1_005c": {
+        "rest": {
+          "endpoint_v": 4.1860246658325195,
+          "endpoint_skin_k": 298.2076477050781,
+          "tails_s": {
+            "10": {
+              "interval_s": [
+                3590.0013,
+                3600.0013
+              ],
+              "mean_v": 4.185978592450857,
+              "minimum_v": 4.185814380645752,
+              "maximum_v": 4.186112403869629,
+              "endpoint_change_v": 9.295464420056021e-05,
+              "endpoint_change_per_second_v": 9.295464420056021e-06
+            },
+            "60": {
+              "interval_s": [
+                3540.0013,
+                3600.0013
+              ],
+              "mean_v": 4.1859725919194855,
+              "minimum_v": 4.185749530792236,
+              "maximum_v": 4.186145305633545,
+              "endpoint_change_v": 5.197047996485793e-05,
+              "endpoint_change_per_second_v": 8.661746660809655e-07
+            }
+          },
+          "equilibrium_certified": false
+        },
+        "query_times_s": [
+          1.001,
+          2.0,
+          5.0,
+          10.0
+        ],
+        "voltage_v": [
+          4.170588493347168,
+          4.1701835060768255,
+          4.169678961127025,
+          4.169064521789551
+        ],
+        "positive_current_a": [
+          0.2500389814376831,
+          0.25003927922244074,
+          0.25003683629023554,
+          0.250041127204895
+        ],
+        "skin_k": [
+          298.2076477050781,
+          298.2076477050781,
+          298.2240699768066,
+          298.2364925384521
+        ],
+        "voltage_fall_v": [
+          0.015436172485351562,
+          0.015841159755694,
+          0.016345704705494235,
+          0.01696014404296875
+        ],
+        "finite_time_apparent_response_ohm": [
+          0.06173506385522811,
+          0.06335468493172762,
+          0.06537318639930563,
+          0.06782941763444715
+        ],
+        "sampling_brackets": [
+          {
+            "neighbor_indices": [
+              0,
+              0
+            ],
+            "step_times_s": [
+              1.001,
+              1.001
+            ],
+            "interval_width_s": 0.0,
+            "excel_rows": [
+              18432,
+              18432
+            ],
+            "naive_dates": [
+              "2019-08-31T01:24:42.158000",
+              "2019-08-31T01:24:42.158000"
+            ],
+            "test_times_s": [
+              18428.259280000002,
+              18428.259280000002
+            ]
+          },
+          {
+            "neighbor_indices": [
+              0,
+              1
+            ],
+            "step_times_s": [
+              1.001,
+              2.0008
+            ],
+            "interval_width_s": 0.9998,
+            "excel_rows": [
+              18432,
+              18433
+            ],
+            "naive_dates": [
+              "2019-08-31T01:24:42.158000",
+              "2019-08-31T01:24:43.158000"
+            ],
+            "test_times_s": [
+              18428.259280000002,
+              18429.25908
+            ]
+          },
+          {
+            "neighbor_indices": [
+              3,
+              4
+            ],
+            "step_times_s": [
+              4.0006,
+              5.0008
+            ],
+            "interval_width_s": 1.0001999999999995,
+            "excel_rows": [
+              18435,
+              18436
+            ],
+            "naive_dates": [
+              "2019-08-31T01:24:45.158000",
+              "2019-08-31T01:24:46.158000"
+            ],
+            "test_times_s": [
+              18431.25888,
+              18432.25908
+            ]
+          },
+          {
+            "neighbor_indices": [
+              9,
+              9
+            ],
+            "step_times_s": [
+              10.0,
+              10.0
+            ],
+            "interval_width_s": 0.0,
+            "excel_rows": [
+              18441,
+              18441
+            ],
+            "naive_dates": [
+              "2019-08-31T01:24:51.157000",
+              "2019-08-31T01:24:51.157000"
+            ],
+            "test_times_s": [
+              18437.258280000002,
+              18437.258280000002
+            ]
+          }
+        ],
+        "pure_ohmic_identification": false,
+        "onset_current_support": {
+          "step_time_interval_s": [
+            1.001,
+            10.0
+          ],
+          "positive_current_min_a": 0.2500368356704712,
+          "positive_current_max_a": 0.250041127204895,
+          "includes_first_sample_at_or_after_10s": true
+        },
+        "timing": {
+          "phase_clock_audits": {
+            "rest": {
+              "rows_checked": 3601,
+              "max_relative_date_test_discrepancy_s": 0.0009000000007119979,
+              "max_command_origin_deviation_s": 1.8189894035458565e-12,
+              "strictly_increasing_dates_test_and_step_clocks": true
+            },
+            "discharge": {
+              "rows_checked": 10,
+              "max_relative_date_test_discrepancy_s": 0.0004000000008090865,
+              "max_command_origin_deviation_s": 3.637978807091713e-12,
+              "strictly_increasing_dates_test_and_step_clocks": true
+            }
+          },
+          "last_rest": {
+            "excel_row": 18431,
+            "date_naive": "2019-08-31T01:24:41.111000",
+            "test_time_s": 18427.212976,
+            "step_time_s": 3600.0013
+          },
+          "first_discharge": {
+            "excel_row": 18432,
+            "date_naive": "2019-08-31T01:24:42.158000",
+            "test_time_s": 18428.259280000002,
+            "step_time_s": 1.001
+          },
+          "inferred_discharge_command_origin_test_s": 18427.258280000002,
+          "recorded_sample_bracket_test_s": [
+            18427.212976,
+            18428.259280000002
+          ],
+          "recorded_sample_bracket_width_s": 1.046304000003147,
+          "command_origin_after_last_rest_s": 0.04530400000294321,
+          "physical_switching_time_verified": false,
+          "instrument_latency_known": false
+        }
+      },
+      "k2_1c": {
+        "rest": {
+          "endpoint_v": 4.1867523193359375,
+          "endpoint_skin_k": 297.55456771850584,
+          "tails_s": {
+            "10": {
+              "interval_s": [
+                3590.0017,
+                3600.0017
+              ],
+              "mean_v": 4.186722675689228,
+              "minimum_v": 4.1865620613098145,
+              "maximum_v": 4.186913013458252,
+              "endpoint_change_v": -4.642183373260167e-05,
+              "endpoint_change_per_second_v": -4.642183373260167e-06
+            },
+            "60": {
+              "interval_s": [
+                3540.0017,
+                3600.0017
+              ],
+              "mean_v": 4.186780252279197,
+              "minimum_v": 4.186546802520752,
+              "maximum_v": 4.18696403503418,
+              "endpoint_change_v": -2.3556070138930352e-05,
+              "endpoint_change_per_second_v": -3.926011689821725e-07
+            }
+          },
+          "equilibrium_certified": false
+        },
+        "query_times_s": [
+          1.001,
+          2.0,
+          5.0,
+          10.0
+        ],
+        "voltage_v": [
+          4.028347014952049,
+          4.022902285023559,
+          4.0117720048904415,
+          3.999106510856871
+        ],
+        "positive_current_a": [
+          5.000381945229644,
+          5.0003800413114945,
+          5.000387669420243,
+          5.000410084532776
+        ],
+        "skin_k": [
+          297.54337921142576,
+          297.54337921142576,
+          297.541195297263,
+          297.5520938873291
+        ],
+        "voltage_fall_v": [
+          0.1584053043838889,
+          0.16385003431237877,
+          0.174980314445496,
+          0.18764580847906664
+        ],
+        "finite_time_apparent_response_ohm": [
+          0.03167864097561733,
+          0.03276751626050494,
+          0.03499334971877963,
+          0.037526083922494874
+        ],
+        "sampling_brackets": [
+          {
+            "neighbor_indices": [
+              0,
+              1
+            ],
+            "step_times_s": [
+              1.0003,
+              2.0011
+            ],
+            "interval_width_s": 1.0008000000000001,
+            "excel_rows": [
+              20791,
+              20792
+            ],
+            "naive_dates": [
+              "2019-09-03T00:57:27.335000",
+              "2019-09-03T00:57:28.335000"
+            ],
+            "test_times_s": [
+              20787.202324,
+              20788.203124
+            ]
+          },
+          {
+            "neighbor_indices": [
+              0,
+              1
+            ],
+            "step_times_s": [
+              1.0003,
+              2.0011
+            ],
+            "interval_width_s": 1.0008000000000001,
+            "excel_rows": [
+              20791,
+              20792
+            ],
+            "naive_dates": [
+              "2019-09-03T00:57:27.335000",
+              "2019-09-03T00:57:28.335000"
+            ],
+            "test_times_s": [
+              20787.202324,
+              20788.203124
+            ]
+          },
+          {
+            "neighbor_indices": [
+              3,
+              4
+            ],
+            "step_times_s": [
+              4.0001,
+              5.0001
+            ],
+            "interval_width_s": 1.0,
+            "excel_rows": [
+              20794,
+              20795
+            ],
+            "naive_dates": [
+              "2019-09-03T00:57:30.334000",
+              "2019-09-03T00:57:31.334000"
+            ],
+            "test_times_s": [
+              20790.202124000003,
+              20791.202124000003
+            ]
+          },
+          {
+            "neighbor_indices": [
+              8,
+              9
+            ],
+            "step_times_s": [
+              9.001,
+              10.0012
+            ],
+            "interval_width_s": 1.0002000000000013,
+            "excel_rows": [
+              20799,
+              20800
+            ],
+            "naive_dates": [
+              "2019-09-03T00:57:35.335000",
+              "2019-09-03T00:57:36.335000"
+            ],
+            "test_times_s": [
+              20795.203024000002,
+              20796.203224
+            ]
+          }
+        ],
+        "pure_ohmic_identification": false,
+        "onset_current_support": {
+          "step_time_interval_s": [
+            1.0003,
+            10.0012
+          ],
+          "positive_current_min_a": 5.000378131866455,
+          "positive_current_max_a": 5.00041389465332,
+          "includes_first_sample_at_or_after_10s": true
+        },
+        "timing": {
+          "phase_clock_audits": {
+            "rest": {
+              "rows_checked": 3601,
+              "max_relative_date_test_discrepancy_s": 0.0007999999979801942,
+              "max_command_origin_deviation_s": 3.637978807091713e-12,
+              "strictly_increasing_dates_test_and_step_clocks": true
+            },
+            "discharge": {
+              "rows_checked": 3436,
+              "max_relative_date_test_discrepancy_s": 0.0010000000002037268,
+              "max_command_origin_deviation_s": 3.637978807091713e-12,
+              "strictly_increasing_dates_test_and_step_clocks": true
+            }
+          },
+          "last_rest": {
+            "excel_row": 20790,
+            "date_naive": "2019-09-03T00:57:26.288000",
+            "test_time_s": 20786.156096,
+            "step_time_s": 3600.0017
+          },
+          "first_discharge": {
+            "excel_row": 20791,
+            "date_naive": "2019-09-03T00:57:27.335000",
+            "test_time_s": 20787.202324,
+            "step_time_s": 1.0003
+          },
+          "inferred_discharge_command_origin_test_s": 20786.202024000002,
+          "recorded_sample_bracket_test_s": [
+            20786.156096,
+            20787.202324
+          ],
+          "recorded_sample_bracket_width_s": 1.046228000002884,
+          "command_origin_after_last_rest_s": 0.04592800000318675,
+          "physical_switching_time_verified": false,
+          "instrument_latency_known": false
+        }
+      },
+      "k2_005c": {
+        "rest": {
+          "endpoint_v": 4.186485767364502,
+          "endpoint_skin_k": 297.4955352783203,
+          "tails_s": {
+            "10": {
+              "interval_s": [
+                3590.0017,
+                3600.0017
+              ],
+              "mean_v": 4.186413766293061,
+              "minimum_v": 4.18628454208374,
+              "maximum_v": 4.18649435043335,
+              "endpoint_change_v": 4.9335200611899666e-05,
+              "endpoint_change_per_second_v": 4.933520061189967e-06
+            },
+            "60": {
+              "interval_s": [
+                3540.0017,
+                3600.0017
+              ],
+              "mean_v": 4.1864314072170306,
+              "minimum_v": 4.186228275299072,
+              "maximum_v": 4.186631679534912,
+              "endpoint_change_v": 4.157026847284584e-05,
+              "endpoint_change_per_second_v": 6.92837807880764e-07
+            }
+          },
+          "equilibrium_certified": false
+        },
+        "query_times_s": [
+          1.001,
+          2.0,
+          5.0,
+          10.0
+        ],
+        "voltage_v": [
+          4.17841419708624,
+          4.178266643429641,
+          4.177556614162565,
+          4.176808380326923
+        ],
+        "positive_current_a": [
+          0.25002187299880857,
+          0.25001996908065893,
+          0.2500191334249259,
+          0.25002038486603023
+        ],
+        "skin_k": [
+          297.49524920335267,
+          297.49524917604725,
+          297.5194572439047,
+          297.48340972808046
+        ],
+        "voltage_fall_v": [
+          0.008071570278262108,
+          0.008219123934861017,
+          0.008929153201936657,
+          0.00967738703757881
+        ],
+        "finite_time_apparent_response_ohm": [
+          0.032283456569020146,
+          0.032873869895606,
+          0.03571387949241831,
+          0.03870639205184928
+        ],
+        "sampling_brackets": [
+          {
+            "neighbor_indices": [
+              0,
+              1
+            ],
+            "step_times_s": [
+              1.0,
+              2.0008
+            ],
+            "interval_width_s": 1.0008,
+            "excel_rows": [
+              17446,
+              17447
+            ],
+            "naive_dates": [
+              "2019-08-31T01:08:23.747000",
+              "2019-08-31T01:08:24.748000"
+            ],
+            "test_times_s": [
+              17442.117708,
+              17443.118508
+            ]
+          },
+          {
+            "neighbor_indices": [
+              0,
+              1
+            ],
+            "step_times_s": [
+              1.0,
+              2.0008
+            ],
+            "interval_width_s": 1.0008,
+            "excel_rows": [
+              17446,
+              17447
+            ],
+            "naive_dates": [
+              "2019-08-31T01:08:23.747000",
+              "2019-08-31T01:08:24.748000"
+            ],
+            "test_times_s": [
+              17442.117708,
+              17443.118508
+            ]
+          },
+          {
+            "neighbor_indices": [
+              3,
+              4
+            ],
+            "step_times_s": [
+              4.0009,
+              5.0004
+            ],
+            "interval_width_s": 0.9995000000000003,
+            "excel_rows": [
+              17449,
+              17450
+            ],
+            "naive_dates": [
+              "2019-08-31T01:08:26.748000",
+              "2019-08-31T01:08:27.748000"
+            ],
+            "test_times_s": [
+              17445.118608,
+              17446.118108
+            ]
+          },
+          {
+            "neighbor_indices": [
+              8,
+              9
+            ],
+            "step_times_s": [
+              9.0005,
+              10.0001
+            ],
+            "interval_width_s": 0.9995999999999992,
+            "excel_rows": [
+              17454,
+              17455
+            ],
+            "naive_dates": [
+              "2019-08-31T01:08:31.748000",
+              "2019-08-31T01:08:32.747000"
+            ],
+            "test_times_s": [
+              17450.118208,
+              17451.117808
+            ]
+          }
+        ],
+        "pure_ohmic_identification": false,
+        "onset_current_support": {
+          "step_time_interval_s": [
+            1.0,
+            10.0001
+          ],
+          "positive_current_min_a": 0.2500191330909729,
+          "positive_current_max_a": 0.25002193450927734,
+          "includes_first_sample_at_or_after_10s": true
+        },
+        "timing": {
+          "phase_clock_audits": {
+            "rest": {
+              "rows_checked": 3601,
+              "max_relative_date_test_discrepancy_s": 0.0007999999997991836,
+              "max_command_origin_deviation_s": 3.637978807091713e-12,
+              "strictly_increasing_dates_test_and_step_clocks": true
+            },
+            "discharge": {
+              "rows_checked": 10,
+              "max_relative_date_test_discrepancy_s": 0.0008000000012104991,
+              "max_command_origin_deviation_s": 3.637978807091713e-12,
+              "strictly_increasing_dates_test_and_step_clocks": true
+            }
+          },
+          "last_rest": {
+            "excel_row": 17445,
+            "date_naive": "2019-08-31T01:08:22.702000",
+            "test_time_s": 17441.070656,
+            "step_time_s": 3600.0017
+          },
+          "first_discharge": {
+            "excel_row": 17446,
+            "date_naive": "2019-08-31T01:08:23.747000",
+            "test_time_s": 17442.117708,
+            "step_time_s": 1.0
+          },
+          "inferred_discharge_command_origin_test_s": 17441.117708,
+          "recorded_sample_bracket_test_s": [
+            17441.070656,
+            17442.117708
+          ],
+          "recorded_sample_bracket_width_s": 1.0470520000017132,
+          "command_origin_after_last_rest_s": 0.04705200000171317,
+          "physical_switching_time_verified": false,
+          "instrument_latency_known": false
+        }
+      }
+    },
+    "transfer": {
+      "k1": {
+        "predicted_low_rate_fall_v": [
+          0.015327273811108514,
+          0.015602941962590915,
+          0.016155907985742686,
+          0.016782273006490975
+        ],
+        "observed_minus_predicted_low_rate_fall_v": [
+          0.00010889867424304818,
+          0.00023821779310308558,
+          0.00018979671975154905,
+          0.00017787103647777525
+        ],
+        "relative_difference": [
+          0.007104895207399723,
+          0.015267492096953798,
+          0.011747821287360724,
+          0.010598745259892928
+        ],
+        "relative_denominator_guard_v": 1e-12,
+        "low_minus_high_apparent_response_ohm": [
+          0.0004355267871309493,
+          0.000952721483776002,
+          0.0007590750329732887,
+          0.0007113671197459398
+        ]
+      },
+      "k2": {
+        "predicted_low_rate_fall_v": [
+          0.00792035315078065,
+          0.008192533402301434,
+          0.008749006972324657,
+          0.009382285944817118
+        ],
+        "observed_minus_predicted_low_rate_fall_v": [
+          0.00015121712748145805,
+          2.6590532559583185e-05,
+          0.00018014622961200037,
+          0.00029510109276169316
+        ],
+        "relative_difference": [
+          0.019092220334462447,
+          0.003245703282956822,
+          0.020590477317237132,
+          0.03145300564247996
+        ],
+        "relative_denominator_guard_v": 1e-12,
+        "low_minus_high_apparent_response_ohm": [
+          0.0006048155934028146,
+          0.00010635363510105855,
+          0.0007205297736386784,
+          0.001180308129354407
+        ]
+      }
+    },
+    "cell_contrasts_k1_minus_k2": {
+      "1c": {
+        "rest_anchor_difference_v": -0.00030422210693359375,
+        "observed_fall_difference_v": [
+          0.14810711312861224,
+          0.14817555268601357,
+          0.14810734238528633,
+          0.14796339056916752
+        ],
+        "apparent_response_difference_ohm": [
+          0.02962089609247983,
+          0.029634447187446677,
+          0.02962076164755271,
+          0.029591966592206337
+        ],
+        "skin_temperature_difference_k": [
+          0.7945757723564952,
+          0.8305054269623042,
+          0.8119569192448921,
+          0.8125114440917969
+        ]
+      },
+      "005c": {
+        "rest_anchor_difference_v": -0.0004611015319824219,
+        "observed_fall_difference_v": [
+          0.007364602207089455,
+          0.007622035820832984,
+          0.007416551503557578,
+          0.007282757005389939
+        ],
+        "apparent_response_difference_ohm": [
+          0.029451607286207965,
+          0.03048081503612162,
+          0.02965930690688732,
+          0.02912302558259787
+        ],
+        "skin_temperature_difference_k": [
+          0.7123985017254313,
+          0.7123985290308497,
+          0.7046127329019214,
+          0.7530828103716658
+        ]
+      }
+    },
+    "predicted_low_rate_cell_fall_difference_v": [
+      0.007406920660327864,
+      0.007410408560289482,
+      0.007406901013418029,
+      0.007399987061673857
+    ],
+    "observed_minus_predicted_low_rate_cell_fall_difference_v": [
+      -4.231845323840987e-05,
+      0.0002116272605435024,
+      9.650490139548676e-06,
+      -0.00011723005628391792
+    ],
+    "interaction_low_minus_high_response_contrast_ohm": [
+      -0.00016928880627186532,
+      0.0008463678486749435,
+      3.854525933461028e-05,
+      -0.0004689410096084673
+    ],
+    "within_cell_low_minus_high_skin_temperature_k": {
+      "k1": [
+        -0.13030727870415149,
+        -0.16623693330996048,
+        -0.1290822397012903,
+        -0.12811279296875
+      ],
+      "k2": [
+        -0.04813000807308754,
+        -0.04813003537850591,
+        -0.021738053358319576,
+        -0.06868415924861893
+      ]
+    },
+    "statistical_acceptance_established": false,
+    "contact_resistance_identified": false,
+    "parameters_fitted": false,
+    "physical_parameter_update": false
+  },
+  "same_cell_record_history": {
+    "k1": {
+      "record_ranges_naive": {
+        "005c": [
+          "2019-08-30T20:17:34.898000",
+          "2019-08-31T21:51:21.088000"
+        ],
+        "1c": [
+          "2019-09-02T19:10:54.152000",
+          "2019-09-03T03:08:38.439000"
+        ]
+      },
+      "earlier_record": "005c",
+      "later_record": "1c",
+      "unobserved_gap_s": 163173.064,
+      "record_ranges_overlap": false,
+      "history_replayed": false,
+      "timezone": "unspecified"
+    },
+    "k2": {
+      "record_ranges_naive": {
+        "005c": [
+          "2019-08-30T20:17:42.632000",
+          "2019-08-31T21:41:12.806000"
+        ],
+        "1c": [
+          "2019-09-02T19:11:01.133000",
+          "2019-09-03T02:54:42.246000"
+        ]
+      },
+      "earlier_record": "005c",
+      "later_record": "1c",
+      "unobserved_gap_s": 163788.327,
+      "record_ranges_overlap": false,
+      "history_replayed": false,
+      "timezone": "unspecified"
+    }
+  },
+  "new_dfns_solved": 0,
+  "parameters_fitted": false,
+  "physical_parameter_update": false,
+  "blind_holdout": false,
+  "historical_voltage_rmse_v": {
+    "k1": 0.1914735217065252,
+    "k2": 0.05500305419157363
+  },
+  "historical_gate_v": 0.05,
+  "historical_passed": {
+    "k1": false,
+    "k2": false
+  },
+  "elapsed_s": 0.2486512710020179
+}

@@ -46,3 +46,11 @@ The [fixed-query transfer](stanford-onset-transfer-findings.md) locates the
 ~150 mV early residual contrast mainly in the measured loaded-fall contrast
 (~148 mV), with only a −0.304 mV rest-anchor contrast. This is an observed
 between-record constraint, not an identified resistance or latent-state cause.
+
+### Two-rate early-response scaling (2026-10-09)
+
+The [frozen cross-rate screen](stanford-cross-rate-onset-findings.md) predicts
+the low-rate specimen contrast from the prior 1C response with discrepancies
+−0.042/+0.212/+0.010/−0.117 mV at fixed nominal queries. It supports a
+current-proportional descriptor, with no identified contact resistance or physical
+PASS and no change to the model or its empirical gates.
