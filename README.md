@@ -50,6 +50,11 @@ terminal receipts and a no-solve verifier are preserved with the result.
 The subsequent [zero-solve residual audit](docs/stanford-k2-residual-audit.md)
 locates 86.1% of squared voltage error in a sustained positive-discrepancy phase;
 it cannot uniquely identify a physical cause from the retained global outputs.
+The [single frozen internal-state diagnostic](docs/stanford-k2-state-findings.md)
+now exactly reproduces that result, verifies signed voltage/inventory accounting,
+and resolves the model's late negative-particle polarization and support-exit
+timing. A subsequent saved-state OCP calculation does not explain the broad
+residual through its small direct temperature term. Empirical acceptance remains FAIL.
 
 Software checks pass (263 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
 

@@ -1,0 +1,128 @@
+{
+  "source_run_id": 37881497526,
+  "source_commit": "6d74c8d4a75ece4a1b8b3efafbfb127740f0b661",
+  "source_zip_sha256": "450307f4b2669b46edb7a3a0a2e3d53619a12bb4f87e7e74e71ce47c117236c9",
+  "scalar_gzip_sha256": "188d1ba8e5889fc88e200b47524be4876548bdf43a57bc2e68e5fc776454e21e",
+  "new_source_downloads": 0,
+  "new_scientific_solves": 0,
+  "fitting_performed": false,
+  "voltage_identity_max_error_v": 9.936553801992432e-10,
+  "mean_inventory_max_errors": {
+    "negative": 1.7541523789077473e-14,
+    "positive": 9.992007221626409e-15
+  },
+  "ocp_algebra_reconstruction_error_v": 2.3092638912203256e-14,
+  "direct_temperature_ocp_diagnostic": {
+    "definition": "Ubulk(saved states, saved T) minus Ubulk(same states, 298.15K)",
+    "minimum_v": -0.004728783272395898,
+    "maximum_v": 0.0001913300937026463,
+    "initial_v": -6.744013407722349e-05,
+    "endpoint_v": -0.004728783272395898,
+    "indirect_temperature_effects_isolated": false,
+    "not_a_resimulated_isothermal_counterfactual": true
+  },
+  "quarter_model_accounting": [
+    {
+      "observed_duration_quarter": 1,
+      "interval_s": [
+        1.0003,
+        859.69305
+      ],
+      "mean_signed_terms_v": {
+        "negative_particle": -0.01827902039434612,
+        "positive_particle": -0.05731934955998631,
+        "negative_reaction": -0.02245775090556974,
+        "positive_reaction": -0.01829343325799772,
+        "electrolyte_concentration": -0.04060597476198003,
+        "electrolyte_ohmic": -0.01914070970463726,
+        "negative_solid_ohmic": -7.093855785615457e-06,
+        "positive_solid_ohmic": -0.001456337328037644,
+        "contact": 0.0
+      },
+      "mean_bulk_ocv_v": 4.0665724002142,
+      "mean_terminal_v": 3.8890127299749886,
+      "mean_direct_ocp_temperature_term_v": 0.00010955902901547222
+    },
+    {
+      "observed_duration_quarter": 2,
+      "interval_s": [
+        859.69305,
+        1718.3857999999998
+      ],
+      "mean_signed_terms_v": {
+        "negative_particle": -0.031655326620955694,
+        "positive_particle": -0.060363276327855625,
+        "negative_reaction": -0.024680757260231157,
+        "positive_reaction": -0.01748569956070042,
+        "electrolyte_concentration": -0.03958056212436251,
+        "electrolyte_ohmic": -0.01939132035148684,
+        "negative_solid_ohmic": -6.638366085985099e-06,
+        "positive_solid_ohmic": -0.0014188564352386858,
+        "contact": 0.0
+      },
+      "mean_bulk_ocv_v": 3.831006363788381,
+      "mean_terminal_v": 3.6364239261419673,
+      "mean_direct_ocp_temperature_term_v": 0.00016674866967009036
+    },
+    {
+      "observed_duration_quarter": 3,
+      "interval_s": [
+        1718.3857999999998,
+        2577.0785499999997
+      ],
+      "mean_signed_terms_v": {
+        "negative_particle": -0.038253618552426163,
+        "positive_particle": -0.060921774955719064,
+        "negative_reaction": -0.028476803098193285,
+        "positive_reaction": -0.02071062808567181,
+        "electrolyte_concentration": -0.03867480978945878,
+        "electrolyte_ohmic": -0.019676501700285818,
+        "negative_solid_ohmic": -6.223577710846499e-06,
+        "positive_solid_ohmic": -0.0014093975416108414,
+        "contact": 0.0
+      },
+      "mean_bulk_ocv_v": 3.6028671480591195,
+      "mean_terminal_v": 3.3947373900344795,
+      "mean_direct_ocp_temperature_term_v": -0.00014266392231201773
+    },
+    {
+      "observed_duration_quarter": 4,
+      "interval_s": [
+        2577.0785499999997,
+        3333.132326188595
+      ],
+      "mean_signed_terms_v": {
+        "negative_particle": -0.07279259357278119,
+        "positive_particle": -0.06968291900439569,
+        "negative_reaction": -0.041132917497852736,
+        "positive_reaction": -0.03757936170550579,
+        "electrolyte_concentration": -0.03684253961951587,
+        "electrolyte_ohmic": -0.01969971407333284,
+        "negative_solid_ohmic": -5.766597382107724e-06,
+        "positive_solid_ohmic": -0.0013874021977514253,
+        "contact": 0.0
+      },
+      "mean_bulk_ocv_v": 3.359332115070595,
+      "mean_terminal_v": 3.080208899917499,
+      "mean_direct_ocp_temperature_term_v": -0.0016277748537270702
+    }
+  ],
+  "late_change_3000s_to_cutoff": {
+    "bulk_ocv_change_v": -0.28088044443258964,
+    "terminal_change_v": -0.6125412228430358,
+    "signed_term_changes_v": {
+      "negative_particle": -0.27778869549487567,
+      "positive_particle": 0.011271946189289395,
+      "negative_reaction": -0.034417798011981415,
+      "positive_reaction": -0.03705202776591543,
+      "electrolyte_concentration": 0.004674454408343666,
+      "electrolyte_ohmic": 0.0016017076532240035,
+      "negative_solid_ohmic": -5.688671852587919e-07,
+      "positive_solid_ohmic": 5.020330563754172e-05,
+      "contact": 0.0
+    }
+  },
+  "scientific_voltage_rmse_v": 0.05500305419157363,
+  "scientific_empirical_pass": false,
+  "unique_empirical_cause_identified": false
+}
