@@ -68,6 +68,7 @@ def summary(log: FlightLog, cells: int) -> list[tuple[str, str]]:
         ("最大 / 最小電流", f"{log['current'].max():.0f} / {log['current'].min():.0f} A（負值為煞車回充）"),
         ("用電量", f"{log['mah'][-1]:.0f} mAh，{energy:.2f} Wh"),
         ("剩餘電量", f"{100 * log['soc'][-1]:.0f}%"),
+        ("電池溫度（起飛 → 最高）", f"{log['batt_temp'][0]:.1f} → {log['batt_temp'].max():.1f} °C"),
     ]
 
 

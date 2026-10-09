@@ -310,7 +310,8 @@ def delta_sensitivity(base: Build, variant: Build, metrics: tuple[str, ...]) -> 
 def _spec_signature(build: Build) -> tuple:
     reqs = tuple(sorted((r.id, r.metric, r.kind, round(r.limit, 12), r.unit) for r in build.spec.requirements))
     conditions = tuple(round(build.params[k].value, 12) for k in
-                       ("env.altitude", "env.temperature", "criteria.reserve_soc", "criteria.min_cell_voltage"))
+                       ("env.altitude", "env.temperature", "env.battery_temperature", "env.battery_cycles",
+                        "criteria.reserve_soc", "criteria.min_cell_voltage", "criteria.burst_cell_voltage"))
     return reqs, conditions
 
 

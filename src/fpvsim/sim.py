@@ -60,6 +60,7 @@ def _define_columns(log: FlightLog, n: int) -> None:
     log.define("vbat", "V")
     log.define("current", "A")
     log.define("mah", "mAh")
+    log.define("batt_temp", "degC")
     # truth and physics, not available on a real aircraft
     for name, unit in (("pos_n", "m"), ("pos_e", "m"), ("alt", "m"), ("vel_n", "m/s"), ("vel_e", "m/s"), ("vel_d", "m/s")):
         log.define(name, unit)
@@ -176,6 +177,7 @@ def simulate(
                 "vbat": out.v_bus,
                 "current": out.i_bus,
                 "mah": mah,
+                "batt_temp": prev[15 + n] - 273.15,
                 "pos_n": prev[0],
                 "pos_e": prev[1],
                 "alt": -prev[2],

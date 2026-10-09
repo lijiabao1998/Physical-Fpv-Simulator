@@ -13,6 +13,7 @@ State vector (plain Python floats, for speed in the inner loop):
     [13:13+n]   rotor speeds, rad/s
     [13+n]  battery state of charge
     [14+n]  battery polarisation voltage v_rc, V
+    [15+n]  battery temperature, K (lumped; R0 and R1 follow it, see battery.py)
 
 Forces and moments per rotor i (hub at r_i from the CG, spin sign s_i = +1 for
 CW seen from above, i.e. spin vector +z):
@@ -119,19 +120,26 @@ class QuadModel:
 
         battery = ac.battery
         self.battery = battery
-        self.r_source = battery.r0 + ac.harness_resistance
-        self.r1 = battery.r1
+        self.harness = ac.harness_resistance
+        self.r0_ref = battery.r0
+        self.r1_ref = battery.r1
+        self.r_source = battery.r0_at(ac.battery_start_temperature) + ac.harness_resistance
+        self.r1 = battery.r1_at(ac.battery_start_temperature)
         self.tau1 = battery.tau1
         self.capacity = battery.capacity
         self.ocv_soc = [float(x) for x in battery.ocv_soc]
         self.ocv_v = [battery.series * float(x) for x in battery.ocv_cell]
         self.p_aux = pt.p_aux
-        self.n_state = 15 + self.n
+        self.t_ambient = ac.env.temperature
+        self.t_start = ac.battery_start_temperature
+        self.n_state = 16 + self.n
 
     # ------------------------------------------------------------------ helpers
 
-    def initial_state(self, position=(0.0, 0.0, 0.0), omega: float = 0.0, soc: float = 1.0) -> list[float]:
-        return [*position, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, *([omega] * self.n), soc, 0.0]
+    def initial_state(self, position=(0.0, 0.0, 0.0), omega: float = 0.0, soc: float = 1.0,
+                      temperature: float | None = None) -> list[float]:
+        t_batt = self.t_start if temperature is None else temperature
+        return [*position, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, *([omega] * self.n), soc, 0.0, t_batt]
 
     def _ocv(self, soc: float) -> float:
         xs, ys = self.ocv_soc, self.ocv_v
@@ -156,13 +164,15 @@ class QuadModel:
             self.cp_grid[k] + t * (self.cp_grid[k + 1] - self.cp_grid[k]),
         )
 
-    def _bus(self, duties: list[float], omegas: list[float], v_source: float) -> tuple[float, list[float], float]:
+    def _bus(self, duties: list[float], omegas: list[float], v_source: float,
+             r_source: float | None = None) -> tuple[float, list[float], float]:
         """Solve bus voltage and motor currents. Returns (V_bus, I_motor, I_bus).
 
         A motor whose ideal current would exceed the ESC's drive or braking
         limit runs at that limit instead; its bus power is then fixed, so the
         bus is re-solved with it as a constant-power load."""
-        R, ke, Rs = self.r_circuit, self.ke, self.r_source
+        R, ke = self.r_circuit, self.ke
+        Rs = self.r_source if r_source is None else r_source
         limit = [None] * self.n  # None, or the current the ESC holds this motor at
         for _ in range(self.n + 1):
             a = b = 0.0
@@ -203,7 +213,11 @@ class QuadModel:
         qw, qx, qy, qz = s[6], s[7], s[8], s[9]
         wx, wy, wz = s[10], s[11], s[12]
         omegas = s[13 : 13 + n]
-        soc, v_rc = s[13 + n], s[14 + n]
+        soc, v_rc, t_batt = s[13 + n], s[14 + n], s[15 + n]
+        battery = self.battery
+        r_factor = battery.resistance_factor(t_batt)
+        r_source = self.r0_ref * r_factor + self.harness
+        r1 = self.r1_ref * r_factor
 
         # rotation body -> world
         r00 = 1 - 2 * (qy * qy + qz * qz)
@@ -223,7 +237,7 @@ class QuadModel:
         wb = r02 * ax_w + r12 * ay_w + r22 * az_w
 
         v_source = self._ocv(soc) - v_rc
-        v_bus, currents, i_bus = self._bus(duties, omegas, v_source)
+        v_bus, currents, i_bus = self._bus(duties, omegas, v_source, r_source)
 
         fx = fy = fz = 0.0
         mx = my = mz = 0.0
@@ -360,8 +374,21 @@ class QuadModel:
             dwz,
             *domega,
             -i_bus / self.capacity,
-            (i_bus * self.r1 - v_rc) / self.tau1,
+            (i_bus * r1 - v_rc) / self.tau1,
+            self._battery_heating(i_bus, v_rc, t_batt, r_factor, ub, vb, wb),
         ]
+
+    def _battery_heating(self, i_bus: float, v_rc: float, t_batt: float, r_factor: float,
+                         ub: float, vb: float, wb: float) -> float:
+        """dT/dt of the pack: Joule heat minus convection at the current air speed."""
+        battery = self.battery
+        if not battery.thermal:
+            return 0.0
+        r0 = self.r0_ref * r_factor
+        r1 = self.r1_ref * r_factor
+        q = i_bus * i_bus * r0 + (v_rc * v_rc / r1 if r1 > 0.0 else 0.0)
+        ha = battery.conductance(math.sqrt(ub * ub + vb * vb + wb * wb))
+        return (q - ha * (t_batt - self.t_ambient)) / battery.heat_capacity
 
     def step(self, s: list[float], duties: list[float], dt: float, wind=(0.0, 0.0, 0.0), out: Outputs | None = None) -> list[float]:
         """Classic RK4 with duties held over the step, then quaternion renormalised."""

@@ -17,7 +17,16 @@ capacity = { value = 1300, unit = "mAh", source = "nominal", u_rel = 0.04, note 
 r0_cell = { value = 4.0, unit = "mohm", source = "estimate", u_rel = 0.30, note = "單芯歐姆內阻（瞬間壓降）；新電池充電器量測值的量級" }
 r1_cell = { value = 3.0, unit = "mohm", source = "estimate", u_rel = 0.40, note = "單芯極化內阻（數十秒內建立的壓降）" }
 tau1 = { value = 20, unit = "s", source = "estimate", u_rel = 0.30, note = "極化時間常數" }
-c_rating = { value = 100, unit = "1", source = "nominal", note = "標示 C 數，多為行銷數字" }
+c_rating = { value = 100, unit = "1", source = "nominal", note = "標示 C 數，多為行銷數字；只列出參考，限制改由溫升與壓降判斷" }
+r_ref_temperature = { value = 25, unit = "degC", source = "nominal", note = "r0_cell、r1_cell 對應的溫度（室溫下的充電器量測）" }
+resistance_activation_energy = { value = 20, unit = "kJ/mol", source = "estimate", u_rel = 0.30, note = "內阻的 Arrhenius 活化能；20 kJ/mol 約讓 0 °C 的內阻為 25 °C 的 2 倍。應以兩個溫度下的 HPPC 測試辨識" }
+specific_heat = { value = 1000, unit = "J/(kg*K)", source = "estimate", u_rel = 0.15, note = "鋰聚合物電芯比熱的常見範圍約 0.8–1.2 kJ/(kg·K)，整包含外皮與導線" }
+ha_hover = { value = 0.3, unit = "W/K", source = "estimate", u_rel = 0.5, note = "懸停時的對流散熱（只有槳的入流）：表面積約 0.014 m²、h 約 20 W/(m²·K)。應以飛行後的降溫曲線辨識" }
+ha_ref = { value = 0.6, unit = "W/K", source = "estimate", u_rel = 0.5, note = "以 ha_speed 前飛時的對流散熱（層流平板 h 約 45 W/(m²·K)，貼著機架的底面不計）；其他空速依 √v 縮放" }
+ha_speed = { value = 10, unit = "m/s", source = "nominal", note = "ha_ref 對應的空速" }
+max_temperature = { value = 60, unit = "degC", source = "nominal", note = "LiPo 常見的放電溫度上限；超過會加速老化與鼓包" }
+capacity_fade = { value = 8, unit = "%", source = "estimate", u_rel = 0.5, note = "每 100 次循環的容量衰退（高倍率激烈使用下的量級，一階線性近似）；應定期記錄實際放電容量" }
+resistance_growth = { value = 25, unit = "%", source = "estimate", u_rel = 0.5, note = "每 100 次循環的內阻增長（一階線性近似）；應定期記錄充電器量到的內阻" }
 
 [ocv]
 source = "estimate"

@@ -125,9 +125,10 @@ def test_cli_summary_and_report(tmp_path, capsys):
     assert main(["check", str(REFERENCE_BUILD)]) == 0
     assert main(["report", str(REFERENCE_BUILD), "--out", str(tmp_path), "--samples", "20"]) == 0
     report = (tmp_path / "report.md").read_text(encoding="utf-8")
-    for section in ("## 1. 規格符合度", "## 3. 質量預算", "## 7. 不確定度與敏感度", "## 9. 參數來源總表"):
+    for section in ("## 1. 規格符合度", "## 3. 質量預算", "## 7. 設計點（最差工況）", "## 8. 不確定度與敏感度",
+                    "## 10. 參數來源總表"):
         assert section in report
-    for figure in ("stand.png", "endurance.png", "layout.png", "monte_carlo.png", "tornado_endurance.png"):
+    for figure in ("stand.png", "endurance.png", "burst.png", "layout.png", "monte_carlo.png", "tornado_endurance.png"):
         assert (tmp_path / figure).stat().st_size > 0
 
 

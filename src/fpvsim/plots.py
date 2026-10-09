@@ -136,6 +136,31 @@ def endurance(run, v_min: float, reserve: float, path: Path) -> None:
         _save(fig, path)
 
 
+def burst(result, v_limit: float, t_limit_c: float, path: Path) -> None:
+    """Full-throttle burst from a full pack: cell voltage, pack temperature, current."""
+    tr = np.array(result.trace) if result.trace else np.zeros((0, 5))
+    with plt.rc_context(STYLE):
+        fig, axes = plt.subplots(3, 1, figsize=(7.0, 6.0), sharex=True)
+        panels = (
+            (axes[0], tr[:, 1], "Loaded cell voltage at the ESC", "Voltage [V]", v_limit, f"burst limit {v_limit:.2f} V"),
+            (axes[1], tr[:, 2] - 273.15, "Pack temperature", "Temperature [°C]", t_limit_c, f"limit {t_limit_c:.0f} °C"),
+            (axes[2], tr[:, 4], "Total supply current", "Current [A]", None, ""),
+        )
+        for ax, y, title, ylabel, ref, ref_label in panels:
+            ax.plot(tr[:, 0], y, color=SERIES[0])
+            ax.set_title(title)
+            ax.set_ylabel(ylabel)
+            if ref is not None:
+                ax.axhline(ref, color=INK_2, linewidth=0.9)
+                ax.annotate(ref_label, (0, ref), xycoords=("axes fraction", "data"), xytext=(2, 3),
+                            textcoords="offset points", color=INK_2, fontsize=8)
+            ax.axvline(result.duration, color=MUTED, linewidth=0.9)
+        axes[2].set_xlabel("Time at full throttle [s]")
+        axes[2].set_ylim(bottom=0)
+        fig.tight_layout()
+        _save(fig, path)
+
+
 def histograms(panels: list[dict], path: Path) -> None:
     """Monte Carlo output distributions with requirement limits.
 

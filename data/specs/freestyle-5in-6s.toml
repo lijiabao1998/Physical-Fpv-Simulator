@@ -10,10 +10,12 @@ description = "不掛運動相機的 5 吋 6S freestyle 機。需求數值是範
 [environment]
 altitude = { value = 0, unit = "m", source = "standard", note = "ISA 海平面設計條件" }
 temperature = { value = 15, unit = "degC", source = "standard", note = "ISA 海平面標準溫度" }
+battery_temperature = { value = 25, unit = "degC", source = "nominal", note = "起飛時的電池溫度：電池從室內帶出來" }
 
 [endurance]
 reserve_soc = { value = 20, unit = "%", source = "nominal", note = "降落時保留 20% 電量，延長電池壽命" }
-min_cell_voltage = { value = 3.3, unit = "V", source = "nominal", note = "負載下、在 ESC 端量到的單芯電壓下限" }
+min_cell_voltage = { value = 3.3, unit = "V", source = "nominal", note = "負載下、在 ESC 端量到的單芯電壓下限（持續的低電壓：該降落了）" }
+burst_cell_voltage = { value = 3.0, unit = "V", source = "nominal", note = "全油門衝刺時允許的瞬間單芯電壓下限（ESC 端）；長時間低於此值會損傷電池" }
 
 [[requirements]]
 id = "R1"
@@ -61,3 +63,42 @@ metric = "prop_clearance"
 min = 0
 unit = "mm"
 rationale = "每個零件要在槳盤外 3 mm 以上（槳的半徑公差與馬達軸偏擺），或離槳平面 10 mm 以上（槳葉受力上翹與振動）；餘量是最差的零件在較容易的方向上還能移動多少。包含安裝位置的不確定度"
+
+[[requirements]]
+id = "R8"
+metric = "full_throttle_time"
+min = 5
+unit = "s"
+rationale = "衝刺與救機需要幾秒的全油門（本專案的設計目標）；從滿電開始，到電芯溫度、瞬間電壓或保留電量先到上限為止"
+
+# Design points: the requirements must also hold under these conditions (see the design report).
+# A design point that sets the air temperature but not the battery's assumes the pack soaked to it.
+
+[[design_points]]
+id = "winter"
+name = "冬季（電池放在車上）"
+temperature = { value = 0, unit = "degC", source = "nominal" }
+battery_temperature = { value = 5, unit = "degC", source = "nominal" }
+rationale = "冬天在戶外飛，電池在車上放到接近氣溫；內阻變大，壓降與發熱都增加"
+
+[[design_points]]
+id = "hot-altitude"
+name = "高海拔夏季"
+altitude = { value = 2000, unit = "m", source = "nominal" }
+temperature = { value = 30, unit = "degC", source = "nominal" }
+battery_temperature = { value = 35, unit = "degC", source = "nominal" }
+rationale = "空氣密度低約 25%，同樣推力需要更高轉速；電池起始溫度高，離溫度上限較近"
+
+[[design_points]]
+id = "aged"
+name = "老化電池（200 次循環）"
+battery_cycles = { value = 200, unit = "1", source = "nominal" }
+rationale = "設計要在電池用舊後仍然符合規格，而不只是新電池"
+
+[[design_points]]
+id = "worst"
+name = "最差工況：冬季 + 老化電池"
+temperature = { value = 0, unit = "degC", source = "nominal" }
+battery_temperature = { value = 5, unit = "degC", source = "nominal" }
+battery_cycles = { value = 200, unit = "1", source = "nominal" }
+rationale = "兩個不利條件同時發生"

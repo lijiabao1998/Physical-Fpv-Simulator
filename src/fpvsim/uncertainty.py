@@ -59,8 +59,13 @@ class MonteCarloResult:
         return math.sqrt(max(p * (1.0 - p), 0.0) / self.n)
 
 
-def monte_carlo(build: Build, n: int = 1000, seed: int = 1, analysis: Analysis = evaluate) -> MonteCarloResult:
+def monte_carlo(build: Build, n: int = 1000, seed: int = 1, analysis: Analysis = evaluate,
+                overrides: dict[str, float] | None = None) -> MonteCarloResult:
+    """``overrides`` fix some inputs in every sample (a design point: air
+    temperature, altitude, battery age); the others are sampled as usual."""
     inputs = build.params.sample(seed, n)
+    for key, value in (overrides or {}).items():
+        inputs[key] = np.full(n, float(value))
     collected: dict[str, list[float]] = {}
     for i in range(n):
         out = analysis(build.realize({k: v[i] for k, v in inputs.items()}))

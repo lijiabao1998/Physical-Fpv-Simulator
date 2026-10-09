@@ -48,7 +48,7 @@ name = "..."
 | `motor` | `kv`、`rm`、`i0_ref`、`v_i0_ref`、`i0_speed_fraction`、`rotor_inertia`、`max_current` | |
 | `prop` | `diameter`、`pitch`、`spin_inertia`、`rotor_drag_factor` | `[config] blades`；`[coefficients]`（實測）或 `[bemt]`（幾何估計） |
 | `esc` | `r_on`、`quiescent_power`、`max_current`、`drive_current_limit`、`brake_current_limit` | |
-| `battery` | `capacity`、`r0_cell`、`r1_cell`、`tau1`、`c_rating` | `[config] series, parallel`；`[ocv] soc, cell_voltage, source` |
+| `battery` | `capacity`、`r0_cell`、`r1_cell`、`tau1`、`c_rating`、`r_ref_temperature`、`resistance_activation_energy`、`specific_heat`、`ha_hover`、`ha_ref`、`ha_speed`、`max_temperature`、`capacity_fade`、`resistance_growth` | `[config] series, parallel`；`[ocv] soc, cell_voltage, source` |
 | `frame` | `thrust_interference`、`cda_x/y/z`（作用在頂層鍵 `drag_center`）、`contact_stiffness`、`contact_damping`、`ground_friction`、`vib_amp_1/2/3`、`vib_ref_speed`、`vib_exponent`、`vib_yaw_ratio` | `[[rotors]]` 安裝點與轉向；`[[contacts]]` 地面接觸點（至少 3 個）；`[[parts]]` 機架零件與 `placements` |
 | `avionics` | 無 | `power`（W，穩壓端功率）會計入航電負載；飛控板需有 `gyro_noise_density` |
 
@@ -110,8 +110,8 @@ position = { value = [-45, 15, 0], unit = "mm" }
 ## 規格檔（`schema = "fpvsim.spec/1"`）
 
 ```toml
-[environment]   # altitude、temperature
-[endurance]     # reserve_soc、min_cell_voltage
+[environment]   # altitude、temperature；選填 battery_temperature（起飛時的電池溫度，預設等於氣溫）、battery_cycles（預設 0）
+[endurance]     # reserve_soc、min_cell_voltage、burst_cell_voltage（全油門時允許的瞬間單芯電壓）
 
 [[requirements]]
 id = "R1"
@@ -119,7 +119,16 @@ metric = "auw"      # 可用的指標見 src/fpvsim/performance.py 的 METRICS
 max = 600           # min 或 max 擇一
 unit = "g"
 rationale = "..."
+
+[[design_points]]   # 選填：設計也要在這些工況下符合需求，設計報告會逐一評估
+id = "winter"
+name = "冬季"
+temperature = { value = 0, unit = "degC", source = "nominal" }          # 可用 altitude、temperature、
+battery_temperature = { value = 5, unit = "degC", source = "nominal" }  # battery_temperature、battery_cycles
+rationale = "..."
 ```
+
+設計點只寫了 `temperature` 而沒寫 `battery_temperature` 時，視為電池已經放到和氣溫相同。
 
 ## 測試數據 CSV
 

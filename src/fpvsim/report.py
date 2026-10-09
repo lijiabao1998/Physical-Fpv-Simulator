@@ -19,7 +19,7 @@ import numpy as np
 from . import __version__, plots, units
 from .design import Build
 from .params import Param, Source
-from .performance import METRICS, evaluate, full_throttle_point, hover_endurance, hover_point, rating_checks
+from .performance import METRICS, evaluate, full_throttle_burst, full_throttle_point, hover_endurance, hover_point, rating_checks
 from .stand import run_stand, write_csv
 from .uncertainty import MonteCarloResult, TornadoBar, monte_carlo, tornado
 
@@ -155,6 +155,9 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
     hover = hover_point(ac)
     full = full_throttle_point(ac)
     run = hover_endurance(ac)
+    burst = full_throttle_burst(ac)
+    design_points = [(dp, monte_carlo(build, n=n_samples, seed=seed, overrides=dp.overrides),
+                      evaluate(build.realize(dp.overrides))) for dp in build.spec.design_points]
     mp = ac.mass_props
     pt = ac.powertrain
     prop = pt.prop
@@ -169,6 +172,7 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
         stand_series.append((f"{voltage:.1f} V ({v_cell:.1f} V/cell)", rows))
     plots.stand_curves(stand_series, out_dir / "stand.png")
     plots.endurance(run, ac.criteria.min_cell_voltage, ac.criteria.reserve_soc, out_dir / "endurance.png")
+    plots.burst(burst, ac.criteria.burst_cell_voltage, ac.battery.max_temperature - 273.15, out_dir / "burst.png")
     plots.layout(ac.items, mp.cg, ac.thrust_centroid, [r.position for r in ac.rotors], prop.radius, out_dir / "layout.png")
     groups = Counter()
     for item in ac.items:
@@ -229,14 +233,22 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
     add(f"- 全備重量 **{fmt_metric('auw', nominal['auw'])}**，靜態推重比 **{fmt_metric('thrust_to_weight', nominal['thrust_to_weight'])}**，"
         f"懸停馬達輸出 **{fmt_metric('hover_duty', nominal['hover_duty'])}**，懸停續航 **{fmt_metric('endurance', nominal['endurance'])}**（標稱值）。")
     add(f"- {n_req} 項規格中，有 {n_ok} 項在不確定度下的符合機率達 95% 以上（見第 1 節）。")
-    failing = [c for c in rating_checks(ac) if not c.passes]
+    failing = [c for c in rating_checks(ac) if not c.passes and "僅供參考" not in c.title]
     if failing:
         add("- 額定值檢查有 " + "、".join(c.title for c in failing) + " 超標（見第 6 節）。")
+    add(f"- 滿電全油門可持續 **{burst.duration:.1f} s**，限制是{burst.reason_zh}（見第 6 節）。")
+    if design_points:
+        parts = []
+        for dp, dp_mc, _ in design_points:
+            ok = sum(dp_mc.probability_of_compliance(r) >= 0.95 for r in spec.requirements)
+            bad = [r.id for r in spec.requirements if dp_mc.probability_of_compliance(r) < 0.5]
+            parts.append(f"{dp.name} {ok}/{n_req} 項符合" + (f"（{'、'.join(bad)} 不符合）" if bad else ""))
+        add("- **設計點：** " + "；".join(parts) + "（見第 7 節）。")
     estimate_share = (sources[Source.ESTIMATE] + sources[Source.DERIVED]) / len(build.params)
     add(f"- **可信度：** {len(build.params)} 個參數中有 {estimate_share:.0%} 是工程估計或模型推導，"
         f"沒有任何實測值（{_source_summary(sources)}）。"
         "因此本報告是**設計階段的預測**：它已通過程式驗證（verification），但尚未用實測數據確認（validation）。"
-        "第 7 節列出最值得先量測的參數。\n")
+        "第 8 節列出最值得先量測的參數。\n")
 
     add("## 1. 規格符合度\n")
     add("符合機率是蒙地卡羅樣本中滿足需求的比例，± 為抽樣標準誤差；所有樣本都符合時，以 95% 信心的單邊界限表示"
@@ -361,12 +373,54 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
         add(f"滿電、靜止全油門的瞬間（極化壓降尚未建立）：總電流 {full.i_bus:.1f} A，"
             f"匯流排電壓 {full.v_bus:.2f} V（單芯 {full.v_bus / ac.battery.series:.2f} V，壓降 {sag:.2f} V），"
             f"轉速 {full.rpm:.0f} rpm，單顆推力 {units.from_si(full.thrust, 'gf'):.0f} gf。\n")
-    rows = [[c.title, f"{c.value:.1f} {c.unit}", f"{c.limit:.0f} {c.unit}", "通過" if c.passes else "超標", c.note]
+    rows = [[c.title, f"{c.value:.1f} {c.unit}", f"{c.limit:.0f} {c.unit}",
+             ("通過" if c.passes else "超標") if "僅供參考" not in c.title else ("低於標示" if c.passes else "高於標示"), c.note]
             for c in rating_checks(ac)]
     add(md_table(["檢查", "全油門值", "額定", "結果", "說明"], rows))
     add("")
+    rise = burst.end_temperature - ac.battery_start_temperature
+    add(f"**全油門可持續時間：** 從滿電、{ac.battery_start_temperature - 273.15:.0f} °C 開始靜止全油門，"
+        f"電流 {burst.current:.0f} A，**{burst.duration:.1f} s** 後{burst.reason_zh}"
+        f"（電池溫度上升 {rise:.0f} K；限制：電池 {ac.battery.max_temperature - 273.15:.0f} °C、"
+        f"瞬間單芯電壓 {ac.criteria.burst_cell_voltage:.2f} V、保留電量 {ac.criteria.reserve_soc:.0%}）。"
+        "這取代了以標示 C 數判斷電流上限：電池能放多大電流，取決於它在那段時間內的發熱與壓降。"
+        f"熱容量 {ac.battery.heat_capacity:.0f} J/K，懸停時的散熱 {ac.battery.ha_hover:.2f} W/K；"
+        "實際飛行中的衝刺通常只有 1–3 秒，之間有散熱，所以這是連續全油門的上限。\n")
+    add("![Full-throttle burst](burst.png)\n")
 
-    add("## 7. 不確定度與敏感度\n")
+    add("## 7. 設計點（最差工況）\n")
+    if not design_points:
+        add("規格沒有列出設計點（`[[design_points]]`），只評估了標準工況。\n")
+    else:
+        add("規格要求設計在下列工況下也要符合需求。每個設計點都用同樣的樣本數與隨機種子重跑蒙地卡羅，"
+            "只把工況（氣溫、海拔、電池起飛溫度與循環次數）換掉。\n")
+        conditions = [["標準工況", f"{ac.env.temperature - 273.15:.0f} °C", f"{ac.env.altitude:.0f} m",
+                       f"{ac.battery_start_temperature - 273.15:.0f} °C", f"{ac.battery.cycles:.0f}", "規格的基本條件"]]
+        for dp, _, _ in design_points:
+            dac = build.realize(dp.overrides)
+            conditions.append([dp.name, f"{dac.env.temperature - 273.15:.0f} °C", f"{dac.env.altitude:.0f} m",
+                               f"{dac.battery_start_temperature - 273.15:.0f} °C", f"{dac.battery.cycles:.0f}", dp.rationale])
+        add(md_table(["設計點", "氣溫", "海拔", "電池起飛溫度", "電池循環次數", "說明"], conditions))
+        add("")
+        header = ["編號", "需求", "標準工況"] + [dp.name for dp, _, _ in design_points]
+        rows = []
+        for r in spec.requirements:
+            row = [r.id, r.title, f"{fmt_probability(probs[r.id], mc)}（{verdict(probs[r.id], mc)}）"]
+            for _, dp_mc, _ in design_points:
+                p = dp_mc.probability_of_compliance(r)
+                row.append(f"{fmt_probability(p, dp_mc)}（{verdict(p, dp_mc)}）")
+            rows.append(row)
+        add(md_table(header, rows))
+        add("")
+        keys = ("thrust_to_weight", "endurance", "full_throttle_time", "full_throttle_cell_voltage", "hover_current")
+        add(md_table(["指標（標稱值）", "標準工況"] + [dp.name for dp, _, _ in design_points],
+                     [[METRICS[k].title, fmt_metric(k, nominal[k])] + [fmt_metric(k, dn[k]) for _, _, dn in design_points]
+                      for k in keys]))
+        add("\n低溫時內阻依 Arrhenius 關係變大（壓降與發熱增加）；高海拔時空氣密度低，同樣推力需要更高轉速；"
+            "老化電池的容量較小、內阻較大。低溫下電化學反應變慢造成的容量損失沒有建模，只計入內阻的變化，"
+            "所以冬季的續航可能偏樂觀。\n")
+
+    add("## 8. 不確定度與敏感度\n")
     add(f"蒙地卡羅：{len(build.params.uncertain())} 個不確定參數各自依分布抽樣（彼此獨立），重跑完整分析 {mc.n} 次。"
         "相同零件（四顆馬達、四支機臂）共用一個參數，視為完全相關。\n")
     add("敏感度（龍捲風圖）：每次只把一個參數移動 ±1σ，其餘維持標稱值。條越長，代表該參數的不確定度對結果影響越大。\n")
@@ -378,7 +432,7 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
                _priorities(build, bars, nominal)))
     add("")
 
-    add("## 8. 模型假設與適用範圍\n")
+    add("## 9. 模型假設與適用範圍\n")
     add("完整說明見 `docs/models.md`。本報告用到的模型與它們的限制：\n")
     add(md_table(
         ["模型", "可信度", "主要假設與限制"],
@@ -388,13 +442,14 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
             ["馬達與 ESC 平均模型", "中", "忽略繞組電感與開關損耗；空載損耗對轉速為仿射；未計溫升造成的電阻變化"],
             ["槳靜態係數 (BEMT)", "中低，尚未確認", "忽略旋流、雷諾數與壓縮性；翼型與弦長是估計值"],
             ["機臂遮擋", "低", "以固定推力比例表示"],
-            ["電池一階等效電路", "中", "忽略溫度、老化與放電倍率對容量的影響；OCV 曲線是典型值"],
+            ["電池一階等效電路與熱模型", "中", "內阻隨溫度依 Arrhenius 變化，集總熱容與對流散熱；老化以循環次數線性近似；"
+             "忽略低溫與放電倍率對容量的電化學影響、OCV 的溫度係數；OCV 曲線與熱參數是典型值"],
             ["懸停與全油門", "—", "靜態、無前飛速度；不含姿態控制與陣風修正的額外耗電"],
         ],
     ))
     add("")
 
-    add("## 9. 參數來源總表\n")
+    add("## 10. 參數來源總表\n")
     add("所有參數。數值以資料檔中的單位顯示；不確定度為標準不確定度 (1σ)。"
         "轉動慣量、阻力、ESC 電流限制、接地與振動等參數只用於飛行模擬（`fpvsim fly`、`fpvsim tune`），"
         "不影響本報告的穩態分析，所以它們在敏感度分析中的影響為零。\n")

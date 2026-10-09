@@ -33,7 +33,7 @@ import numpy as np
 from . import units
 from .airframe import AirframeExtras, GyroSpec
 from .atmosphere import Environment
-from .battery import Battery
+from .battery import Battery, BatteryState
 from .bemt import Airfoil, BladeGeometry, coefficient_curves
 from .mass import BoxShape, CylinderShape, MassItem, MassProperties, PointShape, Shape, combine, rotation_matrix
 from .motor import ESC, Motor
@@ -49,7 +49,8 @@ _REQUIRED = {
     "motor": ("kv", "rm", "i0_ref", "v_i0_ref", "i0_speed_fraction", "rotor_inertia", "max_current"),
     "prop": ("diameter", "pitch", "spin_inertia", "rotor_drag_factor"),
     "esc": ("r_on", "quiescent_power", "max_current", "brake_current_limit", "drive_current_limit"),
-    "battery": ("capacity", "r0_cell", "r1_cell", "tau1", "c_rating"),
+    "battery": ("capacity", "r0_cell", "r1_cell", "tau1", "c_rating", "r_ref_temperature", "resistance_activation_energy",
+                "specific_heat", "ha_hover", "ha_ref", "ha_speed", "max_temperature", "capacity_fade", "resistance_growth"),
     "frame": (
         "thrust_interference",
         "cda_x",
@@ -187,17 +188,30 @@ class Requirement:
 
 
 @dataclass(frozen=True)
+class DesignPoint:
+    """An operating condition the design must also meet its requirements at
+    (cold day, high altitude, aged pack): parameter overrides in SI."""
+
+    id: str
+    name: str
+    rationale: str
+    overrides: dict[str, float]
+
+
+@dataclass(frozen=True)
 class Spec:
     id: str
     name: str
     description: str
     requirements: list[Requirement]
+    design_points: list[DesignPoint] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
 class EnduranceCriteria:
     reserve_soc: float
-    min_cell_voltage: float
+    min_cell_voltage: float  # loaded cell voltage that ends a flight (sustained)
+    burst_cell_voltage: float = 3.0  # V, loaded cell voltage a short full-throttle burst must stay above
 
 
 @dataclass(frozen=True)
@@ -217,10 +231,15 @@ class Aircraft:
     criteria: EnduranceCriteria
     extras: AirframeExtras
     gyro: GyroSpec
+    battery_start_temperature: float = 298.15  # K, pack temperature at take-off
 
     @property
     def weight(self) -> float:
         return self.mass_props.mass * self.env.g
+
+    def initial_battery_state(self) -> BatteryState:
+        """Full charge, relaxed, at the take-off temperature."""
+        return BatteryState(1.0, 0.0, self.battery_start_temperature)
 
     @property
     def thrust_centroid(self) -> np.ndarray:
@@ -284,17 +303,29 @@ class Build:
             max_current=v("motor.max_current"),
         )
         esc = ESC(r_on=v("esc.r_on"), quiescent_power=v("esc.quiescent_power"), max_current=v("esc.max_current"))
-        capacity = v("battery.capacity")
+        # ageing, first order: capacity fades and resistance grows linearly with charge cycles
+        cycles = max(0.0, v("env.battery_cycles"))
+        fade = min(0.9, max(0.0, v("battery.capacity_fade")) * cycles / 100.0)
+        growth = max(0.0, v("battery.resistance_growth")) * cycles / 100.0
+        capacity = v("battery.capacity") * (1.0 - fade)
         battery = Battery(
             series=self.battery_series,
             parallel=self.battery_parallel,
             capacity=capacity,
-            r0_cell=v("battery.r0_cell"),
-            r1_cell=v("battery.r1_cell"),
+            r0_cell=v("battery.r0_cell") * (1.0 + growth),
+            r1_cell=v("battery.r1_cell") * (1.0 + growth),
             tau1=v("battery.tau1"),
             ocv_soc=self.ocv_soc,
             ocv_cell=self.ocv_cell,
-            max_current=v("battery.c_rating") * capacity / 3600.0,
+            max_current=v("battery.c_rating") * v("battery.capacity") / 3600.0,
+            r_ref_temperature=v("battery.r_ref_temperature"),
+            activation_energy=v("battery.resistance_activation_energy"),
+            heat_capacity=v("battery.specific_heat") * v("battery.mass"),
+            ha_hover=v("battery.ha_hover"),
+            ha_ref=v("battery.ha_ref"),
+            ha_speed=v("battery.ha_speed"),
+            max_temperature=v("battery.max_temperature"),
+            cycles=cycles,
         )
 
         items = [
@@ -315,7 +346,8 @@ class Build:
             rotors=self.rotors,
             env=Environment(altitude=v("env.altitude"), temperature=v("env.temperature")),
             criteria=EnduranceCriteria(
-                reserve_soc=v("criteria.reserve_soc"), min_cell_voltage=v("criteria.min_cell_voltage")
+                reserve_soc=v("criteria.reserve_soc"), min_cell_voltage=v("criteria.min_cell_voltage"),
+                burst_cell_voltage=v("criteria.burst_cell_voltage"),
             ),
             extras=AirframeExtras(
                 cda=tuple(v(f"frame.cda_{axis}") for axis in "xyz"),
@@ -344,6 +376,7 @@ class Build:
                 vib_exponent=v("frame.vib_exponent"),
                 vib_yaw_ratio=v("frame.vib_yaw_ratio"),
             ),
+            battery_start_temperature=v("env.battery_temperature"),
         )
 
 
@@ -355,13 +388,18 @@ def load_spec(path: Path, params: ParamSet) -> Spec:
     meta = data.get("meta", {})
     for section, keys, prefix in (
         ("environment", ("altitude", "temperature"), "env"),
-        ("endurance", ("reserve_soc", "min_cell_voltage"), "criteria"),
+        ("endurance", ("reserve_soc", "min_cell_voltage", "burst_cell_voltage"), "criteria"),
     ):
         table = data.get(section, {})
         for key in keys:
             if key not in table:
                 raise DesignError(f"{path}: [{section}] needs {key}")
             params.add(parse_param(f"{prefix}.{key}", table[key]))
+    environment = data.get("environment", {})
+    # the pack's temperature at take-off (warmer than the air if it comes from indoors) and its age
+    params.add(parse_param("env.battery_temperature", environment.get("battery_temperature", environment["temperature"])))
+    params.add(parse_param("env.battery_cycles", environment.get(
+        "battery_cycles", {"value": 0, "unit": "1", "source": "nominal", "note": "新電池"})))
 
     from .performance import METRICS  # local import: performance depends on design
 
@@ -388,7 +426,38 @@ def load_spec(path: Path, params: ParamSet) -> Spec:
                 rationale=str(entry.get("rationale", "")),
             )
         )
-    return Spec(str(meta.get("id", path.stem)), str(meta.get("name", "")), str(meta.get("description", "")), requirements)
+    design_points = [_design_point(path, i, entry) for i, entry in enumerate(data.get("design_points", []))]
+    if len({d.id for d in design_points}) != len(design_points):
+        raise DesignError(f"{path}: design point ids must be unique")
+    return Spec(str(meta.get("id", path.stem)), str(meta.get("name", "")), str(meta.get("description", "")), requirements,
+                design_points)
+
+
+_DESIGN_POINT_KEYS = {
+    "altitude": "env.altitude",
+    "temperature": "env.temperature",
+    "battery_temperature": "env.battery_temperature",
+    "battery_cycles": "env.battery_cycles",
+}
+
+
+def _design_point(path: Path, i: int, entry: Mapping[str, Any]) -> DesignPoint:
+    """``[[design_points]]`` with id, name, rationale and any of altitude,
+    temperature, battery_temperature, battery_cycles. A design point that sets
+    the air temperature but not the pack's assumes the pack soaked to it."""
+    where = f"{path}: design_points[{i}]"
+    if "id" not in entry:
+        raise DesignError(f"{where}: needs an id")
+    unknown = set(entry) - set(_DESIGN_POINT_KEYS) - {"id", "name", "rationale"}
+    if unknown:
+        raise DesignError(f"{where}: unknown keys {sorted(unknown)}; known: {sorted(_DESIGN_POINT_KEYS)}")
+    overrides = {}
+    for key, param in _DESIGN_POINT_KEYS.items():
+        if key in entry:
+            overrides[param] = parse_param(f"{where}.{key}", entry[key]).value
+    if "env.temperature" in overrides and "env.battery_temperature" not in overrides:
+        overrides["env.battery_temperature"] = overrides["env.temperature"]
+    return DesignPoint(str(entry["id"]), str(entry.get("name", entry["id"])), str(entry.get("rationale", "")), overrides)
 
 
 def _load_component(path: Path, role: str, category: str, params: ParamSet) -> dict[str, Any]:
