@@ -1,0 +1,662 @@
+{
+  "protocol": "docs/stanford-onset-transfer-protocol.md",
+  "protocol_sha256": "d5744b1826dd5700588f6ba3d09613c2c2a097b356f4a71238f88cc228672341",
+  "source_sha256": {
+    "stanford-k1-onset-records.csv.gz": "0498bdbf4ef53271a43afceec5e1e084f3832e5319efda752c4f610a997905ef",
+    "stanford-k2-rest-records.csv.gz": "513ad1debdf3fcf7eb9d716a8b34651a39349f136d1a6b23e84ed609fa2c2d6f",
+    "stanford-k1-mesh120-v3.csv.gz": "b88bee993c17315197598f50f19ed72d6023d158b0bb8b1ea8c6e86761a611ba",
+    "stanford-k2-state-scalars.csv.gz": "188d1ba8e5889fc88e200b47524be4876548bdf43a57bc2e68e5fc776454e21e",
+    "stanford-onset-transfer-source.json": "ede4fa5c5524444ea7c4c59c8457cee3de79a20e3827d234ddc7273e61efdff6",
+    "stanford-k2-state-summary.json": "a0edecf428708727ec27bb50549c0ca189609f8bd47d4207cd73265b44fc0b34"
+  },
+  "analysis_source_sha256": {
+    "src/physical_fpv/onset_response.py": "6bd0377d1fd5ec44bde80e5d6f9d39c1804beca13ae78de08bb0f85c346d3cad",
+    "src/physical_fpv/onset_transfer.py": "9515df646c03e9daace3dd2aebe1e93fa781da9f2ff72e95f09a622902ebfb9d",
+    "scripts/check_stanford_k2_onset.py": "ba2bcc953b2ab5b0dbba18e4c6e5918e5f17d80f22358480671298e8ba1a6676",
+    "scripts/check_stanford_onset_transfer.py": "8535974a69a5c9b71eeeff0b17ded36cc6096267a78b20068cd09126a6feb4c8"
+  },
+  "source_doi": "10.17632/kxsbr4x3j2.2",
+  "license": "CC-BY-4.0",
+  "authors": [
+    "Edoardo Catenaro",
+    "Simona Onori"
+  ],
+  "comparison": {
+    "query_times_s": [
+      1.0006,
+      2.0,
+      5.0,
+      10.0
+    ],
+    "cases": {
+      "k1": {
+        "observed": {
+          "rest": {
+            "endpoint_v": 4.186448097229004,
+            "endpoint_skin_k": 298.33794059753416,
+            "tails_s": {
+              "10": {
+                "interval_s": [
+                  3590.0009,
+                  3600.0009
+                ],
+                "mean_v": 4.186497338966686,
+                "minimum_v": 4.186380386352539,
+                "maximum_v": 4.186629772186279,
+                "endpoint_change_v": -2.7205231356575155e-05,
+                "endpoint_change_per_second_v": -2.7205231356575155e-06
+              },
+              "60": {
+                "interval_s": [
+                  3540.0009,
+                  3600.0009
+                ],
+                "mean_v": 4.1865066736434375,
+                "minimum_v": 4.186339855194092,
+                "maximum_v": 4.186680793762207,
+                "endpoint_change_v": -0.0001181698188643665,
+                "endpoint_change_per_second_v": -1.9694969810727753e-06
+              }
+            },
+            "equilibrium_certified": false
+          },
+          "query_times_s": [
+            1.0006,
+            2.0,
+            5.0,
+            10.0
+          ],
+          "voltage_v": [
+            3.8799378871917725,
+            3.8744225102306116,
+            3.8633604403982216,
+            3.8508388981807697
+          ],
+          "positive_current_a": [
+            5.000240325927734,
+            5.000252712539204,
+            5.000264648058435,
+            5.000282285831946
+          ],
+          "skin_k": [
+            298.33794059753416,
+            298.37388463838806,
+            298.3531522165079,
+            298.3646053314209
+          ],
+          "voltage_fall_v": [
+            0.30651021003723145,
+            0.31202558699839233,
+            0.32308765683078233,
+            0.33560919904823416
+          ],
+          "finite_time_apparent_response_ohm": [
+            0.06129909565503978,
+            0.06240196344795162,
+            0.06461411136633234,
+            0.06711805051470121
+          ],
+          "sampling_brackets": [
+            {
+              "neighbor_indices": [
+                0,
+                0
+              ],
+              "step_times_s": [
+                1.0006,
+                1.0006
+              ],
+              "interval_width_s": 0.0,
+              "excel_rows": [
+                21679,
+                21679
+              ],
+              "naive_dates": [
+                "2019-09-03T01:12:08.903000",
+                "2019-09-03T01:12:08.903000"
+              ],
+              "test_times_s": [
+                21675.7522,
+                21675.7522
+              ]
+            },
+            {
+              "neighbor_indices": [
+                0,
+                1
+              ],
+              "step_times_s": [
+                1.0006,
+                2.0009
+              ],
+              "interval_width_s": 1.0003000000000002,
+              "excel_rows": [
+                21679,
+                21680
+              ],
+              "naive_dates": [
+                "2019-09-03T01:12:08.903000",
+                "2019-09-03T01:12:09.904000"
+              ],
+              "test_times_s": [
+                21675.7522,
+                21676.7525
+              ]
+            },
+            {
+              "neighbor_indices": [
+                3,
+                4
+              ],
+              "step_times_s": [
+                4.001,
+                5.0003
+              ],
+              "interval_width_s": 0.9992999999999999,
+              "excel_rows": [
+                21682,
+                21683
+              ],
+              "naive_dates": [
+                "2019-09-03T01:12:11.904000",
+                "2019-09-03T01:12:12.903000"
+              ],
+              "test_times_s": [
+                21678.7526,
+                21679.7519
+              ]
+            },
+            {
+              "neighbor_indices": [
+                8,
+                9
+              ],
+              "step_times_s": [
+                9.0009,
+                10.0001
+              ],
+              "interval_width_s": 0.9992000000000001,
+              "excel_rows": [
+                21687,
+                21688
+              ],
+              "naive_dates": [
+                "2019-09-03T01:12:16.904000",
+                "2019-09-03T01:12:17.903000"
+              ],
+              "test_times_s": [
+                21683.7525,
+                21684.7517
+              ]
+            }
+          ],
+          "pure_ohmic_identification": false
+        },
+        "model_terminal_v": [
+          4.100356123679209,
+          4.093647788460101,
+          4.078942382826352,
+          4.061321870072232
+        ],
+        "model_bulk_temperature_k": [
+          298.3405773642859,
+          298.3433485682812,
+          298.3524613605499,
+          298.3698818158006
+        ],
+        "terminal_residual_v": [
+          0.2204182364874363,
+          0.219225278229489,
+          0.21558194242813,
+          0.2104829718914627
+        ],
+        "model_query_brackets": [
+          {
+            "neighbor_indices": [
+              1,
+              1
+            ],
+            "step_times_s": [
+              1.0006,
+              1.0006
+            ],
+            "interval_width_s": 0.0
+          },
+          {
+            "neighbor_indices": [
+              1,
+              2
+            ],
+            "step_times_s": [
+              1.0006,
+              2.0009
+            ],
+            "interval_width_s": 1.0003000000000002
+          },
+          {
+            "neighbor_indices": [
+              5,
+              5
+            ],
+            "step_times_s": [
+              5.0,
+              5.0
+            ],
+            "interval_width_s": 0.0
+          },
+          {
+            "neighbor_indices": [
+              11,
+              11
+            ],
+            "step_times_s": [
+              10.0,
+              10.0
+            ],
+            "interval_width_s": 0.0
+          }
+        ],
+        "timing": {
+          "phase_clock_audits": {
+            "rest": {
+              "rows_checked": 3601,
+              "max_relative_date_test_discrepancy_s": 0.0010000000002037268,
+              "max_command_origin_deviation_s": 3.637978807091713e-12,
+              "strictly_increasing_dates_test_and_step_clocks": true
+            },
+            "discharge": {
+              "rows_checked": 10,
+              "max_relative_date_test_discrepancy_s": 0.0007000000003030138,
+              "max_command_origin_deviation_s": 3.637978807091713e-12,
+              "strictly_increasing_dates_test_and_step_clocks": true
+            }
+          },
+          "last_rest": {
+            "excel_row": 21678,
+            "date_naive": "2019-09-03T01:12:07.857000",
+            "test_time_s": 21674.70662,
+            "step_time_s": 3600.0009
+          },
+          "first_discharge": {
+            "excel_row": 21679,
+            "date_naive": "2019-09-03T01:12:08.903000",
+            "test_time_s": 21675.7522,
+            "step_time_s": 1.0006
+          },
+          "inferred_discharge_command_origin_test_s": 21674.7516,
+          "recorded_sample_bracket_test_s": [
+            21674.70662,
+            21675.7522
+          ],
+          "recorded_sample_bracket_width_s": 1.0455799999981537,
+          "command_origin_after_last_rest_s": 0.04497999999875901,
+          "physical_switching_time_verified": false,
+          "instrument_latency_known": false
+        }
+      },
+      "k2": {
+        "observed": {
+          "rest": {
+            "endpoint_v": 4.1867523193359375,
+            "endpoint_skin_k": 297.55456771850584,
+            "tails_s": {
+              "10": {
+                "interval_s": [
+                  3590.0017,
+                  3600.0017
+                ],
+                "mean_v": 4.186722675689228,
+                "minimum_v": 4.1865620613098145,
+                "maximum_v": 4.186913013458252,
+                "endpoint_change_v": -4.642183373260167e-05,
+                "endpoint_change_per_second_v": -4.642183373260167e-06
+              },
+              "60": {
+                "interval_s": [
+                  3540.0017,
+                  3600.0017
+                ],
+                "mean_v": 4.186780252279197,
+                "minimum_v": 4.186546802520752,
+                "maximum_v": 4.18696403503418,
+                "endpoint_change_v": -2.3556070138930352e-05,
+                "endpoint_change_per_second_v": -3.926011689821725e-07
+              }
+            },
+            "equilibrium_certified": false
+          },
+          "query_times_s": [
+            1.0006,
+            2.0,
+            5.0,
+            10.0
+          ],
+          "voltage_v": [
+            4.028349195024092,
+            4.022902285023559,
+            4.0117720048904415,
+            3.999106510856871
+          ],
+          "positive_current_a": [
+            5.000381945991974,
+            5.0003800413114945,
+            5.000387669420243,
+            5.000410084532776
+          ],
+          "skin_k": [
+            297.54337921142576,
+            297.54337921142576,
+            297.541195297263,
+            297.5520938873291
+          ],
+          "voltage_fall_v": [
+            0.1584031243118451,
+            0.16385003431237877,
+            0.174980314445496,
+            0.18764580847906664
+          ],
+          "finite_time_apparent_response_ohm": [
+            0.031678204989683274,
+            0.03276751626050494,
+            0.03499334971877963,
+            0.037526083922494874
+          ],
+          "sampling_brackets": [
+            {
+              "neighbor_indices": [
+                0,
+                1
+              ],
+              "step_times_s": [
+                1.0003,
+                2.0011
+              ],
+              "interval_width_s": 1.0008000000000001,
+              "excel_rows": [
+                20791,
+                20792
+              ],
+              "naive_dates": [
+                "2019-09-03T00:57:27.335000",
+                "2019-09-03T00:57:28.335000"
+              ],
+              "test_times_s": [
+                20787.202324,
+                20788.203124
+              ]
+            },
+            {
+              "neighbor_indices": [
+                0,
+                1
+              ],
+              "step_times_s": [
+                1.0003,
+                2.0011
+              ],
+              "interval_width_s": 1.0008000000000001,
+              "excel_rows": [
+                20791,
+                20792
+              ],
+              "naive_dates": [
+                "2019-09-03T00:57:27.335000",
+                "2019-09-03T00:57:28.335000"
+              ],
+              "test_times_s": [
+                20787.202324,
+                20788.203124
+              ]
+            },
+            {
+              "neighbor_indices": [
+                3,
+                4
+              ],
+              "step_times_s": [
+                4.0001,
+                5.0001
+              ],
+              "interval_width_s": 1.0,
+              "excel_rows": [
+                20794,
+                20795
+              ],
+              "naive_dates": [
+                "2019-09-03T00:57:30.334000",
+                "2019-09-03T00:57:31.334000"
+              ],
+              "test_times_s": [
+                20790.202124000003,
+                20791.202124000003
+              ]
+            },
+            {
+              "neighbor_indices": [
+                8,
+                9
+              ],
+              "step_times_s": [
+                9.001,
+                10.0012
+              ],
+              "interval_width_s": 1.0002000000000013,
+              "excel_rows": [
+                20799,
+                20800
+              ],
+              "naive_dates": [
+                "2019-09-03T00:57:35.335000",
+                "2019-09-03T00:57:36.335000"
+              ],
+              "test_times_s": [
+                20795.203024000002,
+                20796.203224
+              ]
+            }
+          ],
+          "pure_ohmic_identification": false
+        },
+        "model_terminal_v": [
+          4.098462225417292,
+          4.091697205408251,
+          4.076853545211766,
+          4.0590476631206025
+        ],
+        "model_bulk_temperature_k": [
+          297.55839911164907,
+          297.5623643218217,
+          297.57506784719686,
+          297.5984925368504
+        ],
+        "terminal_residual_v": [
+          0.07011303039320005,
+          0.06879492038469248,
+          0.06508154032132474,
+          0.059941152263731645
+        ],
+        "model_query_brackets": [
+          {
+            "neighbor_indices": [
+              1,
+              2
+            ],
+            "step_times_s": [
+              1.0003,
+              2.0011
+            ],
+            "interval_width_s": 1.0008000000000001
+          },
+          {
+            "neighbor_indices": [
+              1,
+              2
+            ],
+            "step_times_s": [
+              1.0003,
+              2.0011
+            ],
+            "interval_width_s": 1.0008000000000001
+          },
+          {
+            "neighbor_indices": [
+              5,
+              5
+            ],
+            "step_times_s": [
+              5.0,
+              5.0
+            ],
+            "interval_width_s": 0.0
+          },
+          {
+            "neighbor_indices": [
+              11,
+              11
+            ],
+            "step_times_s": [
+              10.0,
+              10.0
+            ],
+            "interval_width_s": 0.0
+          }
+        ],
+        "timing": {
+          "phase_clock_audits": {
+            "rest": {
+              "rows_checked": 3601,
+              "max_relative_date_test_discrepancy_s": 0.0007999999979801942,
+              "max_command_origin_deviation_s": 3.637978807091713e-12,
+              "strictly_increasing_dates_test_and_step_clocks": true
+            },
+            "discharge": {
+              "rows_checked": 3436,
+              "max_relative_date_test_discrepancy_s": 0.0010000000002037268,
+              "max_command_origin_deviation_s": 3.637978807091713e-12,
+              "strictly_increasing_dates_test_and_step_clocks": true
+            }
+          },
+          "last_rest": {
+            "excel_row": 20790,
+            "date_naive": "2019-09-03T00:57:26.288000",
+            "test_time_s": 20786.156096,
+            "step_time_s": 3600.0017
+          },
+          "first_discharge": {
+            "excel_row": 20791,
+            "date_naive": "2019-09-03T00:57:27.335000",
+            "test_time_s": 20787.202324,
+            "step_time_s": 1.0003
+          },
+          "inferred_discharge_command_origin_test_s": 20786.202024000002,
+          "recorded_sample_bracket_test_s": [
+            20786.156096,
+            20787.202324
+          ],
+          "recorded_sample_bracket_width_s": 1.046228000002884,
+          "command_origin_after_last_rest_s": 0.04592800000318675,
+          "physical_switching_time_verified": false,
+          "instrument_latency_known": false
+        }
+      }
+    },
+    "delta_direction": "k1_minus_k2",
+    "delta_rest_anchor_v": -0.00030422210693359375,
+    "delta_model_terminal_v": [
+      0.001893898261916327,
+      0.0019505830518493639,
+      0.002088837614585337,
+      0.0022742069516299424
+    ],
+    "delta_observed_voltage_fall_v": [
+      0.14810708572538633,
+      0.14817555268601357,
+      0.14810734238528633,
+      0.14796339056916752
+    ],
+    "delta_terminal_residual_v": [
+      0.15030520609423625,
+      0.15043035784479653,
+      0.15050040210680526,
+      0.15054181962773105
+    ],
+    "arithmetic_closure_max_v": 0.0,
+    "measured_skin_temperature_difference_k": [
+      0.7945613861083984,
+      0.8305054269623042,
+      0.8119569192448921,
+      0.8125114440917969
+    ],
+    "model_bulk_temperature_difference_k": [
+      0.7821782526368111,
+      0.7809842464595249,
+      0.7773935133530472,
+      0.7713892789502097
+    ],
+    "same_absolute_soc_established": false,
+    "shared_physical_resistance_identified": false,
+    "unsaved_internal_states_inferred": false
+  },
+  "saved_model_context": {
+    "k1": {
+      "archived_input_config": {
+        "model": "DFN",
+        "thermal": "lumped",
+        "parameter_set": "ORegan2022",
+        "initial_temperature_k": 298.33794059753416,
+        "heat_transfer_coefficient_w_m2_k": 15,
+        "current_a": 5.000325282873757,
+        "ambient_temperature_k": 298.15,
+        "mesh_points": 80,
+        "tolerance": 1e-07,
+        "sample_period_s": 5,
+        "max_temperature_k": 333.15
+      },
+      "source_commit": "744794b02d44bcbfc702ad8e5c403782128d11b0",
+      "actual_compared_curve_mesh_points": 120,
+      "input_config_mesh_note": "k1 input starts at80; retained fine curve is independently verified120",
+      "current_profile_sha256": "ec1aac9bbe4bb889ad06fb215ff0462c214d66870054e814605aff1850bb9353",
+      "initial_interval_current_assumption_a": 5.000240325927734,
+      "current_profile_implementation_sha256": "3ac01b06b0b43e6fa464d861e5117a7d28f1b4f55f339ec781069a76e74905a6",
+      "temperature_observable": "predicted volume average versus measured central skin proxy"
+    },
+    "k2": {
+      "archived_input_config": {
+        "model": "DFN",
+        "thermal": "lumped",
+        "parameter_set": "ORegan2022",
+        "initial_temperature_k": 297.55456771850584,
+        "heat_transfer_coefficient_w_m2_k": 15,
+        "current_a": 5.000371049908914,
+        "ambient_temperature_k": 298.15,
+        "mesh_points": 120,
+        "tolerance": 1e-07,
+        "sample_period_s": 5,
+        "max_temperature_k": 333.15
+      },
+      "source_commit": "6d74c8d4a75ece4a1b8b3efafbfb127740f0b661",
+      "actual_compared_curve_mesh_points": 120,
+      "input_config_mesh_note": "k2 input and compared curve both use120",
+      "current_profile_sha256": "a6bb3e11eba4e922d1f86636be1225a992aea5da2b05ee17ac684ed336eda3ad",
+      "initial_interval_current_assumption_a": 5.000381946563721,
+      "current_profile_implementation_sha256": "9324ed84ee6ddd5bd142db99383ee69116b0d51bde759cd503680acde144d5d7",
+      "temperature_observable": "predicted volume average versus measured central skin proxy"
+    }
+  },
+  "previously_viewed_records": true,
+  "blind_holdout": false,
+  "new_downloads": 0,
+  "new_dfns_solved": 0,
+  "parameters_fitted": false,
+  "physical_parameter_update": false,
+  "historical_voltage_rmse_v": {
+    "k1": 0.1914735217065252,
+    "k2": 0.05500305419157363
+  },
+  "historical_gate_v": 0.05,
+  "historical_passed": {
+    "k1": false,
+    "k2": false
+  },
+  "elapsed_s": 0.29747105600108625
+}

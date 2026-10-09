@@ -39,3 +39,10 @@ The [cached onset comparison](stanford-k2-onset-findings.md) shows that the mode
 the +60–70 mV early terminal residual. Finite-time observed voltage fall/current
 is reported without identifying ohmic resistance. Timing/latency and internal
 state constraints remain necessary before assigning a unique physical cause.
+
+### k1/k2 near-start transfer (2026-10-09)
+
+The [fixed-query transfer](stanford-onset-transfer-findings.md) locates the
+~150 mV early residual contrast mainly in the measured loaded-fall contrast
+(~148 mV), with only a −0.304 mV rest-anchor contrast. This is an observed
+between-record constraint, not an identified resistance or latent-state cause.
