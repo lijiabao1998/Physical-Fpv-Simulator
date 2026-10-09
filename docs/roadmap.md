@@ -54,3 +54,11 @@ the low-rate specimen contrast from the prior 1C response with discrepancies
 −0.042/+0.212/+0.010/−0.117 mV at fixed nominal queries. It supports a
 current-proportional descriptor, with no identified contact resistance or physical
 PASS and no change to the model or its empirical gates.
+
+### Persistence of the frozen specimen contrast (2026-10-09)
+
+The [later-window development test](stanford-contrast-persistence-findings.md)
+uses the frozen low-rate onset descriptors to predict the 1C specimen contrast
+over 10–3333 s, with maximum discrepancy 8.252 mV. Large individual errors cancel;
+this is no single-cell model repair. Full low-rate capacity/voltage-shape
+compatibility is the next cached-data discriminant before assuming common SOC.

@@ -1,0 +1,1129 @@
+{
+  "protocol": "docs/stanford-contrast-persistence-protocol.md",
+  "protocol_sha256": "3bcb8dc71caa1bca6c29b39105f989d458ed1bfcd62e944d48d9c808ed272b83",
+  "source_sha256": {
+    "stanford-cross-rate-onset.json": "92bdf117f74347824d3bcfda6553f0b0b66afc914c3152ba7317924836f83382",
+    "stanford-k1-discharge-records.csv.gz": "9d5c84c83a116b2ed032ee638a57664c690866837c925a6fbf62c2e2acfb893c",
+    "stanford-contrast-persistence-source.json": "80b684ee2257f8134ba95f3a7643c562c160a1fb9534657f6f9ef22d5cd63df3",
+    "stanford-k2-rest-records.csv.gz": "513ad1debdf3fcf7eb9d716a8b34651a39349f136d1a6b23e84ed609fa2c2d6f",
+    "stanford-k1-mesh120-v3.csv.gz": "b88bee993c17315197598f50f19ed72d6023d158b0bb8b1ea8c6e86761a611ba",
+    "stanford-k2-state-scalars.csv.gz": "188d1ba8e5889fc88e200b47524be4876548bdf43a57bc2e68e5fc776454e21e",
+    "stanford-k2-state-summary.json": "a0edecf428708727ec27bb50549c0ca189609f8bd47d4207cd73265b44fc0b34"
+  },
+  "analysis_source_sha256": {
+    "src/physical_fpv/contrast_persistence.py": "6cdb3663979bad35cb2afc57a2bb100fd37e9475d1e0a686cb1c31a2872fd01e",
+    "scripts/check_stanford_contrast_persistence.py": "1a23e949c52d9b7ea3bd8148dda9956dcb4aa7dc935f4428669ffe00ce3e2888",
+    "scripts/check_stanford_k2_onset.py": "ba2bcc953b2ab5b0dbba18e4c6e5918e5f17d80f22358480671298e8ba1a6676",
+    "src/physical_fpv/onset_response.py": "6bd0377d1fd5ec44bde80e5d6f9d39c1804beca13ae78de08bb0f85c346d3cad"
+  },
+  "comparison": {
+    "common_support_s": [
+      1.0006,
+      3333.132326188595
+    ],
+    "frozen_descriptor_ohm": {
+      "k1": 0.06173506385522811,
+      "k2": 0.032283456569020146
+    },
+    "rest_anchor_v": {
+      "k1": 4.186448097229004,
+      "k2": 4.1867523193359375
+    },
+    "time_windows": [
+      {
+        "requested_interval_s": [
+          10.0,
+          60.0
+        ],
+        "empty": false,
+        "interval_s": [
+          10.0,
+          60.0
+        ],
+        "knots": 105,
+        "summaries": {
+          "observed_fall_contrast_v": {
+            "mean": 0.14790303526159454,
+            "rms": 0.14790307543025027,
+            "max_abs": 0.14816132290979978,
+            "start": 0.14796339056916752,
+            "end": 0.1477857155461999
+          },
+          "predicted_fall_contrast_v": {
+            "mean": 0.1472634325516344,
+            "rms": 0.14726343255380317,
+            "max_abs": 0.14726552162096435,
+            "start": 0.1472622244186969,
+            "end": 0.1472650967070644
+          },
+          "original_residual_contrast_v": {
+            "mean": 0.1508251705193901,
+            "rms": 0.15082521340329275,
+            "max_abs": 0.15109313008932546,
+            "start": 0.15054181962773105,
+            "end": 0.15084738321852953
+          },
+          "model_voltage_contrast_v": {
+            "mean": 0.0026179131508619665,
+            "rms": 0.0026205567848195535,
+            "max_abs": 0.002757445565396033,
+            "start": 0.0022742069516299424,
+            "end": 0.002757445565396033
+          },
+          "skin_temperature_contrast_k": {
+            "mean": 0.7979679738398826,
+            "rms": 0.7985572954469204,
+            "max_abs": 0.890083191411918,
+            "start": 0.8125114440917969,
+            "end": 0.7421645765375047
+          },
+          "bulk_temperature_contrast_k": {
+            "mean": 0.7413621113191615,
+            "rms": 0.7415632963255803,
+            "max_abs": 0.7713892789502097,
+            "start": 0.7713892789502097,
+            "end": 0.711646349286525
+          },
+          "discrepancy_v": {
+            "mean": 0.0006396027099601636,
+            "rms": 0.0006488651968169138,
+            "max_abs": 0.0008992401982090281,
+            "start": 0.0007011661504706113,
+            "end": 0.0005206188391355115
+          },
+          "identity_closure_v": {
+            "mean": 0.0,
+            "rms": 0.0,
+            "max_abs": 0.0,
+            "start": 0.0,
+            "end": 0.0
+          },
+          "k1_individual_discrepancy_v": {
+            "mean": 0.059832353179063574,
+            "rms": 0.06185567427728102,
+            "max_abs": 0.0830095210395222,
+            "start": 0.026916452838233018,
+            "end": 0.0830095210395222
+          },
+          "k1_original_residual_v": {
+            "mean": 0.20383983738300246,
+            "rms": 0.203849822391945,
+            "max_abs": 0.2104829718914627,
+            "start": 0.2104829718914627,
+            "end": 0.20592297888939237
+          },
+          "k2_individual_discrepancy_v": {
+            "mean": 0.05919275046910341,
+            "rms": 0.06125102699848684,
+            "max_abs": 0.08248890220038668,
+            "start": 0.026215286687762407,
+            "end": 0.08248890220038668
+          },
+          "k2_original_residual_v": {
+            "mean": 0.05301466686361236,
+            "rms": 0.053054534713132054,
+            "max_abs": 0.059941152263731645,
+            "start": 0.059941152263731645,
+            "end": 0.05507559567086284
+          }
+        }
+      },
+      {
+        "requested_interval_s": [
+          60.0,
+          300.0
+        ],
+        "empty": false,
+        "interval_s": [
+          60.0,
+          300.0
+        ],
+        "knots": 508,
+        "summaries": {
+          "observed_fall_contrast_v": {
+            "mean": 0.14745892307010583,
+            "rms": 0.1474591551759296,
+            "max_abs": 0.14803946875248064,
+            "start": 0.1477857155461999,
+            "end": 0.1469712892693389
+          },
+          "predicted_fall_contrast_v": {
+            "mean": 0.14726569101122108,
+            "rms": 0.1472656910143073,
+            "max_abs": 0.14726862798476653,
+            "start": 0.1472650967070644,
+            "end": 0.14726617992320418
+          },
+          "original_residual_contrast_v": {
+            "mean": 0.15032794815535946,
+            "rms": 0.1503285974521789,
+            "max_abs": 0.15113266728695596,
+            "start": 0.15084738321852953,
+            "end": 0.14949689042648728
+          },
+          "model_voltage_contrast_v": {
+            "mean": 0.002564802978320044,
+            "rms": 0.002571637376901538,
+            "max_abs": 0.002815200508976101,
+            "start": 0.002757445565396033,
+            "end": 0.0022213790502148
+          },
+          "skin_temperature_contrast_k": {
+            "mean": 0.6591679015086159,
+            "rms": 0.6618129343522686,
+            "max_abs": 0.8233939960213092,
+            "start": 0.7421645765375047,
+            "end": 0.620836061276691
+          },
+          "bulk_temperature_contrast_k": {
+            "mean": 0.588076905045516,
+            "rms": 0.5918437495434761,
+            "max_abs": 0.711646349286525,
+            "start": 0.711646349286525,
+            "end": 0.4804435816097907
+          },
+          "discrepancy_v": {
+            "mean": 0.0001932320588847363,
+            "rms": 0.0003256334624967595,
+            "max_abs": 0.0007751391372724514,
+            "start": 0.0005206188391355115,
+            "end": -0.00029489065386528734
+          },
+          "identity_closure_v": {
+            "mean": 0.0,
+            "rms": 0.0,
+            "max_abs": 0.0,
+            "start": 0.0,
+            "end": 0.0
+          },
+          "k1_individual_discrepancy_v": {
+            "mean": 0.12916777459533674,
+            "rms": 0.13083046981632968,
+            "max_abs": 0.15984737975117563,
+            "start": 0.0830095210395222,
+            "end": 0.15984737975117563
+          },
+          "k1_original_residual_v": {
+            "mean": 0.2139819533943469,
+            "rms": 0.21399804807690287,
+            "max_abs": 0.21711944450864307,
+            "start": 0.20592297888939237,
+            "end": 0.21037232348277746
+          },
+          "k2_individual_discrepancy_v": {
+            "mean": 0.128974542536452,
+            "rms": 0.13067815758864926,
+            "max_abs": 0.16014227040504092,
+            "start": 0.08248890220038668,
+            "end": 0.16014227040504092
+          },
+          "k2_original_residual_v": {
+            "mean": 0.0636540052389874,
+            "rms": 0.06370966293626963,
+            "max_abs": 0.06653577352066886,
+            "start": 0.05507559567086284,
+            "end": 0.060875433056290174
+          }
+        }
+      },
+      {
+        "requested_interval_s": [
+          300.0,
+          900.0
+        ],
+        "empty": false,
+        "interval_s": [
+          300.0,
+          900.0
+        ],
+        "knots": 1268,
+        "summaries": {
+          "observed_fall_contrast_v": {
+            "mean": 0.1456474988296784,
+            "rms": 0.1456492195728717,
+            "max_abs": 0.14711925744485743,
+            "start": 0.1469712892693389,
+            "end": 0.14463213872353098
+          },
+          "predicted_fall_contrast_v": {
+            "mean": 0.14726635468669977,
+            "rms": 0.147266354689854,
+            "max_abs": 0.14726972804421287,
+            "start": 0.14726617992320418,
+            "end": 0.14726696865665076
+          },
+          "original_residual_contrast_v": {
+            "mean": 0.14750886082523262,
+            "rms": 0.14751276793602036,
+            "max_abs": 0.14963916250810883,
+            "start": 0.14949689042648728,
+            "end": 0.14589556374775947
+          },
+          "model_voltage_contrast_v": {
+            "mean": 0.0015571398886206093,
+            "rms": 0.0016002362350616924,
+            "max_abs": 0.0022213790502148,
+            "start": 0.0022213790502148,
+            "end": 0.000959202917294899
+          },
+          "skin_temperature_contrast_k": {
+            "mean": 0.4560655691072919,
+            "rms": 0.4629450195038374,
+            "max_abs": 0.6643827066109793,
+            "start": 0.620836061276691,
+            "end": 0.36746421913937866
+          },
+          "bulk_temperature_contrast_k": {
+            "mean": 0.307700910717474,
+            "rms": 0.31934430730568175,
+            "max_abs": 0.4804435816097907,
+            "start": 0.4804435816097907,
+            "end": 0.18238889276312875
+          },
+          "discrepancy_v": {
+            "mean": -0.0016188558570213645,
+            "rms": 0.0017667961592775423,
+            "max_abs": 0.0029471825232324778,
+            "start": -0.00029489065386528734,
+            "end": -0.002634829933119781
+          },
+          "identity_closure_v": {
+            "mean": 0.0,
+            "rms": 0.0,
+            "max_abs": 0.0,
+            "start": 0.0,
+            "end": 0.0
+          },
+          "k1_individual_discrepancy_v": {
+            "mean": 0.23503778449552432,
+            "rms": 0.2401778765891302,
+            "max_abs": 0.32758205041960414,
+            "start": 0.15984737975117563,
+            "end": 0.32758205041960414
+          },
+          "k1_original_residual_v": {
+            "mean": 0.19693437987486198,
+            "rms": 0.19701399119985902,
+            "max_abs": 0.2105047727890459,
+            "start": 0.21037232348277746,
+            "end": 0.2023647452921673
+          },
+          "k2_individual_discrepancy_v": {
+            "mean": 0.23665664035254566,
+            "rms": 0.24190373191998635,
+            "max_abs": 0.3302168803527239,
+            "start": 0.16014227040504092,
+            "end": 0.3302168803527239
+          },
+          "k2_original_residual_v": {
+            "mean": 0.04942551904962938,
+            "rms": 0.04969051844334924,
+            "max_abs": 0.060915456111154676,
+            "start": 0.060875433056290174,
+            "end": 0.05646918154440783
+          }
+        }
+      },
+      {
+        "requested_interval_s": [
+          900.0,
+          1800.0
+        ],
+        "empty": false,
+        "interval_s": [
+          900.0,
+          1800.0
+        ],
+        "knots": 1882,
+        "summaries": {
+          "observed_fall_contrast_v": {
+            "mean": 0.1436362866833138,
+            "rms": 0.1436371515219728,
+            "max_abs": 0.14473813187421491,
+            "start": 0.14463213872353098,
+            "end": 0.1423513897258153
+          },
+          "predicted_fall_contrast_v": {
+            "mean": 0.14726637784776384,
+            "rms": 0.14726637785050495,
+            "max_abs": 0.14727005969398033,
+            "start": 0.14726696865665076,
+            "end": 0.14726475407059647
+          },
+          "original_residual_contrast_v": {
+            "mean": 0.14448131173325274,
+            "rms": 0.14448293944839952,
+            "max_abs": 0.14599068337189092,
+            "start": 0.14589556374775947,
+            "end": 0.1429134046397933
+          },
+          "model_voltage_contrast_v": {
+            "mean": 0.0005408029430053244,
+            "rms": 0.0005773974357239809,
+            "max_abs": 0.000959202917294899,
+            "start": 0.000959202917294899,
+            "end": 0.0002577928070444102
+          },
+          "skin_temperature_contrast_k": {
+            "mean": 0.2173697067180061,
+            "rms": 0.23597805257662396,
+            "max_abs": 0.43494518512056857,
+            "start": 0.36746421913937866,
+            "end": 0.008384649439904024
+          },
+          "bulk_temperature_contrast_k": {
+            "mean": 0.09621662055288877,
+            "rms": 0.10407570134168843,
+            "max_abs": 0.18238889276312875,
+            "start": 0.18238889276312875,
+            "end": 0.04262861237833704
+          },
+          "discrepancy_v": {
+            "mean": -0.0036300911644500168,
+            "rms": 0.003664134834986527,
+            "max_abs": 0.00505812352838636,
+            "start": -0.002634829933119781,
+            "end": -0.004913364344781179
+          },
+          "identity_closure_v": {
+            "mean": 0.0,
+            "rms": 0.0,
+            "max_abs": 0.0,
+            "start": 0.0,
+            "end": 0.0
+          },
+          "k1_individual_discrepancy_v": {
+            "mean": 0.4636333310342773,
+            "rms": 0.4702882701593969,
+            "max_abs": 0.5990748217630659,
+            "start": 0.32758205041960414,
+            "end": 0.5990748217630659
+          },
+          "k1_original_residual_v": {
+            "mean": 0.205059481075399,
+            "rms": 0.20508164846771887,
+            "max_abs": 0.21096391148110172,
+            "start": 0.2023647452921673,
+            "end": 0.2108151420176161
+          },
+          "k2_individual_discrepancy_v": {
+            "mean": 0.4672634221987274,
+            "rms": 0.4739446389718942,
+            "max_abs": 0.6039881861078471,
+            "start": 0.3302168803527239,
+            "end": 0.6039881861078471
+          },
+          "k2_original_residual_v": {
+            "mean": 0.06057816934214625,
+            "rms": 0.06066595693780462,
+            "max_abs": 0.06790173737782279,
+            "start": 0.05646918154440783,
+            "end": 0.06790173737782279
+          }
+        }
+      },
+      {
+        "requested_interval_s": [
+          1800.0,
+          3333.132326188595
+        ],
+        "empty": false,
+        "interval_s": [
+          1800.0,
+          3333.132326188595
+        ],
+        "knots": 3225,
+        "summaries": {
+          "observed_fall_contrast_v": {
+            "mean": 0.14173271830817577,
+            "rms": 0.14176261808123952,
+            "max_abs": 0.1493210792541504,
+            "start": 0.1423513897258153,
+            "end": 0.1482843739978179
+          },
+          "predicted_fall_contrast_v": {
+            "mean": 0.14726610060468925,
+            "rms": 0.14726610060851206,
+            "max_abs": 0.14727044938225226,
+            "start": 0.14726475407059647,
+            "end": 0.14726617512986226
+          },
+          "original_residual_contrast_v": {
+            "mean": 0.14217064463364498,
+            "rms": 0.14220062114994092,
+            "max_abs": 0.14977342402776417,
+            "start": 0.1429134046397933,
+            "end": 0.14895190584364437
+          },
+          "model_voltage_contrast_v": {
+            "mean": 0.00013370421853561273,
+            "rms": 0.00014458014113784257,
+            "max_abs": 0.00036330973889286966,
+            "start": 0.0002577928070444102,
+            "end": 0.00036330973889286966
+          },
+          "skin_temperature_contrast_k": {
+            "mean": -0.2800027950648913,
+            "rms": 0.36358971816657853,
+            "max_abs": 0.8024635633282742,
+            "start": 0.008384649439904024,
+            "end": -0.631011619828314
+          },
+          "bulk_temperature_contrast_k": {
+            "mean": 0.014975715336819516,
+            "rms": 0.018743689643537512,
+            "max_abs": 0.04262861237833704,
+            "start": 0.04262861237833704,
+            "end": 0.002097459075343977
+          },
+          "discrepancy_v": {
+            "mean": -0.005533382296513474,
+            "rms": 0.006252637408542267,
+            "max_abs": 0.008251693105953029,
+            "start": -0.004913364344781179,
+            "end": 0.0010181988679556497
+          },
+          "identity_closure_v": {
+            "mean": 0.0,
+            "rms": 0.0,
+            "max_abs": 0.0,
+            "start": 0.0,
+            "end": 0.0
+          },
+          "k1_individual_discrepancy_v": {
+            "mean": 0.8147760411968769,
+            "rms": 0.8306917916437235,
+            "max_abs": 1.2635404096029728,
+            "start": 0.5990748217630659,
+            "end": 1.2635404096029728
+          },
+          "k1_original_residual_v": {
+            "mean": 0.17119472851408285,
+            "rms": 0.17608749987650288,
+            "max_abs": 0.21124586334488438,
+            "start": 0.2108151420176161,
+            "end": -0.11384831545899532
+          },
+          "k2_individual_discrepancy_v": {
+            "mean": 0.8203094234933904,
+            "rms": 0.8357126760543551,
+            "max_abs": 1.2625222107350171,
+            "start": 0.6039881861078471,
+            "end": 1.2625222107350171
+          },
+          "k2_original_residual_v": {
+            "mean": 0.029024083880437868,
+            "rms": 0.05192990138501461,
+            "max_abs": 0.2628002213026397,
+            "start": 0.06790173737782279,
+            "end": -0.2628002213026397
+          }
+        }
+      }
+    ],
+    "conditional_charge_points": [
+      {
+        "conditional_charge_ah": 0.5,
+        "supported": true,
+        "times_s": {
+          "k1": 360.9779007778157,
+          "k2": 360.973333951915
+        },
+        "unavailable_reasons": {},
+        "contrast": {
+          "observed_fall_contrast_v": 0.14663086537355996,
+          "predicted_fall_contrast_v": 0.14726773968675907,
+          "original_residual_contrast_v": 0.14899637985100123,
+          "model_voltage_contrast_v": 0.0020612923705076724,
+          "skin_temperature_contrast_k": 0.5872546273453736,
+          "bulk_temperature_contrast_k": 0.4354570325837699,
+          "discrepancy_v": -0.000636874313199115,
+          "identity_closure_v": 0.0
+        },
+        "cases": {
+          "k1": {
+            "current_a": 5.000333884127375,
+            "observed_fall_v": 0.4811296966063665,
+            "predicted_fall_v": 0.30869593163406434,
+            "individual_discrepancy_v": 0.17243376497230217,
+            "original_residual_v": 0.20587279439693118,
+            "model_voltage_v": 3.9111911950195686,
+            "skin_temperature_k": 300.1140827178955,
+            "bulk_temperature_k": 300.183743848752
+          },
+          "k2": {
+            "current_a": 5.000337916176393,
+            "observed_fall_v": 0.33449883123280655,
+            "predicted_fall_v": 0.16142819194730526,
+            "individual_discrepancy_v": 0.1730706392855013,
+            "original_residual_v": 0.056876414545929954,
+            "model_voltage_v": 3.909129902649061,
+            "skin_temperature_k": 299.5268280905501,
+            "bulk_temperature_k": 299.7482868161682
+          }
+        }
+      },
+      {
+        "conditional_charge_ah": 1.0,
+        "supported": true,
+        "times_s": {
+          "k1": 720.9545150840455,
+          "k2": 720.9473990817331
+        },
+        "unavailable_reasons": {},
+        "contrast": {
+          "observed_fall_contrast_v": 0.14500110212416217,
+          "predicted_fall_contrast_v": 0.1472659184162503,
+          "original_residual_contrast_v": 0.14658819260516864,
+          "model_voltage_contrast_v": 0.0012828683740728763,
+          "skin_temperature_contrast_k": 0.36856030390271144,
+          "bulk_temperature_contrast_k": 0.2433967557961978,
+          "discrepancy_v": -0.0022648162920881343,
+          "identity_closure_v": 0.0
+        },
+        "cases": {
+          "k1": {
+            "current_a": 5.000316784085018,
+            "observed_fall_v": 0.5763895011261115,
+            "predicted_fall_v": 0.30869487596185746,
+            "individual_discrepancy_v": 0.2676946251642541,
+            "original_residual_v": 0.19228715260282447,
+            "model_voltage_v": 3.802345748705717,
+            "skin_temperature_k": 301.07400120661265,
+            "bulk_temperature_k": 301.47274543734295
+          },
+          "k2": {
+            "current_a": 5.000361631056497,
+            "observed_fall_v": 0.43138839900194936,
+            "predicted_fall_v": 0.16142895754560715,
+            "individual_discrepancy_v": 0.2699594414563422,
+            "original_residual_v": 0.04569895999765583,
+            "model_voltage_v": 3.801062880331644,
+            "skin_temperature_k": 300.70544090270994,
+            "bulk_temperature_k": 301.22934868154675
+          }
+        }
+      },
+      {
+        "conditional_charge_ah": 2.0,
+        "supported": true,
+        "times_s": {
+          "k1": 1440.9078548547682,
+          "k2": 1440.8953496583588
+        },
+        "unavailable_reasons": {},
+        "contrast": {
+          "observed_fall_contrast_v": 0.14375457126183688,
+          "predicted_fall_contrast_v": 0.1472658860164605,
+          "original_residual_contrast_v": 0.14449884062920448,
+          "model_voltage_contrast_v": 0.00044004726043400666,
+          "skin_temperature_contrast_k": 0.2125555904470957,
+          "bulk_temperature_contrast_k": 0.07622415925277437,
+          "discrepancy_v": -0.003511314754623629,
+          "identity_closure_v": 0.0
+        },
+        "cases": {
+          "k1": {
+            "current_a": 5.000318915910713,
+            "observed_fall_v": 0.7991412954188979,
+            "predicted_fall_v": 0.30869500757025287,
+            "individual_discrepancy_v": 0.490446287848645,
+            "original_residual_v": 0.20031764183224166,
+            "model_voltage_v": 3.5876244436423477,
+            "skin_temperature_k": 302.09001579284666,
+            "bulk_temperature_k": 303.0592330800713
+          },
+          "k2": {
+            "current_a": 5.000366711311297,
+            "observed_fall_v": 0.655386724157061,
+            "predicted_fall_v": 0.16142912155379235,
+            "individual_discrepancy_v": 0.49395760260326865,
+            "original_residual_v": 0.05581880120303717,
+            "model_voltage_v": 3.5871843963819137,
+            "skin_temperature_k": 301.87746020239956,
+            "bulk_temperature_k": 302.9830089208185
+          }
+        }
+      },
+      {
+        "conditional_charge_ah": 3.0,
+        "supported": true,
+        "times_s": {
+          "k1": 2160.8616199223343,
+          "k2": 2160.8420592732195
+        },
+        "unavailable_reasons": {},
+        "contrast": {
+          "observed_fall_contrast_v": 0.140848808838137,
+          "predicted_fall_contrast_v": 0.14726600971763834,
+          "original_residual_contrast_v": 0.1413190244354423,
+          "model_voltage_contrast_v": 0.00016599349037171862,
+          "skin_temperature_contrast_k": -0.007632469527209196,
+          "bulk_temperature_contrast_k": 0.023641007851324503,
+          "discrepancy_v": -0.006417200879501345,
+          "identity_closure_v": 0.0
+        },
+        "cases": {
+          "k1": {
+            "current_a": 5.000334543026433,
+            "observed_fall_v": 0.9930821516427271,
+            "predicted_fall_v": 0.30869597231123974,
+            "individual_discrepancy_v": 0.6843861793314874,
+            "original_residual_v": 0.19998055476940113,
+            "model_voltage_v": 3.393346500355678,
+            "skin_temperature_k": 302.5762779003458,
+            "bulk_temperature_k": 304.4681087710128
+          },
+          "k2": {
+            "current_a": 5.000392763038666,
+            "observed_fall_v": 0.8522333428045901,
+            "predicted_fall_v": 0.1614299625936014,
+            "individual_discrepancy_v": 0.6908033802109886,
+            "original_residual_v": 0.05866153033395882,
+            "model_voltage_v": 3.3931805068653063,
+            "skin_temperature_k": 302.583910369873,
+            "bulk_temperature_k": 304.44446776316147
+          }
+        }
+      },
+      {
+        "conditional_charge_ah": 4.0,
+        "supported": true,
+        "times_s": {
+          "k1": 2880.8136488261907,
+          "k2": 2880.7883348665173
+        },
+        "unavailable_reasons": {},
+        "contrast": {
+          "observed_fall_contrast_v": 0.13978414739518152,
+          "predicted_fall_contrast_v": 0.1472656100087513,
+          "original_residual_contrast_v": 0.1401589674444419,
+          "model_voltage_contrast_v": 7.059794232677774e-05,
+          "skin_temperature_contrast_k": -0.37267993353202655,
+          "bulk_temperature_contrast_k": 0.006339817784294155,
+          "discrepancy_v": -0.007481462613569773,
+          "identity_closure_v": 0.0
+        },
+        "cases": {
+          "k1": {
+            "current_a": 5.000322305993834,
+            "observed_fall_v": 1.1803975692740711,
+            "predicted_fall_v": 0.3086952168572508,
+            "individual_discrepancy_v": 0.8717023524168204,
+            "original_residual_v": 0.16209658047222364,
+            "model_voltage_v": 3.1681471084271564,
+            "skin_temperature_k": 303.2853874206543,
+            "bulk_temperature_k": 306.4052553280671
+          },
+          "k2": {
+            "current_a": 5.000381743614487,
+            "observed_fall_v": 1.0406134218788896,
+            "predicted_fall_v": 0.16142960684849952,
+            "individual_discrepancy_v": 0.8791838150303901,
+            "original_residual_v": 0.021937613027781744,
+            "model_voltage_v": 3.1680765104848296,
+            "skin_temperature_k": 303.6580673541863,
+            "bulk_temperature_k": 306.3989155102828
+          }
+        }
+      }
+    ]
+  },
+  "timing": {
+    "k1": {
+      "phase_clock_audits": {
+        "rest": {
+          "rows_checked": 3601,
+          "max_relative_date_test_discrepancy_s": 0.0010000000002037268,
+          "max_command_origin_deviation_s": 3.637978807091713e-12,
+          "strictly_increasing_dates_test_and_step_clocks": true
+        },
+        "discharge": {
+          "rows_checked": 3391,
+          "max_relative_date_test_discrepancy_s": 0.0008999999990919605,
+          "max_command_origin_deviation_s": 3.637978807091713e-12,
+          "strictly_increasing_dates_test_and_step_clocks": true
+        }
+      },
+      "last_rest": {
+        "excel_row": 21678,
+        "date_naive": "2019-09-03T01:12:07.857000",
+        "test_time_s": 21674.70662,
+        "step_time_s": 3600.0009
+      },
+      "first_discharge": {
+        "excel_row": 21679,
+        "date_naive": "2019-09-03T01:12:08.903000",
+        "test_time_s": 21675.7522,
+        "step_time_s": 1.0006
+      },
+      "inferred_discharge_command_origin_test_s": 21674.7516,
+      "recorded_sample_bracket_test_s": [
+        21674.70662,
+        21675.7522
+      ],
+      "recorded_sample_bracket_width_s": 1.0455799999981537,
+      "command_origin_after_last_rest_s": 0.04497999999875901,
+      "physical_switching_time_verified": false,
+      "instrument_latency_known": false,
+      "conditional_charge_origin": {
+        "step_time_s": 1.0006,
+        "naive_timestamp": "2019-09-03T01:12:08.903000",
+        "omitted_initial_command_interval_s": [
+          0.0,
+          1.0006
+        ],
+        "missing_interval_charge_imputed": false
+      }
+    },
+    "k2": {
+      "phase_clock_audits": {
+        "rest": {
+          "rows_checked": 3601,
+          "max_relative_date_test_discrepancy_s": 0.0007999999979801942,
+          "max_command_origin_deviation_s": 3.637978807091713e-12,
+          "strictly_increasing_dates_test_and_step_clocks": true
+        },
+        "discharge": {
+          "rows_checked": 3436,
+          "max_relative_date_test_discrepancy_s": 0.0010000000002037268,
+          "max_command_origin_deviation_s": 3.637978807091713e-12,
+          "strictly_increasing_dates_test_and_step_clocks": true
+        }
+      },
+      "last_rest": {
+        "excel_row": 20790,
+        "date_naive": "2019-09-03T00:57:26.288000",
+        "test_time_s": 20786.156096,
+        "step_time_s": 3600.0017
+      },
+      "first_discharge": {
+        "excel_row": 20791,
+        "date_naive": "2019-09-03T00:57:27.335000",
+        "test_time_s": 20787.202324,
+        "step_time_s": 1.0003
+      },
+      "inferred_discharge_command_origin_test_s": 20786.202024000002,
+      "recorded_sample_bracket_test_s": [
+        20786.156096,
+        20787.202324
+      ],
+      "recorded_sample_bracket_width_s": 1.046228000002884,
+      "command_origin_after_last_rest_s": 0.04592800000318675,
+      "physical_switching_time_verified": false,
+      "instrument_latency_known": false,
+      "conditional_charge_origin": {
+        "step_time_s": 1.0003,
+        "naive_timestamp": "2019-09-03T00:57:27.335000",
+        "omitted_initial_command_interval_s": [
+          0.0,
+          1.0003
+        ],
+        "missing_interval_charge_imputed": false
+      }
+    }
+  },
+  "same_cell_low_high_history": {
+    "k1": {
+      "record_ranges_naive": {
+        "005c": [
+          "2019-08-30T20:17:34.898000",
+          "2019-08-31T21:51:21.088000"
+        ],
+        "1c": [
+          "2019-09-02T19:10:54.152000",
+          "2019-09-03T03:08:38.439000"
+        ]
+      },
+      "earlier_record": "005c",
+      "later_record": "1c",
+      "unobserved_gap_s": 163173.064,
+      "record_ranges_overlap": false,
+      "history_replayed": false,
+      "timezone": "unspecified"
+    },
+    "k2": {
+      "record_ranges_naive": {
+        "005c": [
+          "2019-08-30T20:17:42.632000",
+          "2019-08-31T21:41:12.806000"
+        ],
+        "1c": [
+          "2019-09-02T19:11:01.133000",
+          "2019-09-03T02:54:42.246000"
+        ]
+      },
+      "earlier_record": "005c",
+      "later_record": "1c",
+      "unobserved_gap_s": 163788.327,
+      "record_ranges_overlap": false,
+      "history_replayed": false,
+      "timezone": "unspecified"
+    }
+  },
+  "archived_model_context": {
+    "k1": {
+      "config": {
+        "model": "DFN",
+        "thermal": "lumped",
+        "parameter_set": "ORegan2022",
+        "initial_temperature_k": 298.33794059753416,
+        "heat_transfer_coefficient_w_m2_k": 15,
+        "current_a": 5.000325282873757,
+        "ambient_temperature_k": 298.15,
+        "mesh_points": 80,
+        "tolerance": 1e-07,
+        "sample_period_s": 5,
+        "max_temperature_k": 333.15
+      },
+      "source_sha256": {
+        "src/physical_fpv/core.py": "1295d1b51e0989021b037ecc8a5b7b66d8e38da43958cfd1df98bc1c031f506b",
+        "src/physical_fpv/current_profile.py": "3ac01b06b0b43e6fa464d861e5117a7d28f1b4f55f339ec781069a76e74905a6",
+        "src/physical_fpv/stanford_benchmark.py": "7e4390422670056f5afe9b4ec9039ff7171d32f0224be3f1ed9b059710841a1f",
+        "src/physical_fpv/stanford_data.py": "a0df0f6203ae433e7d5db3336a52c7626953d7133dfcedab7d755b274b108f6f",
+        "src/physical_fpv/stanford_reference.py": "e3c44cde83b7eb9923cc873e12a519ae1237d98f7278a778c29ed062dcb4c803",
+        "src/physical_fpv/thermal_benchmark.py": "cd7f101bb67b0e6d6dfe2da54727ff89286cfee788307a367461a3e6664a2ba4",
+        "src/physical_fpv/validation.py": "e7fd1abeb8d47b7c522bd60668c5fb1dcd5b1a68ad5e542f9b9a1a2c37cb425c",
+        "scripts/run_stanford_pilot.py": "dc000d47161198bf4bb9ddd917d312e7ba4b32f15170d3872acb5fa0124184cb",
+        "docs/stanford-validation-protocol.md": "009f64f52b889c56fed15e085007a82c24ed58e8b926c49e5f964f9e185f53b0",
+        "docs/stanford-scheduling-addendum.md": "d3ce12b439053f88df50f8cc6448c318c139a302cd3421755a505aa6dec1d27e",
+        "docs/stanford-memory-addendum.md": "20a232abec94c8210e48efdb24bad18471a6664a29f0a4fee1adf19aab22bc28",
+        "docs/benchmarks/stanford-k1-mesh80-reference.json": "f49fc31cea8683e194599e2203237a12916ba810e1b927ca062eb3483c1aa787",
+        "docs/benchmarks/stanford-k1-mesh80-v2.csv.gz": "92c90c495a880c458e4470234881e4bec8985c758995141a1d8f0e7742461215",
+        "docs/benchmarks/stanford-k1-mesh80-v2.json": "9a4000d2627adc21638a399a62d5f11accd0a808ef3aba031b02b7100378eb31",
+        "data/stanford-manifest.json": "94bde5dd872de039d145abf33f66fc81c38897b4666d68586f00c950478dc482",
+        "docs/benchmarks/stanford-k1-chronology.json": "de79d969085540981cb2c34ff39947c9ca3472733a8168b780ce599717908e69",
+        "requirements-lock.txt": "99e788261bf013158962b719b1710fde854c864ab67fac1c72dc69902830a20b",
+        "requirements-data-lock.txt": "ce63f4e1fcc9fd16eff0e59a4468a6b8e50fb896fc728ec2ed38e300710e080e",
+        "pyproject.toml": "b9407d6c6afafb0d0ab4ae96176f13133600a4b2fe373fe6803c11c95034077d"
+      },
+      "source_commit_sha": "744794b02d44bcbfc702ad8e5c403782128d11b0",
+      "python_version": "3.12.15",
+      "pybamm_version": "26.9.0.0",
+      "numpy_version": "2.5.3",
+      "memory_budget_bytes": 4000000000,
+      "wall_budget_s": 1200,
+      "assumptions": {
+        "source": {
+          "filename": "NMC_k1_1C_25degC.xlsx",
+          "bytes": 1868963,
+          "sha256": "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6",
+          "inflated_bytes": 10538544
+        },
+        "observed_interval_s": [
+          1.0006,
+          3390.3968
+        ],
+        "missing_initial_interval_s": [
+          0,
+          1.0006
+        ],
+        "initial_interval_current_assumption_a": 5.000240325927734,
+        "assumed_initial_charge_ah": 0.0013897890194786919,
+        "initial_interval_is_measured": false,
+        "initial_interval_bound_status": "Declared time extent and CC hypothesis, not an empirical current bound",
+        "explicit_unobserved_continuation_s": [
+          3390.3968,
+          6000.0
+        ],
+        "continuation_current_assumption_a": 5.0003557205200195,
+        "current_profile_sha256": "ec1aac9bbe4bb889ad06fb215ff0462c214d66870054e814605aff1850bb9353",
+        "current_interpolation": "all source samples; piecewise linear; no smoothing",
+        "initial_temperature_source": "final zero-current pre-rest skin temperature, assumed initially uniform",
+        "cooling_coefficient_status": "ORegan h=15 prior hypothesis; not identified for Stanford fixture",
+        "ambient_temperature_status": "nominal chamber setpoint; ambient sensor time series unavailable",
+        "temperature_observable": "predicted volume average versus measured central skin proxy",
+        "independent_thermal_validation_established": false,
+        "parameter_fitting_performed": false
+      },
+      "fitting_performed": false,
+      "initial_concentrations_mol_m3": {
+        "negative": 28866.0,
+        "positive": 13975.0
+      },
+      "profile_schedule": "adaptive",
+      "scheduling_addendum_sha256": "d3ce12b439053f88df50f8cc6448c318c139a302cd3421755a505aa6dec1d27e",
+      "memory_addendum_sha256": "20a232abec94c8210e48efdb24bad18471a6664a29f0a4fee1adf19aab22bc28",
+      "reused_mesh80": {
+        "csv_gzip_file": "docs/benchmarks/stanford-k1-mesh80-v2.csv.gz",
+        "csv_gzip_sha256": "92c90c495a880c458e4470234881e4bec8985c758995141a1d8f0e7742461215",
+        "csv_sha256": "76a8e07b2be05d5da5fc27888eac9f7106e38cec13e90c02187b392f8bdc4fed",
+        "csv_uncompressed_bytes": 498690,
+        "report_file": "docs/benchmarks/stanford-k1-mesh80-v2.json",
+        "report_sha256": "9a4000d2627adc21638a399a62d5f11accd0a808ef3aba031b02b7100378eb31",
+        "source_commit_sha": "be1cb751d78ea92ee0486966f3a5e66687797e63",
+        "ci_run_id": 37729197529,
+        "artifact_zip_sha256": "f644dd2e9436fdff281919a6ae0de5259864b62251cc7e3979dac7a9f699eb89",
+        "scope": "Completed mesh80 solution and passed physical audit reused exactly; empirical failure retained.",
+        "residual_sha256": "e315215a9dcfdc8882b6cd10a88e1b3472be75a83200653899f954b304c5e23b",
+        "reused": true,
+        "new_solve_performed": false,
+        "rechecked_from_recorded_observables": {
+          "charge_integral_error_ah": 2.11445849718217e-08,
+          "lithium_inventory_relative_drift": 2.1625837271106654e-14
+        },
+        "spatial_and_heat_audits": "original source report; unavailable raw states were not rebuilt",
+        "empirical_result": "original report retained without changing thresholds or gate labels"
+      },
+      "new_simulated_meshes": [
+        120
+      ]
+    },
+    "k2": {
+      "source_commit_sha": "6d74c8d4a75ece4a1b8b3efafbfb127740f0b661",
+      "source_sha256": {
+        "src/physical_fpv/core.py": "1295d1b51e0989021b037ecc8a5b7b66d8e38da43958cfd1df98bc1c031f506b",
+        "src/physical_fpv/current_profile.py": "9324ed84ee6ddd5bd142db99383ee69116b0d51bde759cd503680acde144d5d7",
+        "src/physical_fpv/stanford_k2.py": "f805fa594005bc13469202cc477d0dbd5f695fa9384951dbc9daacb2f9f0c081",
+        "src/physical_fpv/stanford_benchmark.py": "7e4390422670056f5afe9b4ec9039ff7171d32f0224be3f1ed9b059710841a1f",
+        "src/physical_fpv/stanford_data.py": "a0df0f6203ae433e7d5db3336a52c7626953d7133dfcedab7d755b274b108f6f",
+        "src/physical_fpv/thermal_benchmark.py": "cd7f101bb67b0e6d6dfe2da54727ff89286cfee788307a367461a3e6664a2ba4",
+        "src/physical_fpv/validation.py": "e7fd1abeb8d47b7c522bd60668c5fb1dcd5b1a68ad5e542f9b9a1a2c37cb425c",
+        "scripts/run_stanford_k2.py": "b7e53da2ae47688cc0a05d038232d00791f394c4202c8cd92eaddd2f0cf94b69",
+        "docs/stanford-k2-prediction-protocol.md": "24006e294ffd9db813e9f153695120ebdfef38a61d17408212401c12e9efd1cc",
+        "data/stanford-k2-pilot-input.json": "0e0d8360fa87870f4103110c48e95f93774696e46046bc335309c7822c037477",
+        "data/stanford-manifest.json": "94bde5dd872de039d145abf33f66fc81c38897b4666d68586f00c950478dc482",
+        "docs/benchmarks/stanford-k2-k6-history-partial.json": "35ffcd867176b6e2e4aa5df62ac8bca5c102779b5c3a594aaf231e96bab8ba17",
+        "requirements-lock.txt": "99e788261bf013158962b719b1710fde854c864ab67fac1c72dc69902830a20b",
+        "requirements-data-lock.txt": "ce63f4e1fcc9fd16eff0e59a4468a6b8e50fb896fc728ec2ed38e300710e080e",
+        "pyproject.toml": "b9407d6c6afafb0d0ab4ae96176f13133600a4b2fe373fe6803c11c95034077d"
+      },
+      "config": {
+        "model": "DFN",
+        "thermal": "lumped",
+        "parameter_set": "ORegan2022",
+        "initial_temperature_k": 297.55456771850584,
+        "heat_transfer_coefficient_w_m2_k": 15,
+        "current_a": 5.000371049908914,
+        "ambient_temperature_k": 298.15,
+        "mesh_points": 120,
+        "tolerance": 1e-07,
+        "sample_period_s": 5,
+        "max_temperature_k": 333.15
+      },
+      "assumptions": {
+        "cell": "Stanford k2",
+        "source": {
+          "filename": "NMC_k2_1C_25degC.xlsx",
+          "bytes": 1802458,
+          "sha256": "20ec90e107e228515a95346dc3159d08df62e78bb0f371d10161e62de49e8086",
+          "inflated_bytes": 10244657
+        },
+        "protocol_sha256": "24006e294ffd9db813e9f153695120ebdfef38a61d17408212401c12e9efd1cc",
+        "observed_trace_sha256": "eefce5eea77a1c3acc8c4f9b384f5bf8c32728d731bbc296f9df524146d9f1e7",
+        "observed_trace_hash_format": "C-order little-endian float64: step_s, raw_A, V, skin_K",
+        "comparison_role": "exploratory conditional test; k2 selected after observing cohort boundaries and history; not blinded or an independent validation",
+        "selected_after_observations": true,
+        "blinded": false,
+        "observed_interval_s": [
+          1.0003,
+          3435.7713
+        ],
+        "missing_initial_interval_s": [
+          0.0,
+          1.0003
+        ],
+        "initial_interval_current_assumption_a": 5.000381946563721,
+        "assumed_initial_charge_ah": 0.001389411683652136,
+        "initial_interval_is_measured": false,
+        "initial_interval_bound_status": "Declared time extent and first-current hypothesis, not an empirical current bound",
+        "explicit_unobserved_continuation_s": [
+          3435.7713,
+          6000.0
+        ],
+        "continuation_current_assumption_a": 5.000402450561523,
+        "continuation_interval_is_measured": false,
+        "current_profile_sha256": "a6bb3e11eba4e922d1f86636be1225a992aea5da2b05ee17ac684ed336eda3ad",
+        "current_interpolation": "all source samples; piecewise linear; no smoothing or averaging",
+        "scalar_current_status": "duration/envelope metadata only; profile is actual forcing",
+        "solver_profile_schedule": "adaptive",
+        "initial_temperature_k": 297.55456771850584,
+        "initial_temperature_source": "final zero-current pre-rest skin temperature, assumed initially uniform",
+        "initial_concentrations_mol_m3": {
+          "negative": 28866.0,
+          "positive": 13975.0
+        },
+        "initial_concentration_status": "published ORegan2022 values; no SOC or voltage fit",
+        "cooling_coefficient_status": "ORegan h=15 prior hypothesis; not identified for Stanford fixture",
+        "ambient_temperature_status": "nominal chamber setpoint 298.15 K; ambient sensor time series unavailable",
+        "temperature_observable": "predicted volume average versus measured central skin proxy",
+        "independent_thermal_validation_established": false,
+        "parameter_fitting_performed": false,
+        "scope": "Stanford k2 published campaign history qualified; unrecorded age, storage and exposure unknown; freshness not established; not certified for FPV, abuse, aging or safety"
+      },
+      "static_initialization": {
+        "negative_stoichiometry": 0.9757631071899402,
+        "positive_stoichiometry": 0.26997005698831256,
+        "negative_ocp_v": 0.09206725648609736,
+        "positive_ocp_v": 4.273027696147277,
+        "equilibrium_ocv_v": 4.180960439661179,
+        "measured_pre_rest_endpoint_v": 4.1867523193359375,
+        "ocv_minus_measured_rest_v": -0.005791879674758249,
+        "ocv_method": "Installed ParticleLithiumIonParameters.U; entropic correction and asymptote",
+        "initial_state_fitted_from_ocv": false,
+        "heat_capacity_initial_below_measured_25c_by_k": 0.5954322814941406,
+        "conductivity_stoichiometry_applicability": "Unestablished; measured near positive x=0.9",
+        "independent_thermal_validation_established": false
+      },
+      "initial_concentrations_mol_m3": {
+        "negative": 28866.0,
+        "positive": 13975.0
+      },
+      "parameter_current_fingerprint": "9b016ae4e2f29107e470f7c7ee1d65b49071107b5c0113584c679ebc5aa06019",
+      "installed_parameter_source_sha256": "c0c8111cb37fd4e79726f17e0d02f0aaac6d06532060a677efb5743c92a0b259",
+      "python_version": "3.12.15",
+      "pybamm_version": "26.9.0.0",
+      "numpy_version": "2.5.3",
+      "memory_budget_bytes": 4000000000,
+      "wall_budget_s": 1200,
+      "profile_schedule": "adaptive",
+      "new_simulated_meshes": [
+        120
+      ],
+      "each_mesh_in_fresh_process": true,
+      "k1_curve_reused": false,
+      "fitting_performed": false,
+      "diagnostic_protocol_sha256": "911b1ce24f6a87626bbac67fbc37e9300ce7d8c60db0d05e712d278288f0c83b",
+      "diagnostic_source_sha256": {
+        "src/physical_fpv/polarization.py": "5388eb06efef675c03d023e1486b0b1eee8fff421d3555e715cff31109d3673f",
+        "scripts/diagnose_stanford_k2_state.py": "2c75d6ec0dd26c410db039322e1bee6521351358e52079fc45275f02834dd905",
+        "docs/stanford-k2-state-protocol.md": "911b1ce24f6a87626bbac67fbc37e9300ce7d8c60db0d05e712d278288f0c83b",
+        "docs/benchmarks/stanford-k2-recovery-evidence.zip": "2fbea2b607ad1e6b149f1033af8a2123e86a39f18319b4c8b5f18ee5b040795d",
+        "docs/benchmarks/oregan-parameter-support.json": "129b86a3f8c12893448b715c44fda2696796609c825524699557f31286110b6c",
+        ".github/workflows/stanford-k2-state.yml": "d20684083b3ba8160c188f85c3b4779d040f1f08330e619e949260b3082a3a27",
+        "tests/test_stanford_k2_state.py": "700f20fa77c1edc6f3d0e079a49515f67e31477775f96867ae9e11d0ff0dca55"
+      },
+      "original_attempt_status": "unknown",
+      "reference_source_commit": "50c73ba21a6327c50e6d6c7ceec80f0e5c2dca84",
+      "reused_inputs_artifact_id": 11590866548,
+      "reused_inputs_run_id": 37871885149,
+      "original_source_reacquisitions": 0,
+      "prior_grid120_empirical_rmse_v": 0.05500305419157363,
+      "scientific_threshold_rmse_v": 0.05
+    }
+  },
+  "dataset_doi": "10.17632/kxsbr4x3j2.2",
+  "license": "CC-BY-4.0",
+  "authors": [
+    "Edoardo Catenaro",
+    "Simona Onori"
+  ],
+  "new_downloads": 0,
+  "new_dfns_solved": 0,
+  "parameters_fitted": false,
+  "physical_parameter_update": false,
+  "blind_holdout": false,
+  "physical_or_statistical_acceptance_established": false,
+  "historical_voltage_rmse_v": {
+    "k1": 0.1914735217065252,
+    "k2": 0.05500305419157363
+  },
+  "historical_gate_v": 0.05,
+  "historical_passed": {
+    "k1": false,
+    "k2": false
+  },
+  "numerical_voltage_tolerance_v": 1e-12,
+  "numerical_charge_tolerance_ah": 1e-12,
+  "elapsed_s": 0.3324199359922204
+}
