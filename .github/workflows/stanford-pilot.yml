@@ -24,6 +24,7 @@ on:
       - .github/workflows/stanford-pilot.yml
       - scripts/stanford_evidence_cache.py
       - docs/benchmarks/stanford-k1-v3-verified-evidence.json
+      - docs/benchmarks/stanford-k1-current-source-20261009-evidence.json
   workflow_dispatch:
 permissions:
   contents: read

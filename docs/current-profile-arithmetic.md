@@ -61,8 +61,10 @@ units and mathematical piecewise-linear law. Implementation identity is separate
 the full current_profile.py SHA256 changes from
 9324ed84ee6ddd5bd142db99383ee69116b0d51bde759cd503680acde144d5d7 to
 3ac01b06b0b43e6fa464d861e5117a7d28f1b4f55f339ec781069a76e74905a6.
-Both scientific evidence caches include this source hash and therefore reject
-reuse. Recorded artifacts and their hashes are unchanged.
+Both scientific evidence caches include this source hash, so the original
+receipts cannot validate the changed source. Recorded artifacts and their hashes
+are unchanged. The subsequently [completed bounded replays](current-source-replay-findings.md)
+supply separate actual current-source receipts; they preserve the old records.
 
 PR cache misses now fail explicitly as scientific validation UNVERIFIED. They
 cannot automatically fetch data or start expensive k1/thermal solves. The existing

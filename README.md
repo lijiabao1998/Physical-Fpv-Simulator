@@ -44,8 +44,9 @@ Lumped thermal simulation is explicitly **unvalidated**: several built-in Chen20
 
 The [current-profile arithmetic correction](docs/current-profile-arithmetic.md)
 fixes near-knot precision and prevents automatic scientific reruns on PR cache
-misses. Historical results below remain tied to their original implementations;
-scientific validation of changed calculation code is explicitly UNVERIFIED.
+misses. The [bounded current-source replays](docs/current-source-replay-findings.md)
+now pass the two selected spatial checks; k1 still fails its50mV empirical gate
+at191.473522mV. Historical k2 results remain tied to their original implementation.
 
 The explicitly new [Stanford k2 recovery](docs/stanford-k2-recovery-findings.md)
 completed both meshes within 911.043 seconds. Its 80→120 spatial check passes,
@@ -169,7 +170,7 @@ The [native-audit continuation](docs/stanford-memory-addendum.md) completed at d
 
 [Complete verified evidence](docs/benchmarks/stanford-k1-v3-verified-evidence.json) contains actual reports, unchanged gates, code/data hashes, memory use and artifact provenance. The full120-point time-series CSV is retained with its checksum in a [gzip archive](docs/benchmarks/stanford-k1-mesh120-v3.csv.gz). [The historical second attempt](docs/benchmarks/stanford-k1-v2-verified-evidence.json) and its [partial plot](docs/benchmarks/stanford-k1-partial-comparison.svg) remain available. Exact calculation fingerprints permit result-only commits to reuse the completed outcome, including its failures, without repeating the solve.
 
-The constant-current regression at the same commit also completed in850.063s:3.32093mV/0.0180177K, physical and numerical checks PASS. [Its current evidence](docs/benchmarks/grid120-verified-evidence.json) preserves earlier source results separately. Neither single case establishes whole-cohort convergence or repairs Chen6/12 and ORegan30/36 empirical failures.
+The constant-current regression at the same commit also completed in850.063s:3.32093mV/0.0180177K, physical and numerical checks PASS. [Its historical evidence](docs/benchmarks/grid120-verified-evidence.json) preserves earlier source results separately. Neither single case establishes whole-cohort convergence or repairs Chen6/12 and ORegan30/36 empirical failures.
 
 A [no-solve residual and source diagnostic](docs/stanford-residual-findings.md) identifies a large loaded-voltage discrepancy despite a−5.40mV initial rest-OCV difference. The measured transition ratio is61.3mΩ, similar in scale to the authors' published59mΩ pulse average; different measurement definitions prevent attributing that value to contact resistance. No corrective resistor, voltage offset or initial-SOC fit is applied.
 

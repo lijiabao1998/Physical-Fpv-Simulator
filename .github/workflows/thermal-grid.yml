@@ -14,6 +14,7 @@ on:
       - docs/benchmarks/thermal-grid80-reference.csv
       - docs/benchmarks/thermal-reference-manifest.json
       - .github/workflows/thermal-grid.yml
+      - docs/benchmarks/thermal-current-source-20261009-evidence.json
   workflow_dispatch:
 permissions:
   contents: read

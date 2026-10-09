@@ -56,7 +56,9 @@ def main():
     parser.add_argument("--out", type=Path, default=Path("results/grid120"))
     parser.add_argument("--github-output", type=Path)
     args = parser.parse_args()
-    evidence = json.loads(Path("docs/benchmarks/grid120-verified-evidence.json").read_text())
+    evidence = json.loads(
+        Path("docs/benchmarks/thermal-current-source-20261009-evidence.json").read_text()
+    )
     reuse = reusable_evidence(Path.cwd(), evidence)
     if reuse:
         args.out.mkdir(parents=True, exist_ok=True)
