@@ -18,3 +18,7 @@ and separates improved observable prediction from unidentified physical paramete
 The [fixed-rate k1 transfer check](stanford-cooling-transfer-findings.md) preserves
 a negative result: the k2 cooling improvement does not generalize across all
 predeclared k1 windows, so no universal thermal-prior replacement is adopted.
+
+The [shared series-like voltage-term screen](stanford-series-loss-findings.md)
+finds disjoint50 mV feasible sets for archived k1/k2 trajectories. No resistor
+is selected and no physical correction is promoted from the algebraic screen.

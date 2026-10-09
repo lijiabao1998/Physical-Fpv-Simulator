@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="440" viewBox="0 0 1100 440">
+<rect width="1100" height="440" fill="white"/>
+<g font-family="Arial,sans-serif" fill="#14213d">
+<text x="55" y="40" font-size="25">Fixed-trajectory shared-term compatibility</text>
+<text x="55" y="69" font-size="16">All nonnegative R intervals meeting the unchanged 50 mV RMSE screen</text>
+<path d="M110.00,110V285" stroke="#dbe2ea"/>
+<text x="110.00" y="310" font-size="14" text-anchor="middle">0</text>
+<path d="M276.00,110V285" stroke="#dbe2ea"/>
+<text x="276.00" y="310" font-size="14" text-anchor="middle">10</text>
+<path d="M442.00,110V285" stroke="#dbe2ea"/>
+<text x="442.00" y="310" font-size="14" text-anchor="middle">20</text>
+<path d="M608.00,110V285" stroke="#dbe2ea"/>
+<text x="608.00" y="310" font-size="14" text-anchor="middle">30</text>
+<path d="M774.00,110V285" stroke="#dbe2ea"/>
+<text x="774.00" y="310" font-size="14" text-anchor="middle">40</text>
+<path d="M940.00,110V285" stroke="#dbe2ea"/>
+<text x="940.00" y="310" font-size="14" text-anchor="middle">50</text>
+<text x="55" y="160" font-size="19">k1</text>
+<path d="M610.72,155H861.92" stroke="#007f80" stroke-width="12" stroke-linecap="round"/>
+<text x="736.32" y="131" font-size="17" text-anchor="middle">30.164–45.297 mΩ</text>
+<text x="55" y="250" font-size="19">k2</text>
+<path d="M131.29,245H381.99" stroke="#b44e29" stroke-width="12" stroke-linecap="round"/>
+<text x="256.64" y="221" font-size="17" text-anchor="middle">1.282–16.385 mΩ</text>
+<text x="410" y="340" font-size="15">Algebraic voltage-loss R (mΩ)</text>
+<text x="55" y="377" font-size="20">Shared set: empty</text>
+<text x="55" y="411" font-size="14">Post-hoc, previously viewed cells. No R selected; no DFN, cutoff, capacity or heat recomputation.</text>
+</g></svg>
