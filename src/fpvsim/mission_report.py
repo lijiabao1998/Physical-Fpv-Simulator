@@ -18,7 +18,12 @@ from .report import git_version, md_table, rel_path
 def generate(build: Build, cfg: FcConfig, result: MissionResult, out_dir: Path) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     log = result.log
-    log.write_csv(out_dir / "mission_log.csv")
+    # a reduced copy (10 Hz, battery, power and flight path): the full log of a whole pack is tens of MB
+    every = max(1, int(round(log.rate / 10.0)))
+    keep = ["time", "rc_throttle", "vbat", "current", "mah", "soc", "batt_temp", "alt", "vel_n", "vel_e", "vel_d", "airspeed",
+            *[c for c in log.columns if c.startswith("motor_") and not c.startswith("motor_current")],
+            *[c for c in log.columns if c.startswith("rpm_")]]
+    log.write_csv(out_dir / "mission_log.csv", keep, every)
     ac = build.realize(log.meta.get("overrides") or None)
     cells = ac.battery.series
     t = log.time
@@ -44,7 +49,7 @@ def generate(build: Build, cfg: FcConfig, result: MissionResult, out_dir: Path) 
     add = md.append
     add(f"# 任務續航報告：{build.name}\n")
     add("> 由 `fpvsim mission` 自動產生。6DOF 模擬重複飛同一段飛行腳本，從滿電飛到電池用盡；方法見 docs/battery.md。"
-        "原始 log 在 `mission_log.csv`。\n")
+        "`mission_log.csv` 是 10 Hz 的精簡 log（電池、油門、轉速與飛行路徑）。\n")
     add(md_table(["項目", "內容"], [
         ["機體", f"{build.name}（`{rel_path(build.path, Path.cwd())}`）"],
         ["飛控設定", f"{cfg.name}（`{cfg.id}`）；陀螺儀與 PID 迴圈 {cfg.pid_rate:g} Hz"],

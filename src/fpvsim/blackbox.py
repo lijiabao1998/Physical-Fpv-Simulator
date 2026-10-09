@@ -57,14 +57,19 @@ class FlightLog:
     def time(self) -> np.ndarray:
         return self["time"]
 
-    def write_csv(self, path: Path) -> None:
-        names = list(self.columns)
+    def write_csv(self, path: Path, columns: list[str] | None = None, every: int = 1) -> None:
+        """Write the log; ``columns`` and ``every`` (keep one row in ``every``) write a reduced copy."""
+        names = [n for n in (columns or list(self.columns)) if n in self.columns]
+        meta = dict(self.meta)
+        if every > 1:
+            meta["log_rate_hz"] = self.rate / every
         with path.open("w", newline="") as f:
-            f.write("# fpvsim flight log; meta: " + json.dumps(self.meta, ensure_ascii=False) + "\n")
+            f.write("# fpvsim flight log; meta: " + json.dumps(meta, ensure_ascii=False) + "\n")
             writer = csv.writer(f)
             writer.writerow([f"{n} [{self.units[n]}]" for n in names])
-            for row in zip(*(self.columns[n] for n in names)):
-                writer.writerow([f"{v:.6g}" for v in row])
+            for k, row in enumerate(zip(*(self.columns[n] for n in names))):
+                if k % every == 0:
+                    writer.writerow([f"{v:.6g}" for v in row])
 
     @classmethod
     def read_csv(cls, path: Path) -> "FlightLog":
