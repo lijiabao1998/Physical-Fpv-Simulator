@@ -224,6 +224,44 @@ def _wind_settings(args):
                         roughness=args.roughness, turbulence=not args.no_turbulence)
 
 
+def cmd_tunnel(args) -> int:
+    from .tunnel import BalanceNoise, Tunnel, balance_data, write_balance_csv
+    from .tunnel_report import generate, run_study
+
+    build = load_build(args.build)
+    if args.synthetic:
+        rows = balance_data(Tunnel(build.realize(), args.soc), seed=args.seed,
+                            noise=BalanceNoise() if not args.exact else BalanceNoise(0.0, 0.0, 0.0))
+        write_balance_csv(rows, Path(args.synthetic))
+        print(f"wrote {args.synthetic} ({len(rows)} balance readings)")
+        if args.synthetic_only:
+            return 0
+    study = run_study(build, samples=args.samples, seed=args.seed, soc=args.soc)
+    out = Path(args.out) if args.out else Path("out") / f"tunnel-{build.id}"
+    path = generate(study, out)
+    print(f"wrote {path}")
+    return 0
+
+
+def cmd_fit_tunnel(args) -> int:
+    from .sysid import read_csv
+    from .tunnel_fit import fit_tunnel
+    from .tunnel_report import generate_fit
+
+    build = load_build(args.build)
+    fit = fit_tunnel(read_csv(args.csv), build.realize())
+    out = Path(args.out) if args.out else Path("out") / f"fit-tunnel-{Path(args.csv).stem}"
+    path = generate_fit(build, fit, Path(args.csv), out)
+    for ax, e in fit.cda.items():
+        print(f"S_{ax} = {e.value * 1e4:.2f} +- {e.u * 1e4:.2f} cm^2")
+    for c, e in fit.centre.items():
+        print(f"drag centre {c} = {e.value * 1e3:+.2f} +- {e.u * 1e3:.2f} mm from the CG")
+    if fit.flap_fraction is not None:
+        print(f"flap_fraction = {fit.flap_fraction.value:.3f} +- {fit.flap_fraction.u:.3f}")
+    print(f"wrote {path}")
+    return 0
+
+
 def cmd_tune(args) -> int:
     from .flightcontroller import load_fc_config
     from .tuning import run_study
@@ -324,6 +362,23 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--out", help="output directory")
     _wind_arguments(p)
     p.set_defaults(func=cmd_fly)
+
+    p = sub.add_parser("tunnel", help="virtual wind tunnel: drag polar, rotor in oblique flow, trim and power curves")
+    p.add_argument("build")
+    p.add_argument("--samples", type=int, default=200, help="Monte Carlo samples for the trim curve (0 to skip)")
+    p.add_argument("--seed", type=int, default=1)
+    p.add_argument("--soc", type=float, default=1.0, help="battery state of charge on the balance (default full)")
+    p.add_argument("--synthetic", help="also write synthetic balance data (with load-cell noise) to this CSV")
+    p.add_argument("--exact", action="store_true", help="synthetic data without noise")
+    p.add_argument("--synthetic-only", action="store_true", help="only write the synthetic data")
+    p.add_argument("--out", help="output directory")
+    p.set_defaults(func=cmd_tunnel)
+
+    p = sub.add_parser("fit-tunnel", help="identify drag areas, drag centre and flap fraction from balance data")
+    p.add_argument("csv", help="balance CSV (format of fpvsim tunnel --synthetic)")
+    p.add_argument("--build", required=True, help="build the data belongs to")
+    p.add_argument("--out", help="output directory")
+    p.set_defaults(func=cmd_fit_tunnel)
 
     p = sub.add_parser("tune", help="stage 5: noise survey, filter check and PID gain sweep")
     p.add_argument("build")

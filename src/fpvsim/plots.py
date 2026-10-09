@@ -521,3 +521,42 @@ def side_views(versions: list[dict], path: Path) -> None:
         fig.tight_layout(rect=(0, 0.1, 1, 1))
         fig.legend(handles, labels, loc="lower center", ncol=len(labels), bbox_to_anchor=(0.5, 0.0))
         _save(fig, path)
+
+
+def xy_panels(panels: list[dict], path: Path, ncols: int = 2, panel_size: tuple[float, float] = (4.2, 3.0)) -> None:
+    """Grid of x-y charts. Each panel: title, xlabel, ylabel, series [(label, x, y)] drawn as
+    lines (more than four series use the sequential ramp, for an ordered parameter), optional
+    points [(label, x, y)] drawn as markers (measurements), vrefs [(x, label)], refs [(y, label)]."""
+    n = len(panels)
+    rows = (n + ncols - 1) // ncols
+    with plt.rc_context(STYLE):
+        fig, axes = plt.subplots(rows, ncols, figsize=(panel_size[0] * ncols, panel_size[1] * rows), squeeze=False)
+        for ax, panel in zip(axes.ravel(), panels):
+            series = panel.get("series", [])
+            ramp = len(series) > len(SERIES)
+            for i, (label, x, y) in enumerate(series):
+                color = _SEQUENTIAL[1 + int(i * (len(_SEQUENTIAL) - 2) / max(len(series) - 1, 1))] if ramp else SERIES[i % len(SERIES)]
+                ax.plot(x, y, color=color, label=label)
+            for i, (label, x, y) in enumerate(panel.get("points", [])):
+                ax.plot(x, y, "o", color=INK if not series else SERIES[i % len(SERIES)], markersize=3.5,
+                        markerfacecolor="none", label=label)
+            for value, label in panel.get("vrefs", []):
+                ax.axvline(value, color=INK_2, linewidth=0.9)
+                ax.annotate(label, (value, 1), xycoords=("data", "axes fraction"), xytext=(3, -10),
+                            textcoords="offset points", color=INK_2, fontsize=8)
+            for value, label in panel.get("refs", []):
+                ax.axhline(value, color=INK_2, linewidth=0.9)
+                if label:
+                    ax.annotate(label, (1, value), xycoords=("axes fraction", "data"), xytext=(-3, 3),
+                                textcoords="offset points", ha="right", color=INK_2, fontsize=8)
+            ax.set_title(panel["title"])
+            ax.set_xlabel(panel.get("xlabel", ""))
+            ax.set_ylabel(panel.get("ylabel", ""))
+            if "ylim" in panel:
+                ax.set_ylim(*panel["ylim"])
+            if len(series) + len(panel.get("points", [])) > 1:
+                ax.legend(loc=panel.get("legend", "best"))
+        for ax in axes.ravel()[n:]:
+            ax.set_visible(False)
+        fig.tight_layout()
+        _save(fig, path)
