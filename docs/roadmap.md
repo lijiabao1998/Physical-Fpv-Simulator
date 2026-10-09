@@ -117,3 +117,20 @@ not independent physical validation or a convergence-order proof. Historical
 high-rate 55.003 mV FAIL remains. The next saved-data question is the predeclared
 conditional low/high-rate comparison, retaining inventory/history/temperature
 limits and without a new solve or parameter fit.
+
+### Qualified saved low/high-rate comparison (2026-10-09)
+
+The [nine-point conditional comparison](stanford-k2-qualified-rate-findings.md)
+retains a negative modeled-minus-measured rate-gap discrepancy at 0.5–4 Ah and
+a positive discrepancy at 4.5 Ah across all four saved mesh combinations. Their
+0.080–1.059 mV spread is descriptive mesh-choice sensitivity, not an uncertainty
+bound. The missing history and independent initial-inventory constraint prevent
+a unique physical cause or resistance identification. No new solve or fit was
+performed. A matched-state, temperature-characterized pulse or rate transition
+with an independent inventory/capacity constraint is the next measurement
+proposal, not an automatically launched experiment.
+
+Ordinary Battery CI's repeated upstream HTTP 504 occurred before tests. The
+[raw-input persistence proposal](raw-input-cache-recovery-proposal.md) preserves
+all source pins, but only two of six exact payloads currently exist in verified
+archives; it does not claim an offline recovery or authorize a denied route.
