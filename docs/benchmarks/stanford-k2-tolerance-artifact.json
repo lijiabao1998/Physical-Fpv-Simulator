@@ -1,0 +1,37 @@
+{
+  "run_id": 37954785347,
+  "source_commit": "c8e3088fd808b213992285cabfaf9b69e9528d89",
+  "artifact_id": 11626943663,
+  "archive_bytes": 27644650,
+  "archive_sha256": "a35aa5d8dc2fb0c744f2f62fd4d0ea46eba553c4885aeed2a674fd2aa04b56da",
+  "archive_members": 72,
+  "parts": [
+    {
+      "path": "docs/benchmarks/stanford-k2-tolerance-evidence.zip.001",
+      "bytes": 8388608,
+      "sha256": "b201721634ff8c89a8f2915288e1378d2f59956523b02e0b597f85d357595a6a",
+      "git_blob_sha": "316d14dcf68451c2f471cf00b5bce0b880d886a5"
+    },
+    {
+      "path": "docs/benchmarks/stanford-k2-tolerance-evidence.zip.002",
+      "bytes": 8388608,
+      "sha256": "3f14c6de72a07c88b04bb7b56f5ffeab7fbca15c38b6295f3eb5d5a5fa674dba",
+      "git_blob_sha": "32e1cec2541043fd054ce9e77cd36caf50429c47"
+    },
+    {
+      "path": "docs/benchmarks/stanford-k2-tolerance-evidence.zip.003",
+      "bytes": 8388608,
+      "sha256": "8ff3df11e27c587ed2fb03af0655616d8793267dbe97e9e7463dd06e4dc54fd4",
+      "git_blob_sha": "cc12a19eb6306bf36a4a3e926f8b20cc242e38c2"
+    },
+    {
+      "path": "docs/benchmarks/stanford-k2-tolerance-evidence.zip.004",
+      "bytes": 2478826,
+      "sha256": "05df428d6f480b3ebeee3713c13b05f5461924b8ba8ebe440f91106eee2f829c",
+      "git_blob_sha": "3508af0b825d068cdf753e4c8322db2cc54b9fcf"
+    }
+  ],
+  "reassembly": "Concatenate parts in listed order; exact original GitHub artifact bytes",
+  "license": "Existing Stanford CC-BY-4.0 experimental inputs; source attribution included in inputs",
+  "source_url": "https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/37954785347"
+}

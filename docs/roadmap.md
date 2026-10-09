@@ -93,3 +93,15 @@ or convergence is claimed. Independent rational integration and compiled-RHS
 checks locate the discrepancy in numerical capacity-state evolution/interpolation,
 without identifying a unique solver mechanism. A separately reviewed tolerance
 refinement is the next numerical question; no further solve follows automatically.
+
+### Fixed-mesh tolerance sensitivity (2026-10-09)
+
+The separately reviewed [one-shot diagnostic](stanford-k2-tolerance-findings.md)
+changes only IDAKLU rtol/atol from 1e-7 to 1e-8 at mesh80. Maximum sampled charge
+closure falls from 1.100296 to 0.611278 microAh and all unchanged physical audits
+pass. Voltage changes by at most 0.003919 mV on exact shared queries; voltage RMSE
+remains 19.210369 mV. This supports numerical tolerance sensitivity, not a unique
+solver explanation or repaired high-rate model. The original coarse FAIL and
+historical 55.003 mV high-rate FAIL remain intact. Fine120 at the tested tighter
+tolerance is the next separately bounded spatial-convergence question; it was
+not launched by this diagnostic.

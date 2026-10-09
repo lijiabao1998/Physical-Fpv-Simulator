@@ -136,3 +136,5 @@ would be reduced capacity-state closure error, agreement with this saved coarse
 voltage curve and, only after a passing coarse audit, an independently qualified
 fine mesh. Tolerance refinement is numerical verification, not fitting physical
 parameters to the voltage gate. No such solve is launched by this report.
+
+A subsequent separately reviewed [fixed-mesh tolerance diagnostic](stanford-k2-tolerance-findings.md) tested 1e-8 relative/absolute tolerances at mesh80. It passed the unchanged sampled charge gate without replacing this original failed result. Fine-mesh convergence remains open.
