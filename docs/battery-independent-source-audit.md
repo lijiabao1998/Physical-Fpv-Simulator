@@ -117,3 +117,8 @@ Its report matches the committed receipt apart from measured elapsed time.
 Run without `-O`; optimized mode is explicitly rejected before source access.
 Historical stopped-attempt labels are retained as recorded history, not new runs.
 Full local suite: 729 passed, 7 skipped, 6 warnings (163.50 s).
+
+The subsequent [GITT provenance trace](li2025-gitt-provenance.md) identifies the
+two exact author-input CSVs, their column mappings and competing model time
+origins. Their original raw bytes, recorded temperature and specimen mapping
+remain unverified.

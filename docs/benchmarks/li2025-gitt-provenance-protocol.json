@@ -1,0 +1,41 @@
+{
+  "question": "Which original experimental file and channel transformations generated Li2025 Figure14, and are synchronized raw I/V/T plus conditioning metadata publicly reusable?",
+  "url": "https://zenodo.org/records/14995785/files/Scripts_to_reproduce_paper.zip?download=1",
+  "published_md5": "e720766f5244eee14c8fb840c6821926",
+  "license": "CC-BY-4.0",
+  "selected_members": [
+    "Reproduce_Li2024/1C_GITT.ipynb",
+    "Reproduce_Li2024/2C_GITT.ipynb",
+    "Reproduce_Li2024/Get_Input_files.ipynb",
+    "Reproduce_Li2024/readme.md"
+  ],
+  "acquisition": {
+    "attempts": 1,
+    "timeout_seconds": 120,
+    "displayed_bytes": "2.6 MB",
+    "post_download_acceptance_bytes": 3000000
+  },
+  "static_analysis": {
+    "seconds": 60,
+    "memory_bytes": 536870912,
+    "max_members": 100,
+    "max_expanded_bytes": 20000000,
+    "max_selected_member_bytes": 500000
+  },
+  "method": "Verify published MD5, record SHA256 and exact size; read selected UTF8 notebook JSON source/markdown and README only; do not execute code, imports, notebook outputs, macros or referenced scripts.",
+  "observables": [
+    "literal original file paths",
+    "column selectors and units",
+    "time shift/crop/downsampling transformations",
+    "cell/rate/temperature/conditioning identifiers",
+    "official raw record mapping"
+  ],
+  "claims": "Paths and transformations are evidence of author workflow, not proof that referenced raw bytes are present or identical. No solver, refit, pulse-current fabrication or unique-mechanism claim.",
+  "stop": "Stop on denial, checksum/resource/schema failure. Do not acquire835MB or multiGB archives. Report exact missing member/channel/provenance if mapping remains unresolved.",
+  "independent_review": "Protocol review before acquisition; source-mapping review before publication.",
+  "execution_deviation": {
+    "planned_protocol_sha256": "a275f706ef67b5abc5b8d777b396d7920f48e530a861d244da46d196f7a63f58",
+    "note": "Download preceded independent protocol review; static inspection followed review. One existing download was reused and checksum-verified; no duplicate download.",
+    "receipt": "li2025-gitt-provenance.json"
+  }
+}

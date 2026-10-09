@@ -1,0 +1,73 @@
+{
+  "schema": "li2025-static-provenance-v1",
+  "official_record": "https://zenodo.org/records/14995785",
+  "archive": "Scripts_to_reproduce_paper.zip",
+  "bytes": 2634078,
+  "md5": "e720766f5244eee14c8fb840c6821926",
+  "sha256": "b97ec00f7e063ecfa8eb3b3f727a764381fb89fc95415a586cf4a87b04db20cc",
+  "license": "CC-BY-4.0",
+  "creator": "Ruihe Li",
+  "changes": "Selected notebook-source excerpts and descriptive field mapping; no author code executed.",
+  "acquisition_chronology": {
+    "download_attempts": 1,
+    "download_bounded_seconds": 40,
+    "download_max_filesize_bytes": 4000000,
+    "actual_bytes_within_frozen_post_download_limit": true,
+    "protocol_review_preceded_acquisition": false,
+    "static_inspection_followed_protocol_review": true,
+    "start_time_precision": "Issued between22:48:53 and22:48:58UTC2026-10-09; narrower ordering against protocol creation unverified",
+    "download_finished_before_interrupt": true,
+    "duplicate_download": false
+  },
+  "inputs": [
+    {
+      "notebook": "Reproduce_Li2024/1C_GITT.ipynb",
+      "notebook_sha256": "2e42097e33ab8b22487efb14d3b54c6cf26ebb762509871e6b772c1f2b8a3255",
+      "load_cell_index": 7,
+      "load_cell_source": "# import experimental GITT data from file\npath_csv = os.path.join(Path_Input, \"LG_M50_BOL_GITT/1C_GITT_25deg.csv\")\nGITT_data = pd.read_csv(path_csv, comment=\"#\", header=None).to_numpy()\nt_exp = GITT_data[:,0]/3600\nI_exp = -GITT_data[:,3]/1000\nV_exp = GITT_data[:,2]\n#Q_exp = GITT_data[:,1]/1000\nQ_exp = []\nfor i in range (len(t_exp)):\n    Q_temp = np.trapz(I_exp[0:i],t_exp[0:i])\n    Q_exp.append(Q_temp)",
+      "export_cell_index": 8,
+      "export_cell_sha256": "94d0052dd939f4478709d860689006814793948b7326818a2783a070670fbe55",
+      "input_relative_path": "LG_M50_BOL_GITT/1C_GITT_25deg.csv",
+      "zero_based_columns": {
+        "time_seconds": 0,
+        "voltage_V": 2,
+        "current_mA_with_opposite_sign": 3
+      },
+      "experimental_export": "time /3600 then subtract first experimental time; voltage unchanged; current not exported",
+      "model_export_time_reference": "sol.cycles[1].steps[2] first time",
+      "zoom_time_reference": "sol.cycles[1].steps[1] first time",
+      "measured_temperature_read": false,
+      "raw_file_acquired": false,
+      "column_units_evidence": "Author-interpreted units from notebook source; original raw schema unverified."
+    },
+    {
+      "notebook": "Reproduce_Li2024/2C_GITT.ipynb",
+      "notebook_sha256": "beb2554801fb8d83c422eeca9088afc925d0e1a4f5dbea0c1370c69314c8ca8e",
+      "load_cell_index": 8,
+      "load_cell_source": "# import experimental GITT data from file\npath_csv = os.path.join(Path_Input, \"LG_M50_BOL_GITT/2C_GITT_25deg.csv\")\nGITT_data = pd.read_csv(path_csv, comment=\"#\", header=None).to_numpy()\nt_exp = GITT_data[:,0]/3600\nI_exp = -GITT_data[:,3]/1000\nV_exp = GITT_data[:,2]\n#Q_exp = GITT_data[:,1]/1000\nQ_exp = []\nfor i in range (len(t_exp)):\n    Q_temp = np.trapz(I_exp[0:i],t_exp[0:i])\n    Q_exp.append(Q_temp)",
+      "export_cell_index": 9,
+      "export_cell_sha256": "9569e61b4a177ff12789bc97b8d1e6d8bbb4b284334be5d754369fa13ac4c9bd",
+      "input_relative_path": "LG_M50_BOL_GITT/2C_GITT_25deg.csv",
+      "zero_based_columns": {
+        "time_seconds": 0,
+        "voltage_V": 2,
+        "current_mA_with_opposite_sign": 3
+      },
+      "experimental_export": "time /3600 then subtract first experimental time; voltage unchanged; current not exported",
+      "model_export_time_reference": "sol.cycles[1].steps[2] first time",
+      "zoom_time_reference": "sol.cycles[1].steps[1] first time",
+      "measured_temperature_read": false,
+      "raw_file_acquired": false,
+      "column_units_evidence": "Author-interpreted units from notebook source; original raw schema unverified."
+    }
+  ],
+  "availability": "Exact raw CSV availability unverified; main835.1MB archive preview explicitly incomplete.",
+  "unresolved": [
+    "raw CSV bytes and hash",
+    "recorded temperature and sensor/ambient metadata",
+    "cell specimen identity",
+    "experimental conditioning/history",
+    "raw acquisition/export mapping and synchronization uncertainty"
+  ],
+  "independent_review": "Notebook paths, column mapping, export transformations and scientific caveats independently checked; no unique mechanism inferred."
+}
