@@ -31,3 +31,11 @@ on a conditional discharged-Ah alignment; temperature and inventory equivalence
 are unestablished. No parameters were fitted or promoted. The 50 mV terminal gate
 continues to fail. Next discriminating work should constrain initial inventory and
 thermal comparability before attributing the between-record gap to kinetics.
+
+### Near-start rest-referenced response (2026-10-09)
+
+The [cached onset comparison](stanford-k2-onset-findings.md) shows that the model’s
+−5.792 mV initial bulk-OCV/rest-endpoint offset cannot algebraically reconcile
+the +60–70 mV early terminal residual. Finite-time observed voltage fall/current
+is reported without identifying ohmic resistance. Timing/latency and internal
+state constraints remain necessary before assigning a unique physical cause.
