@@ -42,6 +42,12 @@ Lumped thermal simulation is explicitly **unvalidated**: several built-in Chen20
 
 ## Current results
 
+The explicitly new [Stanford k2 recovery](docs/stanford-k2-recovery-findings.md)
+completed both meshes within 911.043 seconds. Its 80→120 spatial check passes,
+but grid120 voltage RMSE is **55.003054 mV versus the unchanged 50-mV target: FAIL**.
+The original lost grid120 attempt remains unknown. Complete native snapshots,
+terminal receipts and a no-solve verifier are preserved with the result.
+
 Software checks pass (263 tests). On the refined DFN grid, the **experimental gate passes 6 of 12 traces and fails 6 of 12**; overall research acceptance is **FAIL**. Numerical convergence passes. Thermal validity is **not established**. See [the complete refined report](docs/benchmarks/refined-mesh40.md). CI separately enforces software/numerical checks and uploads the empirical failures without treating them as a scientific pass.
 
 ## Thermal reconstruction: inspect the second cohort
