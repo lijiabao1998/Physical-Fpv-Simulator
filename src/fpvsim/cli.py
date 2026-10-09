@@ -103,6 +103,73 @@ def cmd_fit_prop(args) -> int:
     return 0
 
 
+def cmd_hppc(args) -> int:
+    from .battery_test import HppcProtocol, run_hppc, write_csv
+
+    build = load_build(args.build)
+    battery = build.realize().battery
+    protocol = HppcProtocol(pulse_c=args.pulse_c, soc_step=args.soc_step, sample_rate=args.rate)
+    data = run_hppc(battery, args.temperature, protocol, seed=args.seed)
+    write_csv(data, Path(args.csv))
+    print(f"wrote {args.csv}: {len(data['time'])} samples, {data['time'][-1] / 3600:.2f} h at "
+          f"{args.temperature - 273.15:.1f} degC")
+    return 0
+
+
+def cmd_fit_battery(args) -> int:
+    from .battery_fit import fit_arrhenius, fit_flight, fit_hppc
+    from .battery_report import generate
+    from .blackbox import FlightLog
+    from .sysid import read_csv
+
+    design = None
+    battery = None
+    if args.build:
+        build = load_build(args.build)
+        battery = build.realize().battery
+        design = {"r0_cell": battery.r0_cell, "r1_cell": battery.r1_cell, "tau1": battery.tau1,
+                  "activation_energy": battery.activation_energy, "ocv_soc": battery.ocv_soc,
+                  "ocv_cell": battery.ocv_cell, "name": build.name}
+    series = args.series or (battery.series if battery else None)
+    capacity = args.capacity or (battery.capacity if battery else None)
+    if series is None or capacity is None:
+        print("error: give --build, or both --series and --capacity", file=sys.stderr)
+        return 2
+    if not args.csv and not args.log:
+        print("error: give HPPC CSV files and/or --log", file=sys.stderr)
+        return 2
+    fits = []
+    for path in args.csv:
+        data = read_csv(path)
+        missing = {"time", "current", "voltage"} - set(data)
+        if missing:
+            print(f"error: {path} needs columns {sorted(missing)} (with units, e.g. 'voltage [V]')", file=sys.stderr)
+            return 2
+        fits.append(fit_hppc(data, series, capacity))
+    arrhenius = None
+    if len({round(f.temperature, 1) for f in fits}) >= 2:
+        arrhenius = fit_arrhenius(fits)
+    flight = None
+    if args.log:
+        if battery is None:
+            print("error: --log needs --build (for the OCV curve)", file=sys.stderr)
+            return 2
+        log = FlightLog.read_csv(Path(args.log))
+        flight = fit_flight(log.time, log["vbat"], log["current"], battery.ocv_soc, battery.ocv_cell * battery.series,
+                            capacity)
+    out = Path(args.out) if args.out else Path("out") / "battery-fit"
+    sources = [str(Path(p)) for p in args.csv]
+    path = generate(out, sources, fits, arrhenius, flight, args.log, series, design)
+    print(f"wrote {path}")
+    for src, f in zip(sources, fits):
+        print(f"  {src}: r0_cell {1000 * f.r0_cell.value:.3f} +/- {1000 * f.r0_cell.u:.3f} mohm, "
+              f"r1_cell {1000 * f.r1_cell.value:.3f} +/- {1000 * f.r1_cell.u:.3f} mohm, tau1 {f.tau1.value:.2f} s")
+    if arrhenius:
+        print(f"  activation energy {arrhenius.activation_energy.value / 1000:.2f} +/- "
+              f"{arrhenius.activation_energy.u / 1000:.2f} kJ/mol")
+    return 0
+
+
 def cmd_maneuvers(args) -> int:
     from .pilot import MANEUVERS
 
@@ -199,6 +266,25 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--temperature", type=_quantity, default=288.15, help="air temperature, e.g. 20degC")
     p.add_argument("--altitude", type=_quantity, default=0.0, help="pressure altitude, e.g. 150m")
     p.set_defaults(func=cmd_fit_prop)
+
+    p = sub.add_parser("hppc", help="virtual battery bench: hybrid pulse test in a thermal chamber")
+    p.add_argument("build")
+    p.add_argument("--csv", required=True, help="output CSV")
+    p.add_argument("--temperature", type=_quantity, default=298.15, help="chamber temperature, e.g. 0degC")
+    p.add_argument("--pulse-c", type=float, default=5.0, help="pulse current as C-rate (default 5)")
+    p.add_argument("--soc-step", type=float, default=0.1, help="state-of-charge step between pulses (default 0.1)")
+    p.add_argument("--rate", type=float, default=10.0, help="logging rate, Hz (default 10)")
+    p.add_argument("--seed", type=int, default=1)
+    p.set_defaults(func=cmd_hppc)
+
+    p = sub.add_parser("fit-battery", help="identify battery R0, R1, tau1, OCV (and Ea) from HPPC CSVs or a flight log")
+    p.add_argument("csv", nargs="*", help="HPPC test CSV files (time, current, voltage[, temperature])")
+    p.add_argument("--log", help="flight log CSV (time, vbat, current) for an in-flight check")
+    p.add_argument("--build", help="build whose battery is tested (series, capacity, OCV curve, design values)")
+    p.add_argument("--series", type=int, help="cells in series (default: from --build)")
+    p.add_argument("--capacity", type=_quantity, help="capacity for state of charge, e.g. 1300mAh (default: from --build)")
+    p.add_argument("--out", help="output directory")
+    p.set_defaults(func=cmd_fit_battery)
 
     p = sub.add_parser("maneuvers", help="list the built-in flight-test maneuvers")
     p.set_defaults(func=cmd_maneuvers)
