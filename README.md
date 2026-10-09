@@ -19,9 +19,9 @@ Physics-first FPV simulator built from real physical properties.
 | 1. 需求規格 | 定義用途、重量、推重比、續航目標 | 規格檔 `data/specs/` | ✅ |
 | 2. 動力匹配 | 推力台測試馬達、槳、電壓組合 | 虛擬推力台、BEMT、系統識別 | ✅ |
 | 3. 重量與重心 | 秤重、做重量表、算重心與慣性 | 質量預算 | ✅ |
-| 4. 電氣 | 壓降、峰值電流、額定值 | 電池等效電路、額定值檢查 | ✅（溫升待做） |
+| 4. 電氣 | 壓降、峰值電流、電池溫升、低溫與老化 | 電池等效電路與熱模型、全油門可持續時間、設計點（最差工況）、HPPC 測試與辨識、電池選型、任務續航 | ✅ |
 | 5. 調參 | 看陀螺儀頻譜設濾波、看步階響應調 PID | 雜訊調查、濾波延遲、步階響應量測、增益掃描 | ✅ |
-| 6. 飛行測試 | 實飛並錄 log | 6DOF 飛行模擬、Betaflight 式飛控、虛擬 Blackbox、適用範圍監測 | ✅（即時手動飛行待做） |
+| 6. 飛行測試 | 實飛並錄 log；風洞 | 6DOF 飛行模擬（斜向氣流的槳、渦環狀態、風與紊流、地面效應）、Betaflight 式飛控、虛擬 Blackbox、適用範圍監測；虛擬風洞與天平數據辨識 | ✅（即時手動飛行待做） |
 | 7. 迭代 | 依測試結果修改設計 | 版本檔（只寫變更）、成對蒙地卡羅、各版本相同流程的比較報告 | ✅ |
 
 範例輸出：
@@ -30,6 +30,11 @@ Physics-first FPV simulator built from real physical properties.
 - [調參報告](reports/tune-acro-5in-baseline/report.md)（第 5 階段）
 - [飛行測試報告：綜合飛行](reports/flight-freestyle/report.md)（第 6 階段）
 - [設計迭代：加掛運動相機的三個版本](reports/compare-actioncam/report.md)（第 7 階段）
+- [飛行測試報告：有風的綜合飛行](reports/flight-freestyle-wind/report.md)（6 m/s 西風加 Dryden 紊流）
+- [虛擬風洞報告](reports/tunnel-ref-5in-6s-freestyle/report.md)與[天平數據辨識](reports/tunnel-fit/report.md)
+- [電池辨識：0 / 25 / 40 °C 的 HPPC 測試](reports/battery-fit/report.md)、[電池選型](reports/battery-sweep/report.md)、[任務續航](reports/mission-freestyle/report.md)
+
+物理模型的規劃與目前狀態見 [docs/physics-roadmap.md](docs/physics-roadmap.md)。
 
 ## 快速開始
 
@@ -62,6 +67,23 @@ python -m venv .venv
 .venv/bin/fpvsim tune data/builds/ref-5in-6s-freestyle.toml --fc data/fc/acro-5in-baseline.toml
 ```
 
+有風的飛行、虛擬風洞（說明見 [docs/tunnel.md](docs/tunnel.md)）：
+
+```bash
+.venv/bin/fpvsim fly    data/builds/ref-5in-6s-freestyle.toml --fc data/fc/acro-5in-baseline.toml --wind 6 --wind-from 270
+.venv/bin/fpvsim tunnel data/builds/ref-5in-6s-freestyle.toml --synthetic balance.csv
+.venv/bin/fpvsim fit-tunnel balance.csv --build data/builds/ref-5in-6s-freestyle.toml
+```
+
+電池（說明見 [docs/battery.md](docs/battery.md)）：
+
+```bash
+.venv/bin/fpvsim hppc data/builds/ref-5in-6s-freestyle.toml --temperature 0degC --csv hppc_0C.csv
+.venv/bin/fpvsim fit-battery hppc_0C.csv hppc_25C.csv --build data/builds/ref-5in-6s-freestyle.toml
+.venv/bin/fpvsim battery-sweep data/builds/ref-5in-6s-freestyle.toml
+.venv/bin/fpvsim mission data/builds/ref-5in-6s-freestyle.toml --fc data/fc/acro-5in-baseline.toml
+```
+
 設計迭代（說明見 [docs/iteration.md](docs/iteration.md)）：
 
 ```bash
@@ -78,9 +100,15 @@ src/fpvsim/
   units.py, params.py     單位換算；帶出處與不確定度的參數
   atmosphere.py           ISA 大氣
   mass.py                 質量、重心、慣性張量
-  battery.py              LiPo 一階等效電路
+  battery.py              LiPo 一階等效電路、熱模型、內阻隨溫度、老化
+  battery_test.py, battery_fit.py   虛擬 HPPC 測試台；電池參數辨識
+  battery_sweep.py        電池選型（同系列不同容量）
+  mission.py              任務續航（重複飛行腳本直到電池用盡）
   motor.py                BLDC 馬達與 ESC 平均模型
   prop.py, bemt.py        槳係數；葉素動量理論
+  rotor_ff.py             槳在斜向氣流中：前飛葉素理論、渦環狀態、停轉與風車狀態
+  wind.py                 對數風剖面、Dryden 紊流、地面效應
+  tunnel.py, tunnel_fit.py   虛擬風洞；天平數據辨識
   powertrain.py           電池→ESC→馬達→槳 的穩態工作點
   design.py               讀取規格、組裝檔、零件檔
   performance.py          懸停、全油門、續航、設計指標
@@ -97,6 +125,7 @@ src/fpvsim/
   tuning.py               調參流程
   flight_report.py, tuning_report.py
   compare.py, compare_report.py   設計迭代：版本比較
+  battery_report.py, battery_sweep_report.py, mission_report.py, tunnel_report.py
 data/
   specs/                  需求規格
   builds/                 組裝檔（零件與擺放位置）
@@ -108,6 +137,9 @@ docs/
   data-format.md          資料檔格式
   flight-sim.md           飛行模擬、飛控與調參
   iteration.md            設計迭代與版本比較
+  battery.md              電池：量測、辨識、設計點、選型、任務續航
+  tunnel.md               虛擬風洞與天平數據辨識
+  physics-roadmap.md      物理模擬規劃與狀態
 tests/                    驗證測試
 reports/                  產生的報告範例
 ```
