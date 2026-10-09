@@ -14,3 +14,7 @@ Implemented reproducibility tooling: the [offline replay verifier](offline-repla
 Implemented characterization: the [k2 cooling screen](stanford-k2-cooling-findings.md)
 fits only an effective skin decay on an early rest window, checks later windows,
 and separates improved observable prediction from unidentified physical parameters.
+
+The [fixed-rate k1 transfer check](stanford-cooling-transfer-findings.md) preserves
+a negative result: the k2 cooling improvement does not generalize across all
+predeclared k1 windows, so no universal thermal-prior replacement is adopted.
