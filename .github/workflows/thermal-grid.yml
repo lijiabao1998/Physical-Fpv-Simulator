@@ -41,8 +41,15 @@ jobs:
       - name: Verify calculation fingerprints before reusing evidence
         id: saved
         run: python scripts/grid_evidence_cache.py --out results/grid120 --github-output "$GITHUB_OUTPUT"
+      - name: Fail closed when changed calculations need a separately reviewed solve
+        if: steps.saved.outputs.reuse != 'true' && github.event_name != 'workflow_dispatch'
+        run: |
+          echo 'Scientific validation UNVERIFIED: calculation fingerprints changed.'
+          echo 'Historical evidence remains tied to its original commit. No new solve was launched.'
+          echo 'A separately reviewed bounded protocol must be explicitly dispatched.'
+          exit 1
       - name: Run one unchanged-state grid120 case with 20-minute budget
-        if: steps.saved.outputs.reuse != 'true'
+        if: steps.saved.outputs.reuse != 'true' && github.event_name == 'workflow_dispatch'
         run: python scripts/verify_thermal_grid.py --mesh 120 --timeout 1200 --out results/grid120
       - name: Check representative numerical targets
         run: |

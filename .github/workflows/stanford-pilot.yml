@@ -57,11 +57,18 @@ jobs:
       - name: Verify calculation fingerprints before reusing the recorded attempt
         id: saved
         run: python scripts/stanford_evidence_cache.py --github-output "$GITHUB_OUTPUT"
+      - name: Fail closed when changed calculations need a separately reviewed solve
+        if: steps.saved.outputs.reuse != 'true' && github.event_name != 'workflow_dispatch'
+        run: |
+          echo 'Scientific validation UNVERIFIED: calculation fingerprints changed.'
+          echo 'Historical evidence remains tied to its original commit. No new solve was launched.'
+          echo 'A separately reviewed bounded protocol must be explicitly dispatched.'
+          exit 1
       - name: Acquire the checksum-pinned source pilot
-        if: steps.saved.outputs.reuse != 'true'
+        if: steps.saved.outputs.reuse != 'true' && github.event_name == 'workflow_dispatch'
         run: python scripts/inspect_stanford_pilot.py --fetch
       - name: Complete only mesh120 within twenty minutes and reuse the authenticated mesh80 result
-        if: steps.saved.outputs.reuse != 'true'
+        if: steps.saved.outputs.reuse != 'true' && github.event_name == 'workflow_dispatch'
         run: python scripts/run_stanford_pilot.py --timeout 1200
       - name: Keep incomplete reused execution distinct from scientific disagreement
         if: steps.saved.outputs.reuse == 'true'

@@ -51,3 +51,25 @@ def test_original_attempt_cannot_be_promoted(tmp_path):
     path.write_text(json.dumps(data))
     with pytest.raises(ValueError, match="provenance"):
         verifier().verify(tmp_path)
+
+
+def test_historical_array_scope_does_not_certify_changed_current_implementation():
+    result = verifier().verify()
+    assert (
+        result["verification_scope"]
+        == "authenticated historical arrays and original source commit only"
+    )
+    assert result["current_calculation_compatible"] is False
+    assert result["current_source_mismatches"] == ["src/physical_fpv/current_profile.py"]
+    assert result["source_commit_sha"] == verifier().SOURCE_COMMIT
+
+
+def test_historical_array_analysis_dependencies_still_fail_closed():
+    recorded = {"src/physical_fpv/current_profile.py": "old", "src/physical_fpv/core.py": "same"}
+    current = {**recorded, "src/physical_fpv/current_profile.py": "new"}
+    assert verifier().historical_dependency_check(recorded, current) == [
+        "src/physical_fpv/current_profile.py"
+    ]
+    current["src/physical_fpv/core.py"] = "tampered"
+    with pytest.raises(ValueError, match="dependencies changed"):
+        verifier().historical_dependency_check(recorded, current)

@@ -120,8 +120,20 @@ class CurrentProfile:
     def value_at(self, time_s: ArrayLike) -> float | np.ndarray:
         """Evaluate linear current in A; array queries preserve their shape."""
         index, _, fraction = self._segment(time_s)
+        times = self.time_s
+        query = _real_array(time_s, "Query time_s")
+        # Compute each endpoint distance directly: 1-fraction loses relative
+        # precision just before a knot when the left current is much larger.
+        left_weight = (times[index + 1] - query) / (times[index + 1] - times[index])
         currents = self.current_a
-        result = (1 - fraction) * currents[index] + fraction * currents[index + 1]
+        left, right = currents[index], currents[index + 1]
+        near_left = fraction <= 0.5
+        # Anchor at the nearest endpoint. This avoids cancellation in a tiny
+        # endpoint weight and overflow from two rounded weights summing above 1.
+        base = np.where(near_left, left, right)
+        distance = np.where(near_left, fraction, left_weight)
+        delta = np.where(near_left, right - left, left - right)
+        result = base + distance * delta
         return float(result) if result.ndim == 0 else result
 
     def charge_integral_ah(self, time_s: ArrayLike) -> float | np.ndarray:

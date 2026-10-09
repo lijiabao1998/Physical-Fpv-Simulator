@@ -42,6 +42,11 @@ Lumped thermal simulation is explicitly **unvalidated**: several built-in Chen20
 
 ## Current results
 
+The [current-profile arithmetic correction](docs/current-profile-arithmetic.md)
+fixes near-knot precision and prevents automatic scientific reruns on PR cache
+misses. Historical results below remain tied to their original implementations;
+scientific validation of changed calculation code is explicitly UNVERIFIED.
+
 The explicitly new [Stanford k2 recovery](docs/stanford-k2-recovery-findings.md)
 completed both meshes within 911.043 seconds. Its 80→120 spatial check passes,
 but grid120 voltage RMSE is **55.003054 mV versus the unchanged 50-mV target: FAIL**.

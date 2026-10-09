@@ -12,6 +12,54 @@ RUN_ID = 37871885149
 SOURCE_COMMIT = "50c73ba21a6327c50e6d6c7ceec80f0e5c2dca84"
 
 
+def historical_dependency_check(recorded, current):
+    """Only the unused value-at evaluator may differ in this historical audit."""
+    changed = sorted(k for k in set(recorded) | set(current) if recorded.get(k) != current.get(k))
+    if set(changed) - {"src/physical_fpv/current_profile.py"}:
+        raise ValueError("Historical array-verification dependencies changed")
+    return changed
+
+
+def historical_spatial_comparison(runner, out, recorded):
+    """Recompute arrays under pinned analysis dependencies, never certify current forcing."""
+    import numpy as np
+
+    from physical_fpv.thermal_benchmark import thermal_numerics
+
+    inputs = json.loads((out / "input.json").read_text())
+    changed = historical_dependency_check(inputs["source_sha256"], runner.source_digests())
+    coarse, fine = (runner.load_snapshot(out, mesh) for mesh in (80, 120))
+    if (
+        not coarse.parameter_fingerprint
+        == fine.parameter_fingerprint
+        == inputs["parameter_current_fingerprint"]
+    ):
+        raise ValueError("Historical meshes differ in recorded parameter/forcing identity")
+    numerical = thermal_numerics(coarse, fine)
+    stop = min(coarse.time_s[-1], fine.time_s[-1])
+    times = np.unique(
+        np.r_[coarse.time_s[coarse.time_s <= stop], fine.time_s[fine.time_s <= stop], stop]
+    )
+    dv = np.interp(times, coarse.time_s, coarse.voltage_v) - np.interp(
+        times, fine.time_s, fine.voltage_v
+    )
+    dt = np.interp(times, coarse.time_s, coarse.temperature_k) - np.interp(
+        times, fine.time_s, fine.temperature_k
+    )
+    numerical.update(
+        {
+            "shared_time_interval_s": [float(times[0]), float(stop)],
+            "voltage_peak_difference_time_s": float(times[np.argmax(abs(dv))]),
+            "temperature_peak_difference_time_s": float(times[np.argmax(abs(dt))]),
+            "coarse_cutoff_time_s": float(coarse.time_s[-1]),
+            "fine_cutoff_time_s": float(fine.time_s[-1]),
+        }
+    )
+    if numerical != recorded["spatial_numerical_check"]:
+        raise ValueError("Saved-array spatial comparison changed")
+    return changed
+
+
 def verify(root=Path(".")):
     archive = root / "docs/benchmarks/stanford-k2-recovery-evidence.zip"
     evidence = json.loads((root / "docs/benchmarks/stanford-k2-recovery-summary.json").read_text())
@@ -60,9 +108,8 @@ def verify(root=Path(".")):
             or external["run_id"] != str(RUN_ID)
         ):
             raise ValueError("Recovery terminal receipts changed")
-        recomputed = runner.summarize(out)
-        if recomputed != {k: v for k, v in recorded.items() if k != "execution_budget_passed"}:
-            raise ValueError("Saved-array spatial comparison or scientific flags changed")
+        changed = historical_spatial_comparison(runner, out, recorded)
+        recomputed = recorded  # Authenticated historical report, not a new-code result.
         if (
             recomputed["source_window_empirical_qualification_passed"] is not False
             or recomputed["numerically_qualified_conditional_prediction_passed"] is not False
@@ -72,6 +119,10 @@ def verify(root=Path(".")):
             raise ValueError("Known empirical failure or numerical qualification was erased")
     return {
         "verified": True,
+        "verification_scope": "authenticated historical arrays and original source commit only",
+        "current_calculation_compatible": not changed,
+        "current_source_mismatches": changed,
+        "source_commit_sha": SOURCE_COMMIT,
         "new_simulation_run": False,
         "source_ci_run_id": RUN_ID,
         "numerical_pass": True,
