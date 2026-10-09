@@ -18,6 +18,7 @@ from pybamm.models.submodels.particle.base_particle import BaseParticle
 from pybamm.models.submodels.particle.total_particle_concentration import TotalConcentration
 
 from physical_fpv.core import SimulationResult, parameter_fingerprint, simulate
+from physical_fpv.current_profile import CurrentProfile
 
 ACCOUNTING_TOLERANCE = 1e-6
 # Exact split-by-electrode names and signs in the installed plot_voltage_components.
@@ -84,6 +85,8 @@ def export_polarization(
     result: SimulationResult,
     solution,
     parameters: pybamm.ParameterValues,
+    *,
+    current_profile: CurrentProfile | None = None,
 ) -> dict:
     """Export native-time CSV observables and a JSON summary with accounting gates.
 
@@ -101,7 +104,36 @@ def export_polarization(
         or not np.array_equal(time, solution.t)
     ):
         raise ValueError("Result and solution must share finite, increasing native output times")
-    if parameter_fingerprint(parameters) != result.parameter_fingerprint:
+    expected_fingerprint = parameter_fingerprint(parameters)
+    profile_identity = None
+    if current_profile is not None:
+        expected_fingerprint = hashlib.sha256(
+            (
+                expected_fingerprint
+                + ":piecewise-linear-current:"
+                + current_profile.fingerprint_sha256
+            ).encode()
+        ).hexdigest()
+        if (result.current_protocol or {}).get("fingerprint_sha256") != (
+            current_profile.fingerprint_sha256
+        ):
+            raise ValueError("Result current-profile identity does not match diagnostic input")
+        actual_current = np.asarray(solution["Current [A]"].entries, dtype=float).reshape(-1)
+        expected_current = np.asarray(current_profile.value_at(time))
+        if (
+            actual_current.shape != time.shape
+            or not np.isfinite(actual_current).all()
+            or np.max(np.abs(actual_current - expected_current)) > 1e-9
+        ):
+            raise ValueError("Solved current does not reproduce the declared waveform")
+        profile_identity = {
+            "fingerprint_sha256": current_profile.fingerprint_sha256,
+            "actual_solution_current_max_difference_a": float(
+                np.max(np.abs(actual_current - expected_current))
+            ),
+            "scalar_parameter_current_is_envelope_metadata_only": True,
+        }
+    if expected_fingerprint != result.parameter_fingerprint:
         raise ValueError("Parameter fingerprint does not match the supplied result")
     options = solution.all_models[0].options
     required = {
@@ -338,6 +370,7 @@ def export_polarization(
         "provenance": {
             "pybamm_version": pybamm.__version__,
             "parameter_fingerprint": result.parameter_fingerprint,
+            "current_profile": profile_identity,
             "parameters": parameter_values,
             "model_options": dict(options),
             "functions": [
