@@ -289,9 +289,7 @@ def test_mesh_agreement_does_not_replace_cutoff_or_physical_audit():
         "full_numerical_qualification_passed"
     ]
     report["physical_audit"]["passed"] = False
-    assert not compare_meshes(arrays, arrays, report, report)[
-        "full_numerical_qualification_passed"
-    ]
+    assert not compare_meshes(arrays, arrays, report, report)["full_numerical_qualification_passed"]
 
 
 def test_mesh_capacity_denominator_excludes_unobserved_initial_charge():
