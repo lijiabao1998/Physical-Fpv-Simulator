@@ -11,3 +11,5 @@ dist/
 data/oregan/raw/
 data/rashid/raw/
 data/stanford/raw/
+
+.cache/fpv-raw-v1/

@@ -134,3 +134,12 @@ Ordinary Battery CI's repeated upstream HTTP 504 occurred before tests. The
 [raw-input persistence proposal](raw-input-cache-recovery-proposal.md) preserves
 all source pins, but only two of six exact payloads currently exist in verified
 archives; it does not claim an offline recovery or authorize a denied route.
+
+### Verified raw-input CI cache (2026-10-09)
+
+The [cache implementation](verified-raw-input-cache.md) preserves exact manifest
+identity, validates every restored byte before consumption, and permits the
+existing official acquisition only on a cache miss. Partial or corrupt caches
+fail closed. Source labels now identify the attempted input on retrieval errors.
+This is reliability engineering; cache population still requires a successful
+official acquisition and does not change any scientific acceptance gate.

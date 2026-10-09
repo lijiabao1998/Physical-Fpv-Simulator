@@ -1,6 +1,6 @@
 # Ordinary Battery CI: immutable-input persistence proposal
 
-Status: proposal; no cache or workflow change has been made. Remote1ec4cdc8's Battery run37961776296 failed before tests in both permitted attempts with HTTP504 during the Chen acquisition batch. The log does not establish which cell request failed. Preserve both failures as source-service failures; stop reruns of that job. Stanford and Thermal specialized CI succeeded.
+Historical proposal and initial cache audit. The subsequently reviewed implementation is documented in [verified raw-input cache](verified-raw-input-cache.md). This original audit does not imply that a complete cache seed now exists. Remote1ec4cdc8's Battery run37961776296 failed before tests in both permitted attempts with HTTP504 during the Chen acquisition batch. The log does not establish which cell request failed. Preserve both failures as source-service failures; stop reruns of that job. Stanford and Thermal specialized CI succeeded.
 
 ## Existing evidence audited
 
