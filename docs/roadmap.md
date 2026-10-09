@@ -62,3 +62,12 @@ uses the frozen low-rate onset descriptors to predict the 1C specimen contrast
 over 10–3333 s, with maximum discrepancy 8.252 mV. Large individual errors cancel;
 this is no single-cell model repair. Full low-rate capacity/voltage-shape
 compatibility is the next cached-data discriminant before assuming common SOC.
+
+### Full measured rate-shape characterization (2026-10-09)
+
+The [four-record characterization](stanford-full-rate-shape-findings.md) retains
+complete observed charge and cutoff evidence. Frozen onset offsets reduce the
+specimen contrast while similar 64.8–125.2 mV measured low/high-rate gaps remain.
+These are measured rate differences, not model errors or identified physics.
+A frozen model rate-response comparison is the next discriminant requiring its
+own bounded protocol; common-Ah state and thermal/history equivalence remain open.

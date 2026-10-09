@@ -1,0 +1,1757 @@
+{
+  "protocol": "docs/stanford-full-rate-shape-protocol.md",
+  "protocol_sha256": "f8488480dc3cfa8a4de53b7fd3e74a362c5307221e05be304fcf17b12692760c",
+  "source_sha256": {
+    "stanford-cross-rate-onset.json": "92bdf117f74347824d3bcfda6553f0b0b66afc914c3152ba7317924836f83382",
+    "stanford-full-rate-shape-source.json": "82f52dcb8e9808eebc1e31d31dbd4063cabe4f35403c6ae67d2993ffd79b42cd",
+    "stanford-k2-low-rate-source.json": "984b83c1f105493f14d5894441c7bcebee2474e2c3904313213e71633ac89eda",
+    "stanford-k1-low-rate-discharge.csv.gz": "ac0587df4bd755f7aeb834f848585228e566a89dd94a5e68512ed810e19e3eff",
+    "stanford-k2-low-rate-discharge.csv.gz": "5c5f0969e411d2be96bcdbb02cfcb397e2fd79d8ad92a26e5466f311d70ae5ef",
+    "stanford-k1-discharge-records.csv.gz": "9d5c84c83a116b2ed032ee638a57664c690866837c925a6fbf62c2e2acfb893c",
+    "stanford-k2-rest-records.csv.gz": "513ad1debdf3fcf7eb9d716a8b34651a39349f136d1a6b23e84ed609fa2c2d6f"
+  },
+  "analysis_source_sha256": {
+    "src/physical_fpv/full_rate_shape.py": "6c09515a62b3eecd1f4389b8fd3a8e196b0958472c06ff9d6ec542626c8adada",
+    "src/physical_fpv/contrast_persistence.py": "6cdb3663979bad35cb2afc57a2bb100fd37e9475d1e0a686cb1c31a2872fd01e",
+    "src/physical_fpv/onset_response.py": "6bd0377d1fd5ec44bde80e5d6f9d39c1804beca13ae78de08bb0f85c346d3cad",
+    "scripts/check_stanford_full_rate_shape.py": "e9dede71b429e0bd9361c732e2d66faf323de546e187cc9c8329bcddab67c4ec",
+    "scripts/check_stanford_k2_onset.py": "ba2bcc953b2ab5b0dbba18e4c6e5918e5f17d80f22358480671298e8ba1a6676"
+  },
+  "comparison": {
+    "record_summaries": {
+      "k1_005c": {
+        "rows": 70000,
+        "recorded_step_time_interval_s": [
+          1.001,
+          69999.7917
+        ],
+        "observed_duration_s": 69998.7907,
+        "observed_charge_ah": 4.861208063823131,
+        "observed_charge_over_nominal_4_85ah": 1.0023109409944602,
+        "missing_initial_charge_known": false,
+        "omitted_command_interval_s": [
+          0.0,
+          1.001
+        ],
+        "current_a": {
+          "minimum": 0.24999845027923584,
+          "maximum": 0.25004470348358154,
+          "time_weighted_mean": 0.2500093052288013
+        },
+        "voltage_v": {
+          "first": 4.170588493347168,
+          "last": 2.499969244003296,
+          "minimum": 2.499969244003296,
+          "maximum": 4.170588493347168
+        },
+        "skin_temperature_k": {
+          "first": 298.2076477050781,
+          "last": 298.68235244750974,
+          "minimum": 298.12759056091306,
+          "maximum": 300.72188606262205
+        },
+        "last_voltage_minus_nominal_cutoff_v": -3.075599670410156e-05,
+        "exact_cutoff_crossing_verified": false,
+        "state_of_health_identified": false
+      },
+      "k1_1c": {
+        "rows": 3391,
+        "recorded_step_time_interval_s": [
+          1.0006,
+          3390.3968
+        ],
+        "observed_duration_s": 3389.3962,
+        "observed_charge_ah": 4.707800975704518,
+        "observed_charge_over_nominal_4_85ah": 0.9706806135473234,
+        "missing_initial_charge_known": false,
+        "omitted_command_interval_s": [
+          0.0,
+          1.0006
+        ],
+        "current_a": {
+          "minimum": 5.000240325927734,
+          "maximum": 5.000385761260986,
+          "time_weighted_mean": 5.000325282873757
+        },
+        "voltage_v": {
+          "first": 3.8799378871917725,
+          "last": 2.49998140335083,
+          "minimum": 2.49998140335083,
+          "maximum": 3.8799378871917725
+        },
+        "skin_temperature_k": {
+          "first": 298.33794059753416,
+          "last": 304.2884181976318,
+          "minimum": 298.33794059753416,
+          "maximum": 304.3132919311523
+        },
+        "last_voltage_minus_nominal_cutoff_v": -1.8596649169921875e-05,
+        "exact_cutoff_crossing_verified": false,
+        "state_of_health_identified": false
+      },
+      "k2_005c": {
+        "rows": 70370,
+        "recorded_step_time_interval_s": [
+          1.0,
+          70369.9178
+        ],
+        "observed_duration_s": 70368.9178,
+        "observed_charge_ah": 4.887153244363709,
+        "observed_charge_over_nominal_4_85ah": 1.007660462755404,
+        "missing_initial_charge_known": false,
+        "omitted_command_interval_s": [
+          0.0,
+          1.0
+        ],
+        "current_a": {
+          "minimum": 0.2500145435333252,
+          "maximum": 0.25002795457839966,
+          "time_weighted_mean": 0.25002163213187073
+        },
+        "voltage_v": {
+          "first": 4.178414344787598,
+          "last": 2.499997615814209,
+          "minimum": 2.499997615814209,
+          "maximum": 4.178414344787598
+        },
+        "skin_temperature_k": {
+          "first": 297.49524920338,
+          "last": 297.82748260498045,
+          "minimum": 297.3415893554687,
+          "maximum": 298.30849113464353
+        },
+        "last_voltage_minus_nominal_cutoff_v": -2.384185791015625e-06,
+        "exact_cutoff_crossing_verified": false,
+        "state_of_health_identified": false
+      },
+      "k2_1c": {
+        "rows": 3436,
+        "recorded_step_time_interval_s": [
+          1.0003,
+          3435.7713
+        ],
+        "observed_duration_s": 3434.7709999999997,
+        "observed_charge_ah": 4.770869297629623,
+        "observed_charge_over_nominal_4_85ah": 0.98368439126384,
+        "missing_initial_charge_known": false,
+        "omitted_command_interval_s": [
+          0.0,
+          1.0003
+        ],
+        "current_a": {
+          "minimum": 5.000307083129883,
+          "maximum": 5.000432014465332,
+          "time_weighted_mean": 5.000371049908914
+        },
+        "voltage_v": {
+          "first": 4.028350830078125,
+          "last": 2.4999923706054688,
+          "minimum": 2.4999923706054688,
+          "maximum": 4.028350830078125
+        },
+        "skin_temperature_k": {
+          "first": 297.54337921142576,
+          "last": 305.44563522338865,
+          "minimum": 297.53526916503904,
+          "maximum": 305.48290863037107
+        },
+        "last_voltage_minus_nominal_cutoff_v": -7.62939453125e-06,
+        "exact_cutoff_crossing_verified": false,
+        "state_of_health_identified": false
+      }
+    },
+    "observed_charge_contrasts_ah": {
+      "specimen_k1_minus_k2": {
+        "005c": -0.02594518054057815,
+        "1c": -0.06306832192510559
+      },
+      "within_specimen_low_minus_high": {
+        "k1": 0.15340708811861337,
+        "k2": 0.11628394673408593
+      },
+      "rate_interaction": 0.037123141384527436,
+      "identity_closure": 0.0,
+      "unavailable_reasons": {}
+    },
+    "frozen_descriptors_ohm": {
+      "k1": 0.06173506385522811,
+      "k2": 0.032283456569020146
+    },
+    "conditional_charge_points": [
+      {
+        "conditional_charge_ah": 0.5,
+        "records": {
+          "k1_005c": {
+            "time_s": 7199.883233171881,
+            "current_a": 0.25004035234451294,
+            "voltage_v": 4.0633697772343,
+            "skin_temperature_k": 298.7601552254644,
+            "descriptive_w_v": 4.078806034352672
+          },
+          "k1_1c": {
+            "time_s": 360.9779007778157,
+            "current_a": 5.000333884127375,
+            "voltage_v": 3.7053184006226374,
+            "skin_temperature_k": 300.1140827178955,
+            "descriptive_w_v": 4.014014332256702
+          },
+          "k2_005c": {
+            "time_s": 7200.373661383002,
+            "current_a": 0.250022475793108,
+            "voltage_v": 4.07083563975481,
+            "skin_temperature_k": 297.8940382204243,
+            "descriptive_w_v": 4.078907229493355
+          },
+          "k2_1c": {
+            "time_s": 360.973333951915,
+            "current_a": 5.000337916176393,
+            "voltage_v": 3.852253488103131,
+            "skin_temperature_k": 299.5268280905501,
+            "descriptive_w_v": 4.0136816800504365
+          }
+        },
+        "unavailable_reasons": {},
+        "all_four_supported": true,
+        "contrasts": {
+          "voltage_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.007465862520509958,
+              "1c": -0.14693508748049355
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.3580513766116624,
+              "k2": 0.21858215165167882
+            },
+            "rate_interaction": 0.1394692249599836,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "descriptive_w_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.00010119514068307467,
+              "1c": 0.00033265220626521597
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.0647917020959703,
+              "k2": 0.06522554944291858
+            },
+            "rate_interaction": -0.00043384734694829064,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "skin_temperature_k": {
+            "specimen_k1_minus_k2": {
+              "005c": 0.8661170050401097,
+              "1c": 0.5872546273453736
+            },
+            "within_specimen_low_minus_high": {
+              "k1": -1.353927492431069,
+              "k2": -1.632789870125805
+            },
+            "rate_interaction": 0.2788623776947361,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          }
+        }
+      },
+      {
+        "conditional_charge_ah": 1.0,
+        "records": {
+          "k1_005c": {
+            "time_s": 14399.377790646884,
+            "current_a": 0.2500044417376376,
+            "voltage_v": 3.9807908105290384,
+            "skin_temperature_k": 298.421667366174,
+            "descriptive_w_v": 3.9962248507038023
+          },
+          "k1_1c": {
+            "time_s": 720.9545150840455,
+            "current_a": 5.000316784085018,
+            "voltage_v": 3.6100585961028924,
+            "skin_temperature_k": 301.07400120661265,
+            "descriptive_w_v": 3.9187534720647497
+          },
+          "k2_005c": {
+            "time_s": 14399.75912604915,
+            "current_a": 0.2500196857373922,
+            "voltage_v": 3.988406697759084,
+            "skin_temperature_k": 297.5259822845459,
+            "descriptive_w_v": 3.9964781974249872
+          },
+          "k2_1c": {
+            "time_s": 720.9473990817331,
+            "current_a": 5.000361631056497,
+            "voltage_v": 3.755363920333988,
+            "skin_temperature_k": 300.70544090270994,
+            "descriptive_w_v": 3.9167928778795953
+          }
+        },
+        "unavailable_reasons": {},
+        "all_four_supported": true,
+        "contrasts": {
+          "voltage_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.007615887230045804,
+              "1c": -0.14530532423109577
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.370732214426146,
+              "k2": 0.23304277742509605
+            },
+            "rate_interaction": 0.13768943700104996,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "descriptive_w_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.00025334672118493273,
+              "1c": 0.001960594185154374
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.07747137863905262,
+              "k2": 0.07968531954539193
+            },
+            "rate_interaction": -0.0022139409063393067,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "skin_temperature_k": {
+            "specimen_k1_minus_k2": {
+              "005c": 0.8956850816281303,
+              "1c": 0.36856030390271144
+            },
+            "within_specimen_low_minus_high": {
+              "k1": -2.6523338404386436,
+              "k2": -3.1794586181640625
+            },
+            "rate_interaction": 0.5271247777254189,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          }
+        }
+      },
+      {
+        "conditional_charge_ah": 1.5,
+        "records": {
+          "k1_005c": {
+            "time_s": 21599.263529955082,
+            "current_a": 0.2500050044419261,
+            "voltage_v": 3.8799840470964835,
+            "skin_temperature_k": 298.31291930204617,
+            "descriptive_w_v": 3.8954181220098323
+          },
+          "k1_1c": {
+            "time_s": 1080.9314726398613,
+            "current_a": 5.000311559342687,
+            "voltage_v": 3.4952901955563336,
+            "skin_temperature_k": 301.5841354370117,
+            "descriptive_w_v": 3.80398474896839
+          },
+          "k2_005c": {
+            "time_s": 21599.162130890978,
+            "current_a": 0.250019233544642,
+            "voltage_v": 3.8877648116154995,
+            "skin_temperature_k": 297.5092589670856,
+            "descriptive_w_v": 3.8958362966830578
+          },
+          "k2_1c": {
+            "time_s": 1080.9218949452684,
+            "current_a": 5.000370379017255,
+            "voltage_v": 3.6395836445096577,
+            "skin_temperature_k": 301.275467300415,
+            "descriptive_w_v": 3.8010128844696762
+          }
+        },
+        "unavailable_reasons": {},
+        "all_four_supported": true,
+        "contrasts": {
+          "voltage_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.007780764519015992,
+              "1c": -0.14429344895332408
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.3846938515401499,
+              "k2": 0.24818116710584182
+            },
+            "rate_interaction": 0.13651268443430808,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "descriptive_w_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.00041817467322546875,
+              "1c": 0.002971864498713561
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.0914333730414425,
+              "k2": 0.09482341221338153
+            },
+            "rate_interaction": -0.00339003917193903,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "skin_temperature_k": {
+            "specimen_k1_minus_k2": {
+              "005c": 0.8036603349605684,
+              "1c": 0.3086681365966797
+            },
+            "within_specimen_low_minus_high": {
+              "k1": -3.2712161349655275,
+              "k2": -3.7662083333294163
+            },
+            "rate_interaction": 0.49499219836388875,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          }
+        }
+      },
+      {
+        "conditional_charge_ah": 2.0,
+        "records": {
+          "k1_005c": {
+            "time_s": 28799.135910583173,
+            "current_a": 0.25000483127720946,
+            "voltage_v": 3.7704911879004164,
+            "skin_temperature_k": 298.6975138030434,
+            "descriptive_w_v": 3.7859252521234303
+          },
+          "k1_1c": {
+            "time_s": 1440.9078548547682,
+            "current_a": 5.000318915910713,
+            "voltage_v": 3.387306801810106,
+            "skin_temperature_k": 302.09001579284666,
+            "descriptive_w_v": 3.696001809380359
+          },
+          "k2_005c": {
+            "time_s": 28798.549753508432,
+            "current_a": 0.25001984680037526,
+            "voltage_v": 3.778413792137972,
+            "skin_temperature_k": 297.4663751810945,
+            "descriptive_w_v": 3.786485297003545
+          },
+          "k2_1c": {
+            "time_s": 1440.8953496583588,
+            "current_a": 5.000366711311297,
+            "voltage_v": 3.5313655951788765,
+            "skin_temperature_k": 301.87746020239956,
+            "descriptive_w_v": 3.692794716732669
+          }
+        },
+        "unavailable_reasons": {},
+        "all_four_supported": true,
+        "contrasts": {
+          "voltage_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.007922604237555753,
+              "1c": -0.14405879336877048
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.38318438609031036,
+              "k2": 0.24704819695909563
+            },
+            "rate_interaction": 0.13613618913121472,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "descriptive_w_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.0005600448801148517,
+              "1c": 0.0032070926476901462
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.08992344274307129,
+              "k2": 0.09369058027087629
+            },
+            "rate_interaction": -0.003767137527804998,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "skin_temperature_k": {
+            "specimen_k1_minus_k2": {
+              "005c": 1.231138621948901,
+              "1c": 0.2125555904470957
+            },
+            "within_specimen_low_minus_high": {
+              "k1": -3.392501989803236,
+              "k2": -4.411085021305041
+            },
+            "rate_interaction": 1.0185830315018052,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          }
+        }
+      },
+      {
+        "conditional_charge_ah": 2.5,
+        "records": {
+          "k1_005c": {
+            "time_s": 35999.00536609775,
+            "current_a": 0.25000613691086543,
+            "voltage_v": 3.6717912388703544,
+            "skin_temperature_k": 298.3589411730019,
+            "descriptive_w_v": 3.6872253836967457
+          },
+          "k1_1c": {
+            "time_s": 1800.8846172276883,
+            "current_a": 5.0002913583505295,
+            "voltage_v": 3.2785425987647114,
+            "skin_temperature_k": 302.32337616572784,
+            "descriptive_w_v": 3.5872359050672267
+          },
+          "k2_005c": {
+            "time_s": 35997.92074272998,
+            "current_a": 0.2500217796543108,
+            "voltage_v": 3.680007686256224,
+            "skin_temperature_k": 297.4759045200013,
+            "descriptive_w_v": 3.688079253521003
+          },
+          "k2_1c": {
+            "time_s": 1800.8692323150758,
+            "current_a": 5.000369196898448,
+            "voltage_v": 3.4212253503058307,
+            "skin_temperature_k": 302.3085959415128,
+            "descriptive_w_v": 3.582654552102968
+          }
+        },
+        "unavailable_reasons": {},
+        "all_four_supported": true,
+        "contrasts": {
+          "voltage_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.008216447385869685,
+              "1c": -0.1426827515411193
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.393248640105643,
+              "k2": 0.25878233595039335
+            },
+            "rate_interaction": 0.13446630415524963,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "descriptive_w_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.0008538698242572806,
+              "1c": 0.004581352964258656
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.09998947862951901,
+              "k2": 0.10542470141803495
+            },
+            "rate_interaction": -0.0054352227885159365,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "skin_temperature_k": {
+            "specimen_k1_minus_k2": {
+              "005c": 0.8830366530006017,
+              "1c": 0.014780224215030557
+            },
+            "within_specimen_low_minus_high": {
+              "k1": -3.9644349927259555,
+              "k2": -4.832691421511527
+            },
+            "rate_interaction": 0.8682564287855712,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          }
+        }
+      },
+      {
+        "conditional_charge_ah": 3.0,
+        "records": {
+          "k1_005c": {
+            "time_s": 43198.87102064875,
+            "current_a": 0.2500053412070312,
+            "voltage_v": 3.6018653237333926,
+            "skin_temperature_k": 298.2244578717515,
+            "descriptive_w_v": 3.6172994194369568
+          },
+          "k1_1c": {
+            "time_s": 2160.8616199223343,
+            "current_a": 5.000334543026433,
+            "voltage_v": 3.193365945586277,
+            "skin_temperature_k": 302.5762779003458,
+            "descriptive_w_v": 3.5020619178975165
+          },
+          "k2_005c": {
+            "time_s": 43197.27686926919,
+            "current_a": 0.25002193146432194,
+            "voltage_v": 3.6100681277728133,
+            "skin_temperature_k": 297.476237249435,
+            "descriptive_w_v": 3.6181396999385442
+          },
+          "k2_1c": {
+            "time_s": 2160.8420592732195,
+            "current_a": 5.000392763038666,
+            "voltage_v": 3.3345189765313474,
+            "skin_temperature_k": 302.583910369873,
+            "descriptive_w_v": 3.4959489391249488
+          }
+        },
+        "unavailable_reasons": {},
+        "all_four_supported": true,
+        "contrasts": {
+          "voltage_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.008202804039420641,
+              "1c": -0.1411530309450706
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.4084993781471158,
+              "k2": 0.27554915124146584
+            },
+            "rate_interaction": 0.13295022690564995,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "descriptive_w_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.0008402805015874648,
+              "1c": 0.006112978772567779
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.11523750153944023,
+              "k2": 0.12219076081359548
+            },
+            "rate_interaction": -0.0069532592741552435,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "skin_temperature_k": {
+            "specimen_k1_minus_k2": {
+              "005c": 0.7482206223165235,
+              "1c": -0.007632469527209196
+            },
+            "within_specimen_low_minus_high": {
+              "k1": -4.351820028594318,
+              "k2": -5.107673120438051
+            },
+            "rate_interaction": 0.7558530918437327,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          }
+        }
+      },
+      {
+        "conditional_charge_ah": 3.5,
+        "records": {
+          "k1_005c": {
+            "time_s": 50398.73161258952,
+            "current_a": 0.2500045092063034,
+            "voltage_v": 3.518242306057202,
+            "skin_temperature_k": 298.49885608864247,
+            "descriptive_w_v": 3.533676350397148
+          },
+          "k1_1c": {
+            "time_s": 2520.837780277751,
+            "current_a": 5.000331891245311,
+            "voltage_v": 3.113932395884492,
+            "skin_temperature_k": 302.88372690619894,
+            "descriptive_w_v": 3.4226282044878547
+          },
+          "k2_005c": {
+            "time_s": 50396.64161715133,
+            "current_a": 0.250023212737517,
+            "voltage_v": 3.5280071335590204,
+            "skin_temperature_k": 297.57047333305036,
+            "descriptive_w_v": 3.5360787470886788
+          },
+          "k2_1c": {
+            "time_s": 2520.8150533074404,
+            "current_a": 5.000412411259581,
+            "voltage_v": 3.253951291162801,
+            "skin_temperature_k": 303.11238899230955,
+            "descriptive_w_v": 3.4153818880688886
+          }
+        },
+        "unavailable_reasons": {},
+        "all_four_supported": true,
+        "contrasts": {
+          "voltage_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.009764827501818285,
+              "1c": -0.1400188952783088
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.4043099101727101,
+              "k2": 0.2740558423962196
+            },
+            "rate_interaction": 0.1302540677764905,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "descriptive_w_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.0024023966915307504,
+              "1c": 0.007246316418966003
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.11104814590929335,
+              "k2": 0.1206968590197901
+            },
+            "rate_interaction": -0.009648713110496754,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "skin_temperature_k": {
+            "specimen_k1_minus_k2": {
+              "005c": 0.9283827555921107,
+              "1c": -0.228662086110603
+            },
+            "within_specimen_low_minus_high": {
+              "k1": -4.384870817556475,
+              "k2": -5.541915659259189
+            },
+            "rate_interaction": 1.1570448417027137,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          }
+        }
+      },
+      {
+        "conditional_charge_ah": 4.0,
+        "records": {
+          "k1_005c": {
+            "time_s": 57598.605292875014,
+            "current_a": 0.25000610183564215,
+            "voltage_v": 3.414387668390651,
+            "skin_temperature_k": 298.35503044128416,
+            "descriptive_w_v": 3.4298218110516707
+          },
+          "k1_1c": {
+            "time_s": 2880.8136488261907,
+            "current_a": 5.000322305993834,
+            "voltage_v": 3.0060505279549328,
+            "skin_temperature_k": 303.2853874206543,
+            "descriptive_w_v": 3.3147457448121838
+          },
+          "k2_005c": {
+            "time_s": 57596.01104596428,
+            "current_a": 0.25002082319884944,
+            "voltage_v": 3.424701039816629,
+            "skin_temperature_k": 297.5493045723069,
+            "descriptive_w_v": 3.43277257620372
+          },
+          "k2_1c": {
+            "time_s": 2880.7883348665173,
+            "current_a": 5.000381743614487,
+            "voltage_v": 3.146138897457048,
+            "skin_temperature_k": 303.6580673541863,
+            "descriptive_w_v": 3.3075685043055474
+          }
+        },
+        "unavailable_reasons": {},
+        "all_four_supported": true,
+        "contrasts": {
+          "voltage_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.01031337142597799,
+              "1c": -0.14008836950211512
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.4083371404357181,
+              "k2": 0.278562142359581
+            },
+            "rate_interaction": 0.12977499807613713,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "descriptive_w_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.002950765152049062,
+              "1c": 0.007177240506636373
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.11507606623948696,
+              "k2": 0.1252040718981724
+            },
+            "rate_interaction": -0.010128005658685435,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "skin_temperature_k": {
+            "specimen_k1_minus_k2": {
+              "005c": 0.8057258689772766,
+              "1c": -0.37267993353202655
+            },
+            "within_specimen_low_minus_high": {
+              "k1": -4.930356979370117,
+              "k2": -6.10876278187942
+            },
+            "rate_interaction": 1.1784058025093032,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          }
+        }
+      },
+      {
+        "conditional_charge_ah": 4.5,
+        "records": {
+          "k1_005c": {
+            "time_s": 64798.49844208075,
+            "current_a": 0.2500072076628441,
+            "voltage_v": 3.1154798775617034,
+            "skin_temperature_k": 298.53949584960935,
+            "descriptive_w_v": 3.1309140884910365
+          },
+          "k1_1c": {
+            "time_s": 3240.790212418773,
+            "current_a": 5.000333705448226,
+            "voltage_v": 2.7385473228437647,
+            "skin_temperature_k": 303.81252517700193,
+            "descriptive_w_v": 3.04724324344706
+          },
+          "k2_005c": {
+            "time_s": 64795.390131135224,
+            "current_a": 0.2500210108327604,
+            "voltage_v": 3.137230399398385,
+            "skin_temperature_k": 297.6582893371582,
+            "descriptive_w_v": 3.145301941842947
+          },
+          "k2_1c": {
+            "time_s": 3240.7604027430957,
+            "current_a": 5.000379013224099,
+            "voltage_v": 2.8880636056237683,
+            "skin_temperature_k": 304.47290741683923,
+            "descriptive_w_v": 3.0494931243258283
+          }
+        },
+        "unavailable_reasons": {},
+        "all_four_supported": true,
+        "contrasts": {
+          "voltage_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.021750521836681802,
+              "1c": -0.14951628278000362
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.37693255471793874,
+              "k2": 0.24916679377461692
+            },
+            "rate_interaction": 0.12776576094332182,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "descriptive_w_v": {
+            "specimen_k1_minus_k2": {
+              "005c": -0.014387853351910618,
+              "1c": -0.0022498808787680957
+            },
+            "within_specimen_low_minus_high": {
+              "k1": 0.08367084504397626,
+              "k2": 0.09580881751711878
+            },
+            "rate_interaction": -0.012137972473142522,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          },
+          "skin_temperature_k": {
+            "specimen_k1_minus_k2": {
+              "005c": 0.8812065124511719,
+              "1c": -0.660382239837304
+            },
+            "within_specimen_low_minus_high": {
+              "k1": -5.273029327392578,
+              "k2": -6.814618079681054
+            },
+            "rate_interaction": 1.541588752288476,
+            "identity_closure": 0.0,
+            "unavailable_reasons": {}
+          }
+        }
+      }
+    ]
+  },
+  "record_provenance": {
+    "k1_005c": {
+      "first_excel_row": 18432,
+      "last_excel_row": 88431,
+      "first_date_naive": "2019-08-31T01:24:42.158000",
+      "last_date_naive": "2019-08-31T20:51:20.949000",
+      "per_row_test_time_present": false,
+      "test_clock_qualification": "Original clock audit in pinned source receipt; no reconstructed test times"
+    },
+    "k1_1c": {
+      "timing": {
+        "phase_clock_audits": {
+          "rest": {
+            "rows_checked": 3601,
+            "max_relative_date_test_discrepancy_s": 0.0010000000002037268,
+            "max_command_origin_deviation_s": 3.637978807091713e-12,
+            "strictly_increasing_dates_test_and_step_clocks": true
+          },
+          "discharge": {
+            "rows_checked": 3391,
+            "max_relative_date_test_discrepancy_s": 0.0008999999990919605,
+            "max_command_origin_deviation_s": 3.637978807091713e-12,
+            "strictly_increasing_dates_test_and_step_clocks": true
+          }
+        },
+        "last_rest": {
+          "excel_row": 21678,
+          "date_naive": "2019-09-03T01:12:07.857000",
+          "test_time_s": 21674.70662,
+          "step_time_s": 3600.0009
+        },
+        "first_discharge": {
+          "excel_row": 21679,
+          "date_naive": "2019-09-03T01:12:08.903000",
+          "test_time_s": 21675.7522,
+          "step_time_s": 1.0006
+        },
+        "inferred_discharge_command_origin_test_s": 21674.7516,
+        "recorded_sample_bracket_test_s": [
+          21674.70662,
+          21675.7522
+        ],
+        "recorded_sample_bracket_width_s": 1.0455799999981537,
+        "command_origin_after_last_rest_s": 0.04497999999875901,
+        "physical_switching_time_verified": false,
+        "instrument_latency_known": false
+      },
+      "first_excel_row": 21679,
+      "last_excel_row": 25069,
+      "first_date_naive": "2019-09-03T01:12:08.903000",
+      "last_date_naive": "2019-09-03T02:08:38.300000",
+      "per_row_test_time_present": true
+    },
+    "k2_005c": {
+      "first_excel_row": 17446,
+      "last_excel_row": 87815,
+      "first_date_naive": "2019-08-31T01:08:23.747000",
+      "last_date_naive": "2019-08-31T20:41:12.665000",
+      "per_row_test_time_present": false,
+      "test_clock_qualification": "Original clock audit in pinned source receipt; no reconstructed test times"
+    },
+    "k2_1c": {
+      "timing": {
+        "phase_clock_audits": {
+          "rest": {
+            "rows_checked": 3601,
+            "max_relative_date_test_discrepancy_s": 0.0007999999979801942,
+            "max_command_origin_deviation_s": 3.637978807091713e-12,
+            "strictly_increasing_dates_test_and_step_clocks": true
+          },
+          "discharge": {
+            "rows_checked": 3436,
+            "max_relative_date_test_discrepancy_s": 0.0010000000002037268,
+            "max_command_origin_deviation_s": 3.637978807091713e-12,
+            "strictly_increasing_dates_test_and_step_clocks": true
+          }
+        },
+        "last_rest": {
+          "excel_row": 20790,
+          "date_naive": "2019-09-03T00:57:26.288000",
+          "test_time_s": 20786.156096,
+          "step_time_s": 3600.0017
+        },
+        "first_discharge": {
+          "excel_row": 20791,
+          "date_naive": "2019-09-03T00:57:27.335000",
+          "test_time_s": 20787.202324,
+          "step_time_s": 1.0003
+        },
+        "inferred_discharge_command_origin_test_s": 20786.202024000002,
+        "recorded_sample_bracket_test_s": [
+          20786.156096,
+          20787.202324
+        ],
+        "recorded_sample_bracket_width_s": 1.046228000002884,
+        "command_origin_after_last_rest_s": 0.04592800000318675,
+        "physical_switching_time_verified": false,
+        "instrument_latency_known": false
+      },
+      "first_excel_row": 20791,
+      "last_excel_row": 24226,
+      "first_date_naive": "2019-09-03T00:57:27.335000",
+      "last_date_naive": "2019-09-03T01:54:42.106000",
+      "per_row_test_time_present": true
+    }
+  },
+  "low_rate_source_receipts": {
+    "k1": {
+      "dataset_doi": "10.17632/kxsbr4x3j2.2",
+      "license": "CC-BY-4.0",
+      "authors": [
+        "Edoardo Catenaro",
+        "Simona Onori"
+      ],
+      "source_inspection": {
+        "measurement_rows": 92031,
+        "canonical_six_step_sequence": true,
+        "contiguous_steps": [
+          {
+            "step": 1,
+            "name": "thermal rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              2,
+              3602
+            ],
+            "measurement_dates_naive_local": [
+              "2019-08-30T20:17:34.898000",
+              "2019-08-30T21:17:33.899000"
+            ],
+            "test_time_range_s": [
+              1.0008,
+              3600.0014
+            ],
+            "commanded_step_time_range_s": [
+              1.0006,
+              3600.0012
+            ],
+            "observed_duration_s": 3599.0006000000003,
+            "inferred_commanded_step_start_test_time_s": 0.0001999999999497959,
+            "clock_relation_max_deviation_s": 4.547473508864641e-13,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0009000000000014552,
+              "median": 1.0,
+              "max": 1.0013000000001284
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              3.5881526470184326,
+              3.588066816329956
+            ],
+            "surface_temperature_c": {
+              "initial": 25.372093200683594,
+              "final": 25.513689041137695,
+              "min": 24.89693832397461,
+              "max": 26.53962516784668
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 2,
+            "name": "CC charge",
+            "measurement_rows": 5499,
+            "excel_rows_inclusive": [
+              3603,
+              9101
+            ],
+            "measurement_dates_naive_local": [
+              "2019-08-30T21:17:34.945000",
+              "2019-08-30T22:49:12.594000"
+            ],
+            "test_time_range_s": [
+              3601.0479840000003,
+              9098.696484
+            ],
+            "commanded_step_time_range_s": [
+              1.0002,
+              5498.6487
+            ],
+            "observed_duration_s": 5497.648499999999,
+            "inferred_commanded_step_start_test_time_s": 3600.0477840000003,
+            "clock_relation_max_deviation_s": 9.094947017729282e-13,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.6484000000000378,
+              "median": 1.0,
+              "max": 1.0014000000001033
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 1.6251220703125,
+              "max": 1.6252307891845703,
+              "time_weighted_mean": 1.6251805234054024
+            },
+            "endpoint_voltage_v": [
+              3.6873717308044434,
+              4.199946880340576
+            ],
+            "surface_temperature_c": {
+              "initial": 25.513689041137695,
+              "final": 25.95430564880371,
+              "min": 25.513689041137695,
+              "max": 26.005788803100586
+            },
+            "signed_observed_charge_ah": 2.4818531296469235
+          },
+          {
+            "step": 3,
+            "name": "CV charge",
+            "measurement_rows": 5729,
+            "excel_rows_inclusive": [
+              9102,
+              14830
+            ],
+            "measurement_dates_naive_local": [
+              "2019-08-30T22:49:13.698000",
+              "2019-08-31T00:24:41.069000"
+            ],
+            "test_time_range_s": [
+              9099.801052,
+              14827.172052
+            ],
+            "commanded_step_time_range_s": [
+              1.0004,
+              5728.3714
+            ],
+            "observed_duration_s": 5727.370999999999,
+            "inferred_commanded_step_start_test_time_s": 9098.800652,
+            "clock_relation_max_deviation_s": 1.8189894035458565e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.37080000000059954,
+              "median": 1.0,
+              "max": 1.0015000000003056
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.04999830946326256,
+              "max": 1.6284699440002441,
+              "time_weighted_mean": 0.5513420329789729
+            },
+            "endpoint_voltage_v": [
+              4.2001495361328125,
+              4.200072288513184
+            ],
+            "surface_temperature_c": {
+              "initial": 25.95430564880371,
+              "final": 25.60284423828125,
+              "min": 25.147703170776367,
+              "max": 26.676610946655273
+            },
+            "signed_observed_charge_ah": 0.8771501029902257
+          },
+          {
+            "step": 4,
+            "name": "pre-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              14831,
+              18431
+            ],
+            "measurement_dates_naive_local": [
+              "2019-08-31T00:24:42.110000",
+              "2019-08-31T01:24:41.111000"
+            ],
+            "test_time_range_s": [
+              14828.211776,
+              18427.212976
+            ],
+            "commanded_step_time_range_s": [
+              1.0001,
+              3600.0013
+            ],
+            "observed_duration_s": 3599.001199999999,
+            "inferred_commanded_step_start_test_time_s": 14827.211675999999,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0010000000002037268,
+              "median": 1.0,
+              "max": 1.001299999999901
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              4.19692325592041,
+              4.1860246658325195
+            ],
+            "surface_temperature_c": {
+              "initial": 25.60284423828125,
+              "final": 25.057647705078125,
+              "min": 25.011669158935547,
+              "max": 25.680612564086914
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 5,
+            "name": "constant-current discharge",
+            "measurement_rows": 70000,
+            "excel_rows_inclusive": [
+              18432,
+              88431
+            ],
+            "measurement_dates_naive_local": [
+              "2019-08-31T01:24:42.158000",
+              "2019-08-31T20:51:20.949000"
+            ],
+            "test_time_range_s": [
+              18428.259280000002,
+              88427.04998
+            ],
+            "commanded_step_time_range_s": [
+              1.001,
+              69999.7917
+            ],
+            "observed_duration_s": 69998.7907,
+            "inferred_commanded_step_start_test_time_s": 18427.258280000002,
+            "clock_relation_max_deviation_s": 7.275957614183426e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.7912999999971362,
+              "median": 1.0,
+              "max": 1.0015000000130385
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": -0.25004470348358154,
+              "max": -0.24999845027923584,
+              "time_weighted_mean": -0.25000930522880127
+            },
+            "endpoint_voltage_v": [
+              4.170588493347168,
+              2.499969244003296
+            ],
+            "surface_temperature_c": {
+              "initial": 25.057647705078125,
+              "final": 25.532352447509766,
+              "min": 24.977590560913086,
+              "max": 27.57188606262207
+            },
+            "signed_observed_charge_ah": -4.861208063823132
+          },
+          {
+            "step": 6,
+            "name": "post-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              88432,
+              92032
+            ],
+            "measurement_dates_naive_local": [
+              "2019-08-31T20:51:22.086000",
+              "2019-08-31T21:51:21.088000"
+            ],
+            "test_time_range_s": [
+              88428.184128,
+              92027.18582799999
+            ],
+            "commanded_step_time_range_s": [
+              1.0001,
+              3600.0018
+            ],
+            "observed_duration_s": 3599.0016999999934,
+            "inferred_commanded_step_start_test_time_s": 88427.18402799999,
+            "clock_relation_max_deviation_s": 1.4551915228366852e-11,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0009999999892897904,
+              "median": 1.0,
+              "max": 1.0016000000032363
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              2.5225706100463867,
+              2.7731924057006836
+            ],
+            "surface_temperature_c": {
+              "initial": 25.532352447509766,
+              "final": 25.493806838989258,
+              "min": 25.11237335205078,
+              "max": 26.62708282470703
+            },
+            "signed_observed_charge_ah": 0.0
+          }
+        ],
+        "discharge": {
+          "unobserved_initial_interval_s": 1.001,
+          "recorded_current_a": -0.25000930522880127,
+          "observed_discharge_charge_ah": 4.861208063823132,
+          "protocol_inferred_initial_charge_if_constant_current_ah": 6.951647625945279e-05,
+          "initial_charge_note": "Conditional estimate, not a measured interval or rigorous bound; not used as a passing gate.",
+          "prior_high_rate_exposure": "Unresolved: this workbook does not establish order relative to other experiments."
+        },
+        "date_warning": "Measurement timestamps are naive local values; workbook creation and repository upload dates are different metadata.",
+        "source_clock_policy": "Preserve Step_Time(s); model comparison must start on the actually observed common interval.",
+        "model_runs": 0,
+        "independent_validation_established": false,
+        "source": {
+          "filename": "NMC_k1_0_05C_25degC.xlsx",
+          "bytes": 6096861,
+          "sha256": "e5870c6989c94995de10e053f04efcf96951790e3c26e51d4c537261ba847ec5",
+          "inflated_bytes": 34684956
+        },
+        "sheet": "Sheet1",
+        "columns": [
+          "Date_Time",
+          "Test_Time(s)",
+          "Step_Time(s)",
+          "Step_Index",
+          "Voltage(V)",
+          "Current(A)",
+          "Surface_Temp(degC)"
+        ],
+        "workbook_created": "2020-12-05 19:27:11",
+        "workbook_modified": "2020-12-08 12:32:23",
+        "dataset_doi": "10.17632/kxsbr4x3j2.2",
+        "dataset_url": "https://data.mendeley.com/datasets/kxsbr4x3j2/2",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license": "CC-BY-4.0",
+        "authors": [
+          "Edoardo Catenaro",
+          "Simona Onori"
+        ],
+        "openpyxl_version": "3.1.5",
+        "measurement_clock_audit": {
+          "backwards_date_intervals": 0,
+          "max_relative_date_test_clock_discrepancy_s": 0.005271999994874932,
+          "date_test_clock_jumps_above_1s": 0,
+          "first_backwards_date_excel_row_pairs": [],
+          "first_clock_jump_excel_row_pairs": [],
+          "timezone": "Unspecified in source; timestamps are not converted to UTC"
+        }
+      },
+      "discharge_rows": 70000,
+      "normalized_csv_sha256": "5f685e383ea652bb6f7aefed367086b221912dfbc006acb5610dc5a22aafd3e1",
+      "normalized_gzip_sha256": "ac0587df4bd755f7aeb834f848585228e566a89dd94a5e68512ed810e19e3eff",
+      "normalized_gzip_bytes": 1622279,
+      "normalizer_sha256": "04a71d0cb1b05d77bccd88e0e2a616ba83e173fff04b0fcab8c87fc9c586a898"
+    },
+    "k2": {
+      "source_inspection": {
+        "measurement_rows": 91415,
+        "canonical_six_step_sequence": true,
+        "contiguous_steps": [
+          {
+            "step": 1,
+            "name": "thermal rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              2,
+              3602
+            ],
+            "measurement_dates_naive_local": [
+              "2019-08-30T20:17:42.632000",
+              "2019-08-30T21:17:41.632000"
+            ],
+            "test_time_range_s": [
+              1.0004,
+              3600.0013
+            ],
+            "commanded_step_time_range_s": [
+              1.0,
+              3600.0009
+            ],
+            "observed_duration_s": 3599.0009,
+            "inferred_commanded_step_start_test_time_s": 0.0003999999998995918,
+            "clock_relation_max_deviation_s": 4.547473508864641e-13,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0009999999997489795,
+              "median": 1.0,
+              "max": 1.0013000000001284
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              3.5902462005615234,
+              3.5903096199035645
+            ],
+            "surface_temperature_c": {
+              "initial": 24.55451202392578,
+              "final": 24.338695526123047,
+              "min": 24.26143455505371,
+              "max": 24.7676944732666
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 2,
+            "name": "CC charge",
+            "measurement_rows": 6105,
+            "excel_rows_inclusive": [
+              3603,
+              9707
+            ],
+            "measurement_dates_naive_local": [
+              "2019-08-30T21:17:42.680000",
+              "2019-08-30T22:59:25.749000"
+            ],
+            "test_time_range_s": [
+              3601.0485959999996,
+              9704.118196
+            ],
+            "commanded_step_time_range_s": [
+              1.0001,
+              6104.0697
+            ],
+            "observed_duration_s": 6103.0696,
+            "inferred_commanded_step_start_test_time_s": 3600.048496,
+            "clock_relation_max_deviation_s": 1.3642420526593924e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.06849999999940337,
+              "median": 1.0,
+              "max": 1.0014000000010128
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 1.6253671646118164,
+              "max": 1.6254568099975586,
+              "time_weighted_mean": 1.6254086256332072
+            },
+            "endpoint_voltage_v": [
+              3.640964984893799,
+              4.199981212615967
+            ],
+            "surface_temperature_c": {
+              "initial": 24.366639329860558,
+              "final": 25.283315658569336,
+              "min": 24.335866928100586,
+              "max": 25.406761169433594
+            },
+            "signed_observed_charge_ah": 2.7555505474110578
+          },
+          {
+            "step": 3,
+            "name": "CV charge",
+            "measurement_rows": 4137,
+            "excel_rows_inclusive": [
+              9708,
+              13844
+            ],
+            "measurement_dates_naive_local": [
+              "2019-08-30T22:59:26.855000",
+              "2019-08-31T00:08:22.658000"
+            ],
+            "test_time_range_s": [
+              9705.224144000002,
+              13841.027144000001
+            ],
+            "commanded_step_time_range_s": [
+              1.0008,
+              4136.8038
+            ],
+            "observed_duration_s": 4135.803,
+            "inferred_commanded_step_start_test_time_s": 9704.223344000002,
+            "clock_relation_max_deviation_s": 1.8189894035458565e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.8027000000001863,
+              "median": 1.0,
+              "max": 1.0014000000010128
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.049993064254522324,
+              "max": 1.632238507270813,
+              "time_weighted_mean": 0.5237675296962546
+            },
+            "endpoint_voltage_v": [
+              4.199961185455322,
+              4.199899673461914
+            ],
+            "surface_temperature_c": {
+              "initial": 25.283315658569336,
+              "final": 24.516651153564453,
+              "min": 24.38074493408203,
+              "max": 25.381895065307617
+            },
+            "signed_observed_charge_ah": 0.6017220335056552
+          },
+          {
+            "step": 4,
+            "name": "pre-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              13845,
+              17445
+            ],
+            "measurement_dates_naive_local": [
+              "2019-08-31T00:08:23.700000",
+              "2019-08-31T01:08:22.702000"
+            ],
+            "test_time_range_s": [
+              13842.068856,
+              17441.070656
+            ],
+            "commanded_step_time_range_s": [
+              0.9999,
+              3600.0017
+            ],
+            "observed_duration_s": 3599.0018,
+            "inferred_commanded_step_start_test_time_s": 13841.068956000001,
+            "clock_relation_max_deviation_s": 1.8189894035458565e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0008999999990919605,
+              "median": 1.0,
+              "max": 1.001299999999901
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              4.1983962059021,
+              4.186485767364502
+            ],
+            "surface_temperature_c": {
+              "initial": 24.516651153564453,
+              "final": 24.345535278320312,
+              "min": 24.2747745513916,
+              "max": 24.53001594543457
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 5,
+            "name": "constant-current discharge",
+            "measurement_rows": 70370,
+            "excel_rows_inclusive": [
+              17446,
+              87815
+            ],
+            "measurement_dates_naive_local": [
+              "2019-08-31T01:08:23.747000",
+              "2019-08-31T20:41:12.665000"
+            ],
+            "test_time_range_s": [
+              17442.117708,
+              87811.035508
+            ],
+            "commanded_step_time_range_s": [
+              1.0,
+              70369.9178
+            ],
+            "observed_duration_s": 70368.9178,
+            "inferred_commanded_step_start_test_time_s": 17441.117707999998,
+            "clock_relation_max_deviation_s": 7.275957614183426e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.9165999999968335,
+              "median": 1.0,
+              "max": 1.0014999999984866
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": -0.25002795457839966,
+              "max": -0.2500145435333252,
+              "time_weighted_mean": -0.25002163213187073
+            },
+            "endpoint_voltage_v": [
+              4.178414344787598,
+              2.499997615814209
+            ],
+            "surface_temperature_c": {
+              "initial": 24.345249203380043,
+              "final": 24.67748260498047,
+              "min": 24.19158935546875,
+              "max": 25.158491134643555
+            },
+            "signed_observed_charge_ah": -4.887153244363736
+          },
+          {
+            "step": 6,
+            "name": "post-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              87816,
+              91416
+            ],
+            "measurement_dates_naive_local": [
+              "2019-08-31T20:41:13.806000",
+              "2019-08-31T21:41:12.806000"
+            ],
+            "test_time_range_s": [
+              87812.170804,
+              91411.171504
+            ],
+            "commanded_step_time_range_s": [
+              1.0006,
+              3600.0013
+            ],
+            "observed_duration_s": 3599.000700000004,
+            "inferred_commanded_step_start_test_time_s": 87811.170204,
+            "clock_relation_max_deviation_s": 1.4551915228366852e-11,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0010999999940395355,
+              "median": 1.0,
+              "max": 1.001299999988987
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              2.515622854232788,
+              2.7608492374420166
+            ],
+            "surface_temperature_c": {
+              "initial": 24.660722732543945,
+              "final": 24.415924072265625,
+              "min": 24.283823013305664,
+              "max": 24.722793579101562
+            },
+            "signed_observed_charge_ah": 0.0
+          }
+        ],
+        "discharge": {
+          "unobserved_initial_interval_s": 1.0,
+          "recorded_current_a": -0.25002163213187073,
+          "observed_discharge_charge_ah": 4.887153244363736,
+          "protocol_inferred_initial_charge_if_constant_current_ah": 6.94504533699641e-05,
+          "initial_charge_note": "Conditional estimate, not a measured interval or rigorous bound; not used as a passing gate.",
+          "prior_high_rate_exposure": "Unresolved: this workbook does not establish order relative to other experiments."
+        },
+        "date_warning": "Measurement timestamps are naive local values; workbook creation and repository upload dates are different metadata.",
+        "source_clock_policy": "Preserve Step_Time(s); model comparison must start on the actually observed common interval.",
+        "model_runs": 0,
+        "independent_validation_established": false,
+        "source": {
+          "filename": "NMC_k2_0_05C_25degC.xlsx",
+          "bytes": 6029678,
+          "sha256": "6bfaeb45fe90b76b6bd5973f0cb481b5d42db81cd2729e9be44121b44296d174",
+          "inflated_bytes": 34361075
+        },
+        "sheet": "Sheet1",
+        "columns": [
+          "Date_Time",
+          "Test_Time(s)",
+          "Step_Time(s)",
+          "Step_Index",
+          "Voltage(V)",
+          "Current(A)",
+          "Surface_Temp(degC)"
+        ],
+        "workbook_created": "2020-12-05 19:27:11",
+        "workbook_modified": "2020-12-08 12:33:17",
+        "dataset_doi": "10.17632/kxsbr4x3j2.2",
+        "dataset_url": "https://data.mendeley.com/datasets/kxsbr4x3j2/2",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license": "CC-BY-4.0",
+        "authors": [
+          "Edoardo Catenaro",
+          "Simona Onori"
+        ],
+        "openpyxl_version": "3.1.5",
+        "measurement_clock_audit": {
+          "backwards_date_intervals": 0,
+          "max_relative_date_test_clock_discrepancy_s": 0.003596000009565614,
+          "date_test_clock_jumps_above_1s": 0,
+          "first_backwards_date_excel_row_pairs": [],
+          "first_clock_jump_excel_row_pairs": [],
+          "timezone": "Unspecified in source; timestamps are not converted to UTC"
+        }
+      },
+      "discharge_rows": 70370,
+      "normalized_csv_sha256": "4c551b20febfc90e59df25a3ef9321aa975a328143a84d6d5f5c427e968f64a9",
+      "normalized_gzip_sha256": "5c5f0969e411d2be96bcdbb02cfcb397e2fd79d8ad92a26e5466f311d70ae5ef",
+      "normalized_gzip_bytes": 1614996,
+      "normalizer_sha256": "c5c7d08e6ad4c558cc4c79396a93f2c53cc07a76ee79a735e8197748080db212"
+    }
+  },
+  "same_cell_low_high_history": {
+    "k1": {
+      "record_ranges_naive": {
+        "005c": [
+          "2019-08-30T20:17:34.898000",
+          "2019-08-31T21:51:21.088000"
+        ],
+        "1c": [
+          "2019-09-02T19:10:54.152000",
+          "2019-09-03T03:08:38.439000"
+        ]
+      },
+      "earlier_record": "005c",
+      "later_record": "1c",
+      "unobserved_gap_s": 163173.064,
+      "record_ranges_overlap": false,
+      "history_replayed": false,
+      "timezone": "unspecified"
+    },
+    "k2": {
+      "record_ranges_naive": {
+        "005c": [
+          "2019-08-30T20:17:42.632000",
+          "2019-08-31T21:41:12.806000"
+        ],
+        "1c": [
+          "2019-09-02T19:11:01.133000",
+          "2019-09-03T02:54:42.246000"
+        ]
+      },
+      "earlier_record": "005c",
+      "later_record": "1c",
+      "unobserved_gap_s": 163788.327,
+      "record_ranges_overlap": false,
+      "history_replayed": false,
+      "timezone": "unspecified"
+    }
+  },
+  "rest_anchors_v": {
+    "k1_1c": 4.186448097229004,
+    "k1_005c": 4.1860246658325195,
+    "k2_1c": 4.1867523193359375,
+    "k2_005c": 4.186485767364502
+  },
+  "dataset_doi": "10.17632/kxsbr4x3j2.2",
+  "license": "CC-BY-4.0",
+  "authors": [
+    "Edoardo Catenaro",
+    "Simona Onori"
+  ],
+  "new_downloads": 0,
+  "new_dfns_solved": 0,
+  "parameters_fitted": false,
+  "physical_parameter_update": false,
+  "blind_holdout": false,
+  "physical_or_statistical_acceptance_established": false,
+  "historical_voltage_rmse_v": {
+    "k1": 0.1914735217065252,
+    "k2": 0.05500305419157363
+  },
+  "historical_gate_v": 0.05,
+  "historical_passed": {
+    "k1": false,
+    "k2": false
+  },
+  "numerical_voltage_tolerance_v": 1e-12,
+  "numerical_charge_tolerance_ah": 1e-12,
+  "elapsed_s": 0.8547394609922776
+}
