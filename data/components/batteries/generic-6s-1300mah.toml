@@ -28,6 +28,11 @@ max_temperature = { value = 60, unit = "degC", source = "nominal", note = "LiPo 
 capacity_fade = { value = 8, unit = "%", source = "estimate", u_rel = 0.5, note = "每 100 次循環的容量衰退（高倍率激烈使用下的量級，一階線性近似）；應定期記錄實際放電容量" }
 resistance_growth = { value = 25, unit = "%", source = "estimate", u_rel = 0.5, note = "每 100 次循環的內阻增長（一階線性近似）；應定期記錄充電器量到的內阻" }
 
+[family]
+# 同系列（同電芯、同工法）不同容量的縮放，用於電池選型（fpvsim battery-sweep）。容量、內阻、尺寸與散熱的縮放律見 docs/battery.md
+overhead_mass = { value = 18, unit = "g", source = "estimate", u = 5, note = "不隨容量變化的質量：XT60 接頭、主電源線、平衡線、外皮與標籤。以同系列兩種容量的秤重辨識（質量對容量的截距）" }
+resistance_exponent = { value = 1.0, unit = "1", source = "estimate", u = 0.15, note = "內阻 ∝ 容量^(−n)：極板面積與容量成正比時 n = 1；量同系列兩種容量的內阻可辨識" }
+
 [ocv]
 source = "estimate"
 note = "鈷酸鋰系 LiPo 靜置開路電壓的典型曲線；應以 C/20 低倍率放電或間歇靜置測試實測"

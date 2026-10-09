@@ -72,6 +72,7 @@ position = { value = [-45, 15, 0], unit = "mm" }
 [[parts]]
 name = "battery_strap"
 mass = { value = 6, unit = "g", source = "estimate", u = 1.0, note = "綁帶與防滑墊" }
+mounted_on = "battery"
 position = { value = [0, 0, -66], unit = "mm" }
 
 [[parts]]

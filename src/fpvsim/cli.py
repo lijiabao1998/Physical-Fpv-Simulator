@@ -262,6 +262,45 @@ def cmd_fit_tunnel(args) -> int:
     return 0
 
 
+def cmd_battery_sweep(args) -> int:
+    from .battery_sweep import DEFAULT_CAPACITIES, run_sweep
+    from .battery_sweep_report import generate
+
+    build = load_build(args.build)
+    caps = [float(x) for x in args.capacities.split(",")] if args.capacities else list(DEFAULT_CAPACITIES)
+    points = run_sweep(build, caps, samples=args.samples, seed=args.seed)
+    out = Path(args.out) if args.out else Path("out") / f"battery-sweep-{build.id}"
+    path = generate(build, points, out)
+    print(f"wrote {path}")
+    return 0
+
+
+def cmd_mission(args) -> int:
+    from .flightcontroller import load_fc_config
+    from .mission import fly_mission
+    from .mission_report import generate
+
+    build = load_build(args.build)
+    cfg = load_fc_config(args.fc)
+    result = fly_mission(build, cfg, maneuver=args.maneuver, max_laps=args.max_laps, seed=args.seed,
+                         wind=_wind_settings(args), overrides=dict(_parse_overrides(args.set)) or None,
+                         ground_effect=not args.no_ground_effect)
+    out = Path(args.out) if args.out else Path("out") / f"mission-{build.id}"
+    path = generate(build, cfg, result, out)
+    print(f"{result.time:.0f} s, {result.laps:.1f} laps, {result.reason}; wrote {path}")
+    return 0
+
+
+def _parse_overrides(items) -> list[tuple[str, float]]:
+    out = []
+    for item in items or []:
+        key, _, value = item.partition("=")
+        if not value:
+            raise SystemExit(f"error: --set needs key=value with SI value, got {item!r}")
+        out.append((key.strip(), float(value)))
+    return out
+
+
 def cmd_tune(args) -> int:
     from .flightcontroller import load_fc_config
     from .tuning import run_study
@@ -379,6 +418,25 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--build", required=True, help="build the data belongs to")
     p.add_argument("--out", help="output directory")
     p.set_defaults(func=cmd_fit_tunnel)
+
+    p = sub.add_parser("battery-sweep", help="battery selection: the pack series scaled over capacity, Monte Carlo per size")
+    p.add_argument("build")
+    p.add_argument("--capacities", help="comma-separated capacities in mAh (default 850,1050,1300,1550,1800,2200)")
+    p.add_argument("--samples", type=int, default=500)
+    p.add_argument("--seed", type=int, default=1)
+    p.add_argument("--out", help="output directory")
+    p.set_defaults(func=cmd_battery_sweep)
+
+    p = sub.add_parser("mission", help="mission endurance: repeat a maneuver in the 6DOF simulation until the battery is done")
+    p.add_argument("build")
+    p.add_argument("--fc", required=True, help="flight-controller config (TOML)")
+    p.add_argument("--maneuver", default="freestyle", help="maneuver flown each lap (default freestyle)")
+    p.add_argument("--max-laps", type=int, default=60)
+    p.add_argument("--seed", type=int, default=1)
+    p.add_argument("--set", action="append", metavar="KEY=VALUE", help="override a parameter (SI value), e.g. battery.capacity=2808")
+    p.add_argument("--out", help="output directory")
+    _wind_arguments(p)
+    p.set_defaults(func=cmd_mission)
 
     p = sub.add_parser("tune", help="stage 5: noise survey, filter check and PID gain sweep")
     p.add_argument("build")

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from typing import Mapping
+from typing import Callable, Mapping
 
 import numpy as np
 
@@ -92,7 +92,10 @@ def simulate(
     settings: SimSettings = SimSettings(),
     overrides: Mapping[str, float] | None = None,
     duration: float | None = None,
+    stop: Callable[[float, list[float], Outputs], str | None] | None = None,
 ) -> FlightLog:
+    """Fly ``pilot_input``. ``stop(t, state, outputs)``, called at the log rate,
+    ends the flight early by returning a reason (stored in ``log.meta["stop"]``)."""
     ac = build.realize(overrides)
     model = QuadModel(ac, ac.extras, ground_effect=settings.ground_effect)
     n = model.n
@@ -241,6 +244,11 @@ def simulate(
                 row[f"motor_current_{i}"] = out.i_motor[i]
                 row[f"thrust_{i}"] = out.thrust[i] / 9.80665e-3
             log.append(row)
+            if stop is not None:
+                reason = stop(t, prev, out)
+                if reason:
+                    log.meta["stop"] = reason
+                    break
 
     log.meta["max_contact_speed_m_s"] = max_contact
     log.meta["crashed"] = max_contact > settings.crash_speed
