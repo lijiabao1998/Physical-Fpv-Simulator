@@ -1,0 +1,31 @@
+# Prospective Stanford k1 electrical/thermal-proxy pilot v1
+
+Declared after source inspection and before any Stanford model prediction. One preselected record is evaluated: NMC_k1_1C_25degC.xlsx, DOI 10.17632/kxsbr4x3j2.2, official SHA256 b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6. The 15-file chronology is qualified at fb44829e0bb33da533110821c9015ef80a54776c. This k1 record follows one published 25°C/0.05C discharge; no preceding high-rate record occurs in the published campaign. Unknown unrecorded history stays unknown. k2–k6 remain prospective and are not fitted or simulated in this pilot.
+
+## Fixed model and forcing
+
+Use PyBaMM 26.9.0.0 DFN with lumped thermal equations and the installed ORegan2022 parameters. Preserve the published initial concentrations, 28866 mol/m³ negative and 13975 mol/m³ positive, and all embedded transport corrections. Do not fit SOC, initial voltage, diffusion, capacity, geometry or a thermal coefficient to Stanford responses. Initial temperature is the final measured skin temperature in the zero-current pre-discharge rest, used explicitly as an initial uniform-temperature approximation. Nominal chamber setpoint is 298.15 K.
+
+Use h=15 W/m²/K only as the existing ORegan prior hypothesis. Stanford does not supply a measured ambient-temperature time series or an identified fixture heat-transfer coefficient. Thus predicted volume-average temperature versus measured central skin temperature is a proxy check with an uncertain boundary, not independent thermal validation. Do not drive the model with the measured discharge temperature while calling it a joint temperature prediction.
+
+Invert the source current sign so discharge is positive. Replay every original current sample with a piecewise-linear interpolant, retaining native timestamps and no smoothing, rounding to 5 A or rescaling by the 4.85 Ah nominal capacity. Pass its knots to the integrator as stopping points. Use relative and absolute solver tolerances 1e-7. Outputs are requested every 5 seconds, with the actual solver event endpoint retained.
+
+The first discharge measurement is at commanded step-time 1.0006 seconds. Preserve this gap. To initialize a model from the commanded start, assume the first observed current also applies from 0 to 1.0006 seconds, consistent with the stated constant-current protocol. This is an explicitly delimited input assumption, not recovered measurement or an empirical bound on unobserved current. Report the corresponding assumed charge separately. No measured metric includes this missing interval. Likewise, append an explicit constant-current continuation using the last measured current to 6000 seconds so the model can reach its own cutoff if it lasts longer than the source discharge. Report any use of this unobserved continuation; never extrapolate observed voltage or temperature.
+
+Stop at the model's 2.5 V event, its 333.15 K research temperature guard, solver failure, or the existing current-dependent maximum duration. The temperature guard is a software research envelope and does not certify physical safety. A temperature or duration stop cannot pass as a voltage-cutoff prediction.
+
+## Frozen comparison windows and gates
+
+Compare voltage and temperature on the union of measurement and model output knots over the common observed interval [first measured time, min(measured endpoint, model endpoint)]. Use time-weighted exact piecewise-linear squared-error integration. Do not align OCV, stretch time, discard tails, normalize capacity or remove failed curves. Report common-window coverage and both endpoint times separately.
+
+Discharge capacity compares observed source current integral from 1.0006 seconds to its endpoint against predicted current integral from that same start to the model's cutoff. The early assumed charge is excluded from both values. The predicted cutoff can differ from the measured endpoint; do not crop capacity to the common voltage window. Energy uses the same event-aware windows and integrates the product of piecewise-linear current and voltage exactly on union knots. Preserve the raw current signs and units in source exports.
+
+Existing empirical thresholds are unchanged: voltage RMSE ≤0.050 V, voltage maximum error ≤0.300 V, capacity relative error ≤5%, delivered-energy relative error ≤5%, observed-time coverage ≥95%, correct voltage-cutoff event and all physical audits passing. Temperature-proxy RMSE ≤2 K and maximum error ≤5 K are reported separately and cannot establish the unspecified thermal boundary. Keep the previous Chen 6/12 and ORegan 30/36 empirical failures visible regardless of this pilot's outcome.
+
+## Numerical check and stopping rule
+
+Run only this case at 80 and then 120 points per electrode/particle coordinate; separator points are 40 and 60. Compare the same forcing, initial state, boundary and tolerance. Spatial-check targets remain maximum voltage difference ≤0.005 V, maximum temperature difference ≤0.1 K, cutoff-capacity relative difference ≤1%, correct voltage events and passing physical audits for both grids. Retain peak-difference times and both cutoff times on the shared interval. This does not establish convergence of other cases, response interpolation or every solver tolerance.
+
+Physical audits retain lithium inventory relative drift ≤1e-6, charge-integration error ≤1e-6 Ah, finite positive electrolyte and bounded physical-node/surface concentrations, and sampled thermal-energy residual relative to generated heat ≤1%. Current integration is checked against the exact piecewise-linear forcing integral, not constant nominal current.
+
+The complete two-grid pilot has one 1200-second wall budget and a 4,000,000,000-byte process address-space limit on existing free CPU infrastructure. Persist the 80-point result before attempting 120 points. A budget or solver failure preserves completed results and means the missing numerical stage is unverified; it is distinct from empirical disagreement. Record source/code/parameter/current-profile digests, package versions, initial/boundary assumptions, full output curves and all failed gates. Stop after these two solves or at the budget. No fitting, expanded cohort run, paid service, new credentials, hardware work or deployment belongs to this protocol.

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "openpyxl",
+    "version": "3.1.5",
+    "license": "MIT",
+    "registry": "https://pypi.org/project/openpyxl/3.1.5/",
+    "wheel_sha256": "5282c12b107bffeef825f4617dc029afaf41d0ea60823bbb665ef3079dc79de2",
+    "scope": "optional source-workbook ingestion; not a license for project code"
+  },
+  {
+    "name": "et-xmlfile",
+    "version": "2.0.0",
+    "license": "MIT",
+    "registry": "https://pypi.org/project/et-xmlfile/2.0.0/",
+    "wheel_sha256": "7a91720bc756843502c3b7504c77b8fe44217c85c537d85037f0f536151b2caa",
+    "scope": "optional source-workbook ingestion; not a license for project code"
+  },
+  {
+    "name": "defusedxml",
+    "version": "0.7.1",
+    "license": "PSFL",
+    "registry": "https://pypi.org/project/defusedxml/0.7.1/",
+    "wheel_sha256": "a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61",
+    "scope": "optional source-workbook ingestion; not a license for project code"
+  }
+]

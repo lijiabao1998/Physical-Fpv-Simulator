@@ -1,0 +1,33 @@
+{
+  "run_id": 37960046810,
+  "source_commit": "5655bda1527c0941f99717018dc06553a7283dea",
+  "artifact_id": 11630718633,
+  "archive_bytes": 22462499,
+  "archive_sha256": "a3b737252dd5893c4d2039ca9b049a4818b091cf5d771aa261a356f52cb66e2e",
+  "archive_members": 86,
+  "parts": [
+    {
+      "path": "docs/benchmarks/stanford-k2-mesh120-evidence.zip.001",
+      "bytes": 8388608,
+      "sha256": "689c08b149d9490cb7f0b41e2b10ee0f27f7b6fbc068ddce9ee01454ad8f3117",
+      "git_blob_sha": "962845f1f6ba8d44a85288d09c308e9d7e64b542"
+    },
+    {
+      "path": "docs/benchmarks/stanford-k2-mesh120-evidence.zip.002",
+      "bytes": 8388608,
+      "sha256": "ac71b7d48d8124d16bfffdbff17eea3dd4c8637ca7a45033e729cee0c6df9beb",
+      "git_blob_sha": "3b92ba336c844b1192316cf6ff428e24607928d5"
+    },
+    {
+      "path": "docs/benchmarks/stanford-k2-mesh120-evidence.zip.003",
+      "bytes": 5685283,
+      "sha256": "9c45c629d08a5b5936a7dfc741f1907cf5e10e48d31f4e57e5e0f2ac946a5549",
+      "git_blob_sha": "9effb1240b5f217a9ca0c574596eebf11f3a9a79"
+    }
+  ],
+  "reassembly": "Concatenate parts in listed order; exact original GitHub artifact bytes",
+  "reference_archive_sha256": "a35aa5d8dc2fb0c744f2f62fd4d0ea46eba553c4885aeed2a674fd2aa04b56da",
+  "reference_selected_members": 8,
+  "license": "Existing Stanford CC-BY-4.0 inputs; source attribution included in inputs",
+  "source_url": "https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/37960046810"
+}

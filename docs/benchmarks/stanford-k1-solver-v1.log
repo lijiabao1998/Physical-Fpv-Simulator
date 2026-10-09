@@ -1,0 +1,190 @@
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>
+Timeout (0:01:00)!
+Thread 0x00007ffbc013db80 (most recent call first):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/idaklu_solver.py", line 735 in _integrate
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/solvers/base_solver.py", line 1045 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/base_simulation.py", line 527 in solve
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/pybamm/simulation/simulation.py", line 812 in solve
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/src/physical_fpv/core.py", line 278 in simulate
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 111 in run_worker
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 175 in main
+  File "/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/scripts/run_stanford_pilot.py", line 234 in <module>

@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "case": "Stanford k2 exploratory conditional prediction",
+  "selection_role": "Selected after observing the six-cell measured voltage patterns; not blinded, not cohort validation",
+  "source": {
+    "filename": "NMC_k2_1C_25degC.xlsx",
+    "id": "0c5e4899-e558-4c82-9535-fa8eda79c746",
+    "folder_id": "63c23156-0f46-4522-87bb-cbfc6b1b0ee9",
+    "content_details": {
+      "id": "864b18f2-0439-48cb-9e2d-0fbcf8a228a6",
+      "sha256_hash": "20ec90e107e228515a95346dc3159d08df62e78bb0f371d10161e62de49e8086",
+      "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "size": 1802458,
+      "created_date": "2021-02-02T22:29:22.63Z",
+      "download_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/0c5e4899-e558-4c82-9535-fa8eda79c746/file_downloaded",
+      "view_url": "https://data.mendeley.com/public-files/datasets/kxsbr4x3j2/files/0c5e4899-e558-4c82-9535-fa8eda79c746/file_viewed",
+      "download_expiry_time": "2126-10-08T02:23:25.496661234Z"
+    },
+    "size": 1802458,
+    "last_modified_date": "2021-02-02T22:29:22.63Z",
+    "status": "COMPLETED"
+  },
+  "dataset_doi": "10.17632/kxsbr4x3j2.2",
+  "authors": [
+    "Edoardo Catenaro",
+    "Simona Onori"
+  ],
+  "license": "CC-BY-4.0",
+  "manifest_sha256": "94bde5dd872de039d145abf33f66fc81c38897b4666d68586f00c950478dc482",
+  "history_evidence_sha256": "35ffcd867176b6e2e4aa5df62ac8bca5c102779b5c3a594aaf231e96bab8ba17",
+  "required_history_path": "saved_report_analysis.histories.k2",
+  "observed_interval_s": [
+    1.0003,
+    3435.7713
+  ],
+  "observed_rows": 3436,
+  "mean_positive_discharge_current_a": 5.000371049908914,
+  "current_profile_sha256": "a6bb3e11eba4e922d1f86636be1225a992aea5da2b05ee17ac684ed336eda3ad",
+  "missing_initial_interval_s": [
+    0,
+    1.0003
+  ],
+  "assumed_initial_charge_ah": 0.001389411683652136,
+  "first_current_assumption_a": 5.000381946563721,
+  "unobserved_late_forcing_extension_s": [
+    3435.7713,
+    6000
+  ],
+  "last_current_assumption_a": 5.000402450561523,
+  "pre_rest_current_a": {
+    "min": 0.0,
+    "max": 0.0,
+    "time_weighted_mean": 0.0
+  },
+  "pre_rest_last_voltage_v": 4.1867523193359375,
+  "initial_uniform_temperature_k": 297.55456771850584,
+  "initial_temperature_status": "Last measured zero-current pre-rest skin temperature, treated as initially uniform; not internal-temperature measurement",
+  "config": {
+    "model": "DFN",
+    "thermal": "lumped",
+    "parameter_set": "ORegan2022",
+    "ambient_temperature_k": 298.15,
+    "heat_transfer_coefficient_w_m2_k": 15.0,
+    "initial_concentrations_mol_m3": {
+      "negative": 28866.0,
+      "positive": 13975.0
+    },
+    "tolerance": 1e-07,
+    "sample_period_s": 5.0,
+    "max_temperature_k": 333.15,
+    "mesh_points": [
+      80,
+      120
+    ],
+    "separator_points": [
+      40,
+      60
+    ],
+    "profile_schedule": "adaptive"
+  },
+  "budgets": {
+    "wall_s": 1200,
+    "address_space_bytes": 4000000000,
+    "new_solves_maximum": 2,
+    "new_source_downloads": 0
+  },
+  "fitting_performed": false,
+  "fixed_r_correction_added": false,
+  "k1_result_reused_for_k2": false,
+  "unrecorded_history": "unknown",
+  "k6_history_contrast": "unresolved; missingthree5Cdownloadsremainstopped",
+  "observed_trace_array_sha256": "eefce5eea77a1c3acc8c4f9b384f5bf8c32728d731bbc296f9df524146d9f1e7",
+  "observed_trace_digest_format": "C-contiguous little-endian float64 columns [commanded_step_s, raw_current_a, voltage_v, skin_temperature_k]"
+}

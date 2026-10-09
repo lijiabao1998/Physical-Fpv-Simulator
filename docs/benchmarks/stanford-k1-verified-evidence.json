@@ -1,0 +1,116 @@
+{
+  "ci_run_id": 37724036097,
+  "commit_sha": "a8eb17134d5e70b94c8ddaaac1e31b65cf8fa0e5",
+  "ci_url": "https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/37724036097",
+  "artifact_id": 11527777725,
+  "artifact_zip_sha256": "40b81708b090e7ed24d3157f3377897b80e0c7055225cf39fdda12e2a1e0605a",
+  "source_sha256": {
+    "src/physical_fpv/core.py": "d5f4dad65c1260de12639441308dacc555ba0a4b981be1c5ee8c7310a7de672c",
+    "src/physical_fpv/current_profile.py": "9324ed84ee6ddd5bd142db99383ee69116b0d51bde759cd503680acde144d5d7",
+    "src/physical_fpv/stanford_benchmark.py": "59dd9e4f8b49e3b6320e7d632af6950332005e9ea5b95c47bafc344d94419bc9",
+    "src/physical_fpv/stanford_data.py": "a0df0f6203ae433e7d5db3336a52c7626953d7133dfcedab7d755b274b108f6f",
+    "src/physical_fpv/thermal_benchmark.py": "cd7f101bb67b0e6d6dfe2da54727ff89286cfee788307a367461a3e6664a2ba4",
+    "src/physical_fpv/validation.py": "e7fd1abeb8d47b7c522bd60668c5fb1dcd5b1a68ad5e542f9b9a1a2c37cb425c",
+    "scripts/run_stanford_pilot.py": "cd5889e24826d2cfd9cb105ebc86db3f3eee8614413c8b218f74f47b713a3885",
+    "docs/stanford-validation-protocol.md": "009f64f52b889c56fed15e085007a82c24ed58e8b926c49e5f964f9e185f53b0",
+    "data/stanford-manifest.json": "94bde5dd872de039d145abf33f66fc81c38897b4666d68586f00c950478dc482",
+    "docs/benchmarks/stanford-k1-chronology.json": "de79d969085540981cb2c34ff39947c9ca3472733a8168b780ce599717908e69",
+    "requirements-lock.txt": "99e788261bf013158962b719b1710fde854c864ab67fac1c72dc69902830a20b",
+    "requirements-data-lock.txt": "ce63f4e1fcc9fd16eff0e59a4468a6b8e50fb896fc728ec2ed38e300710e080e",
+    "pyproject.toml": "b9407d6c6afafb0d0ab4ae96176f13133600a4b2fe373fe6803c11c95034077d"
+  },
+  "inputs": {
+    "config": {
+      "model": "DFN",
+      "thermal": "lumped",
+      "parameter_set": "ORegan2022",
+      "initial_temperature_k": 298.33794059753416,
+      "heat_transfer_coefficient_w_m2_k": 15,
+      "current_a": 5.000325282873757,
+      "ambient_temperature_k": 298.15,
+      "mesh_points": 80,
+      "tolerance": 1e-07,
+      "sample_period_s": 5,
+      "max_temperature_k": 333.15
+    },
+    "source_sha256": {
+      "src/physical_fpv/core.py": "d5f4dad65c1260de12639441308dacc555ba0a4b981be1c5ee8c7310a7de672c",
+      "src/physical_fpv/current_profile.py": "9324ed84ee6ddd5bd142db99383ee69116b0d51bde759cd503680acde144d5d7",
+      "src/physical_fpv/stanford_benchmark.py": "59dd9e4f8b49e3b6320e7d632af6950332005e9ea5b95c47bafc344d94419bc9",
+      "src/physical_fpv/stanford_data.py": "a0df0f6203ae433e7d5db3336a52c7626953d7133dfcedab7d755b274b108f6f",
+      "src/physical_fpv/thermal_benchmark.py": "cd7f101bb67b0e6d6dfe2da54727ff89286cfee788307a367461a3e6664a2ba4",
+      "src/physical_fpv/validation.py": "e7fd1abeb8d47b7c522bd60668c5fb1dcd5b1a68ad5e542f9b9a1a2c37cb425c",
+      "scripts/run_stanford_pilot.py": "cd5889e24826d2cfd9cb105ebc86db3f3eee8614413c8b218f74f47b713a3885",
+      "docs/stanford-validation-protocol.md": "009f64f52b889c56fed15e085007a82c24ed58e8b926c49e5f964f9e185f53b0",
+      "data/stanford-manifest.json": "94bde5dd872de039d145abf33f66fc81c38897b4666d68586f00c950478dc482",
+      "docs/benchmarks/stanford-k1-chronology.json": "de79d969085540981cb2c34ff39947c9ca3472733a8168b780ce599717908e69",
+      "requirements-lock.txt": "99e788261bf013158962b719b1710fde854c864ab67fac1c72dc69902830a20b",
+      "requirements-data-lock.txt": "ce63f4e1fcc9fd16eff0e59a4468a6b8e50fb896fc728ec2ed38e300710e080e",
+      "pyproject.toml": "b9407d6c6afafb0d0ab4ae96176f13133600a4b2fe373fe6803c11c95034077d"
+    },
+    "source_commit_sha": "a8eb17134d5e70b94c8ddaaac1e31b65cf8fa0e5",
+    "python_version": "3.12.14",
+    "pybamm_version": "26.9.0.0",
+    "numpy_version": "2.5.3",
+    "memory_budget_bytes": 4000000000,
+    "wall_budget_s": 1200,
+    "assumptions": {
+      "source": {
+        "filename": "NMC_k1_1C_25degC.xlsx",
+        "bytes": 1868963,
+        "sha256": "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6",
+        "inflated_bytes": 10538544
+      },
+      "observed_interval_s": [
+        1.0006,
+        3390.3968
+      ],
+      "missing_initial_interval_s": [
+        0,
+        1.0006
+      ],
+      "initial_interval_current_assumption_a": 5.000240325927734,
+      "assumed_initial_charge_ah": 0.0013897890194786919,
+      "initial_interval_is_measured": false,
+      "initial_interval_bound_status": "Declared time extent and CC hypothesis, not an empirical current bound",
+      "explicit_unobserved_continuation_s": [
+        3390.3968,
+        6000.0
+      ],
+      "continuation_current_assumption_a": 5.0003557205200195,
+      "current_profile_sha256": "ec1aac9bbe4bb889ad06fb215ff0462c214d66870054e814605aff1850bb9353",
+      "current_interpolation": "all source samples; piecewise linear; no smoothing",
+      "initial_temperature_source": "final zero-current pre-rest skin temperature, assumed initially uniform",
+      "cooling_coefficient_status": "ORegan h=15 prior hypothesis; not identified for Stanford fixture",
+      "ambient_temperature_status": "nominal chamber setpoint; ambient sensor time series unavailable",
+      "temperature_observable": "predicted volume average versus measured central skin proxy",
+      "independent_thermal_validation_established": false,
+      "parameter_fitting_performed": false
+    },
+    "fitting_performed": false,
+    "initial_concentrations_mol_m3": {
+      "negative": 28866.0,
+      "positive": 13975.0
+    }
+  },
+  "supervisor_status": {
+    "status": "budget_exhausted",
+    "return_code": -9,
+    "elapsed_s": 1200.014301562,
+    "budget_s": 1200,
+    "missing_numerical_stage_is_unverified": true,
+    "empirical_disagreement_is_separate_from_execution_status": true
+  },
+  "last_stage": {
+    "status": "running",
+    "mesh": 80
+  },
+  "report": null,
+  "partial_case_reports": {},
+  "completed_curves": 0,
+  "mesh120_started": false,
+  "empirical_status": "NOT EVALUATED: no completed prediction curve",
+  "numerical_status": "UNVERIFIED: mesh80 exhausted execution budget",
+  "solver_log_sha256": "c7347f3215e9cddd126292c5a2e9f5d025ba9f4984500037f852636bae0e2a3f",
+  "scope": "Execution evidence only; no experimental or numerical failure inferred from timeout."
+}

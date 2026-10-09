@@ -1,0 +1,42 @@
+{
+  "voltage_max_difference_v": 0.014331230934168993,
+  "temperature_max_difference_k": 0.20743823297658537,
+  "capacity_relative_difference": 4.792426371828932e-05,
+  "passed": false,
+  "fine_physical_audit_passed": true,
+  "scope": "one 5A,25degC,initial297.75K,h15 case only; no whole-cohort convergence claim",
+  "voltage_peak_time_s": 340.0,
+  "temperature_peak_time_s": 970.0,
+  "coarse_cutoff_s": 3333.3464050413622,
+  "fine_cutoff_s": 3333.506160869621,
+  "common_interval_s": [
+    0.0,
+    3333.3464050413622
+  ],
+  "window_maxima": [
+    {
+      "fraction": [
+        0,
+        0.1
+      ],
+      "voltage_max_v": 0.014287049262738272,
+      "temperature_max_k": 0.06251772451304305
+    },
+    {
+      "fraction": [
+        0.1,
+        0.9
+      ],
+      "voltage_max_v": 0.014331230934168993,
+      "temperature_max_k": 0.20743823297658537
+    },
+    {
+      "fraction": [
+        0.9,
+        1
+      ],
+      "voltage_max_v": 0.0064216784895978485,
+      "temperature_max_k": 0.07150450470328451
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "receipt_sha256": "1f99c1f52aceae381c52dd4e5924c39d1b384f11ef4db2a29c04424eb3383222",
+  "input_zip_sha256": "c777b934ed13ed02aac194c045e7582b8032820e2706867517aa92911d2477a9",
+  "output_zip_sha256": "6c6e0c101e24266fe39b367b294751e06c0676fc59043303dbadfef8f0406ae8",
+  "integrity": "verified_against_receipt",
+  "trust_anchor": "caller-supplied receipt; no signature or remote CI verification",
+  "case": "k1",
+  "source_commit_sha": "744794b02d44bcbfc702ad8e5c403782128d11b0",
+  "source_ci_run_id": 37887926852,
+  "input_files_verified": 42,
+  "output_files_verified": 22,
+  "numerical": {
+    "voltage_max_difference_v": 0.003234943375430177,
+    "temperature_max_difference_k": 0.017554289155725655,
+    "capacity_relative_difference": 3.458863600074973e-05,
+    "passed": true
+  },
+  "empirical": {
+    "passed": false,
+    "voltage_rmse_v": 0.1914735217065252,
+    "voltage_max_absolute_error_v": 0.2204182364874363,
+    "recomputed_gates": [
+      "voltage_rmse",
+      "voltage_max"
+    ],
+    "other_gates": "recorded, not independently reconstructed"
+  },
+  "physical_audits": "recorded flags; internal states are not reconstructed",
+  "metric_reproduction_tolerance": {
+    "relative": 1e-11,
+    "absolute": 1e-12
+  },
+  "new_solver_runs": 0,
+  "new_downloads": 0
+}

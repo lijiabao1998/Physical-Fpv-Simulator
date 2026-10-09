@@ -1,0 +1,19 @@
+{
+  "source_url": "https://zenodo.org/records/14995785/files/Source_Data.zip?download=1",
+  "protocol_sha256": "b5366ea18a358d7485355f5f4223c03c37e0558c07f1bfd76ddb855d8c6d898a",
+  "acquisition_attempts": 1,
+  "bytes": 10776640,
+  "published_md5": "686c44f88eb26d26956a06c3d144409f",
+  "verified_sha256": "054b6019a110d2928f5abf1420ed13febf57231f6d8abb76a799ef0447765964",
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "creator": "Ruihe Li",
+  "record_doi": "10.5281/zenodo.14995785",
+  "download_tool_result_seconds": 26.6,
+  "route": "supported cloud browser download of observed official file link",
+  "receipt_date": "2026-10-09",
+  "source_modified": false,
+  "no_fit": true,
+  "no_scientific_solve": true,
+  "acceptance_limit_after_download_bytes": 12000000
+}

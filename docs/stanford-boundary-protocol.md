@@ -1,0 +1,33 @@
+# Six-cell boundary-response diagnostic v1
+
+Exploratory protocol frozen after the complete six-cell 25°C/1C comparison and the incomplete k2/k6 history inspection, before running this boundary analysis. Use only the six already checksum-verified `NMC_k1_1C_25degC.xlsx` through `NMC_k6_1C_25degC.xlsx` workbooks in `data/stanford/raw`. The existing [manifest](../data/stanford-manifest.json), SHA256 `94bde5dd872de039d145abf33f66fc81c38897b4666d68586f00c950478dc482`, fixes their exact source URLs, bytes and hashes. There is no download fallback or cell replacement.
+
+Source: Edoardo Catenaro and Simona Onori, [version 2, DOI 10.17632/kxsbr4x3j2.2](https://data.mendeley.com/datasets/kxsbr4x3j2/2), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Original workbooks are unchanged. This is derived analysis of public physical measurements, not a new bench experiment or predictive validation. The three failed k6/5C acquisitions stay stopped and the recorded-history contrast remains unresolved.
+
+## Fixed questions and limits
+
+Is the strong explanation “one fixed nonnegative series resistance alone describes the measured voltage changes at all four boundaries” consistent with the recorded bracketing samples? Operationally this explanation holds the internal voltage unchanged within each bracketing pair and requires ΔV = R ΔI with the same R across the four pairs. No R is optimized, fitted or applied to the battery model. Individual ratios are observed response summaries, not estimates of a fitted common R.
+
+A separate, weaker explanation is “a fixed series resistance could be one component, together with electrochemical polarization, relaxation and state changes.” The present samples cannot isolate or exclude such a component. Even disagreement with the strong arithmetic description does not establish contact resistance, a material property or a cause of the model error. Unknown measurement uncertainty prevents a statistical physical rejection; finite and unequal sampling delays allow internal voltage to evolve.
+
+Use at most 120 seconds for local acquisition verification, parsing and analysis, and enforce a 4,000,000,000-byte process address-space limit. Zero new bytes may be downloaded; zero battery-model solves or fits. Read one workbook at a time with the existing 50,000,000-byte inflated-content check. Freeze protocol and tested implementation in Git before execution, record source commit and before/after hashes. On missing/checksum/schema/clock/memory/time failure stop, preserve completed cases, and label the batch incomplete. Do not silently omit a case, repair its clocks or reuse results under changed fingerprints.
+
+## All six cells and four boundaries
+
+For every cell retain all four boundaries: thermal rest → CC charge (steps 1→2), CV charge → pre-discharge rest (3→4), rest → discharge (4→5), and discharge → final rest (5→6). Require contiguous canonical steps 1–6. Retain raw charge-positive current sign. Source temperatures are measured skin °C and recorded charge is an observed integral in Ah, not full-cell SOC or electrode stoichiometry.
+
+Use the last actual preceding sample and first actual following sample as the primary pair. Report both exact source/Excel row identities, test and commanded-step times, measured timestamps, current A, voltage V and skin °C. Export signed ΔV, signed ΔI, ΔT, the actual bracketing interval, and following sample delay since the inferred next commanded-step origin. Also retain the last ten pre-boundary and first ten post-boundary samples. Calculate ratios from the same primary pre-sample to each of those ten post-samples at its own actual delay. Do not interpolate to a common delay, extrapolate to zero time or deduplicate source times.
+
+Report preceding phase observed duration, time-weighted current, observed charge and voltage/temperature endpoints, including rest drift and recorded relaxation after discharge. Charge and discharge start/stop occur at different states; each later sample also changes the state and relaxation time. This information constrains interpretation but does not reconstruct missing physical state.
+
+The apparent transient response ratio is signed ΔV/ΔI in ohms (display may use mΩ). An absolute ΔI below 0.5 A is predeclared as poorly conditioned for this descriptive ratio; this is a conditioning annotation, not an experimental error gate or permission to drop the CV-stop boundary. Preserve every finite ratio and denominator. For zero ΔI report no ratio. Measurement/calibration/filter uncertainty is unknown, so no error bar or confidence interval is invented.
+
+For each cell retain the primary ratio range across all defined boundaries and separately across sufficiently large ΔI. If an arithmetic equal-ratio flag is reported, its absolute 1e-12-ohm tolerance addresses floating-point representation only; it is not an instrument tolerance or validation threshold. Require all four defined ratios for a full arithmetic flag. A near-zero denominator, mixed signs, changing temperature/state or unmatched delays must remain visible. Do not calculate a best R, subtract a presumed contact term, or treat multiple samples from one cell as independent specimens.
+
+## Quality, output and interpretation
+
+Inspect every original row. Require finite measurements, strictly increasing whole-test times, nondecreasing measurement dates with relative date/test disagreement at most 1 second, nonnegative/nonreversing source step times and per-step test-minus-step origin deviation at most 1 second. Preserve any failure rather than modifying the observations. These checks concern source clocks; all existing physical and empirical gates are unchanged.
+
+Output all 24 primary boundary records, all observed first-ten response points with their own delays, the exact source and implementation hashes, per-cell descriptive spans, conditioning flags and limitations. A report must distinguish arithmetic incompatibility of a fixed-R-alone description from the unidentifiability of a fixed-R component. It must say when the actual observations cannot physically falsify an explanation. Existing k1 ≈191-mV voltage failure, Chen 6/12 and ORegan 30/36 empirical failures remain visible.
+
+End after this bounded report. Recommend the next necessary observable rather than a fitted correction: public synchronized current/voltage transient data with known sampling/filter response, uncertainty, temperature/state and documented voltage-sense/fixture geometry would be needed to separate an immediate ohmic response from later electrochemical relaxation. No new hardware experiment, download, DFN solve, GUI or deployment is part of this protocol.

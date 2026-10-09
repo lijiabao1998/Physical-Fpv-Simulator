@@ -1,0 +1,692 @@
+{
+  "protocol": "docs/stanford-cooling-transfer-protocol.md",
+  "source_archive_sha256": "c777b934ed13ed02aac194c045e7582b8032820e2706867517aa92911d2477a9",
+  "normalized_source_sha256": "9fc12883623a0d5fa47d4c13eed9a37edf40965f8fe0e965cc294772c32c1dc9",
+  "original_workbook_rechecked": true,
+  "source_member": "files/data/stanford/raw/NMC_k1_1C_25degC.xlsx",
+  "source_workbook_sha256": "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6",
+  "source_workbook_bytes": 1868963,
+  "frozen_k2_characterization_sha256": "a240791b72e63a1ac1625fecf9cc29f45bbdef2b6f5b26ec36b6a08cc634a782",
+  "frozen_k2_commit": "0fb5624e90e670e2e1b21143de84a7d6a1ee13f1",
+  "hashes": {
+    "scripts/check_stanford_cooling_transfer.py": "8d4dfc9f34c5c0bd98de19951f1e41f2affd49ef2a17d0d39d8b80e6d738cd5a",
+    "docs/benchmarks/stanford-k1-cooling-source.json": "9fc12883623a0d5fa47d4c13eed9a37edf40965f8fe0e965cc294772c32c1dc9",
+    "docs/stanford-cooling-transfer-protocol.md": "c12b5950a6d5ad16077f11b30e159b526e5f98dedfe91b0a95cfa3f0f2190c21",
+    "src/physical_fpv/cooling_characterization.py": "9ea314497de165bd7fc22c13535b7bf168d305f748e5c8cec0947f7ff71c1495",
+    "src/physical_fpv/stanford_data.py": "a0df0f6203ae433e7d5db3336a52c7626953d7133dfcedab7d755b274b108f6f"
+  },
+  "k1_inspection": {
+    "measurement_rows": 28669,
+    "canonical_six_step_sequence": true,
+    "contiguous_steps": [
+      {
+        "step": 1,
+        "name": "thermal rest",
+        "measurement_rows": 3601,
+        "excel_rows_inclusive": [
+          2,
+          3602
+        ],
+        "measurement_dates_naive_local": [
+          "2019-09-02T19:10:54.152000",
+          "2019-09-02T20:10:53.153000"
+        ],
+        "test_time_range_s": [
+          1.0001,
+          3600.0016
+        ],
+        "commanded_step_time_range_s": [
+          0.9999,
+          3600.0014
+        ],
+        "observed_duration_s": 3599.0015,
+        "inferred_commanded_step_start_test_time_s": 0.0001999999999497959,
+        "clock_relation_max_deviation_s": 4.547473508864641e-13,
+        "backwards_step_clock_intervals": 0,
+        "negative_step_clock_records": 0,
+        "native_interval_s": {
+          "min": 0.0009000000000014552,
+          "median": 1.0,
+          "max": 1.001299999999901
+        },
+        "exact_duplicate_times": 0,
+        "duplicate_time_conflicts": 0,
+        "current_a": {
+          "min": 0.0,
+          "max": 0.0,
+          "time_weighted_mean": 0.0
+        },
+        "endpoint_voltage_v": [
+          2.964393138885498,
+          2.9649808406829834
+        ],
+        "surface_temperature_c": {
+          "initial": 25.291379928588867,
+          "final": 25.10983657836914,
+          "min": 25.09933853149414,
+          "max": 25.544471740722656
+        },
+        "signed_observed_charge_ah": 0.0
+      },
+      {
+        "step": 2,
+        "name": "CC charge",
+        "measurement_rows": 8872,
+        "excel_rows_inclusive": [
+          3603,
+          12474
+        ],
+        "measurement_dates_naive_local": [
+          "2019-09-02T20:10:54.200000",
+          "2019-09-02T22:38:44.813000"
+        ],
+        "test_time_range_s": [
+          3601.04824,
+          12471.66124
+        ],
+        "commanded_step_time_range_s": [
+          1.0001,
+          8871.6131
+        ],
+        "observed_duration_s": 8870.613,
+        "inferred_commanded_step_start_test_time_s": 3600.04814,
+        "clock_relation_max_deviation_s": 9.094947017729282e-13,
+        "backwards_step_clock_intervals": 0,
+        "negative_step_clock_records": 0,
+        "native_interval_s": {
+          "min": 0.612699999999677,
+          "median": 1.0,
+          "max": 1.0014000000001033
+        },
+        "exact_duplicate_times": 0,
+        "duplicate_time_conflicts": 0,
+        "current_a": {
+          "min": 1.6251249313354492,
+          "max": 1.6252307891845703,
+          "time_weighted_mean": 1.6251807439963526
+        },
+        "endpoint_voltage_v": [
+          3.087146759033203,
+          4.199975967407227
+        ],
+        "surface_temperature_c": {
+          "initial": 25.09933953455614,
+          "final": 26.00993537902832,
+          "min": 25.00031280517578,
+          "max": 26.67447280883789
+        },
+        "signed_observed_charge_ah": 4.0045415097343655
+      },
+      {
+        "step": 3,
+        "name": "CV charge",
+        "measurement_rows": 5603,
+        "excel_rows_inclusive": [
+          12475,
+          18077
+        ],
+        "measurement_dates_naive_local": [
+          "2019-09-02T22:38:45.918000",
+          "2019-09-03T00:12:07.816000"
+        ],
+        "test_time_range_s": [
+          12472.767240000001,
+          18074.66534
+        ],
+        "commanded_step_time_range_s": [
+          1.0008,
+          5602.8989
+        ],
+        "observed_duration_s": 5601.8980999999985,
+        "inferred_commanded_step_start_test_time_s": 12471.76644,
+        "clock_relation_max_deviation_s": 3.637978807091713e-12,
+        "backwards_step_clock_intervals": 0,
+        "negative_step_clock_records": 0,
+        "native_interval_s": {
+          "min": 0.8976999999977124,
+          "median": 0.9997000000003027,
+          "max": 1.0015000000021246
+        },
+        "exact_duplicate_times": 0,
+        "duplicate_time_conflicts": 0,
+        "current_a": {
+          "min": 0.049991440027952194,
+          "max": 1.6279021501541138,
+          "time_weighted_mean": 0.5586023196966304
+        },
+        "endpoint_voltage_v": [
+          4.200072288513184,
+          4.20001745223999
+        ],
+        "surface_temperature_c": {
+          "initial": 26.00993537902832,
+          "final": 25.193572998046875,
+          "min": 25.148279190063477,
+          "max": 26.92363739013672
+        },
+        "signed_observed_charge_ah": 0.8692314648233739
+      },
+      {
+        "step": 4,
+        "name": "pre-discharge rest",
+        "measurement_rows": 3601,
+        "excel_rows_inclusive": [
+          18078,
+          21678
+        ],
+        "measurement_dates_naive_local": [
+          "2019-09-03T00:12:08.855000",
+          "2019-09-03T01:12:07.857000"
+        ],
+        "test_time_range_s": [
+          18075.70552,
+          21674.70662
+        ],
+        "commanded_step_time_range_s": [
+          0.9998,
+          3600.0009
+        ],
+        "observed_duration_s": 3599.0011000000013,
+        "inferred_commanded_step_start_test_time_s": 18074.70572,
+        "clock_relation_max_deviation_s": 3.637978807091713e-12,
+        "backwards_step_clock_intervals": 0,
+        "negative_step_clock_records": 0,
+        "native_interval_s": {
+          "min": 0.0008999999990919605,
+          "median": 1.0,
+          "max": 1.0012000000024273
+        },
+        "exact_duplicate_times": 0,
+        "duplicate_time_conflicts": 0,
+        "current_a": {
+          "min": 0.0,
+          "max": 0.0,
+          "time_weighted_mean": 0.0
+        },
+        "endpoint_voltage_v": [
+          4.196846008300781,
+          4.186448097229004
+        ],
+        "surface_temperature_c": {
+          "initial": 25.194759368896484,
+          "final": 25.18794059753418,
+          "min": 25.009811401367188,
+          "max": 25.262968063354492
+        },
+        "signed_observed_charge_ah": 0.0
+      },
+      {
+        "step": 5,
+        "name": "constant-current discharge",
+        "measurement_rows": 3391,
+        "excel_rows_inclusive": [
+          21679,
+          25069
+        ],
+        "measurement_dates_naive_local": [
+          "2019-09-03T01:12:08.903000",
+          "2019-09-03T02:08:38.300000"
+        ],
+        "test_time_range_s": [
+          21675.7522,
+          25065.148400000002
+        ],
+        "commanded_step_time_range_s": [
+          1.0006,
+          3390.3968
+        ],
+        "observed_duration_s": 3389.396200000003,
+        "inferred_commanded_step_start_test_time_s": 21674.7516,
+        "clock_relation_max_deviation_s": 3.637978807091713e-12,
+        "backwards_step_clock_intervals": 0,
+        "negative_step_clock_records": 0,
+        "native_interval_s": {
+          "min": 0.3963000000003376,
+          "median": 1.0,
+          "max": 1.001299999999901
+        },
+        "exact_duplicate_times": 0,
+        "duplicate_time_conflicts": 0,
+        "current_a": {
+          "min": -5.000385761260986,
+          "max": -5.000240325927734,
+          "time_weighted_mean": -5.000325282873757
+        },
+        "endpoint_voltage_v": [
+          3.8799378871917725,
+          2.49998140335083
+        ],
+        "surface_temperature_c": {
+          "initial": 25.18794059753418,
+          "final": 31.138418197631836,
+          "min": 25.18794059753418,
+          "max": 31.163291931152344
+        },
+        "signed_observed_charge_ah": -4.707800975704515
+      },
+      {
+        "step": 6,
+        "name": "post-discharge rest",
+        "measurement_rows": 3601,
+        "excel_rows_inclusive": [
+          25070,
+          28670
+        ],
+        "measurement_dates_naive_local": [
+          "2019-09-03T02:08:39.438000",
+          "2019-09-03T03:08:38.439000"
+        ],
+        "test_time_range_s": [
+          25066.287480000003,
+          28665.28828
+        ],
+        "commanded_step_time_range_s": [
+          1.0,
+          3600.0008
+        ],
+        "observed_duration_s": 3599.000799999998,
+        "inferred_commanded_step_start_test_time_s": 25065.287480000003,
+        "clock_relation_max_deviation_s": 3.637978807091713e-12,
+        "backwards_step_clock_intervals": 0,
+        "negative_step_clock_records": 0,
+        "native_interval_s": {
+          "min": 0.0010000000002037268,
+          "median": 1.0,
+          "max": 1.0015999999995984
+        },
+        "exact_duplicate_times": 0,
+        "duplicate_time_conflicts": 0,
+        "current_a": {
+          "min": 0.0,
+          "max": 0.0,
+          "time_weighted_mean": 0.0
+        },
+        "endpoint_voltage_v": [
+          2.8482704162597656,
+          3.061777353286743
+        ],
+        "surface_temperature_c": {
+          "initial": 31.138418197631836,
+          "final": 25.35819435119629,
+          "min": 25.35660171508789,
+          "max": 31.169395446777344
+        },
+        "signed_observed_charge_ah": 0.0
+      }
+    ],
+    "discharge": {
+      "unobserved_initial_interval_s": 1.0006,
+      "recorded_current_a": -5.000325282873757,
+      "observed_discharge_charge_ah": 4.707800975704515,
+      "protocol_inferred_initial_charge_if_constant_current_ah": 0.001389812632789856,
+      "initial_charge_note": "Conditional estimate, not a measured interval or rigorous bound; not used as a passing gate.",
+      "prior_high_rate_exposure": "Unresolved: this workbook does not establish order relative to other experiments."
+    },
+    "date_warning": "Measurement timestamps are naive local values; workbook creation and repository upload dates are different metadata.",
+    "source_clock_policy": "Preserve Step_Time(s); model comparison must start on the actually observed common interval.",
+    "model_runs": 0,
+    "independent_validation_established": false,
+    "max_date_test_clock_discrepancy_s": 0.002419999997073319
+  },
+  "pre_rest_skin_baseline_c": 25.193472589764806,
+  "baseline_interval_s": [
+    3000.0009,
+    3600.0009
+  ],
+  "recorded_post_rest_endpoint_skin_c": [
+    31.138418197631836,
+    25.35819435119629
+  ],
+  "previously_viewed_cell": true,
+  "blind_validation": false,
+  "cross_cell_check_excluded_from_k2_rate_calibration": true,
+  "new_downloads": 0,
+  "new_electrochemical_solves": 0,
+  "k1_fitting_performed": false,
+  "independent_thermal_validation": false,
+  "physical_parameter_update": false,
+  "source_attribution": "Catenaro and Onori, DOI10.17632/kxsbr4x3j2.2, CC BY4.0",
+  "prior": {
+    "h_w_m2_k": 15.0,
+    "cooling_area_m2": 0.00531,
+    "heat_capacity_j_k_at_298_15k": 60.57806621645372,
+    "rate_per_s": 0.0013148323308208559,
+    "tau_s": 760.5532481663996,
+    "pybamm_version": "26.9.0.0",
+    "meaning": "Frozen constant-capacity zero-heat-source analytic approximation"
+  },
+  "scenarios": {
+    "nominal_25c": {
+      "transferred_parameters": {
+        "rate_per_s": 0.0028964022631637536,
+        "tau_s": 345.2559103125736,
+        "baseline_c": 25.0,
+        "anchor_temperature_c": 30.58517587811571,
+        "anchor_time_s": 60.0
+      },
+      "k1_fitting_performed": false,
+      "windows": {
+        "early_check": {
+          "transferred_decay": {
+            "interval_s": [
+              60.0,
+              600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.23221660280897097,
+            "rmse_k": 0.48188857924728923,
+            "maximum_absolute_error_k": 0.6521866068712825,
+            "mean_signed_error_k": -0.4526240341650216,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "frozen_prior": {
+            "interval_s": [
+              60.0,
+              600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.6045191418647387,
+            "rmse_k": 0.777508290544055,
+            "maximum_absolute_error_k": 1.0329004965998436,
+            "mean_signed_error_k": 0.7227063711968886,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "persistence": {
+            "interval_s": [
+              60.0,
+              600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 6.531001574874125,
+            "rmse_k": 2.5555824335900663,
+            "maximum_absolute_error_k": 3.8445962730131704,
+            "mean_signed_error_k": 2.3089460325824054,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": false,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          }
+        },
+        "middle_check": {
+          "transferred_decay": {
+            "interval_s": [
+              600.0,
+              1800.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.4322678671815234,
+            "rmse_k": 0.6574708108969731,
+            "maximum_absolute_error_k": 1.43884017141216,
+            "mean_signed_error_k": -0.6281395272301911,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "frozen_prior": {
+            "interval_s": [
+              600.0,
+              1800.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.3225894660478015,
+            "rmse_k": 0.5679695995806479,
+            "maximum_absolute_error_k": 1.1757250485608743,
+            "mean_signed_error_k": 0.42703631947948006,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "persistence": {
+            "interval_s": [
+              600.0,
+              1800.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 21.574496026013847,
+            "rmse_k": 4.644835414308439,
+            "maximum_absolute_error_k": 4.9703992667875845,
+            "mean_signed_error_k": 4.631135374922584,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": false,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          }
+        },
+        "late_check": {
+          "transferred_decay": {
+            "interval_s": [
+              1800.0,
+              3600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.32833077642163533,
+            "rmse_k": 0.5730015501040423,
+            "maximum_absolute_error_k": 0.7061231334620643,
+            "mean_signed_error_k": -0.5664176028759538,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "frozen_prior": {
+            "interval_s": [
+              1800.0,
+              3600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.1330433595205428,
+            "rmse_k": 0.36475109255565336,
+            "maximum_absolute_error_k": 0.465525368066551,
+            "mean_signed_error_k": -0.35627659162720005,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "persistence": {
+            "interval_s": [
+              1800.0,
+              3600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 25.127320207836327,
+            "rmse_k": 5.012715851495707,
+            "maximum_absolute_error_k": 5.228574163027819,
+            "mean_signed_error_k": 5.011858989383938,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": false,
+              "maximum_5k": false
+            },
+            "independent_thermal_validation": false
+          }
+        }
+      },
+      "quadrature_max_mse_difference_k2": 7.105427357601002e-15,
+      "improves_both_comparators_in_all_three_windows": false,
+      "physical_parameter_identification": false
+    },
+    "preceding_rest_skin_proxy": {
+      "transferred_parameters": {
+        "rate_per_s": 0.0024869178820442666,
+        "tau_s": 402.1041495660452,
+        "baseline_c": 25.193472589764806,
+        "anchor_temperature_c": 30.58517587811571,
+        "anchor_time_s": 60.0
+      },
+      "k1_fitting_performed": false,
+      "windows": {
+        "early_check": {
+          "transferred_decay": {
+            "interval_s": [
+              60.0,
+              600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.016038506332155138,
+            "rmse_k": 0.1266432245805323,
+            "maximum_absolute_error_k": 0.22067056526265816,
+            "mean_signed_error_k": -0.11608675134037022,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "frozen_prior": {
+            "interval_s": [
+              60.0,
+              600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.7033948425713713,
+            "rmse_k": 0.8386863791497816,
+            "maximum_absolute_error_k": 1.1289373715497746,
+            "mean_signed_error_k": 0.7776543087324641,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "persistence": {
+            "interval_s": [
+              60.0,
+              600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 6.531001574874125,
+            "rmse_k": 2.5555824335900663,
+            "maximum_absolute_error_k": 3.8445962730131704,
+            "mean_signed_error_k": 2.3089460325824054,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": false,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          }
+        },
+        "middle_check": {
+          "transferred_decay": {
+            "interval_s": [
+              600.0,
+              1800.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.13869036943799037,
+            "rmse_k": 0.37241155921640023,
+            "maximum_absolute_error_k": 1.0880380106413945,
+            "mean_signed_error_k": -0.31273656217711204,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "frozen_prior": {
+            "interval_s": [
+              600.0,
+              1800.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.45500875486522036,
+            "rmse_k": 0.6745433676682474,
+            "maximum_absolute_error_k": 1.2999110377138514,
+            "mean_signed_error_k": 0.5726678894845348,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "persistence": {
+            "interval_s": [
+              600.0,
+              1800.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 21.574496026013847,
+            "rmse_k": 4.644835414308439,
+            "maximum_absolute_error_k": 4.9703992667875845,
+            "mean_signed_error_k": 4.631135374922584,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": false,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          }
+        },
+        "late_check": {
+          "transferred_decay": {
+            "interval_s": [
+              1800.0,
+              3600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.139012343646913,
+            "rmse_k": 0.37284359139847506,
+            "maximum_absolute_error_k": 0.49840904085658977,
+            "mean_signed_error_k": -0.3641215313368502,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "frozen_prior": {
+            "interval_s": [
+              1800.0,
+              3600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 0.034531264529408995,
+            "rmse_k": 0.18582589843562977,
+            "maximum_absolute_error_k": 0.27834102156629115,
+            "mean_signed_error_k": -0.17032235925713243,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": true,
+              "maximum_5k": true
+            },
+            "independent_thermal_validation": false
+          },
+          "persistence": {
+            "interval_s": [
+              1800.0,
+              3600.0
+            ],
+            "coverage_fraction": 1.0,
+            "mse_k2": 25.127320207836327,
+            "rmse_k": 5.012715851495707,
+            "maximum_absolute_error_k": 5.228574163027819,
+            "mean_signed_error_k": 5.011858989383938,
+            "historical_thermal_proxy_gates": {
+              "rmse_2k": false,
+              "maximum_5k": false
+            },
+            "independent_thermal_validation": false
+          }
+        }
+      },
+      "quadrature_max_mse_difference_k2": 7.105427357601002e-15,
+      "improves_both_comparators_in_all_three_windows": false,
+      "physical_parameter_identification": false
+    }
+  },
+  "prediction_csv_sha256": "7d8d7ee64206573fd9ad693ea5ba16fef08baa47545b8b6d42570359a50375a2",
+  "elapsed_s": 1.1108169110011659
+}

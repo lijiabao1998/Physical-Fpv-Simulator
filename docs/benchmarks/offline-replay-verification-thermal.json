@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "receipt_sha256": "3372b857d7f4ac0c50d2687f3aecd4257c2561e1dc6eb28812fde45e3bc48445",
+  "input_zip_sha256": "96a8b3b53efda7dcd3972087612aa6025d2f33745b6389b1b37527fe5a555858",
+  "output_zip_sha256": "6e2d76364adcdc28f3761fb2ac7122065d7f9c6994455e33013a5c1d80cd5cb6",
+  "integrity": "verified_against_receipt",
+  "trust_anchor": "caller-supplied receipt; no signature or remote CI verification",
+  "case": "thermal",
+  "source_commit_sha": "744794b02d44bcbfc702ad8e5c403782128d11b0",
+  "source_ci_run_id": 37887926852,
+  "input_files_verified": 34,
+  "output_files_verified": 10,
+  "numerical": {
+    "voltage_max_difference_v": 0.003320930016940782,
+    "temperature_max_difference_k": 0.018017713128813284,
+    "capacity_relative_difference": 3.4459850598625345e-05,
+    "passed": true
+  },
+  "empirical": {
+    "passed": null,
+    "reason": "No empirical comparison in this representative numerical replay"
+  },
+  "physical_audits": "recorded flags; internal states are not reconstructed",
+  "metric_reproduction_tolerance": {
+    "relative": 1e-11,
+    "absolute": 1e-12
+  },
+  "new_solver_runs": 0,
+  "new_downloads": 0
+}

@@ -1,0 +1,1065 @@
+{
+  "purpose": "No-solve published-representation and sampled-support audit; not new acceptance gates",
+  "manifest_sha256": "048c7c6b50ba057a74533d670767aa7880ac9bfca641bb8f26ad535a91b1379c",
+  "original_archive_sha256": "1c5052e8af198429c29b6784681e7b1b7d8a4e48dfca03c6fc23df639ce084de",
+  "installed_parameter_source_sha256": "c0c8111cb37fd4e79726f17e0d02f0aaac6d06532060a677efb5743c92a0b259",
+  "saved_evidence_sha256": "0e51f42778c4b0b2c21064e3e10c4b7d2af86f5ef8d7690e1563c6c470d6e38b",
+  "saved_execution_commit": "da65a9e9ce3498b9b7b185d49a79181a67234da0",
+  "source_sha256": {
+    "src/physical_fpv/parameter_support.py": "a5d172ef4ba28d20569e956d535faad58cdaf5219e9f6439d2c459693ad5d905",
+    "scripts/audit_oregan_parameter_support.py": "bdd869d62a2f04e8779bedf7e9447a8d523a807db27e0a6f445a5eea6f7aaf0f"
+  },
+  "comparison_conditions": {
+    "electrolyte_concentration_mol_m3": 1000.0,
+    "temperature_K": "filename degC + 273.15",
+    "unit_conversion": "released mA cm-2 multiplied by 10 gives A m-2",
+    "residual_definition": "installed fixed function minus released EIS-derived point; does not identify a code error",
+    "model_solve": false,
+    "fit_performed": false
+  },
+  "fixed_function_comparison": {
+    "points": [
+      {
+        "electrode": "negative",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 1.0,
+        "released_exchange_current_a_m2": 0.08936059999999998,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_15deg.csv",
+        "source_sha256": "eb4f4d379d11781e850fa8603ebd094a7c7240b3ffce8b6a5d65e4b6d94843a4",
+        "source_csv_row": 2,
+        "installed_exchange_current_a_m2": 0.0,
+        "installed_minus_released_a_m2": -0.08936059999999998
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.926,
+        "released_exchange_current_a_m2": 0.40721973,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_15deg.csv",
+        "source_sha256": "eb4f4d379d11781e850fa8603ebd094a7c7240b3ffce8b6a5d65e4b6d94843a4",
+        "source_csv_row": 3,
+        "installed_exchange_current_a_m2": 0.8343452216356697,
+        "installed_minus_released_a_m2": 0.4271254916356697
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.83,
+        "released_exchange_current_a_m2": 0.37744551000000004,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_15deg.csv",
+        "source_sha256": "eb4f4d379d11781e850fa8603ebd094a7c7240b3ffce8b6a5d65e4b6d94843a4",
+        "source_csv_row": 4,
+        "installed_exchange_current_a_m2": 0.9095632581744828,
+        "installed_minus_released_a_m2": 0.5321177481744828
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.734,
+        "released_exchange_current_a_m2": 0.40623371999999996,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_15deg.csv",
+        "source_sha256": "eb4f4d379d11781e850fa8603ebd094a7c7240b3ffce8b6a5d65e4b6d94843a4",
+        "source_csv_row": 5,
+        "installed_exchange_current_a_m2": 0.9057249757540862,
+        "installed_minus_released_a_m2": 0.4994912557540862
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.63,
+        "released_exchange_current_a_m2": 0.40330415000000003,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_15deg.csv",
+        "source_sha256": "eb4f4d379d11781e850fa8603ebd094a7c7240b3ffce8b6a5d65e4b6d94843a4",
+        "source_csv_row": 6,
+        "installed_exchange_current_a_m2": 0.8595147969384135,
+        "installed_minus_released_a_m2": 0.45621064693841346
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.542,
+        "released_exchange_current_a_m2": 0.40403258,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_15deg.csv",
+        "source_sha256": "eb4f4d379d11781e850fa8603ebd094a7c7240b3ffce8b6a5d65e4b6d94843a4",
+        "source_csv_row": 7,
+        "installed_exchange_current_a_m2": 0.7975852948548648,
+        "installed_minus_released_a_m2": 0.39355271485486487
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.446,
+        "released_exchange_current_a_m2": 0.40403258,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_15deg.csv",
+        "source_sha256": "eb4f4d379d11781e850fa8603ebd094a7c7240b3ffce8b6a5d65e4b6d94843a4",
+        "source_csv_row": 8,
+        "installed_exchange_current_a_m2": 0.7110709281624557,
+        "installed_minus_released_a_m2": 0.3070383481624557
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.35,
+        "released_exchange_current_a_m2": 0.39922553,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_15deg.csv",
+        "source_sha256": "eb4f4d379d11781e850fa8603ebd094a7c7240b3ffce8b6a5d65e4b6d94843a4",
+        "source_csv_row": 9,
+        "installed_exchange_current_a_m2": 0.6067049708249609,
+        "installed_minus_released_a_m2": 0.2074794408249609
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.24,
+        "released_exchange_current_a_m2": 0.36631993,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_15deg.csv",
+        "source_sha256": "eb4f4d379d11781e850fa8603ebd094a7c7240b3ffce8b6a5d65e4b6d94843a4",
+        "source_csv_row": 10,
+        "installed_exchange_current_a_m2": 0.46486432076499973,
+        "installed_minus_released_a_m2": 0.09854439076499971
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.1585,
+        "released_exchange_current_a_m2": 0.29434128,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_15deg.csv",
+        "source_sha256": "eb4f4d379d11781e850fa8603ebd094a7c7240b3ffce8b6a5d65e4b6d94843a4",
+        "source_csv_row": 11,
+        "installed_exchange_current_a_m2": 0.34184097619622505,
+        "installed_minus_released_a_m2": 0.04749969619622507
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 1.0,
+        "released_exchange_current_a_m2": 0.20985196,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_25deg.csv",
+        "source_sha256": "d8533e95500a4e90691217886a2da0e47ad01370d1138d43b4545192071988cc",
+        "source_csv_row": 2,
+        "installed_exchange_current_a_m2": 0.0,
+        "installed_minus_released_a_m2": -0.20985196
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.926,
+        "released_exchange_current_a_m2": 0.68413806,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_25deg.csv",
+        "source_sha256": "d8533e95500a4e90691217886a2da0e47ad01370d1138d43b4545192071988cc",
+        "source_csv_row": 3,
+        "installed_exchange_current_a_m2": 1.4606357443772942,
+        "installed_minus_released_a_m2": 0.7764976843772942
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.83,
+        "released_exchange_current_a_m2": 0.90593624,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_25deg.csv",
+        "source_sha256": "d8533e95500a4e90691217886a2da0e47ad01370d1138d43b4545192071988cc",
+        "source_csv_row": 4,
+        "installed_exchange_current_a_m2": 1.5923152338038455,
+        "installed_minus_released_a_m2": 0.6863789938038456
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.734,
+        "released_exchange_current_a_m2": 0.91609516,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_25deg.csv",
+        "source_sha256": "d8533e95500a4e90691217886a2da0e47ad01370d1138d43b4545192071988cc",
+        "source_csv_row": 5,
+        "installed_exchange_current_a_m2": 1.585595793990604,
+        "installed_minus_released_a_m2": 0.669500633990604
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.63,
+        "released_exchange_current_a_m2": 0.94617813,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_25deg.csv",
+        "source_sha256": "d8533e95500a4e90691217886a2da0e47ad01370d1138d43b4545192071988cc",
+        "source_csv_row": 6,
+        "installed_exchange_current_a_m2": 1.5046985380562843,
+        "installed_minus_released_a_m2": 0.5585204080562843
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.542,
+        "released_exchange_current_a_m2": 0.97268543,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_25deg.csv",
+        "source_sha256": "d8533e95500a4e90691217886a2da0e47ad01370d1138d43b4545192071988cc",
+        "source_csv_row": 7,
+        "installed_exchange_current_a_m2": 1.3962824507712313,
+        "installed_minus_released_a_m2": 0.4235970207712313
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.446,
+        "released_exchange_current_a_m2": 0.95306084,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_25deg.csv",
+        "source_sha256": "d8533e95500a4e90691217886a2da0e47ad01370d1138d43b4545192071988cc",
+        "source_csv_row": 8,
+        "installed_exchange_current_a_m2": 1.2448271860723263,
+        "installed_minus_released_a_m2": 0.2917663460723263
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.35,
+        "released_exchange_current_a_m2": 0.90688276,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_25deg.csv",
+        "source_sha256": "d8533e95500a4e90691217886a2da0e47ad01370d1138d43b4545192071988cc",
+        "source_csv_row": 9,
+        "installed_exchange_current_a_m2": 1.0621202635295777,
+        "installed_minus_released_a_m2": 0.15523750352957766
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.24,
+        "released_exchange_current_a_m2": 0.82824443,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_25deg.csv",
+        "source_sha256": "d8533e95500a4e90691217886a2da0e47ad01370d1138d43b4545192071988cc",
+        "source_csv_row": 10,
+        "installed_exchange_current_a_m2": 0.8138087515667776,
+        "installed_minus_released_a_m2": -0.014435678433222465
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.1585,
+        "released_exchange_current_a_m2": 0.64118202,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_25deg.csv",
+        "source_sha256": "d8533e95500a4e90691217886a2da0e47ad01370d1138d43b4545192071988cc",
+        "source_csv_row": 11,
+        "installed_exchange_current_a_m2": 0.5984395137377123,
+        "installed_minus_released_a_m2": -0.042742506262287705
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 1.0,
+        "released_exchange_current_a_m2": 0.44302602,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_35deg.csv",
+        "source_sha256": "a7d1a11091bc90ca6eba4cbc9bad9f1853c1ee74757cc390fcf38f1ed9850fc7",
+        "source_csv_row": 2,
+        "installed_exchange_current_a_m2": 0.0,
+        "installed_minus_released_a_m2": -0.44302602
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.926,
+        "released_exchange_current_a_m2": 1.62818092,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_35deg.csv",
+        "source_sha256": "a7d1a11091bc90ca6eba4cbc9bad9f1853c1ee74757cc390fcf38f1ed9850fc7",
+        "source_csv_row": 3,
+        "installed_exchange_current_a_m2": 2.4657769907269276,
+        "installed_minus_released_a_m2": 0.8375960707269277
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.83,
+        "released_exchange_current_a_m2": 1.9195029399999999,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_35deg.csv",
+        "source_sha256": "a7d1a11091bc90ca6eba4cbc9bad9f1853c1ee74757cc390fcf38f1ed9850fc7",
+        "source_csv_row": 4,
+        "installed_exchange_current_a_m2": 2.6880721498236158,
+        "installed_minus_released_a_m2": 0.7685692098236159
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.734,
+        "released_exchange_current_a_m2": 2.01037016,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_35deg.csv",
+        "source_sha256": "a7d1a11091bc90ca6eba4cbc9bad9f1853c1ee74757cc390fcf38f1ed9850fc7",
+        "source_csv_row": 5,
+        "installed_exchange_current_a_m2": 2.676728705610474,
+        "installed_minus_released_a_m2": 0.6663585456104739
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.63,
+        "released_exchange_current_a_m2": 2.40436231,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_35deg.csv",
+        "source_sha256": "a7d1a11091bc90ca6eba4cbc9bad9f1853c1ee74757cc390fcf38f1ed9850fc7",
+        "source_csv_row": 6,
+        "installed_exchange_current_a_m2": 2.540161739435868,
+        "installed_minus_released_a_m2": 0.1357994294358682
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.542,
+        "released_exchange_current_a_m2": 2.59566781,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_35deg.csv",
+        "source_sha256": "a7d1a11091bc90ca6eba4cbc9bad9f1853c1ee74757cc390fcf38f1ed9850fc7",
+        "source_csv_row": 7,
+        "installed_exchange_current_a_m2": 2.3571387684581895,
+        "installed_minus_released_a_m2": -0.23852904154181065
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.446,
+        "released_exchange_current_a_m2": 2.09486908,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_35deg.csv",
+        "source_sha256": "a7d1a11091bc90ca6eba4cbc9bad9f1853c1ee74757cc390fcf38f1ed9850fc7",
+        "source_csv_row": 8,
+        "installed_exchange_current_a_m2": 2.101459069904578,
+        "installed_minus_released_a_m2": 0.00658998990457782
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.35,
+        "released_exchange_current_a_m2": 1.9138723899999999,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_35deg.csv",
+        "source_sha256": "a7d1a11091bc90ca6eba4cbc9bad9f1853c1ee74757cc390fcf38f1ed9850fc7",
+        "source_csv_row": 9,
+        "installed_exchange_current_a_m2": 1.7930217833417312,
+        "installed_minus_released_a_m2": -0.12085060665826863
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.24,
+        "released_exchange_current_a_m2": 1.53815291,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_35deg.csv",
+        "source_sha256": "a7d1a11091bc90ca6eba4cbc9bad9f1853c1ee74757cc390fcf38f1ed9850fc7",
+        "source_csv_row": 10,
+        "installed_exchange_current_a_m2": 1.3738338954049498,
+        "installed_minus_released_a_m2": -0.16431901459505016
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.1585,
+        "released_exchange_current_a_m2": 1.8661002300000002,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_35deg.csv",
+        "source_sha256": "a7d1a11091bc90ca6eba4cbc9bad9f1853c1ee74757cc390fcf38f1ed9850fc7",
+        "source_csv_row": 11,
+        "installed_exchange_current_a_m2": 1.0102576148753333,
+        "installed_minus_released_a_m2": -0.855842615124667
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 1.0,
+        "released_exchange_current_a_m2": 0.88530964,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_45deg.csv",
+        "source_sha256": "4d2209923ae00204a4de194a742b4a7199a3a5de27caafd81f5b2c39cb9e8dfa",
+        "source_csv_row": 2,
+        "installed_exchange_current_a_m2": 0.0,
+        "installed_minus_released_a_m2": -0.88530964
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.926,
+        "released_exchange_current_a_m2": 3.97747808,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_45deg.csv",
+        "source_sha256": "4d2209923ae00204a4de194a742b4a7199a3a5de27caafd81f5b2c39cb9e8dfa",
+        "source_csv_row": 3,
+        "installed_exchange_current_a_m2": 4.0278174293021864,
+        "installed_minus_released_a_m2": 0.05033934930218642
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.83,
+        "released_exchange_current_a_m2": 4.7409095699999995,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_45deg.csv",
+        "source_sha256": "4d2209923ae00204a4de194a742b4a7199a3a5de27caafd81f5b2c39cb9e8dfa",
+        "source_csv_row": 4,
+        "installed_exchange_current_a_m2": 4.390933931575648,
+        "installed_minus_released_a_m2": -0.3499756384243513
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.734,
+        "released_exchange_current_a_m2": 4.9598672399999995,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_45deg.csv",
+        "source_sha256": "4d2209923ae00204a4de194a742b4a7199a3a5de27caafd81f5b2c39cb9e8dfa",
+        "source_csv_row": 5,
+        "installed_exchange_current_a_m2": 4.3724045501750455,
+        "installed_minus_released_a_m2": -0.587462689824954
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.63,
+        "released_exchange_current_a_m2": 4.47196238,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_45deg.csv",
+        "source_sha256": "4d2209923ae00204a4de194a742b4a7199a3a5de27caafd81f5b2c39cb9e8dfa",
+        "source_csv_row": 6,
+        "installed_exchange_current_a_m2": 4.149324032880236,
+        "installed_minus_released_a_m2": -0.3226383471197636
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.542,
+        "released_exchange_current_a_m2": 3.46101899,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_45deg.csv",
+        "source_sha256": "4d2209923ae00204a4de194a742b4a7199a3a5de27caafd81f5b2c39cb9e8dfa",
+        "source_csv_row": 7,
+        "installed_exchange_current_a_m2": 3.8503581834790572,
+        "installed_minus_released_a_m2": 0.3893391934790573
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.446,
+        "released_exchange_current_a_m2": 2.93466996,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_45deg.csv",
+        "source_sha256": "4d2209923ae00204a4de194a742b4a7199a3a5de27caafd81f5b2c39cb9e8dfa",
+        "source_csv_row": 8,
+        "installed_exchange_current_a_m2": 3.432708432497576,
+        "installed_minus_released_a_m2": 0.49803847249757593
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.35,
+        "released_exchange_current_a_m2": 2.8271811000000002,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_45deg.csv",
+        "source_sha256": "4d2209923ae00204a4de194a742b4a7199a3a5de27caafd81f5b2c39cb9e8dfa",
+        "source_csv_row": 9,
+        "installed_exchange_current_a_m2": 2.928879788083849,
+        "installed_minus_released_a_m2": 0.10169868808384885
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.24,
+        "released_exchange_current_a_m2": 2.39574577,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_45deg.csv",
+        "source_sha256": "4d2209923ae00204a4de194a742b4a7199a3a5de27caafd81f5b2c39cb9e8dfa",
+        "source_csv_row": 10,
+        "installed_exchange_current_a_m2": 2.2441413516665376,
+        "installed_minus_released_a_m2": -0.1516044183334624
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.1585,
+        "released_exchange_current_a_m2": 2.21724765,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Negative_Electrode_45deg.csv",
+        "source_sha256": "4d2209923ae00204a4de194a742b4a7199a3a5de27caafd81f5b2c39cb9e8dfa",
+        "source_csv_row": 11,
+        "installed_exchange_current_a_m2": 1.6502438154719403,
+        "installed_minus_released_a_m2": -0.5670038345280597
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.2598,
+        "released_exchange_current_a_m2": 0.72990391,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_15deg.csv",
+        "source_sha256": "631e6bc26dec530fa0c9fb353c9e5ca321a71600d555b2dcda2affef09f23a0e",
+        "source_csv_row": 2,
+        "installed_exchange_current_a_m2": 1.6952767047274953,
+        "installed_minus_released_a_m2": 0.9653727947274953
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.3281,
+        "released_exchange_current_a_m2": 1.2742411100000002,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_15deg.csv",
+        "source_sha256": "631e6bc26dec530fa0c9fb353c9e5ca321a71600d555b2dcda2affef09f23a0e",
+        "source_csv_row": 3,
+        "installed_exchange_current_a_m2": 1.7736303415277144,
+        "installed_minus_released_a_m2": 0.4993892315277142
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.3909,
+        "released_exchange_current_a_m2": 1.2615473499999998,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_15deg.csv",
+        "source_sha256": "631e6bc26dec530fa0c9fb353c9e5ca321a71600d555b2dcda2affef09f23a0e",
+        "source_csv_row": 4,
+        "installed_exchange_current_a_m2": 1.8083293250887351,
+        "installed_minus_released_a_m2": 0.5467819750887353
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.4565,
+        "released_exchange_current_a_m2": 1.18298299,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_15deg.csv",
+        "source_sha256": "631e6bc26dec530fa0c9fb353c9e5ca321a71600d555b2dcda2affef09f23a0e",
+        "source_csv_row": 5,
+        "installed_exchange_current_a_m2": 1.8115071977259227,
+        "installed_minus_released_a_m2": 0.6285242077259228
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.522,
+        "released_exchange_current_a_m2": 1.14242967,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_15deg.csv",
+        "source_sha256": "631e6bc26dec530fa0c9fb353c9e5ca321a71600d555b2dcda2affef09f23a0e",
+        "source_csv_row": 6,
+        "installed_exchange_current_a_m2": 1.7835652513156899,
+        "installed_minus_released_a_m2": 0.6411355813156898
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.5876,
+        "released_exchange_current_a_m2": 1.09438279,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_15deg.csv",
+        "source_sha256": "631e6bc26dec530fa0c9fb353c9e5ca321a71600d555b2dcda2affef09f23a0e",
+        "source_csv_row": 7,
+        "installed_exchange_current_a_m2": 1.7252561646624949,
+        "installed_minus_released_a_m2": 0.6308733746624948
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.6559,
+        "released_exchange_current_a_m2": 0.93609705,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_15deg.csv",
+        "source_sha256": "631e6bc26dec530fa0c9fb353c9e5ca321a71600d555b2dcda2affef09f23a0e",
+        "source_csv_row": 8,
+        "installed_exchange_current_a_m2": 1.6314254383312792,
+        "installed_minus_released_a_m2": 0.6953283883312792
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.7188,
+        "released_exchange_current_a_m2": 0.6624498400000001,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_15deg.csv",
+        "source_sha256": "631e6bc26dec530fa0c9fb353c9e5ca321a71600d555b2dcda2affef09f23a0e",
+        "source_csv_row": 9,
+        "installed_exchange_current_a_m2": 1.5125055777978613,
+        "installed_minus_released_a_m2": 0.8500557377978613
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.7843,
+        "released_exchange_current_a_m2": 0.17584586,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_15deg.csv",
+        "source_sha256": "631e6bc26dec530fa0c9fb353c9e5ca321a71600d555b2dcda2affef09f23a0e",
+        "source_csv_row": 10,
+        "installed_exchange_current_a_m2": 1.3500153928151948,
+        "installed_minus_released_a_m2": 1.1741695328151949
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 288.15,
+        "electrode_stoichiometry": 0.8499,
+        "released_exchange_current_a_m2": 0.04560804,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_15deg.csv",
+        "source_sha256": "631e6bc26dec530fa0c9fb353c9e5ca321a71600d555b2dcda2affef09f23a0e",
+        "source_csv_row": 11,
+        "installed_exchange_current_a_m2": 1.1365327279462571,
+        "installed_minus_released_a_m2": 1.090924687946257
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.2598,
+        "released_exchange_current_a_m2": 1.51895857,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_25deg.csv",
+        "source_sha256": "e5d744607e8e6f4d05f4223caf4fa87e6793d3860a17c2ccbb85feb1f94f4bdc",
+        "source_csv_row": 2,
+        "installed_exchange_current_a_m2": 2.372570237569496,
+        "installed_minus_released_a_m2": 0.8536116675694962
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.3281,
+        "released_exchange_current_a_m2": 2.50945725,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_25deg.csv",
+        "source_sha256": "e5d744607e8e6f4d05f4223caf4fa87e6793d3860a17c2ccbb85feb1f94f4bdc",
+        "source_csv_row": 3,
+        "installed_exchange_current_a_m2": 2.482227561450091,
+        "installed_minus_released_a_m2": -0.02722968854990926
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.3909,
+        "released_exchange_current_a_m2": 2.56596918,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_25deg.csv",
+        "source_sha256": "e5d744607e8e6f4d05f4223caf4fa87e6793d3860a17c2ccbb85feb1f94f4bdc",
+        "source_csv_row": 4,
+        "installed_exchange_current_a_m2": 2.530789412999879,
+        "installed_minus_released_a_m2": -0.03517976700012104
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.4565,
+        "released_exchange_current_a_m2": 2.64807328,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_25deg.csv",
+        "source_sha256": "e5d744607e8e6f4d05f4223caf4fa87e6793d3860a17c2ccbb85feb1f94f4bdc",
+        "source_csv_row": 5,
+        "installed_exchange_current_a_m2": 2.535236902909197,
+        "installed_minus_released_a_m2": -0.11283637709080319
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.522,
+        "released_exchange_current_a_m2": 2.45078852,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_25deg.csv",
+        "source_sha256": "e5d744607e8e6f4d05f4223caf4fa87e6793d3860a17c2ccbb85feb1f94f4bdc",
+        "source_csv_row": 6,
+        "installed_exchange_current_a_m2": 2.4961316463762606,
+        "installed_minus_released_a_m2": 0.04534312637626048
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.5876,
+        "released_exchange_current_a_m2": 2.43635871,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_25deg.csv",
+        "source_sha256": "e5d744607e8e6f4d05f4223caf4fa87e6793d3860a17c2ccbb85feb1f94f4bdc",
+        "source_csv_row": 7,
+        "installed_exchange_current_a_m2": 2.4145270309247264,
+        "installed_minus_released_a_m2": -0.021831679075273502
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.6559,
+        "released_exchange_current_a_m2": 2.2266014100000002,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_25deg.csv",
+        "source_sha256": "e5d744607e8e6f4d05f4223caf4fa87e6793d3860a17c2ccbb85feb1f94f4bdc",
+        "source_csv_row": 8,
+        "installed_exchange_current_a_m2": 2.2832092418923127,
+        "installed_minus_released_a_m2": 0.056607831892312444
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.7188,
+        "released_exchange_current_a_m2": 1.9388728899999998,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_25deg.csv",
+        "source_sha256": "e5d744607e8e6f4d05f4223caf4fa87e6793d3860a17c2ccbb85feb1f94f4bdc",
+        "source_csv_row": 9,
+        "installed_exchange_current_a_m2": 2.1167787583195112,
+        "installed_minus_released_a_m2": 0.17790586831951138
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.7843,
+        "released_exchange_current_a_m2": 1.38735302,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_25deg.csv",
+        "source_sha256": "e5d744607e8e6f4d05f4223caf4fa87e6793d3860a17c2ccbb85feb1f94f4bdc",
+        "source_csv_row": 10,
+        "installed_exchange_current_a_m2": 1.889370822074079,
+        "installed_minus_released_a_m2": 0.5020178020740791
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 298.15,
+        "electrode_stoichiometry": 0.8499,
+        "released_exchange_current_a_m2": 0.43246037000000004,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_25deg.csv",
+        "source_sha256": "e5d744607e8e6f4d05f4223caf4fa87e6793d3860a17c2ccbb85feb1f94f4bdc",
+        "source_csv_row": 11,
+        "installed_exchange_current_a_m2": 1.5905979931355243,
+        "installed_minus_released_a_m2": 1.1581376231355243
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.2598,
+        "released_exchange_current_a_m2": 2.73601327,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_35deg.csv",
+        "source_sha256": "d8ef88f12936b5d1a4a390e33ce258d08ce8f8d8037511578fcf10d43c9008ff",
+        "source_csv_row": 2,
+        "installed_exchange_current_a_m2": 3.2488005789228436,
+        "installed_minus_released_a_m2": 0.5127873089228436
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.3281,
+        "released_exchange_current_a_m2": 3.31807245,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_35deg.csv",
+        "source_sha256": "d8ef88f12936b5d1a4a390e33ce258d08ce8f8d8037511578fcf10d43c9008ff",
+        "source_csv_row": 3,
+        "installed_exchange_current_a_m2": 3.3989562083179754,
+        "installed_minus_released_a_m2": 0.08088375831797556
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.3909,
+        "released_exchange_current_a_m2": 3.51620918,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_35deg.csv",
+        "source_sha256": "d8ef88f12936b5d1a4a390e33ce258d08ce8f8d8037511578fcf10d43c9008ff",
+        "source_csv_row": 4,
+        "installed_exchange_current_a_m2": 3.4654527734903255,
+        "installed_minus_released_a_m2": -0.05075640650967461
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.4565,
+        "released_exchange_current_a_m2": 4.15013249,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_35deg.csv",
+        "source_sha256": "d8ef88f12936b5d1a4a390e33ce258d08ce8f8d8037511578fcf10d43c9008ff",
+        "source_csv_row": 5,
+        "installed_exchange_current_a_m2": 3.47154279669105,
+        "installed_minus_released_a_m2": -0.6785896933089499
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.522,
+        "released_exchange_current_a_m2": 4.50691038,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_35deg.csv",
+        "source_sha256": "d8ef88f12936b5d1a4a390e33ce258d08ce8f8d8037511578fcf10d43c9008ff",
+        "source_csv_row": 6,
+        "installed_exchange_current_a_m2": 3.417995307115661,
+        "installed_minus_released_a_m2": -1.088915072884339
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.5876,
+        "released_exchange_current_a_m2": 4.6540432,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_35deg.csv",
+        "source_sha256": "d8ef88f12936b5d1a4a390e33ce258d08ce8f8d8037511578fcf10d43c9008ff",
+        "source_csv_row": 7,
+        "installed_exchange_current_a_m2": 3.306252726127495,
+        "installed_minus_released_a_m2": -1.347790473872505
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.6559,
+        "released_exchange_current_a_m2": 4.67815741,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_35deg.csv",
+        "source_sha256": "d8ef88f12936b5d1a4a390e33ce258d08ce8f8d8037511578fcf10d43c9008ff",
+        "source_csv_row": 8,
+        "installed_exchange_current_a_m2": 3.1264370552252014,
+        "installed_minus_released_a_m2": -1.5517203547747984
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.7188,
+        "released_exchange_current_a_m2": 4.27007852,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_35deg.csv",
+        "source_sha256": "d8ef88f12936b5d1a4a390e33ce258d08ce8f8d8037511578fcf10d43c9008ff",
+        "source_csv_row": 9,
+        "installed_exchange_current_a_m2": 2.8985409774527566,
+        "installed_minus_released_a_m2": -1.3715375425472436
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.7843,
+        "released_exchange_current_a_m2": 3.20550667,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_35deg.csv",
+        "source_sha256": "d8ef88f12936b5d1a4a390e33ce258d08ce8f8d8037511578fcf10d43c9008ff",
+        "source_csv_row": 10,
+        "installed_exchange_current_a_m2": 2.587147441772796,
+        "installed_minus_released_a_m2": -0.6183592282272041
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 308.15,
+        "electrode_stoichiometry": 0.8499,
+        "released_exchange_current_a_m2": 0.62991933,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_35deg.csv",
+        "source_sha256": "d8ef88f12936b5d1a4a390e33ce258d08ce8f8d8037511578fcf10d43c9008ff",
+        "source_csv_row": 11,
+        "installed_exchange_current_a_m2": 2.178032750771552,
+        "installed_minus_released_a_m2": 1.5481134207715521
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.2598,
+        "released_exchange_current_a_m2": 4.22659409,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_45deg.csv",
+        "source_sha256": "e0d4b505e9836b1d2986435b40efa75f45a22903a83f7a42579841cb9336d282",
+        "source_csv_row": 2,
+        "installed_exchange_current_a_m2": 4.361600878067132,
+        "installed_minus_released_a_m2": 0.13500678806713218
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.3281,
+        "released_exchange_current_a_m2": 3.58384847,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_45deg.csv",
+        "source_sha256": "e0d4b505e9836b1d2986435b40efa75f45a22903a83f7a42579841cb9336d282",
+        "source_csv_row": 3,
+        "installed_exchange_current_a_m2": 4.563188790007751,
+        "installed_minus_released_a_m2": 0.9793403200077511
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.3909,
+        "released_exchange_current_a_m2": 4.3948608,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_45deg.csv",
+        "source_sha256": "e0d4b505e9836b1d2986435b40efa75f45a22903a83f7a42579841cb9336d282",
+        "source_csv_row": 4,
+        "installed_exchange_current_a_m2": 4.652462191067145,
+        "installed_minus_released_a_m2": 0.2576013910671451
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.4565,
+        "released_exchange_current_a_m2": 4.93807491,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_45deg.csv",
+        "source_sha256": "e0d4b505e9836b1d2986435b40efa75f45a22903a83f7a42579841cb9336d282",
+        "source_csv_row": 5,
+        "installed_exchange_current_a_m2": 4.660638208614069,
+        "installed_minus_released_a_m2": -0.27743670138593135
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.522,
+        "released_exchange_current_a_m2": 5.20458391,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_45deg.csv",
+        "source_sha256": "e0d4b505e9836b1d2986435b40efa75f45a22903a83f7a42579841cb9336d282",
+        "source_csv_row": 6,
+        "installed_exchange_current_a_m2": 4.588749284724581,
+        "installed_minus_released_a_m2": -0.6158346252754194
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.5876,
+        "released_exchange_current_a_m2": 5.19491596,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_45deg.csv",
+        "source_sha256": "e0d4b505e9836b1d2986435b40efa75f45a22903a83f7a42579841cb9336d282",
+        "source_csv_row": 7,
+        "installed_exchange_current_a_m2": 4.438731908306524,
+        "installed_minus_released_a_m2": -0.7561840516934764
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.6559,
+        "released_exchange_current_a_m2": 4.68441612,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_45deg.csv",
+        "source_sha256": "e0d4b505e9836b1d2986435b40efa75f45a22903a83f7a42579841cb9336d282",
+        "source_csv_row": 8,
+        "installed_exchange_current_a_m2": 4.197324604581619,
+        "installed_minus_released_a_m2": -0.48709151541838125
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.7188,
+        "released_exchange_current_a_m2": 4.381091,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_45deg.csv",
+        "source_sha256": "e0d4b505e9836b1d2986435b40efa75f45a22903a83f7a42579841cb9336d282",
+        "source_csv_row": 9,
+        "installed_exchange_current_a_m2": 3.891368080389569,
+        "installed_minus_released_a_m2": -0.48972291961043046
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.7843,
+        "released_exchange_current_a_m2": 3.84059935,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_45deg.csv",
+        "source_sha256": "e0d4b505e9836b1d2986435b40efa75f45a22903a83f7a42579841cb9336d282",
+        "source_csv_row": 10,
+        "installed_exchange_current_a_m2": 3.473314006077487,
+        "installed_minus_released_a_m2": -0.367285343922513
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 318.15,
+        "electrode_stoichiometry": 0.8499,
+        "released_exchange_current_a_m2": 1.15801094,
+        "source_path": "data/oregan/kinetics/Exchange_Current_Positive_Electrode_45deg.csv",
+        "source_sha256": "e0d4b505e9836b1d2986435b40efa75f45a22903a83f7a42579841cb9336d282",
+        "source_csv_row": 11,
+        "installed_exchange_current_a_m2": 2.924066690905925,
+        "installed_minus_released_a_m2": 1.7660557509059251
+      }
+    ],
+    "summaries": [
+      {
+        "electrode": "negative",
+        "temperature_k": 288.15,
+        "points": 10,
+        "unweighted_point_rmse_a_m2": 0.3514771247722098,
+        "maximum_absolute_point_error_a_m2": 0.5321177481744828
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 298.15,
+        "points": 10,
+        "unweighted_point_rmse_a_m2": 0.4657225351092284,
+        "maximum_absolute_point_error_a_m2": 0.7764976843772942
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 308.15,
+        "points": 10,
+        "unweighted_point_rmse_a_m2": 0.5274490288077821,
+        "maximum_absolute_point_error_a_m2": 0.855842615124667
+      },
+      {
+        "electrode": "negative",
+        "temperature_k": 318.15,
+        "points": 10,
+        "unweighted_point_rmse_a_m2": 0.4596134539019219,
+        "maximum_absolute_point_error_a_m2": 0.88530964
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 288.15,
+        "points": 10,
+        "unweighted_point_rmse_a_m2": 0.8036958744062854,
+        "maximum_absolute_point_error_a_m2": 1.1741695328151949
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 298.15,
+        "points": 10,
+        "unweighted_point_rmse_a_m2": 0.48724287502298474,
+        "maximum_absolute_point_error_a_m2": 1.1581376231355243
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 308.15,
+        "points": 10,
+        "unweighted_point_rmse_a_m2": 1.03936533410446,
+        "maximum_absolute_point_error_a_m2": 1.5517203547747984
+      },
+      {
+        "electrode": "positive",
+        "temperature_k": 318.15,
+        "points": 10,
+        "unweighted_point_rmse_a_m2": 0.7617524940851135,
+        "maximum_absolute_point_error_a_m2": 1.7660557509059251
+      }
+    ],
+    "fitting_performed": false
+  },
+  "surface_stoichiometry_support": {
+    "negative": {
+      "sampled_stoichiometry_envelope": [
+        0.1585,
+        1.0
+      ],
+      "sampled_temperature_envelope_k": [
+        288.15,
+        318.15
+      ],
+      "recorded_surface_stoichiometry_envelope": [
+        0.038867120148587245,
+        0.9757631071899404
+      ],
+      "below_sampled_stoichiometry": true,
+      "above_sampled_stoichiometry": false,
+      "inside_sampled_stoichiometry_envelope": false,
+      "crossing_times_s": null,
+      "fraction_of_trajectory_outside": null,
+      "full_cell_soc_mapping_established": false,
+      "interpretation": "Envelope of released half-cell stoichiometry points, not a full-cell SOC range or validity guarantee between samples. Saved extrema establish coverage only; crossing times and duration cannot be recovered from extrema."
+    },
+    "positive": {
+      "sampled_stoichiometry_envelope": [
+        0.2598,
+        0.8499
+      ],
+      "sampled_temperature_envelope_k": [
+        288.15,
+        318.15
+      ],
+      "recorded_surface_stoichiometry_envelope": [
+        0.2699700569883126,
+        0.9955771986570516
+      ],
+      "below_sampled_stoichiometry": false,
+      "above_sampled_stoichiometry": true,
+      "inside_sampled_stoichiometry_envelope": false,
+      "crossing_times_s": null,
+      "fraction_of_trajectory_outside": null,
+      "full_cell_soc_mapping_established": false,
+      "interpretation": "Envelope of released half-cell stoichiometry points, not a full-cell SOC range or validity guarantee between samples. Saved extrema establish coverage only; crossing times and duration cannot be recovered from extrema."
+    }
+  },
+  "temperature_only_check": {
+    "ranges": {
+      "surface_measurement_c": [
+        25.18794059753418,
+        31.163291931152344
+      ],
+      "volume_average_prediction_c": [
+        25.18794059753418,
+        36.47891744203747
+      ]
+    },
+    "measurement_domains_c": {
+      "solid_diffusion_measurements": [
+        5.0,
+        45.0
+      ],
+      "exchange_current_measurements": [
+        15.0,
+        45.0
+      ],
+      "heat_capacity_measurements": [
+        25.0,
+        100.0
+      ]
+    },
+    "breaches": [],
+    "inside_all_listed_measurement_domains": true,
+    "note": "measurement domains are not proof of universal model validity"
+  },
+  "additional_positive_conductivity_support": {
+    "nominal_temperature_range_c": [
+      15.0,
+      35.0
+    ],
+    "raw_csv_kelvin_labels": [
+      288,
+      293,
+      298,
+      303,
+      308
+    ],
+    "approximate_positive_stoichiometry_at_preparation": 0.9,
+    "stoichiometry_dependence_measured": false,
+    "source": "Manuscript section1.3.3 Electronic Conductivity, PDF page25; Table8",
+    "model_temperature_range_c": [
+      25.18794059753418,
+      36.47891744203747
+    ],
+    "above_nominal_sampled_temperature": true,
+    "below_nominal_sampled_temperature": false,
+    "crossing_times_s": null,
+    "qualification": "Additional source applicability annotation, not a retrospective gate change. Rounded CSV kelvin labels and paper nominal Celsius settings are both retained."
+  },
+  "saved_empirical_voltage_rmse_v": 0.1914735217065252,
+  "saved_empirical_electrical_gates_passed": false,
+  "new_model_solves": 0,
+  "fitting_performed": false,
+  "interpretation": "The installed functions are reduced fitted representations, not interpolants of the released points. Differences do not by themselves prove a code error or explain the external-cell residual. Temperature coverage alone is not full parameter validation."
+}

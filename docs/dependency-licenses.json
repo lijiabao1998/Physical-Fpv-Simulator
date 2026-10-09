@@ -1,0 +1,255 @@
+[
+  {
+    "package": "anytree",
+    "version": "2.13.0",
+    "declared_license": "Apache-2.0",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "backoff",
+    "version": "2.2.1",
+    "declared_license": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "black",
+    "version": "26.10.0",
+    "declared_license": "MIT",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "casadi",
+    "version": "3.8.1",
+    "declared_license": "LGPL-3.0-or-later",
+    "source": "Installed CasADi3.8.1 METADATA License: GNU Lesser General Public License v3 or later (LGPLv3+)"
+  },
+  {
+    "package": "certifi",
+    "version": "2026.7.22",
+    "declared_license": [
+      "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "charset-normalizer",
+    "version": "3.5.2",
+    "declared_license": "MIT",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "click",
+    "version": "8.5.0",
+    "declared_license": "BSD-3-Clause",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "distro",
+    "version": "1.9.0",
+    "declared_license": [
+      "License :: OSI Approved :: Apache Software License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "idna",
+    "version": "3.20",
+    "declared_license": "BSD-3-Clause",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "iniconfig",
+    "version": "2.3.1",
+    "declared_license": "MIT",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "mpmath",
+    "version": "1.3.0",
+    "declared_license": [
+      "License :: OSI Approved :: BSD License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "mypy_extensions",
+    "version": "1.1.0",
+    "declared_license": "MIT",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "numpy",
+    "version": "2.5.3",
+    "declared_license": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "packaging",
+    "version": "26.3",
+    "declared_license": "Apache-2.0 OR BSD-2-Clause",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "pandas",
+    "version": "3.0.6",
+    "declared_license": [
+      "License :: OSI Approved :: BSD License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "pathspec",
+    "version": "1.1.1",
+    "declared_license": [
+      "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "pip",
+    "version": "25.0.1",
+    "declared_license": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "platformdirs",
+    "version": "4.12.3",
+    "declared_license": "MIT",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "pluggy",
+    "version": "1.6.0",
+    "declared_license": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "pooch",
+    "version": "1.9.0",
+    "declared_license": "BSD-3-Clause",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "posthog",
+    "version": "7.64.1",
+    "declared_license": "MIT",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "pybamm",
+    "version": "26.9.0.0",
+    "declared_license": [
+      "License :: OSI Approved :: BSD License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "pybammsolvers",
+    "version": "0.10.0",
+    "declared_license": "BSD-3-Clause",
+    "source": "Installed pybammsolvers0.10.0 LICENSE, copyright(c)2024 PyBaMM Team; bundled native-library notices are separate"
+  },
+  {
+    "package": "Pygments",
+    "version": "2.21.0",
+    "declared_license": "BSD-2-Clause",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "pytest",
+    "version": "8.4.2",
+    "declared_license": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "python-dateutil",
+    "version": "2.9.0.post0",
+    "declared_license": [
+      "License :: OSI Approved :: BSD License",
+      "License :: OSI Approved :: Apache Software License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "pytokens",
+    "version": "0.4.1",
+    "declared_license": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "PyYAML",
+    "version": "6.0.3",
+    "declared_license": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "requests",
+    "version": "2.34.2",
+    "declared_license": [
+      "License :: OSI Approved :: Apache Software License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "ruff",
+    "version": "0.14.0",
+    "declared_license": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "scipy",
+    "version": "1.18.1",
+    "declared_license": [
+      "License :: OSI Approved :: BSD License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "six",
+    "version": "1.17.0",
+    "declared_license": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "sympy",
+    "version": "1.14.0",
+    "declared_license": [
+      "License :: OSI Approved :: BSD License"
+    ],
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "typing_extensions",
+    "version": "4.16.0",
+    "declared_license": "PSF-2.0",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "urllib3",
+    "version": "2.8.0",
+    "declared_license": "MIT",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  },
+  {
+    "package": "xarray",
+    "version": "2026.9.0",
+    "declared_license": "Apache-2.0",
+    "source": "installed official PyPI distribution metadata; transitive dependency, not relicensed"
+  }
+]

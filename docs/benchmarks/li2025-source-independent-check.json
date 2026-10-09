@@ -1,0 +1,635 @@
+{
+  "bytes": 10776640,
+  "md5": "686c44f88eb26d26956a06c3d144409f",
+  "sha256": "054b6019a110d2928f5abf1420ed13febf57231f6d8abb76a799ef0447765964",
+  "independent_parser": "streaming stdlib Expat; DTD/entity/external declarations rejected",
+  "previous_attempts": [
+    {
+      "parser": "openpyxl",
+      "result": "defusedxml unavailable; stopped before workbook parsing"
+    },
+    {
+      "parser": "openpyxl with Expat preflight",
+      "result": "512 MiB memory limit reached; no completed receipt"
+    }
+  ],
+  "workbooks": [
+    {
+      "name": "Source_Data/Supplementary Figure 10.xlsx",
+      "sha256": "648cfade2a42486664687bf2021990812dfb6951f942e06f1e38c5d6ecce5969",
+      "sheets": [
+        {
+          "sheet": "fig(a)",
+          "member": "xl/worksheets/sheet1.xml",
+          "rows": 1001,
+          "headers": {
+            "A": "sto",
+            "B": "ocp_gr_lith",
+            "C": "ocp_gr_deli",
+            "D": "ocp_gr_chen"
+          },
+          "all_text_cells": [
+            [
+              "A1",
+              "sto"
+            ],
+            [
+              "B1",
+              "ocp_gr_lith"
+            ],
+            [
+              "C1",
+              "ocp_gr_deli"
+            ],
+            [
+              "D1",
+              "ocp_gr_chen"
+            ]
+          ],
+          "formula_count": 0,
+          "columns": {
+            "A": {
+              "numeric_count": 1000,
+              "first_row": 2,
+              "first": 0.0,
+              "min": 0.0,
+              "max": 1.0,
+              "last_row": 1001,
+              "last": 1.0,
+              "missing_rows_within_extent": 0
+            },
+            "B": {
+              "numeric_count": 1000,
+              "first_row": 2,
+              "first": 1.333511891267321,
+              "min": 0.06841000002853774,
+              "max": 1.333511891267321,
+              "last_row": 1001,
+              "last": 0.06841000002853774,
+              "missing_rows_within_extent": 0
+            },
+            "C": {
+              "numeric_count": 1000,
+              "first_row": 2,
+              "first": 1.388332234384479,
+              "min": 0.06982000015865768,
+              "max": 1.388332234384479,
+              "last_row": 1001,
+              "last": 0.06982000015865768,
+              "missing_rows_within_extent": 0
+            },
+            "D": {
+              "numeric_count": 1000,
+              "first_row": 2,
+              "first": 2.383542174008993,
+              "min": 0.09202000004038269,
+              "max": 2.383542174008993,
+              "last_row": 1001,
+              "last": 0.09202000004038269,
+              "missing_rows_within_extent": 0
+            }
+          },
+          "maximum_column_index": 4,
+          "sto_grid_maximum_deviation_from_i_over_999": 1.1102230246251565e-16
+        },
+        {
+          "sheet": "fig(b)",
+          "member": "xl/worksheets/sheet2.xml",
+          "rows": 1001,
+          "headers": {
+            "A": "sto",
+            "B": "ocp_ncm_lith",
+            "C": "ocp_ncm_deli",
+            "D": "ocp_ncm_chen"
+          },
+          "all_text_cells": [
+            [
+              "A1",
+              "sto"
+            ],
+            [
+              "B1",
+              "ocp_ncm_lith"
+            ],
+            [
+              "C1",
+              "ocp_ncm_deli"
+            ],
+            [
+              "D1",
+              "ocp_ncm_chen"
+            ]
+          ],
+          "formula_count": 0,
+          "columns": {
+            "A": {
+              "numeric_count": 1000,
+              "first_row": 2,
+              "first": 0.0,
+              "min": 0.0,
+              "max": 1.0,
+              "last_row": 1001,
+              "last": 1.0,
+              "missing_rows_within_extent": 0
+            },
+            "B": {
+              "numeric_count": 1000,
+              "first_row": 2,
+              "first": 4.724498917992822,
+              "min": 3.502010006998654,
+              "max": 4.724498917992822,
+              "last_row": 1001,
+              "last": 3.502010006998654,
+              "missing_rows_within_extent": 0
+            },
+            "C": {
+              "numeric_count": 1000,
+              "first_row": 2,
+              "first": 4.726132522569184,
+              "min": 3.515080006928594,
+              "max": 4.726132522569184,
+              "last_row": 1001,
+              "last": 3.515080006928594,
+              "missing_rows_within_extent": 0
+            },
+            "D": {
+              "numeric_count": 1000,
+              "first_row": 2,
+              "first": 4.678509914508123,
+              "min": 3.487300008076588,
+              "max": 4.678509914508123,
+              "last_row": 1001,
+              "last": 3.487300008076588,
+              "missing_rows_within_extent": 0
+            }
+          },
+          "maximum_column_index": 4,
+          "sto_grid_maximum_deviation_from_i_over_999": 1.1102230246251565e-16
+        },
+        {
+          "sheet": "fig(c)",
+          "member": "xl/worksheets/sheet3.xml",
+          "rows": 1001,
+          "headers": {
+            "A": "sto",
+            "B": "dUdT_gr"
+          },
+          "all_text_cells": [
+            [
+              "A1",
+              "sto"
+            ],
+            [
+              "B1",
+              "dUdT_gr"
+            ]
+          ],
+          "formula_count": 0,
+          "columns": {
+            "A": {
+              "numeric_count": 1000,
+              "first_row": 2,
+              "first": 0.0,
+              "min": 0.0,
+              "max": 1.0,
+              "last_row": 1001,
+              "last": 1.0,
+              "missing_rows_within_extent": 0
+            },
+            "B": {
+              "numeric_count": 1000,
+              "first_row": 2,
+              "first": 0.1089425604209965,
+              "min": -0.08206,
+              "max": 0.3760341098943539,
+              "last_row": 1001,
+              "last": -0.08206,
+              "missing_rows_within_extent": 0
+            }
+          },
+          "maximum_column_index": 2,
+          "sto_grid_maximum_deviation_from_i_over_999": 1.1102230246251565e-16
+        },
+        {
+          "sheet": "fig(d)",
+          "member": "xl/worksheets/sheet4.xml",
+          "rows": 1001,
+          "headers": {
+            "A": "sto",
+            "B": "dUdT_ncm"
+          },
+          "all_text_cells": [
+            [
+              "A1",
+              "sto"
+            ],
+            [
+              "B1",
+              "dUdT_ncm"
+            ]
+          ],
+          "formula_count": 0,
+          "columns": {
+            "A": {
+              "numeric_count": 1000,
+              "first_row": 2,
+              "first": 0.0,
+              "min": 0.0,
+              "max": 1.0,
+              "last_row": 1001,
+              "last": 1.0,
+              "missing_rows_within_extent": 0
+            },
+            "B": {
+              "numeric_count": 1000,
+              "first_row": 2,
+              "first": -9.229580307151764e-15,
+              "min": -0.06655951808897578,
+              "max": 0.0400502342758326,
+              "last_row": 1001,
+              "last": -0.01125341847616242,
+              "missing_rows_within_extent": 0
+            }
+          },
+          "maximum_column_index": 2,
+          "sto_grid_maximum_deviation_from_i_over_999": 1.1102230246251565e-16
+        }
+      ]
+    },
+    {
+      "name": "Source_Data/Supplementary Figure 14.xlsx",
+      "sha256": "02f1391a4bed086d8bb6b41ff1f39291040937cebc97f637251b64cf63861cdf",
+      "sheets": [
+        {
+          "sheet": "fig(a)",
+          "member": "xl/worksheets/sheet1.xml",
+          "rows": 123194,
+          "headers": {
+            "A": "Time_h_Experiment",
+            "B": "Voltage_V_Experiment",
+            "C": "Time_h_Model",
+            "D": "Voltage_V_Model"
+          },
+          "all_text_cells": [
+            [
+              "A1",
+              "Time_h_Experiment"
+            ],
+            [
+              "B1",
+              "Voltage_V_Experiment"
+            ],
+            [
+              "C1",
+              "Time_h_Model"
+            ],
+            [
+              "D1",
+              "Voltage_V_Model"
+            ]
+          ],
+          "formula_count": 0,
+          "columns": {
+            "A": {
+              "numeric_count": 123193,
+              "first_row": 2,
+              "first": 0.0,
+              "min": 0.0,
+              "max": 31.87233766666666,
+              "last_row": 123194,
+              "last": 31.87233766666666,
+              "missing_rows_within_extent": 0
+            },
+            "B": {
+              "numeric_count": 123193,
+              "first_row": 2,
+              "first": 4.1843,
+              "min": 2.4999,
+              "max": 4.1843,
+              "last_row": 123194,
+              "last": 3.1506,
+              "missing_rows_within_extent": 0
+            },
+            "C": {
+              "numeric_count": 108188,
+              "first_row": 2,
+              "first": -1.544453917869122,
+              "min": -1.544453917869122,
+              "max": 25.83873122232825,
+              "last_row": 108189,
+              "last": 25.83873122232825,
+              "missing_rows_within_extent": 0
+            },
+            "D": {
+              "numeric_count": 108188,
+              "first_row": 2,
+              "first": 4.114775974727857,
+              "min": 2.500009999999776,
+              "max": 4.200000000000236,
+              "last_row": 108189,
+              "last": 3.143556792311377,
+              "missing_rows_within_extent": 0
+            }
+          },
+          "maximum_column_index": 4,
+          "paired_experimental_row_mismatch_count": 0,
+          "paired_model_row_mismatch_count": 0,
+          "experimental_timestamp_spacing_seconds": {
+            "meaning": "Workbook timestamp differences, not instrument sampling/latency or synchronization",
+            "count": 123192,
+            "negative_count": 0,
+            "zero_count": 0,
+            "min": 0.0019999999736342033,
+            "max": 10.000100000016232,
+            "median": 1.0000000000001563,
+            "first": 0.134,
+            "within_one_microsecond_of_0_1_count": 30845,
+            "frequency_rounded_to_microsecond": [
+              [
+                0.002,
+                51
+              ],
+              [
+                0.034,
+                1
+              ],
+              [
+                0.038,
+                2
+              ],
+              [
+                0.04,
+                9
+              ],
+              [
+                0.042,
+                11
+              ],
+              [
+                0.044,
+                3
+              ],
+              [
+                0.066,
+                1
+              ],
+              [
+                0.088,
+                1
+              ],
+              [
+                0.096,
+                22
+              ],
+              [
+                0.1,
+                30845
+              ],
+              [
+                0.1001,
+                2
+              ],
+              [
+                0.13,
+                8
+              ],
+              [
+                0.132,
+                10
+              ],
+              [
+                0.134,
+                3
+              ],
+              [
+                0.136,
+                4
+              ],
+              [
+                0.956,
+                3
+              ],
+              [
+                0.958,
+                11
+              ],
+              [
+                0.96,
+                9
+              ],
+              [
+                0.962,
+                2
+              ],
+              [
+                0.998,
+                1
+              ],
+              [
+                1.0,
+                89962
+              ],
+              [
+                1.0001,
+                72
+              ],
+              [
+                10.0,
+                2137
+              ],
+              [
+                10.0001,
+                22
+              ]
+            ]
+          }
+        },
+        {
+          "sheet": "fig(b)",
+          "member": "xl/worksheets/sheet2.xml",
+          "rows": 140783,
+          "headers": {
+            "A": "Time_h_Experiment",
+            "B": "Voltage_V_Experiment",
+            "C": "Time_h_Model",
+            "D": "Voltage_V_Model"
+          },
+          "all_text_cells": [
+            [
+              "A1",
+              "Time_h_Experiment"
+            ],
+            [
+              "B1",
+              "Voltage_V_Experiment"
+            ],
+            [
+              "C1",
+              "Time_h_Model"
+            ],
+            [
+              "D1",
+              "Voltage_V_Model"
+            ]
+          ],
+          "formula_count": 0,
+          "columns": {
+            "A": {
+              "numeric_count": 140782,
+              "first_row": 2,
+              "first": 0.0,
+              "min": 0.0,
+              "max": 32.36093447222223,
+              "last_row": 140783,
+              "last": 32.36093447222223,
+              "missing_rows_within_extent": 0
+            },
+            "B": {
+              "numeric_count": 140782,
+              "first_row": 2,
+              "first": 4.1838,
+              "min": 2.4998,
+              "max": 4.1838,
+              "last_row": 140783,
+              "last": 3.0533,
+              "missing_rows_within_extent": 0
+            },
+            "C": {
+              "numeric_count": 125462,
+              "first_row": 2,
+              "first": -1.564453917869208,
+              "min": -1.564453917869208,
+              "max": 26.29859960135244,
+              "last_row": 125463,
+              "last": 26.29859960135244,
+              "missing_rows_within_extent": 0
+            },
+            "D": {
+              "numeric_count": 125462,
+              "first_row": 2,
+              "first": 4.114775974727857,
+              "min": 2.500009999999939,
+              "max": 4.200000000000141,
+              "last_row": 125463,
+              "last": 3.047902100000746,
+              "missing_rows_within_extent": 0
+            }
+          },
+          "maximum_column_index": 4,
+          "paired_experimental_row_mismatch_count": 0,
+          "paired_model_row_mismatch_count": 0,
+          "experimental_timestamp_spacing_seconds": {
+            "meaning": "Workbook timestamp differences, not instrument sampling/latency or synchronization",
+            "count": 140781,
+            "negative_count": 0,
+            "zero_count": 0,
+            "min": 0.0019999999736342033,
+            "max": 10.000100000016232,
+            "median": 1.0000000000000564,
+            "first": 0.13200000000000003,
+            "within_one_microsecond_of_0_1_count": 48431,
+            "frequency_rounded_to_microsecond": [
+              [
+                0.002,
+                51
+              ],
+              [
+                0.04,
+                4
+              ],
+              [
+                0.042,
+                19
+              ],
+              [
+                0.044,
+                2
+              ],
+              [
+                0.086,
+                1
+              ],
+              [
+                0.088,
+                1
+              ],
+              [
+                0.092,
+                1
+              ],
+              [
+                0.094,
+                20
+              ],
+              [
+                0.096,
+                2
+              ],
+              [
+                0.1,
+                48431
+              ],
+              [
+                0.1001,
+                5
+              ],
+              [
+                0.128,
+                1
+              ],
+              [
+                0.13,
+                3
+              ],
+              [
+                0.132,
+                10
+              ],
+              [
+                0.134,
+                9
+              ],
+              [
+                0.136,
+                2
+              ],
+              [
+                0.956,
+                2
+              ],
+              [
+                0.958,
+                19
+              ],
+              [
+                0.96,
+                4
+              ],
+              [
+                0.998,
+                1
+              ],
+              [
+                1.0,
+                89961
+              ],
+              [
+                1.0001,
+                73
+              ],
+              [
+                10.0,
+                2136
+              ],
+              [
+                10.0001,
+                23
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "elapsed_seconds": 5.388082418998238
+}

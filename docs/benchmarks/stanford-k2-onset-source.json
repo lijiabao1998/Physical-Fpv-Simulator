@@ -1,0 +1,374 @@
+{
+  "original_source": {
+    "filename": "NMC_k2_0_05C_25degC.xlsx",
+    "bytes": 6029678,
+    "sha256": "6bfaeb45fe90b76b6bd5973f0cb481b5d42db81cd2729e9be44121b44296d174",
+    "inflated_bytes": 34361075
+  },
+  "dataset_doi": "10.17632/kxsbr4x3j2.2",
+  "license": "CC-BY-4.0",
+  "authors": [
+    "Edoardo Catenaro",
+    "Simona Onori"
+  ],
+  "source_inspection": {
+    "measurement_rows": 91415,
+    "canonical_six_step_sequence": true,
+    "contiguous_steps": [
+      {
+        "step": 1,
+        "name": "thermal rest",
+        "measurement_rows": 3601,
+        "excel_rows_inclusive": [
+          2,
+          3602
+        ],
+        "measurement_dates_naive_local": [
+          "2019-08-30T20:17:42.632000",
+          "2019-08-30T21:17:41.632000"
+        ],
+        "test_time_range_s": [
+          1.0004,
+          3600.0013
+        ],
+        "commanded_step_time_range_s": [
+          1.0,
+          3600.0009
+        ],
+        "observed_duration_s": 3599.0009,
+        "inferred_commanded_step_start_test_time_s": 0.0003999999998995918,
+        "clock_relation_max_deviation_s": 4.547473508864641e-13,
+        "backwards_step_clock_intervals": 0,
+        "negative_step_clock_records": 0,
+        "native_interval_s": {
+          "min": 0.0009999999997489795,
+          "median": 1.0,
+          "max": 1.0013000000001284
+        },
+        "exact_duplicate_times": 0,
+        "duplicate_time_conflicts": 0,
+        "current_a": {
+          "min": 0.0,
+          "max": 0.0,
+          "time_weighted_mean": 0.0
+        },
+        "endpoint_voltage_v": [
+          3.5902462005615234,
+          3.5903096199035645
+        ],
+        "surface_temperature_c": {
+          "initial": 24.55451202392578,
+          "final": 24.338695526123047,
+          "min": 24.26143455505371,
+          "max": 24.7676944732666
+        },
+        "signed_observed_charge_ah": 0.0
+      },
+      {
+        "step": 2,
+        "name": "CC charge",
+        "measurement_rows": 6105,
+        "excel_rows_inclusive": [
+          3603,
+          9707
+        ],
+        "measurement_dates_naive_local": [
+          "2019-08-30T21:17:42.680000",
+          "2019-08-30T22:59:25.749000"
+        ],
+        "test_time_range_s": [
+          3601.0485959999996,
+          9704.118196
+        ],
+        "commanded_step_time_range_s": [
+          1.0001,
+          6104.0697
+        ],
+        "observed_duration_s": 6103.0696,
+        "inferred_commanded_step_start_test_time_s": 3600.048496,
+        "clock_relation_max_deviation_s": 1.3642420526593924e-12,
+        "backwards_step_clock_intervals": 0,
+        "negative_step_clock_records": 0,
+        "native_interval_s": {
+          "min": 0.06849999999940337,
+          "median": 1.0,
+          "max": 1.0014000000010128
+        },
+        "exact_duplicate_times": 0,
+        "duplicate_time_conflicts": 0,
+        "current_a": {
+          "min": 1.6253671646118164,
+          "max": 1.6254568099975586,
+          "time_weighted_mean": 1.6254086256332072
+        },
+        "endpoint_voltage_v": [
+          3.640964984893799,
+          4.199981212615967
+        ],
+        "surface_temperature_c": {
+          "initial": 24.366639329860558,
+          "final": 25.283315658569336,
+          "min": 24.335866928100586,
+          "max": 25.406761169433594
+        },
+        "signed_observed_charge_ah": 2.7555505474110578
+      },
+      {
+        "step": 3,
+        "name": "CV charge",
+        "measurement_rows": 4137,
+        "excel_rows_inclusive": [
+          9708,
+          13844
+        ],
+        "measurement_dates_naive_local": [
+          "2019-08-30T22:59:26.855000",
+          "2019-08-31T00:08:22.658000"
+        ],
+        "test_time_range_s": [
+          9705.224144000002,
+          13841.027144000001
+        ],
+        "commanded_step_time_range_s": [
+          1.0008,
+          4136.8038
+        ],
+        "observed_duration_s": 4135.803,
+        "inferred_commanded_step_start_test_time_s": 9704.223344000002,
+        "clock_relation_max_deviation_s": 1.8189894035458565e-12,
+        "backwards_step_clock_intervals": 0,
+        "negative_step_clock_records": 0,
+        "native_interval_s": {
+          "min": 0.8027000000001863,
+          "median": 1.0,
+          "max": 1.0014000000010128
+        },
+        "exact_duplicate_times": 0,
+        "duplicate_time_conflicts": 0,
+        "current_a": {
+          "min": 0.049993064254522324,
+          "max": 1.632238507270813,
+          "time_weighted_mean": 0.5237675296962546
+        },
+        "endpoint_voltage_v": [
+          4.199961185455322,
+          4.199899673461914
+        ],
+        "surface_temperature_c": {
+          "initial": 25.283315658569336,
+          "final": 24.516651153564453,
+          "min": 24.38074493408203,
+          "max": 25.381895065307617
+        },
+        "signed_observed_charge_ah": 0.6017220335056552
+      },
+      {
+        "step": 4,
+        "name": "pre-discharge rest",
+        "measurement_rows": 3601,
+        "excel_rows_inclusive": [
+          13845,
+          17445
+        ],
+        "measurement_dates_naive_local": [
+          "2019-08-31T00:08:23.700000",
+          "2019-08-31T01:08:22.702000"
+        ],
+        "test_time_range_s": [
+          13842.068856,
+          17441.070656
+        ],
+        "commanded_step_time_range_s": [
+          0.9999,
+          3600.0017
+        ],
+        "observed_duration_s": 3599.0018,
+        "inferred_commanded_step_start_test_time_s": 13841.068956000001,
+        "clock_relation_max_deviation_s": 1.8189894035458565e-12,
+        "backwards_step_clock_intervals": 0,
+        "negative_step_clock_records": 0,
+        "native_interval_s": {
+          "min": 0.0008999999990919605,
+          "median": 1.0,
+          "max": 1.001299999999901
+        },
+        "exact_duplicate_times": 0,
+        "duplicate_time_conflicts": 0,
+        "current_a": {
+          "min": 0.0,
+          "max": 0.0,
+          "time_weighted_mean": 0.0
+        },
+        "endpoint_voltage_v": [
+          4.1983962059021,
+          4.186485767364502
+        ],
+        "surface_temperature_c": {
+          "initial": 24.516651153564453,
+          "final": 24.345535278320312,
+          "min": 24.2747745513916,
+          "max": 24.53001594543457
+        },
+        "signed_observed_charge_ah": 0.0
+      },
+      {
+        "step": 5,
+        "name": "constant-current discharge",
+        "measurement_rows": 70370,
+        "excel_rows_inclusive": [
+          17446,
+          87815
+        ],
+        "measurement_dates_naive_local": [
+          "2019-08-31T01:08:23.747000",
+          "2019-08-31T20:41:12.665000"
+        ],
+        "test_time_range_s": [
+          17442.117708,
+          87811.035508
+        ],
+        "commanded_step_time_range_s": [
+          1.0,
+          70369.9178
+        ],
+        "observed_duration_s": 70368.9178,
+        "inferred_commanded_step_start_test_time_s": 17441.117707999998,
+        "clock_relation_max_deviation_s": 7.275957614183426e-12,
+        "backwards_step_clock_intervals": 0,
+        "negative_step_clock_records": 0,
+        "native_interval_s": {
+          "min": 0.9165999999968335,
+          "median": 1.0,
+          "max": 1.0014999999984866
+        },
+        "exact_duplicate_times": 0,
+        "duplicate_time_conflicts": 0,
+        "current_a": {
+          "min": -0.25002795457839966,
+          "max": -0.2500145435333252,
+          "time_weighted_mean": -0.25002163213187073
+        },
+        "endpoint_voltage_v": [
+          4.178414344787598,
+          2.499997615814209
+        ],
+        "surface_temperature_c": {
+          "initial": 24.345249203380043,
+          "final": 24.67748260498047,
+          "min": 24.19158935546875,
+          "max": 25.158491134643555
+        },
+        "signed_observed_charge_ah": -4.887153244363736
+      },
+      {
+        "step": 6,
+        "name": "post-discharge rest",
+        "measurement_rows": 3601,
+        "excel_rows_inclusive": [
+          87816,
+          91416
+        ],
+        "measurement_dates_naive_local": [
+          "2019-08-31T20:41:13.806000",
+          "2019-08-31T21:41:12.806000"
+        ],
+        "test_time_range_s": [
+          87812.170804,
+          91411.171504
+        ],
+        "commanded_step_time_range_s": [
+          1.0006,
+          3600.0013
+        ],
+        "observed_duration_s": 3599.000700000004,
+        "inferred_commanded_step_start_test_time_s": 87811.170204,
+        "clock_relation_max_deviation_s": 1.4551915228366852e-11,
+        "backwards_step_clock_intervals": 0,
+        "negative_step_clock_records": 0,
+        "native_interval_s": {
+          "min": 0.0010999999940395355,
+          "median": 1.0,
+          "max": 1.001299999988987
+        },
+        "exact_duplicate_times": 0,
+        "duplicate_time_conflicts": 0,
+        "current_a": {
+          "min": 0.0,
+          "max": 0.0,
+          "time_weighted_mean": 0.0
+        },
+        "endpoint_voltage_v": [
+          2.515622854232788,
+          2.7608492374420166
+        ],
+        "surface_temperature_c": {
+          "initial": 24.660722732543945,
+          "final": 24.415924072265625,
+          "min": 24.283823013305664,
+          "max": 24.722793579101562
+        },
+        "signed_observed_charge_ah": 0.0
+      }
+    ],
+    "discharge": {
+      "unobserved_initial_interval_s": 1.0,
+      "recorded_current_a": -0.25002163213187073,
+      "observed_discharge_charge_ah": 4.887153244363736,
+      "protocol_inferred_initial_charge_if_constant_current_ah": 6.94504533699641e-05,
+      "initial_charge_note": "Conditional estimate, not a measured interval or rigorous bound; not used as a passing gate.",
+      "prior_high_rate_exposure": "Unresolved: this workbook does not establish order relative to other experiments."
+    },
+    "date_warning": "Measurement timestamps are naive local values; workbook creation and repository upload dates are different metadata.",
+    "source_clock_policy": "Preserve Step_Time(s); model comparison must start on the actually observed common interval.",
+    "model_runs": 0,
+    "independent_validation_established": false,
+    "source": {
+      "filename": "NMC_k2_0_05C_25degC.xlsx",
+      "bytes": 6029678,
+      "sha256": "6bfaeb45fe90b76b6bd5973f0cb481b5d42db81cd2729e9be44121b44296d174",
+      "inflated_bytes": 34361075
+    },
+    "sheet": "Sheet1",
+    "columns": [
+      "Date_Time",
+      "Test_Time(s)",
+      "Step_Time(s)",
+      "Step_Index",
+      "Voltage(V)",
+      "Current(A)",
+      "Surface_Temp(degC)"
+    ],
+    "workbook_created": "2020-12-05 19:27:11",
+    "workbook_modified": "2020-12-08 12:33:17",
+    "dataset_doi": "10.17632/kxsbr4x3j2.2",
+    "dataset_url": "https://data.mendeley.com/datasets/kxsbr4x3j2/2",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "license": "CC-BY-4.0",
+    "authors": [
+      "Edoardo Catenaro",
+      "Simona Onori"
+    ],
+    "openpyxl_version": "3.1.5",
+    "measurement_clock_audit": {
+      "backwards_date_intervals": 0,
+      "max_relative_date_test_clock_discrepancy_s": 0.003596000009565614,
+      "date_test_clock_jumps_above_1s": 0,
+      "first_backwards_date_excel_row_pairs": [],
+      "first_clock_jump_excel_row_pairs": [],
+      "timezone": "Unspecified in source; timestamps are not converted to UTC"
+    }
+  },
+  "qualified_phase_rows": {
+    "rest": 3601,
+    "discharge": 70370
+  },
+  "persisted_phase_rows": {
+    "rest": 3601,
+    "discharge": 10
+  },
+  "selection": "Every rest row and initial discharge through first sample at/after10s; all source phases4/5 qualified before slicing",
+  "csv_sha256": "a89e33f37e782d7862a6ab5f3bc62d21e5d1fd4006b2d4e7ff33151d90f5e5f3",
+  "gzip_sha256": "8bc38714f31b007654960c22ed40ae3aea36c8f3e0b68fc5f147eed2b3023be4",
+  "gzip_bytes": 82104,
+  "normalizer_sha256": "f8cbf950df9def96032ae9161d378685769693aea9e978e1a6565e244353b02e"
+}

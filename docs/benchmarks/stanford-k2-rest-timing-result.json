@@ -1,0 +1,498 @@
+{
+  "protocol_sha256": "3025ddf13b794034cb7cd8a7e73cf5ae7a3b461b9fd4be65b74f453b9593beca",
+  "low_source": {
+    "source_filename": "NMC_k2_0_05C_25degC.xlsx",
+    "source_workbook_bytes": 6029678,
+    "source_workbook_sha256": "6bfaeb45fe90b76b6bd5973f0cb481b5d42db81cd2729e9be44121b44296d174",
+    "selected_rows": 3602,
+    "excel_rows_inclusive": [
+      87815,
+      91416
+    ],
+    "records_gzip_sha256": "e1e16db21fa2e8408934ec758d8b1b5e713846a4b4149b337641634197e873d9",
+    "records_csv_sha256": "7e3dc60c5ab4f9a0fc64823a294ff75b5db591533d356cb0a798a155b73f99e1",
+    "protocol_sha256": "3025ddf13b794034cb7cd8a7e73cf5ae7a3b461b9fd4be65b74f453b9593beca",
+    "authors": [
+      "Edoardo Catenaro",
+      "Simona Onori"
+    ],
+    "doi": "10.17632/kxsbr4x3j2.2",
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "modifications": "Only select last step5 row and complete step6, add Excel row index, serialize dates and numerics; no measurement value change"
+  },
+  "high_records_sha256": "513ad1debdf3fcf7eb9d716a8b34651a39349f136d1a6b23e84ed609fa2c2d6f",
+  "cases": {
+    "low": {
+      "last_loaded_source_row": {
+        "excel_row": "87815",
+        "Date_Time": "2019-08-31T20:41:12.665000",
+        "Test_Time(s)": "87811.035508",
+        "Step_Time(s)": "70369.9178",
+        "Step_Index": "5",
+        "Voltage(V)": "2.499997615814209",
+        "Current(A)": "-0.2500203847885132",
+        "Surface_Temp(degC)": "24.67748260498047"
+      },
+      "first_rest_source_row": {
+        "excel_row": "87816",
+        "Date_Time": "2019-08-31T20:41:13.806000",
+        "Test_Time(s)": "87812.170804",
+        "Step_Time(s)": "1.0006",
+        "Step_Index": "6",
+        "Voltage(V)": "2.515622854232788",
+        "Current(A)": "0",
+        "Surface_Temp(degC)": "24.660722732543945"
+      },
+      "last_rest_source_row": {
+        "excel_row": "91416",
+        "Date_Time": "2019-08-31T21:41:12.806000",
+        "Test_Time(s)": "91411.171504",
+        "Step_Time(s)": "3600.0013",
+        "Step_Index": "6",
+        "Voltage(V)": "2.7608492374420166",
+        "Current(A)": "0",
+        "Surface_Temp(degC)": "24.415924072265625"
+      },
+      "last_load_to_first_rest_sample_bracket_s": 1.1352959999931045,
+      "sample_bracket_bounds_physical_switch_time": false,
+      "first_recorded_recovery_v": 0.0156252384185791,
+      "further_first_to_last_rest_recovery_v": 0.24522638320922852,
+      "rest_rows": 3601,
+      "recorded_rest_current_a": 0,
+      "points": [
+        {
+          "nominal_rest_time_s": 2.0,
+          "lower_source_row": {
+            "excel_row": "87817",
+            "Date_Time": "2019-08-31T20:41:14.805000",
+            "Test_Time(s)": "87813.170104",
+            "Step_Time(s)": "1.9999",
+            "Step_Index": "6",
+            "Voltage(V)": "2.5182607173919678",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.660722732543945"
+          },
+          "upper_source_row": {
+            "excel_row": "87818",
+            "Date_Time": "2019-08-31T20:41:15.806000",
+            "Test_Time(s)": "87814.170904",
+            "Step_Time(s)": "3.0007",
+            "Step_Index": "6",
+            "Voltage(V)": "2.520023822784424",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.68215918903061"
+          },
+          "upper_weight": 9.99200639488299e-05,
+          "values": {
+            "Voltage(V)": 2.518260893561571,
+            "Current(A)": 0.0,
+            "Surface_Temp(degC)": 24.66072487447605
+          },
+          "voltage_minus_last_loaded_v": 0.01826327774736214,
+          "voltage_minus_first_rest_v": 0.0026380393287830373,
+          "identity_closure_v": 0.0
+        },
+        {
+          "nominal_rest_time_s": 10.0,
+          "lower_source_row": {
+            "excel_row": "87824",
+            "Date_Time": "2019-08-31T20:41:21.805000",
+            "Test_Time(s)": "87820.170204",
+            "Step_Time(s)": "9",
+            "Step_Index": "6",
+            "Voltage(V)": "2.527919292449951",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.713497161865234"
+          },
+          "upper_source_row": {
+            "excel_row": "87825",
+            "Date_Time": "2019-08-31T20:41:22.805000",
+            "Test_Time(s)": "87821.170504",
+            "Step_Time(s)": "10.0003",
+            "Step_Index": "6",
+            "Voltage(V)": "2.528951406478882",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.713497161865234"
+          },
+          "upper_weight": 0.9997000899730087,
+          "values": {
+            "Voltage(V)": 2.5289510969375355,
+            "Current(A)": 0.0,
+            "Surface_Temp(degC)": 24.713497161865234
+          },
+          "voltage_minus_last_loaded_v": 0.02895348112332652,
+          "voltage_minus_first_rest_v": 0.013328242704747417,
+          "identity_closure_v": 0.0
+        },
+        {
+          "nominal_rest_time_s": 60.0,
+          "lower_source_row": {
+            "excel_row": "87874",
+            "Date_Time": "2019-08-31T20:42:11.805000",
+            "Test_Time(s)": "87870.170704",
+            "Step_Time(s)": "59.0005",
+            "Step_Index": "6",
+            "Voltage(V)": "2.5577142238616943",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.65047264099121"
+          },
+          "upper_source_row": {
+            "excel_row": "87875",
+            "Date_Time": "2019-08-31T20:42:12.806000",
+            "Test_Time(s)": "87871.171004",
+            "Step_Time(s)": "60.0008",
+            "Step_Index": "6",
+            "Voltage(V)": "2.5578982830047607",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.655438880356062"
+          },
+          "upper_weight": 0.9992002399280234,
+          "values": {
+            "Voltage(V)": 2.557898135801607,
+            "Current(A)": 0.0,
+            "Surface_Temp(degC)": 24.65543490855611
+          },
+          "voltage_minus_last_loaded_v": 0.05790051998739809,
+          "voltage_minus_first_rest_v": 0.04227528156881899,
+          "identity_closure_v": 0.0
+        },
+        {
+          "nominal_rest_time_s": 600.0,
+          "lower_source_row": {
+            "excel_row": "88415",
+            "Date_Time": "2019-08-31T20:51:12.805000",
+            "Test_Time(s)": "88411.170104",
+            "Step_Time(s)": "599.9999",
+            "Step_Index": "6",
+            "Voltage(V)": "2.639575958251953",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.470218658447266"
+          },
+          "upper_source_row": {
+            "excel_row": "88416",
+            "Date_Time": "2019-08-31T20:51:13.806000",
+            "Test_Time(s)": "88412.170904",
+            "Step_Time(s)": "601.0007",
+            "Step_Index": "6",
+            "Voltage(V)": "2.639631509780884",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.470218658447266"
+          },
+          "upper_weight": 9.992006392375628e-05,
+          "values": {
+            "Voltage(V)": 2.6395759638026655,
+            "Current(A)": 0.0,
+            "Surface_Temp(degC)": 24.470218658447266
+          },
+          "voltage_minus_last_loaded_v": 0.13957834798845647,
+          "voltage_minus_first_rest_v": 0.12395310956987737,
+          "identity_closure_v": 0.0
+        },
+        {
+          "nominal_rest_time_s": 1800.0,
+          "lower_source_row": {
+            "excel_row": "89615",
+            "Date_Time": "2019-08-31T21:11:12.805000",
+            "Test_Time(s)": "89611.170104",
+            "Step_Time(s)": "1799.9999",
+            "Step_Index": "6",
+            "Voltage(V)": "2.7079918384552",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.409887313842773"
+          },
+          "upper_source_row": {
+            "excel_row": "89616",
+            "Date_Time": "2019-08-31T21:11:13.805000",
+            "Test_Time(s)": "89612.170704",
+            "Step_Time(s)": "1801.0005",
+            "Step_Index": "6",
+            "Voltage(V)": "2.7079899311065674",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.417325973510742"
+          },
+          "upper_weight": 9.994003595331828e-05,
+          "values": {
+            "Voltage(V)": 2.70799183826458,
+            "Current(A)": 0.0,
+            "Surface_Temp(degC)": 24.409888057262688
+          },
+          "voltage_minus_last_loaded_v": 0.2079942224503708,
+          "voltage_minus_first_rest_v": 0.1923689840317917,
+          "identity_closure_v": 0.0
+        },
+        {
+          "nominal_rest_time_s": 3600.0,
+          "lower_source_row": {
+            "excel_row": "91414",
+            "Date_Time": "2019-08-31T21:41:11.805000",
+            "Test_Time(s)": "91410.170304",
+            "Step_Time(s)": "3599.0001",
+            "Step_Index": "6",
+            "Voltage(V)": "2.7606184482574463",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.415924597917396"
+          },
+          "upper_source_row": {
+            "excel_row": "91415",
+            "Date_Time": "2019-08-31T21:41:12.805000",
+            "Test_Time(s)": "91411.170404",
+            "Step_Time(s)": "3600.0002",
+            "Step_Index": "6",
+            "Voltage(V)": "2.7608327865600586",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.415924072265625"
+          },
+          "upper_weight": 0.9998000199980503,
+          "values": {
+            "Voltage(V)": 2.7608327436966844,
+            "Current(A)": 0.0,
+            "Surface_Temp(degC)": 24.415924072370746
+          },
+          "voltage_minus_last_loaded_v": 0.2608351278824754,
+          "voltage_minus_first_rest_v": 0.24520988946389632,
+          "identity_closure_v": 0.0
+        }
+      ]
+    },
+    "high": {
+      "last_loaded_source_row": {
+        "excel_row": "24226",
+        "Date_Time": "2019-09-03T01:54:42.106000",
+        "Test_Time(s)": "24221.973324000002",
+        "Step_Time(s)": "3435.7713",
+        "Step_Index": "5",
+        "Voltage(V)": "2.4999923706054688",
+        "Current(A)": "-5.000402450561523",
+        "Surface_Temp(degC)": "32.29563522338867"
+      },
+      "first_rest_source_row": {
+        "excel_row": "24227",
+        "Date_Time": "2019-09-03T01:54:43.244000",
+        "Test_Time(s)": "24223.113292000002",
+        "Step_Time(s)": "0.9997",
+        "Step_Index": "6",
+        "Voltage(V)": "2.7496907711029053",
+        "Current(A)": "0",
+        "Surface_Temp(degC)": "32.349741952895954"
+      },
+      "last_rest_source_row": {
+        "excel_row": "27827",
+        "Date_Time": "2019-09-03T02:54:42.246000",
+        "Test_Time(s)": "27822.114592",
+        "Step_Time(s)": "3600.001",
+        "Step_Index": "6",
+        "Voltage(V)": "3.0197887420654297",
+        "Current(A)": "0",
+        "Surface_Temp(degC)": "24.373239517211914"
+      },
+      "last_load_to_first_rest_sample_bracket_s": 1.1399679999994987,
+      "sample_bracket_bounds_physical_switch_time": false,
+      "first_recorded_recovery_v": 0.24969840049743652,
+      "further_first_to_last_rest_recovery_v": 0.2700979709625244,
+      "rest_rows": 3601,
+      "recorded_rest_current_a": 0,
+      "points": [
+        {
+          "nominal_rest_time_s": 2.0,
+          "lower_source_row": {
+            "excel_row": "24227",
+            "Date_Time": "2019-09-03T01:54:43.244000",
+            "Test_Time(s)": "24223.113292000002",
+            "Step_Time(s)": "0.9997",
+            "Step_Index": "6",
+            "Voltage(V)": "2.7496907711029053",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "32.349741952895954"
+          },
+          "upper_source_row": {
+            "excel_row": "24228",
+            "Date_Time": "2019-09-03T01:54:44.245000",
+            "Test_Time(s)": "24224.113692",
+            "Step_Time(s)": "2.0001",
+            "Step_Index": "6",
+            "Voltage(V)": "2.7685964107513428",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "32.34974670410156"
+          },
+          "upper_weight": 0.9999000399840062,
+          "values": {
+            "Voltage(V)": 2.768594520943301,
+            "Current(A)": 0.0,
+            "Surface_Temp(degC)": 32.34974670362663
+          },
+          "voltage_minus_last_loaded_v": 0.2686021503378324,
+          "voltage_minus_first_rest_v": 0.01890374984039589,
+          "identity_closure_v": 0.0
+        },
+        {
+          "nominal_rest_time_s": 10.0,
+          "lower_source_row": {
+            "excel_row": "24235",
+            "Date_Time": "2019-09-03T01:54:51.244000",
+            "Test_Time(s)": "24231.113292000002",
+            "Step_Time(s)": "8.9997",
+            "Step_Index": "6",
+            "Voltage(V)": "2.8217785358428955",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "32.38427734375"
+          },
+          "upper_source_row": {
+            "excel_row": "24236",
+            "Date_Time": "2019-09-03T01:54:52.245000",
+            "Test_Time(s)": "24232.113692",
+            "Step_Time(s)": "10.0001",
+            "Step_Index": "6",
+            "Voltage(V)": "2.826394557952881",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "32.36170040742568"
+          },
+          "upper_weight": 0.9999000399840067,
+          "values": {
+            "Voltage(V)": 2.8263940965352368,
+            "Current(A)": 0.0,
+            "Surface_Temp(degC)": 32.361702664216594
+          },
+          "voltage_minus_last_loaded_v": 0.326401725929768,
+          "voltage_minus_first_rest_v": 0.07670332543233149,
+          "identity_closure_v": 0.0
+        },
+        {
+          "nominal_rest_time_s": 60.0,
+          "lower_source_row": {
+            "excel_row": "24285",
+            "Date_Time": "2019-09-03T01:55:41.245000",
+            "Test_Time(s)": "24281.113892",
+            "Step_Time(s)": "59.0003",
+            "Step_Index": "6",
+            "Voltage(V)": "2.910909652709961",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "31.5452938079834"
+          },
+          "upper_source_row": {
+            "excel_row": "24286",
+            "Date_Time": "2019-09-03T01:55:42.245000",
+            "Test_Time(s)": "24282.114092",
+            "Step_Time(s)": "60.0005",
+            "Step_Index": "6",
+            "Voltage(V)": "2.9115867614746094",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "31.5452938079834"
+          },
+          "upper_weight": 0.9995000999800017,
+          "values": {
+            "Voltage(V)": 2.9115864229879245,
+            "Current(A)": 0.0,
+            "Surface_Temp(degC)": 31.5452938079834
+          },
+          "voltage_minus_last_loaded_v": 0.4115940523824557,
+          "voltage_minus_first_rest_v": 0.1618956518850192,
+          "identity_closure_v": 0.0
+        },
+        {
+          "nominal_rest_time_s": 600.0,
+          "lower_source_row": {
+            "excel_row": "24825",
+            "Date_Time": "2019-09-03T02:04:41.245000",
+            "Test_Time(s)": "24821.113892",
+            "Step_Time(s)": "599.0003",
+            "Step_Index": "6",
+            "Voltage(V)": "2.9768118858337402",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "26.31182289123535"
+          },
+          "upper_source_row": {
+            "excel_row": "24826",
+            "Date_Time": "2019-09-03T02:04:42.245000",
+            "Test_Time(s)": "24822.113792",
+            "Step_Time(s)": "600.0002",
+            "Step_Index": "6",
+            "Voltage(V)": "2.976834535598755",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "26.31182289123535"
+          },
+          "upper_weight": 0.99979997999805,
+          "values": {
+            "Voltage(V)": 2.976834531068349,
+            "Current(A)": 0.0,
+            "Surface_Temp(degC)": 26.31182289123535
+          },
+          "voltage_minus_last_loaded_v": 0.4768421604628803,
+          "voltage_minus_first_rest_v": 0.22714375996544378,
+          "identity_closure_v": 0.0
+        },
+        {
+          "nominal_rest_time_s": 1800.0,
+          "lower_source_row": {
+            "excel_row": "26026",
+            "Date_Time": "2019-09-03T02:24:42.244000",
+            "Test_Time(s)": "26022.113292000002",
+            "Step_Time(s)": "1799.9997",
+            "Step_Index": "6",
+            "Voltage(V)": "3.002161741256714",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.693994522094727"
+          },
+          "upper_source_row": {
+            "excel_row": "26027",
+            "Date_Time": "2019-09-03T02:24:43.245000",
+            "Test_Time(s)": "26023.114092",
+            "Step_Time(s)": "1801.0005",
+            "Step_Index": "6",
+            "Voltage(V)": "3.0021886825561523",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.693994522094727"
+          },
+          "upper_weight": 0.0002997601917712689,
+          "values": {
+            "Voltage(V)": 3.002161749332643,
+            "Current(A)": 0.0,
+            "Surface_Temp(degC)": 24.693994522094727
+          },
+          "voltage_minus_last_loaded_v": 0.5021693787271744,
+          "voltage_minus_first_rest_v": 0.25247097822973785,
+          "identity_closure_v": 0.0
+        },
+        {
+          "nominal_rest_time_s": 3600.0,
+          "lower_source_row": {
+            "excel_row": "27825",
+            "Date_Time": "2019-09-03T02:54:41.245000",
+            "Test_Time(s)": "27821.113692",
+            "Step_Time(s)": "3599.0001",
+            "Step_Index": "6",
+            "Voltage(V)": "3.0197911262512207",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.334346771240234"
+          },
+          "upper_source_row": {
+            "excel_row": "27826",
+            "Date_Time": "2019-09-03T02:54:42.245000",
+            "Test_Time(s)": "27822.113792",
+            "Step_Time(s)": "3600.0002",
+            "Step_Index": "6",
+            "Voltage(V)": "3.019807815551758",
+            "Current(A)": "0",
+            "Surface_Temp(degC)": "24.373239517211914"
+          },
+          "upper_weight": 0.9998000199980503,
+          "values": {
+            "Voltage(V)": 3.0198078122142316,
+            "Current(A)": 0.0,
+            "Surface_Temp(degC)": 24.3732317394405
+          },
+          "voltage_minus_last_loaded_v": 0.5198154416087628,
+          "voltage_minus_first_rest_v": 0.2701170411113263,
+          "identity_closure_v": 0.0
+        }
+      ]
+    }
+  },
+  "new_model_solves": 0,
+  "new_downloads": 0,
+  "fitted_parameters": false,
+  "identified_resistance": false,
+  "independent_experimental_validation": false,
+  "common_SOC_established": false,
+  "description": "Finite-time descriptive characterization; no new physical acceptance threshold"
+}

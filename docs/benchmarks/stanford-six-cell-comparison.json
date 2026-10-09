@@ -1,0 +1,4477 @@
+{
+  "scope": "All-six source-to-source diagnostic; no additional model error or physical cause established",
+  "input": {
+    "protocol_frozen_commit": "eae7d9e40a104421da938c069bdd7683b06ab062",
+    "caller_declared_implementation_commit": "ba2568acc244648134e47bbc190fa4325f4acd84",
+    "source_sha256": {
+      "docs/stanford-cohort-protocol.md": "56e6fad6558bbe3863e016d7aeafb131f7229c579518b40f51bbfac52354d294",
+      "data/stanford-manifest.json": "94bde5dd872de039d145abf33f66fc81c38897b4666d68586f00c950478dc482",
+      "scripts/inspect_stanford_cohort.py": "925336aacdae8c4706aaca06d806ae1cf2dfaa1b94b2d35343944f946100f133",
+      "src/physical_fpv/stanford_cohort.py": "a2de5abfe60a1f199e29a82e588bec8068def473865fcdbb0e67d90708783d2f",
+      "src/physical_fpv/stanford_data.py": "a0df0f6203ae433e7d5db3336a52c7626953d7133dfcedab7d755b274b108f6f",
+      "src/physical_fpv/stanford_transitions.py": "9292fceff2297feae8ea2a01451ea71c4c4e75569bc49fd0009f61d15e3599cc",
+      "requirements-lock.txt": "99e788261bf013158962b719b1710fde854c864ab67fac1c72dc69902830a20b",
+      "requirements-data-lock.txt": "ce63f4e1fcc9fd16eff0e59a4468a6b8e50fb896fc728ec2ed38e300710e080e"
+    },
+    "max_wall_s": 600,
+    "max_new_download_bytes": 10000000,
+    "new_model_solves": 0,
+    "fitting_performed": false
+  },
+  "all_sources_inspected": true,
+  "all_pairwise_metrics_available": true,
+  "elapsed_s": 61.5230600520008,
+  "new_downloaded_bytes": 9104714,
+  "error": null,
+  "cases": [
+    {
+      "cell_id": "k1",
+      "integrity": {
+        "filename": "NMC_k1_1C_25degC.xlsx",
+        "bytes": 1868963,
+        "sha256": "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6",
+        "inflated_bytes": 10538544
+      },
+      "already_cached": true,
+      "source_inspection": {
+        "measurement_rows": 28669,
+        "canonical_six_step_sequence": true,
+        "contiguous_steps": [
+          {
+            "step": 1,
+            "name": "thermal rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              2,
+              3602
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T19:10:54.152000",
+              "2019-09-02T20:10:53.153000"
+            ],
+            "test_time_range_s": [
+              1.0001,
+              3600.0016
+            ],
+            "commanded_step_time_range_s": [
+              0.9999,
+              3600.0014
+            ],
+            "observed_duration_s": 3599.0015,
+            "inferred_commanded_step_start_test_time_s": 0.0001999999999497959,
+            "clock_relation_max_deviation_s": 4.547473508864641e-13,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0009000000000014552,
+              "median": 1.0,
+              "max": 1.001299999999901
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              2.964393138885498,
+              2.9649808406829834
+            ],
+            "surface_temperature_c": {
+              "initial": 25.291379928588867,
+              "final": 25.10983657836914,
+              "min": 25.09933853149414,
+              "max": 25.544471740722656
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 2,
+            "name": "CC charge",
+            "measurement_rows": 8872,
+            "excel_rows_inclusive": [
+              3603,
+              12474
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T20:10:54.200000",
+              "2019-09-02T22:38:44.813000"
+            ],
+            "test_time_range_s": [
+              3601.04824,
+              12471.66124
+            ],
+            "commanded_step_time_range_s": [
+              1.0001,
+              8871.6131
+            ],
+            "observed_duration_s": 8870.613,
+            "inferred_commanded_step_start_test_time_s": 3600.04814,
+            "clock_relation_max_deviation_s": 9.094947017729282e-13,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.612699999999677,
+              "median": 1.0,
+              "max": 1.0014000000001033
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 1.6251249313354492,
+              "max": 1.6252307891845703,
+              "time_weighted_mean": 1.6251807439963526
+            },
+            "endpoint_voltage_v": [
+              3.087146759033203,
+              4.199975967407227
+            ],
+            "surface_temperature_c": {
+              "initial": 25.09933953455614,
+              "final": 26.00993537902832,
+              "min": 25.00031280517578,
+              "max": 26.67447280883789
+            },
+            "signed_observed_charge_ah": 4.0045415097343655
+          },
+          {
+            "step": 3,
+            "name": "CV charge",
+            "measurement_rows": 5603,
+            "excel_rows_inclusive": [
+              12475,
+              18077
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T22:38:45.918000",
+              "2019-09-03T00:12:07.816000"
+            ],
+            "test_time_range_s": [
+              12472.767240000001,
+              18074.66534
+            ],
+            "commanded_step_time_range_s": [
+              1.0008,
+              5602.8989
+            ],
+            "observed_duration_s": 5601.8980999999985,
+            "inferred_commanded_step_start_test_time_s": 12471.76644,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.8976999999977124,
+              "median": 0.9997000000003027,
+              "max": 1.0015000000021246
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.049991440027952194,
+              "max": 1.6279021501541138,
+              "time_weighted_mean": 0.5586023196966304
+            },
+            "endpoint_voltage_v": [
+              4.200072288513184,
+              4.20001745223999
+            ],
+            "surface_temperature_c": {
+              "initial": 26.00993537902832,
+              "final": 25.193572998046875,
+              "min": 25.148279190063477,
+              "max": 26.92363739013672
+            },
+            "signed_observed_charge_ah": 0.8692314648233739
+          },
+          {
+            "step": 4,
+            "name": "pre-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              18078,
+              21678
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-03T00:12:08.855000",
+              "2019-09-03T01:12:07.857000"
+            ],
+            "test_time_range_s": [
+              18075.70552,
+              21674.70662
+            ],
+            "commanded_step_time_range_s": [
+              0.9998,
+              3600.0009
+            ],
+            "observed_duration_s": 3599.0011000000013,
+            "inferred_commanded_step_start_test_time_s": 18074.70572,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0008999999990919605,
+              "median": 1.0,
+              "max": 1.0012000000024273
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              4.196846008300781,
+              4.186448097229004
+            ],
+            "surface_temperature_c": {
+              "initial": 25.194759368896484,
+              "final": 25.18794059753418,
+              "min": 25.009811401367188,
+              "max": 25.262968063354492
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 5,
+            "name": "constant-current discharge",
+            "measurement_rows": 3391,
+            "excel_rows_inclusive": [
+              21679,
+              25069
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-03T01:12:08.903000",
+              "2019-09-03T02:08:38.300000"
+            ],
+            "test_time_range_s": [
+              21675.7522,
+              25065.148400000002
+            ],
+            "commanded_step_time_range_s": [
+              1.0006,
+              3390.3968
+            ],
+            "observed_duration_s": 3389.396200000003,
+            "inferred_commanded_step_start_test_time_s": 21674.7516,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.3963000000003376,
+              "median": 1.0,
+              "max": 1.001299999999901
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": -5.000385761260986,
+              "max": -5.000240325927734,
+              "time_weighted_mean": -5.000325282873757
+            },
+            "endpoint_voltage_v": [
+              3.8799378871917725,
+              2.49998140335083
+            ],
+            "surface_temperature_c": {
+              "initial": 25.18794059753418,
+              "final": 31.138418197631836,
+              "min": 25.18794059753418,
+              "max": 31.163291931152344
+            },
+            "signed_observed_charge_ah": -4.707800975704515
+          },
+          {
+            "step": 6,
+            "name": "post-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              25070,
+              28670
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-03T02:08:39.438000",
+              "2019-09-03T03:08:38.439000"
+            ],
+            "test_time_range_s": [
+              25066.287480000003,
+              28665.28828
+            ],
+            "commanded_step_time_range_s": [
+              1.0,
+              3600.0008
+            ],
+            "observed_duration_s": 3599.000799999998,
+            "inferred_commanded_step_start_test_time_s": 25065.287480000003,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0010000000002037268,
+              "median": 1.0,
+              "max": 1.0015999999995984
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              2.8482704162597656,
+              3.061777353286743
+            ],
+            "surface_temperature_c": {
+              "initial": 31.138418197631836,
+              "final": 25.35819435119629,
+              "min": 25.35660171508789,
+              "max": 31.169395446777344
+            },
+            "signed_observed_charge_ah": 0.0
+          }
+        ],
+        "discharge": {
+          "unobserved_initial_interval_s": 1.0006,
+          "recorded_current_a": -5.000325282873757,
+          "observed_discharge_charge_ah": 4.707800975704515,
+          "protocol_inferred_initial_charge_if_constant_current_ah": 0.001389812632789856,
+          "initial_charge_note": "Conditional estimate, not a measured interval or rigorous bound; not used as a passing gate.",
+          "prior_high_rate_exposure": "Unresolved: this workbook does not establish order relative to other experiments."
+        },
+        "date_warning": "Measurement timestamps are naive local values; workbook creation and repository upload dates are different metadata.",
+        "source_clock_policy": "Preserve Step_Time(s); model comparison must start on the actually observed common interval.",
+        "model_runs": 0,
+        "independent_validation_established": false,
+        "source": {
+          "filename": "NMC_k1_1C_25degC.xlsx",
+          "bytes": 1868963,
+          "sha256": "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6",
+          "inflated_bytes": 10538544
+        },
+        "sheet": "Sheet1",
+        "columns": [
+          "Date_Time",
+          "Test_Time(s)",
+          "Step_Time(s)",
+          "Step_Index",
+          "Voltage(V)",
+          "Current(A)",
+          "Surface_Temp(degC)"
+        ],
+        "workbook_created": "2020-12-05 19:27:11",
+        "workbook_modified": "2020-12-08 12:39:59",
+        "dataset_doi": "10.17632/kxsbr4x3j2.2",
+        "dataset_url": "https://data.mendeley.com/datasets/kxsbr4x3j2/2",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license": "CC-BY-4.0",
+        "authors": [
+          "Edoardo Catenaro",
+          "Simona Onori"
+        ],
+        "openpyxl_version": "3.1.5",
+        "measurement_clock_audit": {
+          "backwards_date_intervals": 0,
+          "max_relative_date_test_clock_discrepancy_s": 0.002419999997073319,
+          "date_test_clock_jumps_above_1s": 0,
+          "first_backwards_date_excel_row_pairs": [],
+          "first_clock_jump_excel_row_pairs": [],
+          "timezone": "Unspecified in source; timestamps are not converted to UTC"
+        }
+      },
+      "observed_discharge": {
+        "cell_id": "k1",
+        "measurement_rows": 3391,
+        "first_observed_step_time_s": 1.0006,
+        "last_observed_step_time_s": 3390.3968,
+        "observed_duration_s": 3389.3962,
+        "observed_delivered_charge_ah": 4.707800975704511,
+        "raw_signed_current": {
+          "time_mean_a": -5.000325282873757,
+          "min_a": -5.000385761260986,
+          "max_a": -5.000240325927734
+        },
+        "first_observed_voltage_v": 3.8799378871917725,
+        "last_observed_voltage_v": 2.49998140335083,
+        "first_observed_skin_temperature_k": 298.33794059753416,
+        "last_observed_skin_temperature_k": 304.2884181976318
+      },
+      "discharge_metric_error": null,
+      "protocol_details": {
+        "pre_discharge_rest": {
+          "available": true,
+          "excel_rows_inclusive": [
+            18078,
+            21678
+          ],
+          "recorded_interval_s": [
+            0.9998,
+            3600.0009
+          ],
+          "observed_rest_duration_s": 3599.0011,
+          "maximum_absolute_recorded_current_a": 0.0,
+          "final_voltage_v": 4.186448097229004,
+          "final_skin_temperature_c": 25.18794059753418,
+          "equilibrium_established": false,
+          "drift_interval_s": [
+            3000.0009,
+            3600.0009
+          ],
+          "last_600s_voltage_drift_v": -0.0008439136505122846,
+          "signed_observed_rest_charge_ah": 0.0
+        },
+        "transitions": {
+          "recorded_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "post_discharge_rest_recorded": true,
+          "preceding_cc_end": {
+            "excel_row": 12474,
+            "date_naive_local": "2019-09-02T22:38:44.813000",
+            "test_time_s": 12471.66124,
+            "step_time_s": 8871.6131,
+            "step": 2,
+            "voltage_v": 4.199975967407227,
+            "current_a": 1.6251745223999023,
+            "skin_temperature_c": 26.00993537902832
+          },
+          "preceding_cv_end": {
+            "excel_row": 18077,
+            "date_naive_local": "2019-09-03T00:12:07.816000",
+            "test_time_s": 18074.66534,
+            "step_time_s": 5602.8989,
+            "step": 3,
+            "voltage_v": 4.20001745223999,
+            "current_a": 0.049991440027952194,
+            "skin_temperature_c": 25.193572998046875
+          },
+          "rest_to_discharge": {
+            "steps": [
+              4,
+              5
+            ],
+            "left": {
+              "excel_row": 21678,
+              "date_naive_local": "2019-09-03T01:12:07.857000",
+              "test_time_s": 21674.70662,
+              "step_time_s": 3600.0009,
+              "step": 4,
+              "voltage_v": 4.186448097229004,
+              "current_a": 0.0,
+              "skin_temperature_c": 25.18794059753418
+            },
+            "right": {
+              "excel_row": 21679,
+              "date_naive_local": "2019-09-03T01:12:08.903000",
+              "test_time_s": 21675.7522,
+              "step_time_s": 1.0006,
+              "step": 5,
+              "voltage_v": 3.8799378871917725,
+              "current_a": -5.000240325927734,
+              "skin_temperature_c": 25.18794059753418
+            },
+            "source_sample_gap_s": 1.0455799999981537,
+            "current_change_a": -5.000240325927734,
+            "voltage_change_v": -0.30651021003723145,
+            "apparent_transition_ratio_ohm": 0.06129909565503978,
+            "ratio_is_intrinsic_resistance": false
+          },
+          "first_ten_loaded_samples": [
+            {
+              "excel_row": 21679,
+              "date_naive_local": "2019-09-03T01:12:08.903000",
+              "test_time_s": 21675.7522,
+              "step_time_s": 1.0006,
+              "step": 5,
+              "voltage_v": 3.8799378871917725,
+              "current_a": -5.000240325927734,
+              "skin_temperature_c": 25.18794059753418
+            },
+            {
+              "excel_row": 21680,
+              "date_naive_local": "2019-09-03T01:12:09.904000",
+              "test_time_s": 21676.7525,
+              "step_time_s": 2.0009,
+              "step": 5,
+              "voltage_v": 3.874417543411255,
+              "current_a": -5.000252723693848,
+              "skin_temperature_c": 25.22391700744629
+            },
+            {
+              "excel_row": 21681,
+              "date_naive_local": "2019-09-03T01:12:10.903000",
+              "test_time_s": 21677.7519,
+              "step_time_s": 3.0003,
+              "step": 5,
+              "voltage_v": 3.8701305389404297,
+              "current_a": -5.0002593994140625,
+              "skin_temperature_c": 25.22391700744629
+            },
+            {
+              "excel_row": 21682,
+              "date_naive_local": "2019-09-03T01:12:11.904000",
+              "test_time_s": 21678.7526,
+              "step_time_s": 4.001,
+              "step": 5,
+              "voltage_v": 3.86665415763855,
+              "current_a": -5.0002760887146,
+              "skin_temperature_c": 25.22391700744629
+            },
+            {
+              "excel_row": 21683,
+              "date_naive_local": "2019-09-03T01:12:12.903000",
+              "test_time_s": 21679.7519,
+              "step_time_s": 5.0003,
+              "step": 5,
+              "voltage_v": 3.8633594512939453,
+              "current_a": -5.000264644622803,
+              "skin_temperature_c": 25.20314598083496
+            },
+            {
+              "excel_row": 21684,
+              "date_naive_local": "2019-09-03T01:12:13.903000",
+              "test_time_s": 21680.751800000002,
+              "step_time_s": 6.0002,
+              "step": 5,
+              "voltage_v": 3.8604862689971924,
+              "current_a": -5.000271320343018,
+              "skin_temperature_c": 25.20314598083496
+            },
+            {
+              "excel_row": 21685,
+              "date_naive_local": "2019-09-03T01:12:14.904000",
+              "test_time_s": 21681.7525,
+              "step_time_s": 7.0009,
+              "step": 5,
+              "voltage_v": 3.857893705368042,
+              "current_a": -5.00025749206543,
+              "skin_temperature_c": 25.20314598083496
+            },
+            {
+              "excel_row": 21686,
+              "date_naive_local": "2019-09-03T01:12:15.904000",
+              "test_time_s": 21682.752800000002,
+              "step_time_s": 8.0012,
+              "step": 5,
+              "voltage_v": 3.8554389476776123,
+              "current_a": -5.000288009643555,
+              "skin_temperature_c": 25.21460418594403
+            },
+            {
+              "excel_row": 21687,
+              "date_naive_local": "2019-09-03T01:12:16.904000",
+              "test_time_s": 21683.7525,
+              "step_time_s": 9.0009,
+              "step": 5,
+              "voltage_v": 3.8532066345214844,
+              "current_a": -5.000264644622803,
+              "skin_temperature_c": 25.2146053314209
+            },
+            {
+              "excel_row": 21688,
+              "date_naive_local": "2019-09-03T01:12:17.903000",
+              "test_time_s": 21684.7517,
+              "step_time_s": 10.0001,
+              "step": 5,
+              "voltage_v": 3.8508386611938477,
+              "current_a": -5.000282287597656,
+              "skin_temperature_c": 25.2146053314209
+            }
+          ],
+          "sampling_interpretation": "Each ratio is the finite difference between adjacent recorded samples, not a fitted or isolated ohmic/contact resistance. Sampling delay, electrochemical polarization, temperature, SOC/history and measurement boundary remain confounded."
+        },
+        "transition_error": null
+      },
+      "quality_flags": [],
+      "manufacturing_batch": "unverified",
+      "history_eligibility": "Published k1 history: only nominal25C/0.05C precedes this record; unrecorded history unknown",
+      "observed_csv_sha256": "4b59916014656d8af71f5b75a18b7d80829bfbf9bf774595ae20d2672fd1d729"
+    },
+    {
+      "cell_id": "k2",
+      "integrity": {
+        "filename": "NMC_k2_1C_25degC.xlsx",
+        "bytes": 1802458,
+        "sha256": "20ec90e107e228515a95346dc3159d08df62e78bb0f371d10161e62de49e8086",
+        "inflated_bytes": 10244657
+      },
+      "already_cached": false,
+      "source_inspection": {
+        "measurement_rows": 27826,
+        "canonical_six_step_sequence": true,
+        "contiguous_steps": [
+          {
+            "step": 1,
+            "name": "thermal rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              2,
+              3602
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T19:11:01.133000",
+              "2019-09-02T20:11:00.133000"
+            ],
+            "test_time_range_s": [
+              1.0011,
+              3600.0018
+            ],
+            "commanded_step_time_range_s": [
+              1.0008,
+              3600.0015
+            ],
+            "observed_duration_s": 3599.0007,
+            "inferred_commanded_step_start_test_time_s": 0.00029999999998153726,
+            "clock_relation_max_deviation_s": 2.8421709430404007e-13,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0010000000002037268,
+              "median": 1.0,
+              "max": 1.0013000000000005
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              2.9561634063720703,
+              2.956930637359619
+            ],
+            "surface_temperature_c": {
+              "initial": 24.322010040283203,
+              "final": 24.373310089111328,
+              "min": 24.27384376525879,
+              "max": 24.486087799072266
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 2,
+            "name": "CC charge",
+            "measurement_rows": 9513,
+            "excel_rows_inclusive": [
+              3603,
+              13115
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T20:11:01.181000",
+              "2019-09-02T22:49:32.823000"
+            ],
+            "test_time_range_s": [
+              3601.049952,
+              13112.691752
+            ],
+            "commanded_step_time_range_s": [
+              1.0013,
+              9512.6431
+            ],
+            "observed_duration_s": 9511.641800000001,
+            "inferred_commanded_step_start_test_time_s": 3600.048652,
+            "clock_relation_max_deviation_s": 1.3642420526593924e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.6428000000014435,
+              "median": 1.0,
+              "max": 1.0015000000003056
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 1.6253547668457031,
+              "max": 1.6254425048828125,
+              "time_weighted_mean": 1.62539871181115
+            },
+            "endpoint_voltage_v": [
+              3.0344738960266113,
+              4.199984550476074
+            ],
+            "surface_temperature_c": {
+              "initial": 24.373310089111328,
+              "final": 25.311697006225586,
+              "min": 24.289077758789062,
+              "max": 25.46648406982422
+            },
+            "signed_observed_charge_ah": 4.294502869146969
+          },
+          {
+            "step": 3,
+            "name": "CV charge",
+            "measurement_rows": 4074,
+            "excel_rows_inclusive": [
+              13116,
+              17189
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T22:49:33.929000",
+              "2019-09-02T23:57:26.244000"
+            ],
+            "test_time_range_s": [
+              13113.797584,
+              17186.113084
+            ],
+            "commanded_step_time_range_s": [
+              1.0008,
+              4073.3163
+            ],
+            "observed_duration_s": 4072.3155000000006,
+            "inferred_commanded_step_start_test_time_s": 13112.796783999998,
+            "clock_relation_max_deviation_s": 1.8189894035458565e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.31600000000253203,
+              "median": 0.9998999999988882,
+              "max": 1.0015000000003056
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.04999219626188278,
+              "max": 1.6329593658447266,
+              "time_weighted_mean": 0.5331366799502448
+            },
+            "endpoint_voltage_v": [
+              4.199886322021484,
+              4.199960231781006
+            ],
+            "surface_temperature_c": {
+              "initial": 25.336212158203125,
+              "final": 24.4356632232666,
+              "min": 24.337841033935547,
+              "max": 25.386444091796875
+            },
+            "signed_observed_charge_ah": 0.6030835459388671
+          },
+          {
+            "step": 4,
+            "name": "pre-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              17190,
+              20790
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T23:57:27.286000",
+              "2019-09-03T00:57:26.288000"
+            ],
+            "test_time_range_s": [
+              17187.154196,
+              20786.156096
+            ],
+            "commanded_step_time_range_s": [
+              0.9998,
+              3600.0017
+            ],
+            "observed_duration_s": 3599.0018999999993,
+            "inferred_commanded_step_start_test_time_s": 17186.154395999998,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0008999999990919605,
+              "median": 1.0,
+              "max": 1.001299999999901
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              4.198366641998291,
+              4.1867523193359375
+            ],
+            "surface_temperature_c": {
+              "initial": 24.4356632232666,
+              "final": 24.40456771850586,
+              "min": 24.29304313659668,
+              "max": 24.468908309936523
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 5,
+            "name": "constant-current discharge",
+            "measurement_rows": 3436,
+            "excel_rows_inclusive": [
+              20791,
+              24226
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-03T00:57:27.335000",
+              "2019-09-03T01:54:42.106000"
+            ],
+            "test_time_range_s": [
+              20787.202324,
+              24221.973324000002
+            ],
+            "commanded_step_time_range_s": [
+              1.0003,
+              3435.7713
+            ],
+            "observed_duration_s": 3434.7710000000006,
+            "inferred_commanded_step_start_test_time_s": 20786.202024000002,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.7705999999998312,
+              "median": 1.0,
+              "max": 1.001299999999901
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": -5.000432014465332,
+              "max": -5.000307083129883,
+              "time_weighted_mean": -5.000371049908912
+            },
+            "endpoint_voltage_v": [
+              4.028350830078125,
+              2.4999923706054688
+            ],
+            "surface_temperature_c": {
+              "initial": 24.39337921142578,
+              "final": 32.29563522338867,
+              "min": 24.385269165039062,
+              "max": 32.332908630371094
+            },
+            "signed_observed_charge_ah": -4.770869297629635
+          },
+          {
+            "step": 6,
+            "name": "post-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              24227,
+              27827
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-03T01:54:43.244000",
+              "2019-09-03T02:54:42.246000"
+            ],
+            "test_time_range_s": [
+              24223.113292000002,
+              27822.114592
+            ],
+            "commanded_step_time_range_s": [
+              0.9997,
+              3600.001
+            ],
+            "observed_duration_s": 3599.0013,
+            "inferred_commanded_step_start_test_time_s": 24222.113592,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.000800000001618173,
+              "median": 1.0,
+              "max": 1.001299999999901
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              2.7496907711029053,
+              3.0197887420654297
+            ],
+            "surface_temperature_c": {
+              "initial": 32.349741952895954,
+              "final": 24.373239517211914,
+              "min": 24.29400062561035,
+              "max": 32.38427734375
+            },
+            "signed_observed_charge_ah": 0.0
+          }
+        ],
+        "discharge": {
+          "unobserved_initial_interval_s": 1.0003,
+          "recorded_current_a": -5.000371049908912,
+          "observed_discharge_charge_ah": 4.770869297629635,
+          "protocol_inferred_initial_charge_if_constant_current_ah": 0.0013894086558955234,
+          "initial_charge_note": "Conditional estimate, not a measured interval or rigorous bound; not used as a passing gate.",
+          "prior_high_rate_exposure": "Unresolved: this workbook does not establish order relative to other experiments."
+        },
+        "date_warning": "Measurement timestamps are naive local values; workbook creation and repository upload dates are different metadata.",
+        "source_clock_policy": "Preserve Step_Time(s); model comparison must start on the actually observed common interval.",
+        "model_runs": 0,
+        "independent_validation_established": false,
+        "source": {
+          "filename": "NMC_k2_1C_25degC.xlsx",
+          "bytes": 1802458,
+          "sha256": "20ec90e107e228515a95346dc3159d08df62e78bb0f371d10161e62de49e8086",
+          "inflated_bytes": 10244657
+        },
+        "sheet": "Sheet1",
+        "columns": [
+          "Date_Time",
+          "Test_Time(s)",
+          "Step_Time(s)",
+          "Step_Index",
+          "Voltage(V)",
+          "Current(A)",
+          "Surface_Temp(degC)"
+        ],
+        "workbook_created": "2020-12-05 19:27:11",
+        "workbook_modified": "2020-12-08 12:40:42",
+        "dataset_doi": "10.17632/kxsbr4x3j2.2",
+        "dataset_url": "https://data.mendeley.com/datasets/kxsbr4x3j2/2",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license": "CC-BY-4.0",
+        "authors": [
+          "Edoardo Catenaro",
+          "Simona Onori"
+        ],
+        "openpyxl_version": "3.1.5",
+        "measurement_clock_audit": {
+          "backwards_date_intervals": 0,
+          "max_relative_date_test_clock_discrepancy_s": 0.0013919999983045273,
+          "date_test_clock_jumps_above_1s": 0,
+          "first_backwards_date_excel_row_pairs": [],
+          "first_clock_jump_excel_row_pairs": [],
+          "timezone": "Unspecified in source; timestamps are not converted to UTC"
+        }
+      },
+      "observed_discharge": {
+        "cell_id": "k2",
+        "measurement_rows": 3436,
+        "first_observed_step_time_s": 1.0003,
+        "last_observed_step_time_s": 3435.7713,
+        "observed_duration_s": 3434.7709999999997,
+        "observed_delivered_charge_ah": 4.770869297629635,
+        "raw_signed_current": {
+          "time_mean_a": -5.000371049908914,
+          "min_a": -5.000432014465332,
+          "max_a": -5.000307083129883
+        },
+        "first_observed_voltage_v": 4.028350830078125,
+        "last_observed_voltage_v": 2.4999923706054688,
+        "first_observed_skin_temperature_k": 297.54337921142576,
+        "last_observed_skin_temperature_k": 305.44563522338865
+      },
+      "discharge_metric_error": null,
+      "protocol_details": {
+        "pre_discharge_rest": {
+          "available": true,
+          "excel_rows_inclusive": [
+            17190,
+            20790
+          ],
+          "recorded_interval_s": [
+            0.9998,
+            3600.0017
+          ],
+          "observed_rest_duration_s": 3599.0018999999998,
+          "maximum_absolute_recorded_current_a": 0.0,
+          "final_voltage_v": 4.1867523193359375,
+          "final_skin_temperature_c": 24.40456771850586,
+          "equilibrium_established": false,
+          "drift_interval_s": [
+            3000.0017,
+            3600.0017
+          ],
+          "last_600s_voltage_drift_v": -0.0007373173522644549,
+          "signed_observed_rest_charge_ah": 0.0
+        },
+        "transitions": {
+          "recorded_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "post_discharge_rest_recorded": true,
+          "preceding_cc_end": {
+            "excel_row": 13115,
+            "date_naive_local": "2019-09-02T22:49:32.823000",
+            "test_time_s": 13112.691752,
+            "step_time_s": 9512.6431,
+            "step": 2,
+            "voltage_v": 4.199984550476074,
+            "current_a": 1.625401496887207,
+            "skin_temperature_c": 25.311697006225586
+          },
+          "preceding_cv_end": {
+            "excel_row": 17189,
+            "date_naive_local": "2019-09-02T23:57:26.244000",
+            "test_time_s": 17186.113084,
+            "step_time_s": 4073.3163,
+            "step": 3,
+            "voltage_v": 4.199960231781006,
+            "current_a": 0.04999219626188278,
+            "skin_temperature_c": 24.4356632232666
+          },
+          "rest_to_discharge": {
+            "steps": [
+              4,
+              5
+            ],
+            "left": {
+              "excel_row": 20790,
+              "date_naive_local": "2019-09-03T00:57:26.288000",
+              "test_time_s": 20786.156096,
+              "step_time_s": 3600.0017,
+              "step": 4,
+              "voltage_v": 4.1867523193359375,
+              "current_a": 0.0,
+              "skin_temperature_c": 24.40456771850586
+            },
+            "right": {
+              "excel_row": 20791,
+              "date_naive_local": "2019-09-03T00:57:27.335000",
+              "test_time_s": 20787.202324,
+              "step_time_s": 1.0003,
+              "step": 5,
+              "voltage_v": 4.028350830078125,
+              "current_a": -5.000381946563721,
+              "skin_temperature_c": 24.39337921142578
+            },
+            "source_sample_gap_s": 1.046228000002884,
+            "current_change_a": -5.000381946563721,
+            "voltage_change_v": -0.1584014892578125,
+            "apparent_transition_ratio_ohm": 0.03167787800023287,
+            "ratio_is_intrinsic_resistance": false
+          },
+          "first_ten_loaded_samples": [
+            {
+              "excel_row": 20791,
+              "date_naive_local": "2019-09-03T00:57:27.335000",
+              "test_time_s": 20787.202324,
+              "step_time_s": 1.0003,
+              "step": 5,
+              "voltage_v": 4.028350830078125,
+              "current_a": -5.000381946563721,
+              "skin_temperature_c": 24.39337921142578
+            },
+            {
+              "excel_row": 20792,
+              "date_naive_local": "2019-09-03T00:57:28.335000",
+              "test_time_s": 20788.203124,
+              "step_time_s": 2.0011,
+              "step": 5,
+              "voltage_v": 4.0228962898254395,
+              "current_a": -5.000380039215088,
+              "skin_temperature_c": 24.39337921142578
+            },
+            {
+              "excel_row": 20793,
+              "date_naive_local": "2019-09-03T00:57:29.334000",
+              "test_time_s": 20789.202024000002,
+              "step_time_s": 3.0,
+              "step": 5,
+              "voltage_v": 4.0186567306518555,
+              "current_a": -5.000378131866455,
+              "skin_temperature_c": 24.39337921142578
+            },
+            {
+              "excel_row": 20794,
+              "date_naive_local": "2019-09-03T00:57:30.334000",
+              "test_time_s": 20790.202124000003,
+              "step_time_s": 4.0001,
+              "step": 5,
+              "voltage_v": 4.015031337738037,
+              "current_a": -5.000395774841309,
+              "skin_temperature_c": 24.391195515610793
+            },
+            {
+              "excel_row": 20795,
+              "date_naive_local": "2019-09-03T00:57:31.334000",
+              "test_time_s": 20791.202124000003,
+              "step_time_s": 5.0001,
+              "step": 5,
+              "voltage_v": 4.0117716789245605,
+              "current_a": -5.000387668609619,
+              "skin_temperature_c": 24.39119529724121
+            },
+            {
+              "excel_row": 20796,
+              "date_naive_local": "2019-09-03T00:57:32.334000",
+              "test_time_s": 20792.202324,
+              "step_time_s": 6.0003,
+              "step": 5,
+              "voltage_v": 4.008856773376465,
+              "current_a": -5.00039005279541,
+              "skin_temperature_c": 24.385269165039062
+            },
+            {
+              "excel_row": 20797,
+              "date_naive_local": "2019-09-03T00:57:33.335000",
+              "test_time_s": 20793.203124,
+              "step_time_s": 7.0011,
+              "step": 5,
+              "voltage_v": 4.0062079429626465,
+              "current_a": -5.000401496887207,
+              "skin_temperature_c": 24.385269165039062
+            },
+            {
+              "excel_row": 20798,
+              "date_naive_local": "2019-09-03T00:57:34.335000",
+              "test_time_s": 20794.202524,
+              "step_time_s": 8.0005,
+              "step": 5,
+              "voltage_v": 4.003719806671143,
+              "current_a": -5.000401496887207,
+              "skin_temperature_c": 24.385269165039062
+            },
+            {
+              "excel_row": 20799,
+              "date_naive_local": "2019-09-03T00:57:35.335000",
+              "test_time_s": 20795.203024000002,
+              "step_time_s": 9.001,
+              "step": 5,
+              "voltage_v": 4.001376152038574,
+              "current_a": -5.00041389465332,
+              "skin_temperature_c": 24.4020938873291
+            },
+            {
+              "excel_row": 20800,
+              "date_naive_local": "2019-09-03T00:57:36.335000",
+              "test_time_s": 20796.203224,
+              "step_time_s": 10.0012,
+              "step": 5,
+              "voltage_v": 3.9991037845611572,
+              "current_a": -5.000410079956055,
+              "skin_temperature_c": 24.4020938873291
+            }
+          ],
+          "sampling_interpretation": "Each ratio is the finite difference between adjacent recorded samples, not a fitted or isolated ohmic/contact resistance. Sampling delay, electrochemical polarization, temperature, SOC/history and measurement boundary remain confounded."
+        },
+        "transition_error": null
+      },
+      "quality_flags": [],
+      "manufacturing_batch": "unverified",
+      "history_eligibility": "Prior high-rate exposure and freshness unresolved; only this one workbook inspected",
+      "observed_csv_sha256": "e60954ed6b10f60d6d5d3b0f02e0facb993a3d76f8c54962565c321da54e67e0"
+    },
+    {
+      "cell_id": "k3",
+      "integrity": {
+        "filename": "NMC_k3_1C_25degC.xlsx",
+        "bytes": 1815535,
+        "sha256": "7cf8168771c033405f6cf343240762c47322de4c7773e231c35d0d13b714515d",
+        "inflated_bytes": 10176886
+      },
+      "already_cached": false,
+      "source_inspection": {
+        "measurement_rows": 27699,
+        "canonical_six_step_sequence": true,
+        "contiguous_steps": [
+          {
+            "step": 1,
+            "name": "thermal rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              2,
+              3602
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T19:17:24.071000",
+              "2019-09-02T20:17:23.073000"
+            ],
+            "test_time_range_s": [
+              1.0006,
+              3600.0022
+            ],
+            "commanded_step_time_range_s": [
+              1.0004,
+              3600.002
+            ],
+            "observed_duration_s": 3599.0016,
+            "inferred_commanded_step_start_test_time_s": 0.0001999999999497959,
+            "clock_relation_max_deviation_s": 4.547473508864641e-13,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0020999999997002305,
+              "median": 1.0,
+              "max": 1.0012000000001535
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              2.9255967140197754,
+              2.92627215385437
+            ],
+            "surface_temperature_c": {
+              "initial": 24.69099235534668,
+              "final": 24.727933883666992,
+              "min": 24.649049758911133,
+              "max": 24.859914779663086
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 2,
+            "name": "CC charge",
+            "measurement_rows": 9500,
+            "excel_rows_inclusive": [
+              3603,
+              13102
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T20:17:24.120000",
+              "2019-09-02T22:55:42.615000"
+            ],
+            "test_time_range_s": [
+              3601.0493079999997,
+              13099.544708
+            ],
+            "commanded_step_time_range_s": [
+              1.0005,
+              9499.4959
+            ],
+            "observed_duration_s": 9498.4954,
+            "inferred_commanded_step_start_test_time_s": 3600.0488079999996,
+            "clock_relation_max_deviation_s": 1.8189894035458565e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.49579999999878055,
+              "median": 1.0,
+              "max": 1.0014000000010128
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 1.6251544952392578,
+              "max": 1.6253328323364258,
+              "time_weighted_mean": 1.6252338630394716
+            },
+            "endpoint_voltage_v": [
+              3.0031094551086426,
+              4.2000041007995605
+            ],
+            "surface_temperature_c": {
+              "initial": 24.739117507788833,
+              "final": 25.79181671142578,
+              "min": 24.648765563964844,
+              "max": 26.099346160888672
+            },
+            "signed_observed_charge_ah": 4.288132325556847
+          },
+          {
+            "step": 3,
+            "name": "CV charge",
+            "measurement_rows": 3977,
+            "excel_rows_inclusive": [
+              13103,
+              17079
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T22:55:43.721000",
+              "2019-09-03T00:01:58.730000"
+            ],
+            "test_time_range_s": [
+              13100.650647999999,
+              17075.659448
+            ],
+            "commanded_step_time_range_s": [
+              1.001,
+              3976.0098
+            ],
+            "observed_duration_s": 3975.0087999999996,
+            "inferred_commanded_step_start_test_time_s": 13099.649647999999,
+            "clock_relation_max_deviation_s": 1.8189894035458565e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.008900000000721775,
+              "median": 1.0,
+              "max": 1.0015000000003056
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.04999081790447235,
+              "max": 1.6336737871170044,
+              "time_weighted_mean": 0.5285009714857979
+            },
+            "endpoint_voltage_v": [
+              4.19999885559082,
+              4.199911117553711
+            ],
+            "surface_temperature_c": {
+              "initial": 25.792741775512695,
+              "final": 25.097997665405273,
+              "min": 25.057048797607422,
+              "max": 25.867414474487305
+            },
+            "signed_observed_charge_ah": 0.5835544479068321
+          },
+          {
+            "step": 4,
+            "name": "pre-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              17080,
+              20680
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-03T00:01:59.770000",
+              "2019-09-03T01:01:58.771000"
+            ],
+            "test_time_range_s": [
+              17076.700212,
+              20675.701212
+            ],
+            "commanded_step_time_range_s": [
+              1.0008,
+              3600.0018
+            ],
+            "observed_duration_s": 3599.001,
+            "inferred_commanded_step_start_test_time_s": 17075.699412,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0007999999979801942,
+              "median": 1.0,
+              "max": 1.001299999999901
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              4.198371887207031,
+              4.18700647354126
+            ],
+            "surface_temperature_c": {
+              "initial": 25.105424167100672,
+              "final": 24.57969093322754,
+              "min": 24.47029685974121,
+              "max": 25.113523483276367
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 5,
+            "name": "constant-current discharge",
+            "measurement_rows": 3419,
+            "excel_rows_inclusive": [
+              20681,
+              24099
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-03T01:01:59.819000",
+              "2019-09-03T01:58:57.607000"
+            ],
+            "test_time_range_s": [
+              20676.74774,
+              24094.53644
+            ],
+            "commanded_step_time_range_s": [
+              1.0005,
+              3418.7892
+            ],
+            "observed_duration_s": 3417.788700000001,
+            "inferred_commanded_step_start_test_time_s": 20675.74724,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.7881000000015774,
+              "median": 1.0,
+              "max": 1.001299999999901
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": -5.000463008880615,
+              "max": -5.000280380249023,
+              "time_weighted_mean": -5.000379411307513
+            },
+            "endpoint_voltage_v": [
+              4.025260925292969,
+              2.5000059604644775
+            ],
+            "surface_temperature_c": {
+              "initial": 24.57969093322754,
+              "final": 32.919677734375,
+              "min": 24.56876564025879,
+              "max": 32.941978454589844
+            },
+            "signed_observed_charge_ah": -4.747288957688743
+          },
+          {
+            "step": 6,
+            "name": "post-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              24100,
+              27700
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-03T01:58:58.748000",
+              "2019-09-03T02:58:57.749000"
+            ],
+            "test_time_range_s": [
+              24095.675344,
+              27694.676244
+            ],
+            "commanded_step_time_range_s": [
+              1.0006,
+              3600.0015
+            ],
+            "observed_duration_s": 3599.000899999999,
+            "inferred_commanded_step_start_test_time_s": 24094.674744,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0010000000002037268,
+              "median": 1.0,
+              "max": 1.0015999999995984
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              2.7390899658203125,
+              3.0071661472320557
+            ],
+            "surface_temperature_c": {
+              "initial": 32.919677734375,
+              "final": 25.108928680419922,
+              "min": 24.879165649414062,
+              "max": 32.96607208251953
+            },
+            "signed_observed_charge_ah": 0.0
+          }
+        ],
+        "discharge": {
+          "unobserved_initial_interval_s": 1.0005,
+          "recorded_current_a": -5.000379411307513,
+          "observed_discharge_charge_ah": 4.747288957688743,
+          "protocol_inferred_initial_charge_if_constant_current_ah": 0.0013896887780592128,
+          "initial_charge_note": "Conditional estimate, not a measured interval or rigorous bound; not used as a passing gate.",
+          "prior_high_rate_exposure": "Unresolved: this workbook does not establish order relative to other experiments."
+        },
+        "date_warning": "Measurement timestamps are naive local values; workbook creation and repository upload dates are different metadata.",
+        "source_clock_policy": "Preserve Step_Time(s); model comparison must start on the actually observed common interval.",
+        "model_runs": 0,
+        "independent_validation_established": false,
+        "source": {
+          "filename": "NMC_k3_1C_25degC.xlsx",
+          "bytes": 1815535,
+          "sha256": "7cf8168771c033405f6cf343240762c47322de4c7773e231c35d0d13b714515d",
+          "inflated_bytes": 10176886
+        },
+        "sheet": "Sheet1",
+        "columns": [
+          "Date_Time",
+          "Test_Time(s)",
+          "Step_Time(s)",
+          "Step_Index",
+          "Voltage(V)",
+          "Current(A)",
+          "Surface_Temp(degC)"
+        ],
+        "workbook_created": "2020-12-05 19:27:11",
+        "workbook_modified": "2020-12-08 12:41:47",
+        "dataset_doi": "10.17632/kxsbr4x3j2.2",
+        "dataset_url": "https://data.mendeley.com/datasets/kxsbr4x3j2/2",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license": "CC-BY-4.0",
+        "authors": [
+          "Edoardo Catenaro",
+          "Simona Onori"
+        ],
+        "openpyxl_version": "3.1.5",
+        "measurement_clock_audit": {
+          "backwards_date_intervals": 0,
+          "max_relative_date_test_clock_discrepancy_s": 0.0024560000019846484,
+          "date_test_clock_jumps_above_1s": 0,
+          "first_backwards_date_excel_row_pairs": [],
+          "first_clock_jump_excel_row_pairs": [],
+          "timezone": "Unspecified in source; timestamps are not converted to UTC"
+        }
+      },
+      "observed_discharge": {
+        "cell_id": "k3",
+        "measurement_rows": 3419,
+        "first_observed_step_time_s": 1.0005,
+        "last_observed_step_time_s": 3418.7892,
+        "observed_duration_s": 3417.7887,
+        "observed_delivered_charge_ah": 4.747288957688743,
+        "raw_signed_current": {
+          "time_mean_a": -5.000379411307514,
+          "min_a": -5.000463008880615,
+          "max_a": -5.000280380249023
+        },
+        "first_observed_voltage_v": 4.025260925292969,
+        "last_observed_voltage_v": 2.5000059604644775,
+        "first_observed_skin_temperature_k": 297.7296909332275,
+        "last_observed_skin_temperature_k": 306.069677734375
+      },
+      "discharge_metric_error": null,
+      "protocol_details": {
+        "pre_discharge_rest": {
+          "available": true,
+          "excel_rows_inclusive": [
+            17080,
+            20680
+          ],
+          "recorded_interval_s": [
+            1.0008,
+            3600.0018
+          ],
+          "observed_rest_duration_s": 3599.001,
+          "maximum_absolute_recorded_current_a": 0.0,
+          "final_voltage_v": 4.18700647354126,
+          "final_skin_temperature_c": 24.57969093322754,
+          "equilibrium_established": false,
+          "drift_interval_s": [
+            3000.0018,
+            3600.0018
+          ],
+          "last_600s_voltage_drift_v": -0.0007974219577029373,
+          "signed_observed_rest_charge_ah": 0.0
+        },
+        "transitions": {
+          "recorded_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "post_discharge_rest_recorded": true,
+          "preceding_cc_end": {
+            "excel_row": 13102,
+            "date_naive_local": "2019-09-02T22:55:42.615000",
+            "test_time_s": 13099.544708,
+            "step_time_s": 9499.4959,
+            "step": 2,
+            "voltage_v": 4.2000041007995605,
+            "current_a": 1.625213623046875,
+            "skin_temperature_c": 25.79181671142578
+          },
+          "preceding_cv_end": {
+            "excel_row": 17079,
+            "date_naive_local": "2019-09-03T00:01:58.730000",
+            "test_time_s": 17075.659448,
+            "step_time_s": 3976.0098,
+            "step": 3,
+            "voltage_v": 4.199911117553711,
+            "current_a": 0.04999081790447235,
+            "skin_temperature_c": 25.097997665405273
+          },
+          "rest_to_discharge": {
+            "steps": [
+              4,
+              5
+            ],
+            "left": {
+              "excel_row": 20680,
+              "date_naive_local": "2019-09-03T01:01:58.771000",
+              "test_time_s": 20675.701212,
+              "step_time_s": 3600.0018,
+              "step": 4,
+              "voltage_v": 4.18700647354126,
+              "current_a": 0.0,
+              "skin_temperature_c": 24.57969093322754
+            },
+            "right": {
+              "excel_row": 20681,
+              "date_naive_local": "2019-09-03T01:01:59.819000",
+              "test_time_s": 20676.74774,
+              "step_time_s": 1.0005,
+              "step": 5,
+              "voltage_v": 4.025260925292969,
+              "current_a": -5.000280380249023,
+              "skin_temperature_c": 24.57969093322754
+            },
+            "source_sample_gap_s": 1.0465279999989434,
+            "current_change_a": -5.000280380249023,
+            "voltage_change_v": -0.16174554824829102,
+            "apparent_transition_ratio_ohm": 0.03234729574109118,
+            "ratio_is_intrinsic_resistance": false
+          },
+          "first_ten_loaded_samples": [
+            {
+              "excel_row": 20681,
+              "date_naive_local": "2019-09-03T01:01:59.819000",
+              "test_time_s": 20676.74774,
+              "step_time_s": 1.0005,
+              "step": 5,
+              "voltage_v": 4.025260925292969,
+              "current_a": -5.000280380249023,
+              "skin_temperature_c": 24.57969093322754
+            },
+            {
+              "excel_row": 20682,
+              "date_naive_local": "2019-09-03T01:02:00.819000",
+              "test_time_s": 20677.74824,
+              "step_time_s": 2.001,
+              "step": 5,
+              "voltage_v": 4.019759654998779,
+              "current_a": -5.000312805175781,
+              "skin_temperature_c": 24.56876564025879
+            },
+            {
+              "excel_row": 20683,
+              "date_naive_local": "2019-09-03T01:02:01.819000",
+              "test_time_s": 20678.74824,
+              "step_time_s": 3.001,
+              "step": 5,
+              "voltage_v": 4.015558242797852,
+              "current_a": -5.000357627868652,
+              "skin_temperature_c": 24.56876564025879
+            },
+            {
+              "excel_row": 20684,
+              "date_naive_local": "2019-09-03T01:02:02.819000",
+              "test_time_s": 20679.74794,
+              "step_time_s": 4.0007,
+              "step": 5,
+              "voltage_v": 4.0120930671691895,
+              "current_a": -5.000332832336426,
+              "skin_temperature_c": 24.56876564025879
+            },
+            {
+              "excel_row": 20685,
+              "date_naive_local": "2019-09-03T01:02:03.819000",
+              "test_time_s": 20680.74804,
+              "step_time_s": 5.0008,
+              "step": 5,
+              "voltage_v": 4.009036540985107,
+              "current_a": -5.0003437995910645,
+              "skin_temperature_c": 24.6262264251709
+            },
+            {
+              "excel_row": 20686,
+              "date_naive_local": "2019-09-03T01:02:04.819000",
+              "test_time_s": 20681.74784,
+              "step_time_s": 6.0006,
+              "step": 5,
+              "voltage_v": 4.006129264831543,
+              "current_a": -5.00034236907959,
+              "skin_temperature_c": 24.6262264251709
+            },
+            {
+              "excel_row": 20687,
+              "date_naive_local": "2019-09-03T01:02:05.819000",
+              "test_time_s": 20682.74824,
+              "step_time_s": 7.001,
+              "step": 5,
+              "voltage_v": 4.003554344177246,
+              "current_a": -5.000307083129883,
+              "skin_temperature_c": 24.6262264251709
+            },
+            {
+              "excel_row": 20688,
+              "date_naive_local": "2019-09-03T01:02:06.818000",
+              "test_time_s": 20683.74744,
+              "step_time_s": 8.0002,
+              "step": 5,
+              "voltage_v": 4.001167297363281,
+              "current_a": -5.000370025634766,
+              "skin_temperature_c": 24.62500965851725
+            },
+            {
+              "excel_row": 20689,
+              "date_naive_local": "2019-09-03T01:02:07.818000",
+              "test_time_s": 20684.74724,
+              "step_time_s": 9.0,
+              "step": 5,
+              "voltage_v": 3.998824119567871,
+              "current_a": -5.000340461730957,
+              "skin_temperature_c": 24.625009536743164
+            },
+            {
+              "excel_row": 20690,
+              "date_naive_local": "2019-09-03T01:02:08.819000",
+              "test_time_s": 20685.74814,
+              "step_time_s": 10.0009,
+              "step": 5,
+              "voltage_v": 3.9967284202575684,
+              "current_a": -5.000337600708008,
+              "skin_temperature_c": 24.625009536743164
+            }
+          ],
+          "sampling_interpretation": "Each ratio is the finite difference between adjacent recorded samples, not a fitted or isolated ohmic/contact resistance. Sampling delay, electrochemical polarization, temperature, SOC/history and measurement boundary remain confounded."
+        },
+        "transition_error": null
+      },
+      "quality_flags": [],
+      "manufacturing_batch": "unverified",
+      "history_eligibility": "Prior high-rate exposure and freshness unresolved; only this one workbook inspected",
+      "observed_csv_sha256": "277fbd1d9c6b2d736d90830805906b333f8fa5b88852b9ae073e9b3367deedf7"
+    },
+    {
+      "cell_id": "k4",
+      "integrity": {
+        "filename": "NMC_k4_1C_25degC.xlsx",
+        "bytes": 1799620,
+        "sha256": "f03e1bf2cc25ab8bfb631666768abc85947e47a21473041e92bb622067686a86",
+        "inflated_bytes": 10133309
+      },
+      "already_cached": false,
+      "source_inspection": {
+        "measurement_rows": 27567,
+        "canonical_six_step_sequence": true,
+        "contiguous_steps": [
+          {
+            "step": 1,
+            "name": "thermal rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              2,
+              3602
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T19:17:30.214000",
+              "2019-09-02T20:17:29.215000"
+            ],
+            "test_time_range_s": [
+              1.0008,
+              3600.0017
+            ],
+            "commanded_step_time_range_s": [
+              1.0004,
+              3600.0013
+            ],
+            "observed_duration_s": 3599.0009,
+            "inferred_commanded_step_start_test_time_s": 0.0003999999998995918,
+            "clock_relation_max_deviation_s": 4.547473508864641e-13,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.001099999999951251,
+              "median": 1.0,
+              "max": 1.0013000000000147
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              2.9160609245300293,
+              2.916738986968994
+            ],
+            "surface_temperature_c": {
+              "initial": 24.42545509338379,
+              "final": 24.428281784057617,
+              "min": 24.35961151123047,
+              "max": 24.624948501586914
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 2,
+            "name": "CC charge",
+            "measurement_rows": 9601,
+            "excel_rows_inclusive": [
+              3603,
+              13203
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T20:17:30.262000",
+              "2019-09-02T22:57:29.644000"
+            ],
+            "test_time_range_s": [
+              3601.048852,
+              13200.430452
+            ],
+            "commanded_step_time_range_s": [
+              1.0003,
+              9600.3819
+            ],
+            "observed_duration_s": 9599.3816,
+            "inferred_commanded_step_start_test_time_s": 3600.048552,
+            "clock_relation_max_deviation_s": 1.8189894035458565e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.38180000000102154,
+              "median": 1.0,
+              "max": 1.0013999999991938
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 1.6251859664916992,
+              "max": 1.625335693359375,
+              "time_weighted_mean": 1.6252644928948645
+            },
+            "endpoint_voltage_v": [
+              2.987138032913208,
+              4.200032711029053
+            ],
+            "surface_temperature_c": {
+              "initial": 24.428281784057617,
+              "final": 25.73277473449707,
+              "min": 24.377948760986328,
+              "max": 25.81803321838379
+            },
+            "signed_observed_charge_ah": 4.333759463396748
+          },
+          {
+            "step": 3,
+            "name": "CV charge",
+            "measurement_rows": 3716,
+            "excel_rows_inclusive": [
+              13204,
+              16919
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T22:57:30.748000",
+              "2019-09-02T23:59:25.334000"
+            ],
+            "test_time_range_s": [
+              13201.535351999999,
+              16916.121052
+            ],
+            "commanded_step_time_range_s": [
+              1.0004,
+              3715.5861
+            ],
+            "observed_duration_s": 3714.5856999999996,
+            "inferred_commanded_step_start_test_time_s": 13200.534952,
+            "clock_relation_max_deviation_s": 1.8189894035458565e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.585399999999936,
+              "median": 1.0,
+              "max": 1.0015000000021246
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.04999157041311264,
+              "max": 1.6359831094741821,
+              "time_weighted_mean": 0.5182955285019544
+            },
+            "endpoint_voltage_v": [
+              4.200012683868408,
+              4.200058937072754
+            ],
+            "surface_temperature_c": {
+              "initial": 25.73277473449707,
+              "final": 24.507129669189453,
+              "min": 24.44407844543457,
+              "max": 25.76749038696289
+            },
+            "signed_observed_charge_ah": 0.5347925440409173
+          },
+          {
+            "step": 4,
+            "name": "pre-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              16920,
+              20520
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T23:59:26.376000",
+              "2019-09-03T00:59:25.377000"
+            ],
+            "test_time_range_s": [
+              16917.16306,
+              20516.16416
+            ],
+            "commanded_step_time_range_s": [
+              1.0007,
+              3600.0018
+            ],
+            "observed_duration_s": 3599.0011000000013,
+            "inferred_commanded_step_start_test_time_s": 16916.162360000002,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0008999999990919605,
+              "median": 1.0,
+              "max": 1.001299999999901
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              4.198523998260498,
+              4.186792850494385
+            ],
+            "surface_temperature_c": {
+              "initial": 24.528573839432493,
+              "final": 24.462350845336914,
+              "min": 24.36290168762207,
+              "max": 24.55434799194336
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 5,
+            "name": "constant-current discharge",
+            "measurement_rows": 3447,
+            "excel_rows_inclusive": [
+              20521,
+              23967
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-03T00:59:26.424000",
+              "2019-09-03T01:56:51.810000"
+            ],
+            "test_time_range_s": [
+              20517.211288,
+              23962.596387999998
+            ],
+            "commanded_step_time_range_s": [
+              1.001,
+              3446.3861
+            ],
+            "observed_duration_s": 3445.3850999999995,
+            "inferred_commanded_step_start_test_time_s": 20516.210288,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.385999999998603,
+              "median": 1.0,
+              "max": 1.0014000000010128
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": -5.00046968460083,
+              "max": -5.000102996826172,
+              "time_weighted_mean": -5.000212545643831
+            },
+            "endpoint_voltage_v": [
+              4.045130729675293,
+              2.4999899864196777
+            ],
+            "surface_temperature_c": {
+              "initial": 24.462350845336914,
+              "final": 33.675167083740234,
+              "min": 24.43500518798828,
+              "max": 33.675167083740234
+            },
+            "signed_observed_charge_ah": -4.785460500442867
+          },
+          {
+            "step": 6,
+            "name": "post-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              23968,
+              27568
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-03T01:56:52.948000",
+              "2019-09-03T02:56:51.949000"
+            ],
+            "test_time_range_s": [
+              23963.734292,
+              27562.735692000002
+            ],
+            "commanded_step_time_range_s": [
+              0.9999,
+              3600.0013
+            ],
+            "observed_duration_s": 3599.001400000001,
+            "inferred_commanded_step_start_test_time_s": 23962.734392000002,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0010000000002037268,
+              "median": 1.0,
+              "max": 1.0012000000024273
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              2.6932597160339355,
+              2.949652910232544
+            ],
+            "surface_temperature_c": {
+              "initial": 33.69649124145508,
+              "final": 24.456153869628906,
+              "min": 24.419857025146484,
+              "max": 33.75230407714844
+            },
+            "signed_observed_charge_ah": 0.0
+          }
+        ],
+        "discharge": {
+          "unobserved_initial_interval_s": 1.001,
+          "recorded_current_a": -5.000212545643831,
+          "observed_discharge_charge_ah": 4.785460500442867,
+          "protocol_inferred_initial_charge_if_constant_current_ah": 0.001390336877274854,
+          "initial_charge_note": "Conditional estimate, not a measured interval or rigorous bound; not used as a passing gate.",
+          "prior_high_rate_exposure": "Unresolved: this workbook does not establish order relative to other experiments."
+        },
+        "date_warning": "Measurement timestamps are naive local values; workbook creation and repository upload dates are different metadata.",
+        "source_clock_policy": "Preserve Step_Time(s); model comparison must start on the actually observed common interval.",
+        "model_runs": 0,
+        "independent_validation_established": false,
+        "source": {
+          "filename": "NMC_k4_1C_25degC.xlsx",
+          "bytes": 1799620,
+          "sha256": "f03e1bf2cc25ab8bfb631666768abc85947e47a21473041e92bb622067686a86",
+          "inflated_bytes": 10133309
+        },
+        "sheet": "Sheet1",
+        "columns": [
+          "Date_Time",
+          "Test_Time(s)",
+          "Step_Time(s)",
+          "Step_Index",
+          "Voltage(V)",
+          "Current(A)",
+          "Surface_Temp(degC)"
+        ],
+        "workbook_created": "2020-12-05 19:27:11",
+        "workbook_modified": "2020-12-08 12:43:40",
+        "dataset_doi": "10.17632/kxsbr4x3j2.2",
+        "dataset_url": "https://data.mendeley.com/datasets/kxsbr4x3j2/2",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license": "CC-BY-4.0",
+        "authors": [
+          "Edoardo Catenaro",
+          "Simona Onori"
+        ],
+        "openpyxl_version": "3.1.5",
+        "measurement_clock_audit": {
+          "backwards_date_intervals": 0,
+          "max_relative_date_test_clock_discrepancy_s": 0.0010000000002037268,
+          "date_test_clock_jumps_above_1s": 0,
+          "first_backwards_date_excel_row_pairs": [],
+          "first_clock_jump_excel_row_pairs": [],
+          "timezone": "Unspecified in source; timestamps are not converted to UTC"
+        }
+      },
+      "observed_discharge": {
+        "cell_id": "k4",
+        "measurement_rows": 3447,
+        "first_observed_step_time_s": 1.001,
+        "last_observed_step_time_s": 3446.3861,
+        "observed_duration_s": 3445.3851,
+        "observed_delivered_charge_ah": 4.78546050044287,
+        "raw_signed_current": {
+          "time_mean_a": -5.000212545643833,
+          "min_a": -5.00046968460083,
+          "max_a": -5.000102996826172
+        },
+        "first_observed_voltage_v": 4.045130729675293,
+        "last_observed_voltage_v": 2.4999899864196777,
+        "first_observed_skin_temperature_k": 297.6123508453369,
+        "last_observed_skin_temperature_k": 306.8251670837402
+      },
+      "discharge_metric_error": null,
+      "protocol_details": {
+        "pre_discharge_rest": {
+          "available": true,
+          "excel_rows_inclusive": [
+            16920,
+            20520
+          ],
+          "recorded_interval_s": [
+            1.0007,
+            3600.0018
+          ],
+          "observed_rest_duration_s": 3599.0011,
+          "maximum_absolute_recorded_current_a": 0.0,
+          "final_voltage_v": 4.186792850494385,
+          "final_skin_temperature_c": 24.462350845336914,
+          "equilibrium_established": false,
+          "drift_interval_s": [
+            3000.0018,
+            3600.0018
+          ],
+          "last_600s_voltage_drift_v": -0.0007945005506710956,
+          "signed_observed_rest_charge_ah": 0.0
+        },
+        "transitions": {
+          "recorded_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "post_discharge_rest_recorded": true,
+          "preceding_cc_end": {
+            "excel_row": 13203,
+            "date_naive_local": "2019-09-02T22:57:29.644000",
+            "test_time_s": 13200.430452,
+            "step_time_s": 9600.3819,
+            "step": 2,
+            "voltage_v": 4.200032711029053,
+            "current_a": 1.6252880096435547,
+            "skin_temperature_c": 25.73277473449707
+          },
+          "preceding_cv_end": {
+            "excel_row": 16919,
+            "date_naive_local": "2019-09-02T23:59:25.334000",
+            "test_time_s": 16916.121052,
+            "step_time_s": 3715.5861,
+            "step": 3,
+            "voltage_v": 4.200058937072754,
+            "current_a": 0.04999157041311264,
+            "skin_temperature_c": 24.507129669189453
+          },
+          "rest_to_discharge": {
+            "steps": [
+              4,
+              5
+            ],
+            "left": {
+              "excel_row": 20520,
+              "date_naive_local": "2019-09-03T00:59:25.377000",
+              "test_time_s": 20516.16416,
+              "step_time_s": 3600.0018,
+              "step": 4,
+              "voltage_v": 4.186792850494385,
+              "current_a": 0.0,
+              "skin_temperature_c": 24.462350845336914
+            },
+            "right": {
+              "excel_row": 20521,
+              "date_naive_local": "2019-09-03T00:59:26.424000",
+              "test_time_s": 20517.211288,
+              "step_time_s": 1.001,
+              "step": 5,
+              "voltage_v": 4.045130729675293,
+              "current_a": -5.00046968460083,
+              "skin_temperature_c": 24.462350845336914
+            },
+            "source_sample_gap_s": 1.047127999998338,
+            "current_change_a": -5.00046968460083,
+            "voltage_change_v": -0.1416621208190918,
+            "apparent_transition_ratio_ohm": 0.028329762953137508,
+            "ratio_is_intrinsic_resistance": false
+          },
+          "first_ten_loaded_samples": [
+            {
+              "excel_row": 20521,
+              "date_naive_local": "2019-09-03T00:59:26.424000",
+              "test_time_s": 20517.211288,
+              "step_time_s": 1.001,
+              "step": 5,
+              "voltage_v": 4.045130729675293,
+              "current_a": -5.00046968460083,
+              "skin_temperature_c": 24.462350845336914
+            },
+            {
+              "excel_row": 20522,
+              "date_naive_local": "2019-09-03T00:59:27.424000",
+              "test_time_s": 20518.210788,
+              "step_time_s": 2.0005,
+              "step": 5,
+              "voltage_v": 4.039559841156006,
+              "current_a": -5.000120162963867,
+              "skin_temperature_c": 24.435007923921983
+            },
+            {
+              "excel_row": 20523,
+              "date_naive_local": "2019-09-03T00:59:28.424000",
+              "test_time_s": 20519.210988,
+              "step_time_s": 3.0007,
+              "step": 5,
+              "voltage_v": 4.035315990447998,
+              "current_a": -5.00014066696167,
+              "skin_temperature_c": 24.43500518798828
+            },
+            {
+              "excel_row": 20524,
+              "date_naive_local": "2019-09-03T00:59:29.423000",
+              "test_time_s": 20520.210388,
+              "step_time_s": 4.0001,
+              "step": 5,
+              "voltage_v": 4.031707286834717,
+              "current_a": -5.000102996826172,
+              "skin_temperature_c": 24.43500518798828
+            },
+            {
+              "excel_row": 20525,
+              "date_naive_local": "2019-09-03T00:59:30.424000",
+              "test_time_s": 20521.210788,
+              "step_time_s": 5.0005,
+              "step": 5,
+              "voltage_v": 4.028402328491211,
+              "current_a": -5.000121116638184,
+              "skin_temperature_c": 24.4614200592041
+            },
+            {
+              "excel_row": 20526,
+              "date_naive_local": "2019-09-03T00:59:31.424000",
+              "test_time_s": 20522.210788,
+              "step_time_s": 6.0005,
+              "step": 5,
+              "voltage_v": 4.025607109069824,
+              "current_a": -5.000133037567139,
+              "skin_temperature_c": 24.4614200592041
+            },
+            {
+              "excel_row": 20527,
+              "date_naive_local": "2019-09-03T00:59:32.424000",
+              "test_time_s": 20523.211187999997,
+              "step_time_s": 7.0009,
+              "step": 5,
+              "voltage_v": 4.022983551025391,
+              "current_a": -5.000155448913574,
+              "skin_temperature_c": 24.4614200592041
+            },
+            {
+              "excel_row": 20528,
+              "date_naive_local": "2019-09-03T00:59:33.424000",
+              "test_time_s": 20524.210688,
+              "step_time_s": 8.0004,
+              "step": 5,
+              "voltage_v": 4.0203657150268555,
+              "current_a": -5.0001349449157715,
+              "skin_temperature_c": 24.48315402973934
+            },
+            {
+              "excel_row": 20529,
+              "date_naive_local": "2019-09-03T00:59:34.424000",
+              "test_time_s": 20525.210887999998,
+              "step_time_s": 9.0006,
+              "step": 5,
+              "voltage_v": 4.018093585968018,
+              "current_a": -5.000121116638184,
+              "skin_temperature_c": 24.483156204223633
+            },
+            {
+              "excel_row": 20530,
+              "date_naive_local": "2019-09-03T00:59:35.423000",
+              "test_time_s": 20526.210388,
+              "step_time_s": 10.0001,
+              "step": 5,
+              "voltage_v": 4.015970706939697,
+              "current_a": -5.000181198120117,
+              "skin_temperature_c": 24.483156204223633
+            }
+          ],
+          "sampling_interpretation": "Each ratio is the finite difference between adjacent recorded samples, not a fitted or isolated ohmic/contact resistance. Sampling delay, electrochemical polarization, temperature, SOC/history and measurement boundary remain confounded."
+        },
+        "transition_error": null
+      },
+      "quality_flags": [],
+      "manufacturing_batch": "unverified",
+      "history_eligibility": "Prior high-rate exposure and freshness unresolved; only this one workbook inspected",
+      "observed_csv_sha256": "20848d92a3ac13b817b36968d0c70776cd85c7bd7b041b3a2ac66650f9a17bdd"
+    },
+    {
+      "cell_id": "k5",
+      "integrity": {
+        "filename": "NMC_k5_1C_25degC.xlsx",
+        "bytes": 1810452,
+        "sha256": "43088a9b15950868fd505cdb9281e02750d0765f7cf1bdfc9b50260c397228b5",
+        "inflated_bytes": 10128090
+      },
+      "already_cached": false,
+      "source_inspection": {
+        "measurement_rows": 27556,
+        "canonical_six_step_sequence": true,
+        "contiguous_steps": [
+          {
+            "step": 1,
+            "name": "thermal rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              2,
+              3602
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T19:14:10.888000",
+              "2019-09-02T20:14:09.888000"
+            ],
+            "test_time_range_s": [
+              1.0015,
+              3600.0022
+            ],
+            "commanded_step_time_range_s": [
+              1.0013,
+              3600.002
+            ],
+            "observed_duration_s": 3599.0007,
+            "inferred_commanded_step_start_test_time_s": 0.0001999999999497959,
+            "clock_relation_max_deviation_s": 4.547473508864641e-13,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0009000000000014552,
+              "median": 1.0,
+              "max": 1.0014000000000003
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              2.947036027908325,
+              2.9477508068084717
+            ],
+            "surface_temperature_c": {
+              "initial": 24.732154846191406,
+              "final": 24.75697898864746,
+              "min": 24.685640335083008,
+              "max": 24.88773536682129
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 2,
+            "name": "CC charge",
+            "measurement_rows": 9671,
+            "excel_rows_inclusive": [
+              3603,
+              13273
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T20:14:10.935000",
+              "2019-09-02T22:55:20.528000"
+            ],
+            "test_time_range_s": [
+              3601.049408,
+              13270.641808
+            ],
+            "commanded_step_time_range_s": [
+              1.0005,
+              9670.5929
+            ],
+            "observed_duration_s": 9669.592400000001,
+            "inferred_commanded_step_start_test_time_s": 3600.0489079999998,
+            "clock_relation_max_deviation_s": 9.094947017729282e-13,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.5915000000004511,
+              "median": 1.0,
+              "max": 1.0014000000001033
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 1.6251964569091797,
+              "max": 1.6254777908325195,
+              "time_weighted_mean": 1.6253376746613686
+            },
+            "endpoint_voltage_v": [
+              3.017737627029419,
+              4.1999897956848145
+            ],
+            "surface_temperature_c": {
+              "initial": 24.75697898864746,
+              "final": 26.345191955566406,
+              "min": 24.696147918701172,
+              "max": 26.450902938842773
+            },
+            "signed_observed_charge_ah": 4.365653562872013
+          },
+          {
+            "step": 3,
+            "name": "CV charge",
+            "measurement_rows": 3633,
+            "excel_rows_inclusive": [
+              13274,
+              16906
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T22:55:21.632000",
+              "2019-09-02T23:55:52.927000"
+            ],
+            "test_time_range_s": [
+              13271.746012000001,
+              16903.041112
+            ],
+            "commanded_step_time_range_s": [
+              1.0005,
+              3632.2956
+            ],
+            "observed_duration_s": 3631.2950999999975,
+            "inferred_commanded_step_start_test_time_s": 13270.745512000001,
+            "clock_relation_max_deviation_s": 1.8189894035458565e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.294899999997142,
+              "median": 0.9997000000003027,
+              "max": 1.0014999999984866
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.049981970340013504,
+              "max": 1.6340322494506836,
+              "time_weighted_mean": 0.5040884214303194
+            },
+            "endpoint_voltage_v": [
+              4.200037479400635,
+              4.19997501373291
+            ],
+            "surface_temperature_c": {
+              "initial": 26.345191955566406,
+              "final": 25.183198928833008,
+              "min": 25.10627555847168,
+              "max": 26.377986907958984
+            },
+            "signed_observed_charge_ah": 0.5084705040851812
+          },
+          {
+            "step": 4,
+            "name": "pre-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              16907,
+              20507
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T23:55:53.968000",
+              "2019-09-03T00:55:52.969000"
+            ],
+            "test_time_range_s": [
+              16904.082084,
+              20503.083384
+            ],
+            "commanded_step_time_range_s": [
+              1.0002,
+              3600.0015
+            ],
+            "observed_duration_s": 3599.0013,
+            "inferred_commanded_step_start_test_time_s": 16903.081884,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0009000000027299393,
+              "median": 1.0,
+              "max": 1.0014000000010128
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              4.198517799377441,
+              4.1870856285095215
+            ],
+            "surface_temperature_c": {
+              "initial": 25.183198928833008,
+              "final": 24.65095329284668,
+              "min": 24.56772804260254,
+              "max": 25.221033096313477
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 5,
+            "name": "constant-current discharge",
+            "measurement_rows": 3449,
+            "excel_rows_inclusive": [
+              20508,
+              23956
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-03T00:55:54.016000",
+              "2019-09-03T01:53:21.350000"
+            ],
+            "test_time_range_s": [
+              20504.127964,
+              23951.462664
+            ],
+            "commanded_step_time_range_s": [
+              1.0003,
+              3448.335
+            ],
+            "observed_duration_s": 3447.3346999999994,
+            "inferred_commanded_step_start_test_time_s": 20503.127664,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.3338999999978114,
+              "median": 1.0,
+              "max": 1.0014000000010128
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": -5.000302314758301,
+              "max": -5.000014305114746,
+              "time_weighted_mean": -5.000147795160943
+            },
+            "endpoint_voltage_v": [
+              4.046494960784912,
+              2.499966621398926
+            ],
+            "surface_temperature_c": {
+              "initial": 24.618045137380605,
+              "final": 35.49696731567383,
+              "min": 24.6180419921875,
+              "max": 35.52885818481445
+            },
+            "signed_observed_charge_ah": -4.788106388718558
+          },
+          {
+            "step": 6,
+            "name": "post-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              23957,
+              27557
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-03T01:53:22.489000",
+              "2019-09-03T02:53:21.490000"
+            ],
+            "test_time_range_s": [
+              23952.604112,
+              27551.605112
+            ],
+            "commanded_step_time_range_s": [
+              1.0005,
+              3600.0015
+            ],
+            "observed_duration_s": 3599.001,
+            "inferred_commanded_step_start_test_time_s": 23951.603612,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0009000000027299393,
+              "median": 1.0,
+              "max": 1.001299999999901
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              2.6948392391204834,
+              2.9631283283233643
+            ],
+            "surface_temperature_c": {
+              "initial": 35.49696731567383,
+              "final": 25.18440818786621,
+              "min": 25.075740814208984,
+              "max": 35.510032653808594
+            },
+            "signed_observed_charge_ah": 0.0
+          }
+        ],
+        "discharge": {
+          "unobserved_initial_interval_s": 1.0003,
+          "recorded_current_a": -5.000147795160943,
+          "observed_discharge_charge_ah": 4.788106388718558,
+          "protocol_inferred_initial_charge_if_constant_current_ah": 0.001389346622083192,
+          "initial_charge_note": "Conditional estimate, not a measured interval or rigorous bound; not used as a passing gate.",
+          "prior_high_rate_exposure": "Unresolved: this workbook does not establish order relative to other experiments."
+        },
+        "date_warning": "Measurement timestamps are naive local values; workbook creation and repository upload dates are different metadata.",
+        "source_clock_policy": "Preserve Step_Time(s); model comparison must start on the actually observed common interval.",
+        "model_runs": 0,
+        "independent_validation_established": false,
+        "source": {
+          "filename": "NMC_k5_1C_25degC.xlsx",
+          "bytes": 1810452,
+          "sha256": "43088a9b15950868fd505cdb9281e02750d0765f7cf1bdfc9b50260c397228b5",
+          "inflated_bytes": 10128090
+        },
+        "sheet": "Sheet1",
+        "columns": [
+          "Date_Time",
+          "Test_Time(s)",
+          "Step_Time(s)",
+          "Step_Index",
+          "Voltage(V)",
+          "Current(A)",
+          "Surface_Temp(degC)"
+        ],
+        "workbook_created": "2020-12-05 19:27:11",
+        "workbook_modified": "2020-12-08 12:44:23",
+        "dataset_doi": "10.17632/kxsbr4x3j2.2",
+        "dataset_url": "https://data.mendeley.com/datasets/kxsbr4x3j2/2",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license": "CC-BY-4.0",
+        "authors": [
+          "Edoardo Catenaro",
+          "Simona Onori"
+        ],
+        "openpyxl_version": "3.1.5",
+        "measurement_clock_audit": {
+          "backwards_date_intervals": 0,
+          "max_relative_date_test_clock_discrepancy_s": 0.00181200000224635,
+          "date_test_clock_jumps_above_1s": 0,
+          "first_backwards_date_excel_row_pairs": [],
+          "first_clock_jump_excel_row_pairs": [],
+          "timezone": "Unspecified in source; timestamps are not converted to UTC"
+        }
+      },
+      "observed_discharge": {
+        "cell_id": "k5",
+        "measurement_rows": 3449,
+        "first_observed_step_time_s": 1.0003,
+        "last_observed_step_time_s": 3448.335,
+        "observed_duration_s": 3447.3347,
+        "observed_delivered_charge_ah": 4.788106388718558,
+        "raw_signed_current": {
+          "time_mean_a": -5.0001477951609425,
+          "min_a": -5.000302314758301,
+          "max_a": -5.000014305114746
+        },
+        "first_observed_voltage_v": 4.046494960784912,
+        "last_observed_voltage_v": 2.499966621398926,
+        "first_observed_skin_temperature_k": 297.76804513738057,
+        "last_observed_skin_temperature_k": 308.6469673156738
+      },
+      "discharge_metric_error": null,
+      "protocol_details": {
+        "pre_discharge_rest": {
+          "available": true,
+          "excel_rows_inclusive": [
+            16907,
+            20507
+          ],
+          "recorded_interval_s": [
+            1.0002,
+            3600.0015
+          ],
+          "observed_rest_duration_s": 3599.0013,
+          "maximum_absolute_recorded_current_a": 0.0,
+          "final_voltage_v": 4.1870856285095215,
+          "final_skin_temperature_c": 24.65095329284668,
+          "equilibrium_established": false,
+          "drift_interval_s": [
+            3000.0015,
+            3600.0015
+          ],
+          "last_600s_voltage_drift_v": -0.000791542433967507,
+          "signed_observed_rest_charge_ah": 0.0
+        },
+        "transitions": {
+          "recorded_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "post_discharge_rest_recorded": true,
+          "preceding_cc_end": {
+            "excel_row": 13273,
+            "date_naive_local": "2019-09-02T22:55:20.528000",
+            "test_time_s": 13270.641808,
+            "step_time_s": 9670.5929,
+            "step": 2,
+            "voltage_v": 4.1999897956848145,
+            "current_a": 1.625319480895996,
+            "skin_temperature_c": 26.345191955566406
+          },
+          "preceding_cv_end": {
+            "excel_row": 16906,
+            "date_naive_local": "2019-09-02T23:55:52.927000",
+            "test_time_s": 16903.041112,
+            "step_time_s": 3632.2956,
+            "step": 3,
+            "voltage_v": 4.19997501373291,
+            "current_a": 0.049981970340013504,
+            "skin_temperature_c": 25.183198928833008
+          },
+          "rest_to_discharge": {
+            "steps": [
+              4,
+              5
+            ],
+            "left": {
+              "excel_row": 20507,
+              "date_naive_local": "2019-09-03T00:55:52.969000",
+              "test_time_s": 20503.083384,
+              "step_time_s": 3600.0015,
+              "step": 4,
+              "voltage_v": 4.1870856285095215,
+              "current_a": 0.0,
+              "skin_temperature_c": 24.65095329284668
+            },
+            "right": {
+              "excel_row": 20508,
+              "date_naive_local": "2019-09-03T00:55:54.016000",
+              "test_time_s": 20504.127964,
+              "step_time_s": 1.0003,
+              "step": 5,
+              "voltage_v": 4.046494960784912,
+              "current_a": -5.000300407409668,
+              "skin_temperature_c": 24.618045137380605
+            },
+            "source_sample_gap_s": 1.04457999999795,
+            "current_change_a": -5.000300407409668,
+            "voltage_change_v": -0.14059066772460938,
+            "apparent_transition_ratio_ohm": 0.028116444267283592,
+            "ratio_is_intrinsic_resistance": false
+          },
+          "first_ten_loaded_samples": [
+            {
+              "excel_row": 20508,
+              "date_naive_local": "2019-09-03T00:55:54.016000",
+              "test_time_s": 20504.127964,
+              "step_time_s": 1.0003,
+              "step": 5,
+              "voltage_v": 4.046494960784912,
+              "current_a": -5.000300407409668,
+              "skin_temperature_c": 24.618045137380605
+            },
+            {
+              "excel_row": 20509,
+              "date_naive_local": "2019-09-03T00:55:55.017000",
+              "test_time_s": 20505.129164,
+              "step_time_s": 2.0015,
+              "step": 5,
+              "voltage_v": 4.041169166564941,
+              "current_a": -5.000284194946289,
+              "skin_temperature_c": 24.6180419921875
+            },
+            {
+              "excel_row": 20510,
+              "date_naive_local": "2019-09-03T00:55:56.016000",
+              "test_time_s": 20506.128564,
+              "step_time_s": 3.0009,
+              "step": 5,
+              "voltage_v": 4.03690767288208,
+              "current_a": -5.000272274017334,
+              "skin_temperature_c": 24.6180419921875
+            },
+            {
+              "excel_row": 20511,
+              "date_naive_local": "2019-09-03T00:55:57.016000",
+              "test_time_s": 20507.128464,
+              "step_time_s": 4.0008,
+              "step": 5,
+              "voltage_v": 4.033383369445801,
+              "current_a": -5.000244140625,
+              "skin_temperature_c": 24.66399574279785
+            },
+            {
+              "excel_row": 20512,
+              "date_naive_local": "2019-09-03T00:55:58.016000",
+              "test_time_s": 20508.128064,
+              "step_time_s": 5.0004,
+              "step": 5,
+              "voltage_v": 4.030334949493408,
+              "current_a": -5.0002851486206055,
+              "skin_temperature_c": 24.66399574279785
+            },
+            {
+              "excel_row": 20513,
+              "date_naive_local": "2019-09-03T00:55:59.015000",
+              "test_time_s": 20509.127864000002,
+              "step_time_s": 6.0002,
+              "step": 5,
+              "voltage_v": 4.027462482452393,
+              "current_a": -5.000251770019531,
+              "skin_temperature_c": 24.666171809937648
+            },
+            {
+              "excel_row": 20514,
+              "date_naive_local": "2019-09-03T00:56:00.015000",
+              "test_time_s": 20510.127764,
+              "step_time_s": 7.0001,
+              "step": 5,
+              "voltage_v": 4.024867534637451,
+              "current_a": -5.000225067138672,
+              "skin_temperature_c": 24.66617202758789
+            },
+            {
+              "excel_row": 20515,
+              "date_naive_local": "2019-09-03T00:56:01.016000",
+              "test_time_s": 20511.128364,
+              "step_time_s": 8.0007,
+              "step": 5,
+              "voltage_v": 4.022446155548096,
+              "current_a": -5.0002665519714355,
+              "skin_temperature_c": 24.66617202758789
+            },
+            {
+              "excel_row": 20516,
+              "date_naive_local": "2019-09-03T00:56:02.015000",
+              "test_time_s": 20512.127864000002,
+              "step_time_s": 9.0002,
+              "step": 5,
+              "voltage_v": 4.0202765464782715,
+              "current_a": -5.0002241134643555,
+              "skin_temperature_c": 24.696001883075922
+            },
+            {
+              "excel_row": 20517,
+              "date_naive_local": "2019-09-03T00:56:03.016000",
+              "test_time_s": 20513.128264,
+              "step_time_s": 10.0006,
+              "step": 5,
+              "voltage_v": 4.018028259277344,
+              "current_a": -5.000268459320068,
+              "skin_temperature_c": 24.69600486755371
+            }
+          ],
+          "sampling_interpretation": "Each ratio is the finite difference between adjacent recorded samples, not a fitted or isolated ohmic/contact resistance. Sampling delay, electrochemical polarization, temperature, SOC/history and measurement boundary remain confounded."
+        },
+        "transition_error": null
+      },
+      "quality_flags": [],
+      "manufacturing_batch": "unverified",
+      "history_eligibility": "Prior high-rate exposure and freshness unresolved; only this one workbook inspected",
+      "observed_csv_sha256": "f37b506707f8e6796a6eb596c22f1fd14f1fa0b3e16e96c25c5b6558e54e1455"
+    },
+    {
+      "cell_id": "k6",
+      "integrity": {
+        "filename": "NMC_k6_1C_25degC.xlsx",
+        "bytes": 1876649,
+        "sha256": "8d1042224f8ba2e96da341dfd15e6d7542039c36c937d777d550c378e66c1fe1",
+        "inflated_bytes": 10548383
+      },
+      "already_cached": false,
+      "source_inspection": {
+        "measurement_rows": 28663,
+        "canonical_six_step_sequence": true,
+        "contiguous_steps": [
+          {
+            "step": 1,
+            "name": "thermal rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              2,
+              3602
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T19:14:19.907000",
+              "2019-09-02T20:14:18.908000"
+            ],
+            "test_time_range_s": [
+              1.0013,
+              3600.0021
+            ],
+            "commanded_step_time_range_s": [
+              1.0009,
+              3600.0017
+            ],
+            "observed_duration_s": 3599.0008000000003,
+            "inferred_commanded_step_start_test_time_s": 0.0003999999998995918,
+            "clock_relation_max_deviation_s": 4.547473508864641e-13,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0010000000002037268,
+              "median": 1.0,
+              "max": 1.0013000000001284
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              2.953944444656372,
+              2.954838275909424
+            ],
+            "surface_temperature_c": {
+              "initial": 24.425737380981445,
+              "final": 24.41022300720215,
+              "min": 24.371084213256836,
+              "max": 24.621191024780273
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 2,
+            "name": "CC charge",
+            "measurement_rows": 8915,
+            "excel_rows_inclusive": [
+              3603,
+              12517
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T20:14:19.955000",
+              "2019-09-02T22:42:53.039000"
+            ],
+            "test_time_range_s": [
+              3601.049164,
+              12514.133064
+            ],
+            "commanded_step_time_range_s": [
+              1.0,
+              8914.0839
+            ],
+            "observed_duration_s": 8913.0839,
+            "inferred_commanded_step_start_test_time_s": 3600.049164,
+            "clock_relation_max_deviation_s": 1.8189894035458565e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.08330000000023574,
+              "median": 1.0,
+              "max": 1.0015000000003056
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 1.6252403259277344,
+              "max": 1.6253585815429688,
+              "time_weighted_mean": 1.6252977622092097
+            },
+            "endpoint_voltage_v": [
+              3.0769894123077393,
+              4.199949741363525
+            ],
+            "surface_temperature_c": {
+              "initial": 24.41022300720215,
+              "final": 25.868494033813477,
+              "min": 24.41022300720215,
+              "max": 26.083202362060547
+            },
+            "signed_observed_charge_ah": 4.024004254736926
+          },
+          {
+            "step": 3,
+            "name": "CV charge",
+            "measurement_rows": 5537,
+            "excel_rows_inclusive": [
+              12518,
+              18054
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-02T22:42:54.144000",
+              "2019-09-03T00:15:09.515000"
+            ],
+            "test_time_range_s": [
+              12515.239064,
+              18050.609764
+            ],
+            "commanded_step_time_range_s": [
+              1.0011,
+              5536.3718
+            ],
+            "observed_duration_s": 5535.370700000001,
+            "inferred_commanded_step_start_test_time_s": 12514.237964,
+            "clock_relation_max_deviation_s": 1.8189894035458565e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.3712000000014086,
+              "median": 0.9997000000003027,
+              "max": 1.0015000000003056
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.049998387694358826,
+              "max": 1.6278953552246094,
+              "time_weighted_mean": 0.5584195682641532
+            },
+            "endpoint_voltage_v": [
+              4.199978828430176,
+              4.200000286102295
+            ],
+            "surface_temperature_c": {
+              "initial": 25.868494033813477,
+              "final": 24.50337028503418,
+              "min": 24.4427547454834,
+              "max": 25.92580223083496
+            },
+            "signed_observed_charge_ah": 0.8586275879100123
+          },
+          {
+            "step": 4,
+            "name": "pre-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              18055,
+              21655
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-03T00:15:10.555000",
+              "2019-09-03T01:15:09.556000"
+            ],
+            "test_time_range_s": [
+              18051.648464,
+              21650.648864000003
+            ],
+            "commanded_step_time_range_s": [
+              1.0006,
+              3600.001
+            ],
+            "observed_duration_s": 3599.000400000001,
+            "inferred_commanded_step_start_test_time_s": 18050.647864000002,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0009000000027299393,
+              "median": 1.0,
+              "max": 1.001299999999901
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              4.196931838989258,
+              4.186428546905518
+            ],
+            "surface_temperature_c": {
+              "initial": 24.50337028503418,
+              "final": 24.495206832885742,
+              "min": 24.404476165771484,
+              "max": 24.57786750793457
+            },
+            "signed_observed_charge_ah": 0.0
+          },
+          {
+            "step": 5,
+            "name": "constant-current discharge",
+            "measurement_rows": 3408,
+            "excel_rows_inclusive": [
+              21656,
+              25063
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-03T01:15:10.603000",
+              "2019-09-03T02:11:57.430000"
+            ],
+            "test_time_range_s": [
+              21651.698040000003,
+              25058.52504
+            ],
+            "commanded_step_time_range_s": [
+              1.0002,
+              3407.8272
+            ],
+            "observed_duration_s": 3406.8269999999975,
+            "inferred_commanded_step_start_test_time_s": 21650.69784,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.8264999999992142,
+              "median": 1.0,
+              "max": 1.0014000000010128
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": -5.000424861907959,
+              "max": -5.000292778015137,
+              "time_weighted_mean": -5.000355085245019
+            },
+            "endpoint_voltage_v": [
+              3.882997989654541,
+              2.499945640563965
+            ],
+            "surface_temperature_c": {
+              "initial": 24.495206832885742,
+              "final": 34.95713424682617,
+              "min": 24.495206832885742,
+              "max": 34.95713424682617
+            },
+            "signed_observed_charge_ah": -4.732040198333339
+          },
+          {
+            "step": 6,
+            "name": "post-discharge rest",
+            "measurement_rows": 3601,
+            "excel_rows_inclusive": [
+              25064,
+              28664
+            ],
+            "measurement_dates_naive_local": [
+              "2019-09-03T02:11:58.568000",
+              "2019-09-03T03:11:57.569000"
+            ],
+            "test_time_range_s": [
+              25059.6627,
+              28658.6637
+            ],
+            "commanded_step_time_range_s": [
+              1.0005,
+              3600.0015
+            ],
+            "observed_duration_s": 3599.001,
+            "inferred_commanded_step_start_test_time_s": 25058.662200000002,
+            "clock_relation_max_deviation_s": 3.637978807091713e-12,
+            "backwards_step_clock_intervals": 0,
+            "negative_step_clock_records": 0,
+            "native_interval_s": {
+              "min": 0.0010000000002037268,
+              "median": 1.0,
+              "max": 1.0016999999970722
+            },
+            "exact_duplicate_times": 0,
+            "duplicate_time_conflicts": 0,
+            "current_a": {
+              "min": 0.0,
+              "max": 0.0,
+              "time_weighted_mean": 0.0
+            },
+            "endpoint_voltage_v": [
+              2.837580919265747,
+              3.041393280029297
+            ],
+            "surface_temperature_c": {
+              "initial": 35.00765609741211,
+              "final": 24.46991539001465,
+              "min": 24.405302047729492,
+              "max": 35.035919189453125
+            },
+            "signed_observed_charge_ah": 0.0
+          }
+        ],
+        "discharge": {
+          "unobserved_initial_interval_s": 1.0002,
+          "recorded_current_a": -5.000355085245019,
+          "observed_discharge_charge_ah": 4.732040198333339,
+          "protocol_inferred_initial_charge_if_constant_current_ah": 0.0013892653211839076,
+          "initial_charge_note": "Conditional estimate, not a measured interval or rigorous bound; not used as a passing gate.",
+          "prior_high_rate_exposure": "Unresolved: this workbook does not establish order relative to other experiments."
+        },
+        "date_warning": "Measurement timestamps are naive local values; workbook creation and repository upload dates are different metadata.",
+        "source_clock_policy": "Preserve Step_Time(s); model comparison must start on the actually observed common interval.",
+        "model_runs": 0,
+        "independent_validation_established": false,
+        "source": {
+          "filename": "NMC_k6_1C_25degC.xlsx",
+          "bytes": 1876649,
+          "sha256": "8d1042224f8ba2e96da341dfd15e6d7542039c36c937d777d550c378e66c1fe1",
+          "inflated_bytes": 10548383
+        },
+        "sheet": "Sheet1",
+        "columns": [
+          "Date_Time",
+          "Test_Time(s)",
+          "Step_Time(s)",
+          "Step_Index",
+          "Voltage(V)",
+          "Current(A)",
+          "Surface_Temp(degC)"
+        ],
+        "workbook_created": "2020-12-05 19:27:11",
+        "workbook_modified": "2020-12-08 12:45:10",
+        "dataset_doi": "10.17632/kxsbr4x3j2.2",
+        "dataset_url": "https://data.mendeley.com/datasets/kxsbr4x3j2/2",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license": "CC-BY-4.0",
+        "authors": [
+          "Edoardo Catenaro",
+          "Simona Onori"
+        ],
+        "openpyxl_version": "3.1.5",
+        "measurement_clock_audit": {
+          "backwards_date_intervals": 0,
+          "max_relative_date_test_clock_discrepancy_s": 0.0017400000033376273,
+          "date_test_clock_jumps_above_1s": 0,
+          "first_backwards_date_excel_row_pairs": [],
+          "first_clock_jump_excel_row_pairs": [],
+          "timezone": "Unspecified in source; timestamps are not converted to UTC"
+        }
+      },
+      "observed_discharge": {
+        "cell_id": "k6",
+        "measurement_rows": 3408,
+        "first_observed_step_time_s": 1.0002,
+        "last_observed_step_time_s": 3407.8272,
+        "observed_duration_s": 3406.827,
+        "observed_delivered_charge_ah": 4.732040198333343,
+        "raw_signed_current": {
+          "time_mean_a": -5.00035508524502,
+          "min_a": -5.000424861907959,
+          "max_a": -5.000292778015137
+        },
+        "first_observed_voltage_v": 3.882997989654541,
+        "last_observed_voltage_v": 2.499945640563965,
+        "first_observed_skin_temperature_k": 297.6452068328857,
+        "last_observed_skin_temperature_k": 308.10713424682615
+      },
+      "discharge_metric_error": null,
+      "protocol_details": {
+        "pre_discharge_rest": {
+          "available": true,
+          "excel_rows_inclusive": [
+            18055,
+            21655
+          ],
+          "recorded_interval_s": [
+            1.0006,
+            3600.001
+          ],
+          "observed_rest_duration_s": 3599.0004000000004,
+          "maximum_absolute_recorded_current_a": 0.0,
+          "final_voltage_v": 4.186428546905518,
+          "final_skin_temperature_c": 24.495206832885742,
+          "equilibrium_established": false,
+          "drift_interval_s": [
+            3000.001,
+            3600.001
+          ],
+          "last_600s_voltage_drift_v": -0.0006990329639329218,
+          "signed_observed_rest_charge_ah": 0.0
+        },
+        "transitions": {
+          "recorded_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "post_discharge_rest_recorded": true,
+          "preceding_cc_end": {
+            "excel_row": 12517,
+            "date_naive_local": "2019-09-02T22:42:53.039000",
+            "test_time_s": 12514.133064,
+            "step_time_s": 8914.0839,
+            "step": 2,
+            "voltage_v": 4.199949741363525,
+            "current_a": 1.6252946853637695,
+            "skin_temperature_c": 25.868494033813477
+          },
+          "preceding_cv_end": {
+            "excel_row": 18054,
+            "date_naive_local": "2019-09-03T00:15:09.515000",
+            "test_time_s": 18050.609764,
+            "step_time_s": 5536.3718,
+            "step": 3,
+            "voltage_v": 4.200000286102295,
+            "current_a": 0.049998387694358826,
+            "skin_temperature_c": 24.50337028503418
+          },
+          "rest_to_discharge": {
+            "steps": [
+              4,
+              5
+            ],
+            "left": {
+              "excel_row": 21655,
+              "date_naive_local": "2019-09-03T01:15:09.556000",
+              "test_time_s": 21650.648864000003,
+              "step_time_s": 3600.001,
+              "step": 4,
+              "voltage_v": 4.186428546905518,
+              "current_a": 0.0,
+              "skin_temperature_c": 24.495206832885742
+            },
+            "right": {
+              "excel_row": 21656,
+              "date_naive_local": "2019-09-03T01:15:10.603000",
+              "test_time_s": 21651.698040000003,
+              "step_time_s": 1.0002,
+              "step": 5,
+              "voltage_v": 3.882997989654541,
+              "current_a": -5.000353813171387,
+              "skin_temperature_c": 24.495206832885742
+            },
+            "source_sample_gap_s": 1.0491760000004433,
+            "current_change_a": -5.000353813171387,
+            "voltage_change_v": -0.30343055725097656,
+            "apparent_transition_ratio_ohm": 0.060681817444940174,
+            "ratio_is_intrinsic_resistance": false
+          },
+          "first_ten_loaded_samples": [
+            {
+              "excel_row": 21656,
+              "date_naive_local": "2019-09-03T01:15:10.603000",
+              "test_time_s": 21651.698040000003,
+              "step_time_s": 1.0002,
+              "step": 5,
+              "voltage_v": 3.882997989654541,
+              "current_a": -5.000353813171387,
+              "skin_temperature_c": 24.495206832885742
+            },
+            {
+              "excel_row": 21657,
+              "date_naive_local": "2019-09-03T01:15:11.603000",
+              "test_time_s": 21652.69854,
+              "step_time_s": 2.0007,
+              "step": 5,
+              "voltage_v": 3.8774187564849854,
+              "current_a": -5.000349044799805,
+              "skin_temperature_c": 24.495206832885742
+            },
+            {
+              "excel_row": 21658,
+              "date_naive_local": "2019-09-03T01:15:12.603000",
+              "test_time_s": 21653.69824,
+              "step_time_s": 3.0004,
+              "step": 5,
+              "voltage_v": 3.8733646869659424,
+              "current_a": -5.000340461730957,
+              "skin_temperature_c": 24.499881744384766
+            },
+            {
+              "excel_row": 21659,
+              "date_naive_local": "2019-09-03T01:15:13.603000",
+              "test_time_s": 21654.69844,
+              "step_time_s": 4.0006,
+              "step": 5,
+              "voltage_v": 3.869676113128662,
+              "current_a": -5.0003461837768555,
+              "skin_temperature_c": 24.499881744384766
+            },
+            {
+              "excel_row": 21660,
+              "date_naive_local": "2019-09-03T01:15:14.603000",
+              "test_time_s": 21655.69814,
+              "step_time_s": 5.0003,
+              "step": 5,
+              "voltage_v": 3.8666155338287354,
+              "current_a": -5.00034236907959,
+              "skin_temperature_c": 24.499881744384766
+            },
+            {
+              "excel_row": 21661,
+              "date_naive_local": "2019-09-03T01:15:15.602000",
+              "test_time_s": 21656.697940000002,
+              "step_time_s": 6.0001,
+              "step": 5,
+              "voltage_v": 3.8637442588806152,
+              "current_a": -5.000361442565918,
+              "skin_temperature_c": 24.50299072265625
+            },
+            {
+              "excel_row": 21662,
+              "date_naive_local": "2019-09-03T01:15:16.603000",
+              "test_time_s": 21657.698040000003,
+              "step_time_s": 7.0002,
+              "step": 5,
+              "voltage_v": 3.8611161708831787,
+              "current_a": -5.000361442565918,
+              "skin_temperature_c": 24.50299072265625
+            },
+            {
+              "excel_row": 21663,
+              "date_naive_local": "2019-09-03T01:15:17.603000",
+              "test_time_s": 21658.69884,
+              "step_time_s": 8.001,
+              "step": 5,
+              "voltage_v": 3.8586888313293457,
+              "current_a": -5.000345230102539,
+              "skin_temperature_c": 24.50299072265625
+            },
+            {
+              "excel_row": 21664,
+              "date_naive_local": "2019-09-03T01:15:18.602000",
+              "test_time_s": 21659.69784,
+              "step_time_s": 9.0,
+              "step": 5,
+              "voltage_v": 3.856351613998413,
+              "current_a": -5.0003509521484375,
+              "skin_temperature_c": 24.4989513625923
+            },
+            {
+              "excel_row": 21665,
+              "date_naive_local": "2019-09-03T01:15:19.603000",
+              "test_time_s": 21660.698940000002,
+              "step_time_s": 10.0011,
+              "step": 5,
+              "voltage_v": 3.8543202877044678,
+              "current_a": -5.000329971313477,
+              "skin_temperature_c": 24.498950958251953
+            }
+          ],
+          "sampling_interpretation": "Each ratio is the finite difference between adjacent recorded samples, not a fitted or isolated ohmic/contact resistance. Sampling delay, electrochemical polarization, temperature, SOC/history and measurement boundary remain confounded."
+        },
+        "transition_error": null
+      },
+      "quality_flags": [],
+      "manufacturing_batch": "unverified",
+      "history_eligibility": "Prior high-rate exposure and freshness unresolved; only this one workbook inspected",
+      "observed_csv_sha256": "471b4b6a2351696936725724cc3682d6ddab3768383cad5e723d6dd2b719e37a"
+    }
+  ],
+  "pairwise_comparisons": [
+    {
+      "reference_id": "k1",
+      "candidate_id": "k2",
+      "difference_convention": "candidate minus reference",
+      "reference": {
+        "cell_id": "k1",
+        "measurement_rows": 3391,
+        "first_observed_step_time_s": 1.0006,
+        "last_observed_step_time_s": 3390.3968,
+        "observed_duration_s": 3389.3962,
+        "observed_delivered_charge_ah": 4.707800975704511,
+        "raw_signed_current": {
+          "time_mean_a": -5.000325282873757,
+          "min_a": -5.000385761260986,
+          "max_a": -5.000240325927734
+        },
+        "first_observed_voltage_v": 3.8799378871917725,
+        "last_observed_voltage_v": 2.49998140335083,
+        "first_observed_skin_temperature_k": 298.33794059753416,
+        "last_observed_skin_temperature_k": 304.2884181976318
+      },
+      "candidate": {
+        "cell_id": "k2",
+        "measurement_rows": 3436,
+        "first_observed_step_time_s": 1.0003,
+        "last_observed_step_time_s": 3435.7713,
+        "observed_duration_s": 3434.7709999999997,
+        "observed_delivered_charge_ah": 4.770869297629635,
+        "raw_signed_current": {
+          "time_mean_a": -5.000371049908914,
+          "min_a": -5.000432014465332,
+          "max_a": -5.000307083129883
+        },
+        "first_observed_voltage_v": 4.028350830078125,
+        "last_observed_voltage_v": 2.4999923706054688,
+        "first_observed_skin_temperature_k": 297.54337921142576,
+        "last_observed_skin_temperature_k": 305.44563522338865
+      },
+      "common_observed_interval_s": [
+        1.0006,
+        3390.3968
+      ],
+      "common_observed_duration_s": 3389.3962,
+      "common_knot_count": 6466,
+      "reference_common_duration_fraction": 1.0,
+      "candidate_common_duration_fraction": 0.9867895705419664,
+      "voltage_difference": {
+        "signed_time_mean_v": 0.14384522374720848,
+        "rmse_v": 0.14387283283977276,
+        "max_absolute_v": 0.14962530136108398,
+        "first_max_absolute_step_time_s": 3278.0005,
+        "signed_value_at_first_maximum_v": 0.14962530136108398
+      },
+      "measured_skin_temperature_difference": {
+        "signed_time_mean_k": -0.060279478267261315,
+        "rmse_k": 0.404379667038613,
+        "max_absolute_k": 0.890083191411918,
+        "first_max_absolute_step_time_s": 11.001,
+        "signed_value_at_first_maximum_k": -0.890083191411918
+      },
+      "raw_signed_current_difference": {
+        "signed_time_mean_a": -4.5515571670443216e-05,
+        "rmse_a": 5.076741978701713e-05,
+        "max_absolute_a": 0.0001549659252164659,
+        "first_max_absolute_step_time_s": 16.0002,
+        "signed_value_at_first_maximum_a": -0.0001549659252164659
+      }
+    },
+    {
+      "reference_id": "k1",
+      "candidate_id": "k3",
+      "difference_convention": "candidate minus reference",
+      "reference": {
+        "cell_id": "k1",
+        "measurement_rows": 3391,
+        "first_observed_step_time_s": 1.0006,
+        "last_observed_step_time_s": 3390.3968,
+        "observed_duration_s": 3389.3962,
+        "observed_delivered_charge_ah": 4.707800975704511,
+        "raw_signed_current": {
+          "time_mean_a": -5.000325282873757,
+          "min_a": -5.000385761260986,
+          "max_a": -5.000240325927734
+        },
+        "first_observed_voltage_v": 3.8799378871917725,
+        "last_observed_voltage_v": 2.49998140335083,
+        "first_observed_skin_temperature_k": 298.33794059753416,
+        "last_observed_skin_temperature_k": 304.2884181976318
+      },
+      "candidate": {
+        "cell_id": "k3",
+        "measurement_rows": 3419,
+        "first_observed_step_time_s": 1.0005,
+        "last_observed_step_time_s": 3418.7892,
+        "observed_duration_s": 3417.7887,
+        "observed_delivered_charge_ah": 4.747288957688743,
+        "raw_signed_current": {
+          "time_mean_a": -5.000379411307514,
+          "min_a": -5.000463008880615,
+          "max_a": -5.000280380249023
+        },
+        "first_observed_voltage_v": 4.025260925292969,
+        "last_observed_voltage_v": 2.5000059604644775,
+        "first_observed_skin_temperature_k": 297.7296909332275,
+        "last_observed_skin_temperature_k": 306.069677734375
+      },
+      "common_observed_interval_s": [
+        1.0006,
+        3390.3968
+      ],
+      "common_observed_duration_s": 3389.3962,
+      "common_knot_count": 6521,
+      "reference_common_duration_fraction": 1.0,
+      "candidate_common_duration_fraction": 0.9916927281080893,
+      "voltage_difference": {
+        "signed_time_mean_v": 0.13646747171408916,
+        "rmse_v": 0.13668743868141942,
+        "max_absolute_v": 0.14612028158558354,
+        "first_max_absolute_step_time_s": 28.001,
+        "signed_value_at_first_maximum_v": 0.14612028158558354
+      },
+      "measured_skin_temperature_difference": {
+        "signed_time_mean_k": 0.39326024713678415,
+        "rmse_k": 0.646577045888299,
+        "max_absolute_k": 1.5427789047614624,
+        "first_max_absolute_step_time_s": 3365.0004,
+        "signed_value_at_first_maximum_k": 1.5427789047614624
+      },
+      "raw_signed_current_difference": {
+        "signed_time_mean_a": -5.4136388005216686e-05,
+        "rmse_a": 5.950371930489104e-05,
+        "max_absolute_a": 0.00015210071540483483,
+        "first_max_absolute_step_time_s": 2020.0005,
+        "signed_value_at_first_maximum_a": -0.00015210071540483483
+      }
+    },
+    {
+      "reference_id": "k1",
+      "candidate_id": "k4",
+      "difference_convention": "candidate minus reference",
+      "reference": {
+        "cell_id": "k1",
+        "measurement_rows": 3391,
+        "first_observed_step_time_s": 1.0006,
+        "last_observed_step_time_s": 3390.3968,
+        "observed_duration_s": 3389.3962,
+        "observed_delivered_charge_ah": 4.707800975704511,
+        "raw_signed_current": {
+          "time_mean_a": -5.000325282873757,
+          "min_a": -5.000385761260986,
+          "max_a": -5.000240325927734
+        },
+        "first_observed_voltage_v": 3.8799378871917725,
+        "last_observed_voltage_v": 2.49998140335083,
+        "first_observed_skin_temperature_k": 298.33794059753416,
+        "last_observed_skin_temperature_k": 304.2884181976318
+      },
+      "candidate": {
+        "cell_id": "k4",
+        "measurement_rows": 3447,
+        "first_observed_step_time_s": 1.001,
+        "last_observed_step_time_s": 3446.3861,
+        "observed_duration_s": 3445.3851,
+        "observed_delivered_charge_ah": 4.78546050044287,
+        "raw_signed_current": {
+          "time_mean_a": -5.000212545643833,
+          "min_a": -5.00046968460083,
+          "max_a": -5.000102996826172
+        },
+        "first_observed_voltage_v": 4.045130729675293,
+        "last_observed_voltage_v": 2.4999899864196777,
+        "first_observed_skin_temperature_k": 297.6123508453369,
+        "last_observed_skin_temperature_k": 306.8251670837402
+      },
+      "common_observed_interval_s": [
+        1.001,
+        3390.3968
+      ],
+      "common_observed_duration_s": 3389.3958,
+      "common_knot_count": 6510,
+      "reference_common_duration_fraction": 0.9999998819848797,
+      "candidate_common_duration_fraction": 0.9837494798476953,
+      "voltage_difference": {
+        "signed_time_mean_v": 0.16853324052591104,
+        "rmse_v": 0.16854832374797288,
+        "max_absolute_v": 0.18255331838130973,
+        "first_max_absolute_step_time_s": 3390.3968,
+        "signed_value_at_first_maximum_v": 0.18255331838130973
+      },
+      "measured_skin_temperature_difference": {
+        "signed_time_mean_k": 1.0735818508568993,
+        "rmse_k": 1.3315799099538486,
+        "max_absolute_k": 2.328411102294922,
+        "first_max_absolute_step_time_s": 3356.0011,
+        "signed_value_at_first_maximum_k": 2.328411102294922
+      },
+      "raw_signed_current_difference": {
+        "signed_time_mean_a": 0.00011278663113424488,
+        "rmse_a": 0.00011505719201203333,
+        "max_absolute_a": 0.00022935371547649908,
+        "first_max_absolute_step_time_s": 1.001,
+        "signed_value_at_first_maximum_a": -0.00022935371547649908
+      }
+    },
+    {
+      "reference_id": "k1",
+      "candidate_id": "k5",
+      "difference_convention": "candidate minus reference",
+      "reference": {
+        "cell_id": "k1",
+        "measurement_rows": 3391,
+        "first_observed_step_time_s": 1.0006,
+        "last_observed_step_time_s": 3390.3968,
+        "observed_duration_s": 3389.3962,
+        "observed_delivered_charge_ah": 4.707800975704511,
+        "raw_signed_current": {
+          "time_mean_a": -5.000325282873757,
+          "min_a": -5.000385761260986,
+          "max_a": -5.000240325927734
+        },
+        "first_observed_voltage_v": 3.8799378871917725,
+        "last_observed_voltage_v": 2.49998140335083,
+        "first_observed_skin_temperature_k": 298.33794059753416,
+        "last_observed_skin_temperature_k": 304.2884181976318
+      },
+      "candidate": {
+        "cell_id": "k5",
+        "measurement_rows": 3449,
+        "first_observed_step_time_s": 1.0003,
+        "last_observed_step_time_s": 3448.335,
+        "observed_duration_s": 3447.3347,
+        "observed_delivered_charge_ah": 4.788106388718558,
+        "raw_signed_current": {
+          "time_mean_a": -5.0001477951609425,
+          "min_a": -5.000302314758301,
+          "max_a": -5.000014305114746
+        },
+        "first_observed_voltage_v": 4.046494960784912,
+        "last_observed_voltage_v": 2.499966621398926,
+        "first_observed_skin_temperature_k": 297.76804513738057,
+        "last_observed_skin_temperature_k": 308.6469673156738
+      },
+      "common_observed_interval_s": [
+        1.0006,
+        3390.3968
+      ],
+      "common_observed_duration_s": 3389.3962,
+      "common_knot_count": 6518,
+      "reference_common_duration_fraction": 1.0,
+      "candidate_common_duration_fraction": 0.9831932478154791,
+      "voltage_difference": {
+        "signed_time_mean_v": 0.17420681634026042,
+        "rmse_v": 0.17423969691367514,
+        "max_absolute_v": 0.18940535347083998,
+        "first_max_absolute_step_time_s": 3390.3968,
+        "signed_value_at_first_maximum_v": 0.18940535347083998
+      },
+      "measured_skin_temperature_difference": {
+        "signed_time_mean_k": 2.108009923564409,
+        "rmse_k": 2.399967710057931,
+        "max_absolute_k": 4.016565317373363,
+        "first_max_absolute_step_time_s": 3364.0004,
+        "signed_value_at_first_maximum_k": 4.016565317373363
+      },
+      "raw_signed_current_difference": {
+        "signed_time_mean_a": 0.0001776960284474292,
+        "rmse_a": 0.00018076878034123807,
+        "max_absolute_a": 0.0003328294762612316,
+        "first_max_absolute_step_time_s": 1182.0011,
+        "signed_value_at_first_maximum_a": 0.0003328294762612316
+      }
+    },
+    {
+      "reference_id": "k1",
+      "candidate_id": "k6",
+      "difference_convention": "candidate minus reference",
+      "reference": {
+        "cell_id": "k1",
+        "measurement_rows": 3391,
+        "first_observed_step_time_s": 1.0006,
+        "last_observed_step_time_s": 3390.3968,
+        "observed_duration_s": 3389.3962,
+        "observed_delivered_charge_ah": 4.707800975704511,
+        "raw_signed_current": {
+          "time_mean_a": -5.000325282873757,
+          "min_a": -5.000385761260986,
+          "max_a": -5.000240325927734
+        },
+        "first_observed_voltage_v": 3.8799378871917725,
+        "last_observed_voltage_v": 2.49998140335083,
+        "first_observed_skin_temperature_k": 298.33794059753416,
+        "last_observed_skin_temperature_k": 304.2884181976318
+      },
+      "candidate": {
+        "cell_id": "k6",
+        "measurement_rows": 3408,
+        "first_observed_step_time_s": 1.0002,
+        "last_observed_step_time_s": 3407.8272,
+        "observed_duration_s": 3406.827,
+        "observed_delivered_charge_ah": 4.732040198333343,
+        "raw_signed_current": {
+          "time_mean_a": -5.00035508524502,
+          "min_a": -5.000424861907959,
+          "max_a": -5.000292778015137
+        },
+        "first_observed_voltage_v": 3.882997989654541,
+        "last_observed_voltage_v": 2.499945640563965,
+        "first_observed_skin_temperature_k": 297.6452068328857,
+        "last_observed_skin_temperature_k": 308.10713424682615
+      },
+      "common_observed_interval_s": [
+        1.0006,
+        3390.3968
+      ],
+      "common_observed_duration_s": 3389.3962,
+      "common_knot_count": 6511,
+      "reference_common_duration_fraction": 1.0,
+      "candidate_common_duration_fraction": 0.9948835676129137,
+      "voltage_difference": {
+        "signed_time_mean_v": 0.011748217492532187,
+        "rmse_v": 0.012985640346479343,
+        "max_absolute_v": 0.04140896354763779,
+        "first_max_absolute_step_time_s": 3390.3968,
+        "signed_value_at_first_maximum_v": 0.04140896354763779
+      },
+      "measured_skin_temperature_difference": {
+        "signed_time_mean_k": 2.0535578954910703,
+        "rmse_k": 2.3353099681709426,
+        "max_absolute_k": 3.807619094848633,
+        "first_max_absolute_step_time_s": 3364.0001,
+        "signed_value_at_first_maximum_k": 3.807619094848633
+      },
+      "raw_signed_current_difference": {
+        "signed_time_mean_a": -2.9724418531584788e-05,
+        "rmse_a": 3.6887579272571365e-05,
+        "max_absolute_a": 0.00011348533725730192,
+        "first_max_absolute_step_time_s": 1.0006,
+        "signed_value_at_first_maximum_a": -0.00011348533725730192
+      }
+    },
+    {
+      "reference_id": "k2",
+      "candidate_id": "k3",
+      "difference_convention": "candidate minus reference",
+      "reference": {
+        "cell_id": "k2",
+        "measurement_rows": 3436,
+        "first_observed_step_time_s": 1.0003,
+        "last_observed_step_time_s": 3435.7713,
+        "observed_duration_s": 3434.7709999999997,
+        "observed_delivered_charge_ah": 4.770869297629635,
+        "raw_signed_current": {
+          "time_mean_a": -5.000371049908914,
+          "min_a": -5.000432014465332,
+          "max_a": -5.000307083129883
+        },
+        "first_observed_voltage_v": 4.028350830078125,
+        "last_observed_voltage_v": 2.4999923706054688,
+        "first_observed_skin_temperature_k": 297.54337921142576,
+        "last_observed_skin_temperature_k": 305.44563522338865
+      },
+      "candidate": {
+        "cell_id": "k3",
+        "measurement_rows": 3419,
+        "first_observed_step_time_s": 1.0005,
+        "last_observed_step_time_s": 3418.7892,
+        "observed_duration_s": 3417.7887,
+        "observed_delivered_charge_ah": 4.747288957688743,
+        "raw_signed_current": {
+          "time_mean_a": -5.000379411307514,
+          "min_a": -5.000463008880615,
+          "max_a": -5.000280380249023
+        },
+        "first_observed_voltage_v": 4.025260925292969,
+        "last_observed_voltage_v": 2.5000059604644775,
+        "first_observed_skin_temperature_k": 297.7296909332275,
+        "last_observed_skin_temperature_k": 306.069677734375
+      },
+      "common_observed_interval_s": [
+        1.0005,
+        3418.7892
+      ],
+      "common_observed_duration_s": 3417.7887,
+      "common_knot_count": 6534,
+      "reference_common_duration_fraction": 0.9950557693657016,
+      "candidate_common_duration_fraction": 1.0,
+      "voltage_difference": {
+        "signed_time_mean_v": -0.007781060350333094,
+        "rmse_v": 0.01197167485587971,
+        "max_absolute_v": 0.06417572711556874,
+        "first_max_absolute_step_time_s": 3418.7892,
+        "signed_value_at_first_maximum_v": -0.06417572711556874
+      },
+      "measured_skin_temperature_difference": {
+        "signed_time_mean_k": 0.45604264339577794,
+        "rmse_k": 0.47361641935283844,
+        "max_absolute_k": 0.8873710632324219,
+        "first_max_absolute_step_time_s": 3400.0005,
+        "signed_value_at_first_maximum_k": 0.8873710632324219
+      },
+      "raw_signed_current_difference": {
+        "signed_time_mean_a": -8.45237617981087e-06,
+        "rmse_a": 2.7874739359261214e-05,
+        "max_absolute_a": 0.00012111034393313957,
+        "first_max_absolute_step_time_s": 14.0009,
+        "signed_value_at_first_maximum_a": 0.00012111034393313957
+      }
+    },
+    {
+      "reference_id": "k2",
+      "candidate_id": "k4",
+      "difference_convention": "candidate minus reference",
+      "reference": {
+        "cell_id": "k2",
+        "measurement_rows": 3436,
+        "first_observed_step_time_s": 1.0003,
+        "last_observed_step_time_s": 3435.7713,
+        "observed_duration_s": 3434.7709999999997,
+        "observed_delivered_charge_ah": 4.770869297629635,
+        "raw_signed_current": {
+          "time_mean_a": -5.000371049908914,
+          "min_a": -5.000432014465332,
+          "max_a": -5.000307083129883
+        },
+        "first_observed_voltage_v": 4.028350830078125,
+        "last_observed_voltage_v": 2.4999923706054688,
+        "first_observed_skin_temperature_k": 297.54337921142576,
+        "last_observed_skin_temperature_k": 305.44563522338865
+      },
+      "candidate": {
+        "cell_id": "k4",
+        "measurement_rows": 3447,
+        "first_observed_step_time_s": 1.001,
+        "last_observed_step_time_s": 3446.3861,
+        "observed_duration_s": 3445.3851,
+        "observed_delivered_charge_ah": 4.78546050044287,
+        "raw_signed_current": {
+          "time_mean_a": -5.000212545643833,
+          "min_a": -5.00046968460083,
+          "max_a": -5.000102996826172
+        },
+        "first_observed_voltage_v": 4.045130729675293,
+        "last_observed_voltage_v": 2.4999899864196777,
+        "first_observed_skin_temperature_k": 297.6123508453369,
+        "last_observed_skin_temperature_k": 306.8251670837402
+      },
+      "common_observed_interval_s": [
+        1.001,
+        3435.7713
+      ],
+      "common_observed_duration_s": 3434.7702999999997,
+      "common_knot_count": 6606,
+      "reference_common_duration_fraction": 0.9999997962018429,
+      "candidate_common_duration_fraction": 0.9969191252379885,
+      "voltage_difference": {
+        "signed_time_mean_v": 0.024891698879163846,
+        "rmse_v": 0.0253068223702916,
+        "max_absolute_v": 0.04514798816324772,
+        "first_max_absolute_step_time_s": 3435.7713,
+        "signed_value_at_first_maximum_v": 0.04514798816324772
+      },
+      "measured_skin_temperature_difference": {
+        "signed_time_mean_k": 1.1358960808088623,
+        "rmse_k": 1.2143219782345211,
+        "max_absolute_k": 1.6331253051757812,
+        "first_max_absolute_step_time_s": 2701.001,
+        "signed_value_at_first_maximum_k": 1.6331253051757812
+      },
+      "raw_signed_current_difference": {
+        "signed_time_mean_a": 0.00015851288300396224,
+        "rmse_a": 0.00016062477411305726,
+        "max_absolute_a": 0.00030993986043892363,
+        "first_max_absolute_step_time_s": 14.0,
+        "signed_value_at_first_maximum_a": 0.00030993986043892363
+      }
+    },
+    {
+      "reference_id": "k2",
+      "candidate_id": "k5",
+      "difference_convention": "candidate minus reference",
+      "reference": {
+        "cell_id": "k2",
+        "measurement_rows": 3436,
+        "first_observed_step_time_s": 1.0003,
+        "last_observed_step_time_s": 3435.7713,
+        "observed_duration_s": 3434.7709999999997,
+        "observed_delivered_charge_ah": 4.770869297629635,
+        "raw_signed_current": {
+          "time_mean_a": -5.000371049908914,
+          "min_a": -5.000432014465332,
+          "max_a": -5.000307083129883
+        },
+        "first_observed_voltage_v": 4.028350830078125,
+        "last_observed_voltage_v": 2.4999923706054688,
+        "first_observed_skin_temperature_k": 297.54337921142576,
+        "last_observed_skin_temperature_k": 305.44563522338865
+      },
+      "candidate": {
+        "cell_id": "k5",
+        "measurement_rows": 3449,
+        "first_observed_step_time_s": 1.0003,
+        "last_observed_step_time_s": 3448.335,
+        "observed_duration_s": 3447.3347,
+        "observed_delivered_charge_ah": 4.788106388718558,
+        "raw_signed_current": {
+          "time_mean_a": -5.0001477951609425,
+          "min_a": -5.000302314758301,
+          "max_a": -5.000014305114746
+        },
+        "first_observed_voltage_v": 4.046494960784912,
+        "last_observed_voltage_v": 2.499966621398926,
+        "first_observed_skin_temperature_k": 297.76804513738057,
+        "last_observed_skin_temperature_k": 308.6469673156738
+      },
+      "common_observed_interval_s": [
+        1.0003,
+        3435.7713
+      ],
+      "common_observed_duration_s": 3434.7709999999997,
+      "common_knot_count": 6591,
+      "reference_common_duration_fraction": 1.0,
+      "candidate_common_duration_fraction": 0.9963555322899166,
+      "voltage_difference": {
+        "signed_time_mean_v": 0.03059083998200041,
+        "rmse_v": 0.031129847310726877,
+        "max_absolute_v": 0.053632800661548075,
+        "first_max_absolute_step_time_s": 3435.7713,
+        "signed_value_at_first_maximum_v": 0.053632800661548075
+      },
+      "measured_skin_temperature_difference": {
+        "signed_time_mean_k": 2.180291049396506,
+        "rmse_k": 2.3143661339230803,
+        "max_absolute_k": 3.2602062217743537,
+        "first_max_absolute_step_time_s": 3396.0007,
+        "signed_value_at_first_maximum_k": 3.2602062217743537
+      },
+      "raw_signed_current_difference": {
+        "signed_time_mean_a": 0.00022329822592761521,
+        "rmse_a": 0.00022529479384901348,
+        "max_absolute_a": 0.0003557159909721719,
+        "first_max_absolute_step_time_s": 1990.0009,
+        "signed_value_at_first_maximum_a": 0.0003557159909721719
+      }
+    },
+    {
+      "reference_id": "k2",
+      "candidate_id": "k6",
+      "difference_convention": "candidate minus reference",
+      "reference": {
+        "cell_id": "k2",
+        "measurement_rows": 3436,
+        "first_observed_step_time_s": 1.0003,
+        "last_observed_step_time_s": 3435.7713,
+        "observed_duration_s": 3434.7709999999997,
+        "observed_delivered_charge_ah": 4.770869297629635,
+        "raw_signed_current": {
+          "time_mean_a": -5.000371049908914,
+          "min_a": -5.000432014465332,
+          "max_a": -5.000307083129883
+        },
+        "first_observed_voltage_v": 4.028350830078125,
+        "last_observed_voltage_v": 2.4999923706054688,
+        "first_observed_skin_temperature_k": 297.54337921142576,
+        "last_observed_skin_temperature_k": 305.44563522338865
+      },
+      "candidate": {
+        "cell_id": "k6",
+        "measurement_rows": 3408,
+        "first_observed_step_time_s": 1.0002,
+        "last_observed_step_time_s": 3407.8272,
+        "observed_duration_s": 3406.827,
+        "observed_delivered_charge_ah": 4.732040198333343,
+        "raw_signed_current": {
+          "time_mean_a": -5.00035508524502,
+          "min_a": -5.000424861907959,
+          "max_a": -5.000292778015137
+        },
+        "first_observed_voltage_v": 3.882997989654541,
+        "last_observed_voltage_v": 2.499945640563965,
+        "first_observed_skin_temperature_k": 297.6452068328857,
+        "last_observed_skin_temperature_k": 308.10713424682615
+      },
+      "common_observed_interval_s": [
+        1.0003,
+        3407.8272
+      ],
+      "common_observed_duration_s": 3406.8269,
+      "common_knot_count": 6542,
+      "reference_common_duration_fraction": 0.9918643484529246,
+      "candidate_common_duration_fraction": 0.9999999706471739,
+      "voltage_difference": {
+        "signed_time_mean_v": -0.13194633593953228,
+        "rmse_v": 0.1321282639462916,
+        "max_absolute_v": 0.14547971341249788,
+        "first_max_absolute_step_time_s": 2.0007,
+        "signed_value_at_first_maximum_v": -0.14547971341249788
+      },
+      "measured_skin_temperature_difference": {
+        "signed_time_mean_k": 2.118123804906891,
+        "rmse_k": 2.2452244803377637,
+        "max_absolute_k": 3.0626392092483457,
+        "first_max_absolute_step_time_s": 3394.0011,
+        "signed_value_at_first_maximum_k": 3.0626392092483457
+      },
+      "raw_signed_current_difference": {
+        "signed_time_mean_a": 1.5808046596909062e-05,
+        "rmse_a": 2.6074206995887663e-05,
+        "max_absolute_a": 9.584274139218252e-05,
+        "first_max_absolute_step_time_s": 38.0001,
+        "signed_value_at_first_maximum_a": 9.584274139218252e-05
+      }
+    },
+    {
+      "reference_id": "k3",
+      "candidate_id": "k4",
+      "difference_convention": "candidate minus reference",
+      "reference": {
+        "cell_id": "k3",
+        "measurement_rows": 3419,
+        "first_observed_step_time_s": 1.0005,
+        "last_observed_step_time_s": 3418.7892,
+        "observed_duration_s": 3417.7887,
+        "observed_delivered_charge_ah": 4.747288957688743,
+        "raw_signed_current": {
+          "time_mean_a": -5.000379411307514,
+          "min_a": -5.000463008880615,
+          "max_a": -5.000280380249023
+        },
+        "first_observed_voltage_v": 4.025260925292969,
+        "last_observed_voltage_v": 2.5000059604644775,
+        "first_observed_skin_temperature_k": 297.7296909332275,
+        "last_observed_skin_temperature_k": 306.069677734375
+      },
+      "candidate": {
+        "cell_id": "k4",
+        "measurement_rows": 3447,
+        "first_observed_step_time_s": 1.001,
+        "last_observed_step_time_s": 3446.3861,
+        "observed_duration_s": 3445.3851,
+        "observed_delivered_charge_ah": 4.78546050044287,
+        "raw_signed_current": {
+          "time_mean_a": -5.000212545643833,
+          "min_a": -5.00046968460083,
+          "max_a": -5.000102996826172
+        },
+        "first_observed_voltage_v": 4.045130729675293,
+        "last_observed_voltage_v": 2.4999899864196777,
+        "first_observed_skin_temperature_k": 297.6123508453369,
+        "last_observed_skin_temperature_k": 306.8251670837402
+      },
+      "common_observed_interval_s": [
+        1.001,
+        3418.7892
+      ],
+      "common_observed_duration_s": 3417.7882,
+      "common_knot_count": 6689,
+      "reference_common_duration_fraction": 0.9999998537065793,
+      "candidate_common_duration_fraction": 0.9919901842032114,
+      "voltage_difference": {
+        "signed_time_mean_v": 0.032581312052770504,
+        "rmse_v": 0.034404561390485415,
+        "max_absolute_v": 0.10548045249984694,
+        "first_max_absolute_step_time_s": 3418.7892,
+        "signed_value_at_first_maximum_v": 0.10548045249984694
+      },
+      "measured_skin_temperature_difference": {
+        "signed_time_mean_k": 0.6793120331156846,
+        "rmse_k": 0.7555537801174838,
+        "max_absolute_k": 1.0929183964861409,
+        "first_max_absolute_step_time_s": 2252.0009,
+        "signed_value_at_first_maximum_k": 1.0929183964861409
+      },
+      "raw_signed_current_difference": {
+        "signed_time_mean_a": 0.00016690191916857652,
+        "rmse_a": 0.00016903676383803868,
+        "max_absolute_a": 0.0002708452214434942,
+        "first_max_absolute_step_time_s": 1410.0,
+        "signed_value_at_first_maximum_a": 0.0002708452214434942
+      }
+    },
+    {
+      "reference_id": "k3",
+      "candidate_id": "k5",
+      "difference_convention": "candidate minus reference",
+      "reference": {
+        "cell_id": "k3",
+        "measurement_rows": 3419,
+        "first_observed_step_time_s": 1.0005,
+        "last_observed_step_time_s": 3418.7892,
+        "observed_duration_s": 3417.7887,
+        "observed_delivered_charge_ah": 4.747288957688743,
+        "raw_signed_current": {
+          "time_mean_a": -5.000379411307514,
+          "min_a": -5.000463008880615,
+          "max_a": -5.000280380249023
+        },
+        "first_observed_voltage_v": 4.025260925292969,
+        "last_observed_voltage_v": 2.5000059604644775,
+        "first_observed_skin_temperature_k": 297.7296909332275,
+        "last_observed_skin_temperature_k": 306.069677734375
+      },
+      "candidate": {
+        "cell_id": "k5",
+        "measurement_rows": 3449,
+        "first_observed_step_time_s": 1.0003,
+        "last_observed_step_time_s": 3448.335,
+        "observed_duration_s": 3447.3347,
+        "observed_delivered_charge_ah": 4.788106388718558,
+        "raw_signed_current": {
+          "time_mean_a": -5.0001477951609425,
+          "min_a": -5.000302314758301,
+          "max_a": -5.000014305114746
+        },
+        "first_observed_voltage_v": 4.046494960784912,
+        "last_observed_voltage_v": 2.499966621398926,
+        "first_observed_skin_temperature_k": 297.76804513738057,
+        "last_observed_skin_temperature_k": 308.6469673156738
+      },
+      "common_observed_interval_s": [
+        1.0005,
+        3418.7892
+      ],
+      "common_observed_duration_s": 3417.7887,
+      "common_knot_count": 6527,
+      "reference_common_duration_fraction": 1.0,
+      "candidate_common_duration_fraction": 0.9914293207445161,
+      "voltage_difference": {
+        "signed_time_mean_v": 0.03826856213852921,
+        "rmse_v": 0.040153420958030345,
+        "max_absolute_v": 0.11320740854740086,
+        "first_max_absolute_step_time_s": 3418.7892,
+        "signed_value_at_first_maximum_v": 0.11320740854740086
+      },
+      "measured_skin_temperature_difference": {
+        "signed_time_mean_k": 1.7199369695125337,
+        "rmse_k": 1.84301108933151,
+        "max_absolute_k": 2.529266373054554,
+        "first_max_absolute_step_time_s": 3395.0009,
+        "signed_value_at_first_maximum_k": 2.529266373054554
+      },
+      "raw_signed_current_difference": {
+        "signed_time_mean_a": 0.00023170442097738685,
+        "rmse_a": 0.00023448897404157822,
+        "max_absolute_a": 0.00040720673095506754,
+        "first_max_absolute_step_time_s": 1182.0011,
+        "signed_value_at_first_maximum_a": 0.00040720673095506754
+      }
+    },
+    {
+      "reference_id": "k3",
+      "candidate_id": "k6",
+      "difference_convention": "candidate minus reference",
+      "reference": {
+        "cell_id": "k3",
+        "measurement_rows": 3419,
+        "first_observed_step_time_s": 1.0005,
+        "last_observed_step_time_s": 3418.7892,
+        "observed_duration_s": 3417.7887,
+        "observed_delivered_charge_ah": 4.747288957688743,
+        "raw_signed_current": {
+          "time_mean_a": -5.000379411307514,
+          "min_a": -5.000463008880615,
+          "max_a": -5.000280380249023
+        },
+        "first_observed_voltage_v": 4.025260925292969,
+        "last_observed_voltage_v": 2.5000059604644775,
+        "first_observed_skin_temperature_k": 297.7296909332275,
+        "last_observed_skin_temperature_k": 306.069677734375
+      },
+      "candidate": {
+        "cell_id": "k6",
+        "measurement_rows": 3408,
+        "first_observed_step_time_s": 1.0002,
+        "last_observed_step_time_s": 3407.8272,
+        "observed_duration_s": 3406.827,
+        "observed_delivered_charge_ah": 4.732040198333343,
+        "raw_signed_current": {
+          "time_mean_a": -5.00035508524502,
+          "min_a": -5.000424861907959,
+          "max_a": -5.000292778015137
+        },
+        "first_observed_voltage_v": 3.882997989654541,
+        "last_observed_voltage_v": 2.499945640563965,
+        "first_observed_skin_temperature_k": 297.6452068328857,
+        "last_observed_skin_temperature_k": 308.10713424682615
+      },
+      "common_observed_interval_s": [
+        1.0005,
+        3407.8272
+      ],
+      "common_observed_duration_s": 3406.8267,
+      "common_knot_count": 6632,
+      "reference_common_duration_fraction": 0.9967926630455534,
+      "candidate_common_duration_fraction": 0.999999911941522,
+      "voltage_difference": {
+        "signed_time_mean_v": -0.12433520760279641,
+        "rmse_v": 0.12514642272888393,
+        "max_absolute_v": 0.14258844451587782,
+        "first_max_absolute_step_time_s": 15.0002,
+        "signed_value_at_first_maximum_v": -0.14258844451587782
+      },
+      "measured_skin_temperature_difference": {
+        "signed_time_mean_k": 1.662972425367387,
+        "rmse_k": 1.7795679845395287,
+        "max_absolute_k": 2.3432102195968127,
+        "first_max_absolute_step_time_s": 3219.0003,
+        "signed_value_at_first_maximum_k": 2.3432102195968127
+      },
+      "raw_signed_current_difference": {
+        "signed_time_mean_a": 2.439376212463124e-05,
+        "rmse_a": 3.612247074342526e-05,
+        "max_absolute_a": 0.0001292187205601536,
+        "first_max_absolute_step_time_s": 482.001,
+        "signed_value_at_first_maximum_a": 0.0001292187205601536
+      }
+    },
+    {
+      "reference_id": "k4",
+      "candidate_id": "k5",
+      "difference_convention": "candidate minus reference",
+      "reference": {
+        "cell_id": "k4",
+        "measurement_rows": 3447,
+        "first_observed_step_time_s": 1.001,
+        "last_observed_step_time_s": 3446.3861,
+        "observed_duration_s": 3445.3851,
+        "observed_delivered_charge_ah": 4.78546050044287,
+        "raw_signed_current": {
+          "time_mean_a": -5.000212545643833,
+          "min_a": -5.00046968460083,
+          "max_a": -5.000102996826172
+        },
+        "first_observed_voltage_v": 4.045130729675293,
+        "last_observed_voltage_v": 2.4999899864196777,
+        "first_observed_skin_temperature_k": 297.6123508453369,
+        "last_observed_skin_temperature_k": 306.8251670837402
+      },
+      "candidate": {
+        "cell_id": "k5",
+        "measurement_rows": 3449,
+        "first_observed_step_time_s": 1.0003,
+        "last_observed_step_time_s": 3448.335,
+        "observed_duration_s": 3447.3347,
+        "observed_delivered_charge_ah": 4.788106388718558,
+        "raw_signed_current": {
+          "time_mean_a": -5.0001477951609425,
+          "min_a": -5.000302314758301,
+          "max_a": -5.000014305114746
+        },
+        "first_observed_voltage_v": 4.046494960784912,
+        "last_observed_voltage_v": 2.499966621398926,
+        "first_observed_skin_temperature_k": 297.76804513738057,
+        "last_observed_skin_temperature_k": 308.6469673156738
+      },
+      "common_observed_interval_s": [
+        1.001,
+        3446.3861
+      ],
+      "common_observed_duration_s": 3445.3851,
+      "common_knot_count": 6636,
+      "reference_common_duration_fraction": 1.0,
+      "candidate_common_duration_fraction": 0.9994344616436577,
+      "voltage_difference": {
+        "signed_time_mean_v": 0.0057085259809751395,
+        "rmse_v": 0.005928216156235905,
+        "max_absolute_v": 0.008991309482700327,
+        "first_max_absolute_step_time_s": 3446.3861,
+        "signed_value_at_first_maximum_v": 0.008991309482700327
+      },
+      "measured_skin_temperature_difference": {
+        "signed_time_mean_k": 1.0468492093601431,
+        "rmse_k": 1.1121999523182688,
+        "max_absolute_k": 1.8994102450452033,
+        "first_max_absolute_step_time_s": 3384.0,
+        "signed_value_at_first_maximum_k": 1.8994102450452033
+      },
+      "raw_signed_current_difference": {
+        "signed_time_mean_a": 6.476005363379735e-05,
+        "rmse_a": 7.433806515160618e-05,
+        "max_absolute_a": 0.00023028248555689856,
+        "first_max_absolute_step_time_s": 1182.0011,
+        "signed_value_at_first_maximum_a": 0.00023028248555689856
+      }
+    },
+    {
+      "reference_id": "k4",
+      "candidate_id": "k6",
+      "difference_convention": "candidate minus reference",
+      "reference": {
+        "cell_id": "k4",
+        "measurement_rows": 3447,
+        "first_observed_step_time_s": 1.001,
+        "last_observed_step_time_s": 3446.3861,
+        "observed_duration_s": 3445.3851,
+        "observed_delivered_charge_ah": 4.78546050044287,
+        "raw_signed_current": {
+          "time_mean_a": -5.000212545643833,
+          "min_a": -5.00046968460083,
+          "max_a": -5.000102996826172
+        },
+        "first_observed_voltage_v": 4.045130729675293,
+        "last_observed_voltage_v": 2.4999899864196777,
+        "first_observed_skin_temperature_k": 297.6123508453369,
+        "last_observed_skin_temperature_k": 306.8251670837402
+      },
+      "candidate": {
+        "cell_id": "k6",
+        "measurement_rows": 3408,
+        "first_observed_step_time_s": 1.0002,
+        "last_observed_step_time_s": 3407.8272,
+        "observed_duration_s": 3406.827,
+        "observed_delivered_charge_ah": 4.732040198333343,
+        "raw_signed_current": {
+          "time_mean_a": -5.00035508524502,
+          "min_a": -5.000424861907959,
+          "max_a": -5.000292778015137
+        },
+        "first_observed_voltage_v": 3.882997989654541,
+        "last_observed_voltage_v": 2.499945640563965,
+        "first_observed_skin_temperature_k": 297.6452068328857,
+        "last_observed_skin_temperature_k": 308.10713424682615
+      },
+      "common_observed_interval_s": [
+        1.001,
+        3407.8272
+      ],
+      "common_observed_duration_s": 3406.8262,
+      "common_knot_count": 6503,
+      "reference_common_duration_fraction": 0.9888085369615142,
+      "candidate_common_duration_fraction": 0.9999997651773923,
+      "voltage_difference": {
+        "signed_time_mean_v": -0.15669758793890562,
+        "rmse_v": 0.15674874189633892,
+        "max_absolute_v": 0.16214023607059858,
+        "first_max_absolute_step_time_s": 2.0007,
+        "signed_value_at_first_maximum_v": -0.16214023607059858
+      },
+      "measured_skin_temperature_difference": {
+        "signed_time_mean_k": 0.9830438159975248,
+        "rmse_k": 1.038140065315336,
+        "max_absolute_k": 1.6681904627700987,
+        "first_max_absolute_step_time_s": 3396.0003,
+        "signed_value_at_first_maximum_k": 1.6681904627700987
+      },
+      "raw_signed_current_difference": {
+        "signed_time_mean_a": -0.00014256240359149513,
+        "rmse_a": 0.00014473588310379132,
+        "max_absolute_a": 0.00024318409023305065,
+        "first_max_absolute_step_time_s": 4.0001,
+        "signed_value_at_first_maximum_a": -0.00024318409023305065
+      }
+    },
+    {
+      "reference_id": "k5",
+      "candidate_id": "k6",
+      "difference_convention": "candidate minus reference",
+      "reference": {
+        "cell_id": "k5",
+        "measurement_rows": 3449,
+        "first_observed_step_time_s": 1.0003,
+        "last_observed_step_time_s": 3448.335,
+        "observed_duration_s": 3447.3347,
+        "observed_delivered_charge_ah": 4.788106388718558,
+        "raw_signed_current": {
+          "time_mean_a": -5.0001477951609425,
+          "min_a": -5.000302314758301,
+          "max_a": -5.000014305114746
+        },
+        "first_observed_voltage_v": 4.046494960784912,
+        "last_observed_voltage_v": 2.499966621398926,
+        "first_observed_skin_temperature_k": 297.76804513738057,
+        "last_observed_skin_temperature_k": 308.6469673156738
+      },
+      "candidate": {
+        "cell_id": "k6",
+        "measurement_rows": 3408,
+        "first_observed_step_time_s": 1.0002,
+        "last_observed_step_time_s": 3407.8272,
+        "observed_duration_s": 3406.827,
+        "observed_delivered_charge_ah": 4.732040198333343,
+        "raw_signed_current": {
+          "time_mean_a": -5.00035508524502,
+          "min_a": -5.000424861907959,
+          "max_a": -5.000292778015137
+        },
+        "first_observed_voltage_v": 3.882997989654541,
+        "last_observed_voltage_v": 2.499945640563965,
+        "first_observed_skin_temperature_k": 297.6452068328857,
+        "last_observed_skin_temperature_k": 308.10713424682615
+      },
+      "common_observed_interval_s": [
+        1.0003,
+        3407.8272
+      ],
+      "common_observed_duration_s": 3406.8269,
+      "common_knot_count": 6524,
+      "reference_common_duration_fraction": 0.988249530862205,
+      "candidate_common_duration_fraction": 0.9999999706471739,
+      "voltage_difference": {
+        "signed_time_mean_v": -0.16237875322278109,
+        "rmse_v": 0.16240730018641808,
+        "max_absolute_v": 0.16411622906093326,
+        "first_max_absolute_step_time_s": 491.0009,
+        "signed_value_at_first_maximum_v": -0.16411622906093326
+      },
+      "measured_skin_temperature_difference": {
+        "signed_time_mean_k": -0.05526973970563628,
+        "rmse_k": 0.09573489016218013,
+        "max_absolute_k": 0.3545417785644531,
+        "first_max_absolute_step_time_s": 3341.0009,
+        "signed_value_at_first_maximum_k": -0.3545417785644531
+      },
+      "raw_signed_current_difference": {
+        "signed_time_mean_a": -0.0002074741337445756,
+        "rmse_a": 0.00020994700398204585,
+        "max_absolute_a": 0.0003452110404902342,
+        "first_max_absolute_step_time_s": 2811.0006,
+        "signed_value_at_first_maximum_a": -0.0003452110404902342
+      }
+    }
+  ],
+  "unavailable_pairs": [],
+  "measurement_uncertainty": {
+    "voltage_v": null,
+    "current_a": null,
+    "temperature_k": null,
+    "clock_s": null,
+    "reason": "No campaign calibration uncertainty available; precision is not uncertainty"
+  },
+  "manufacturing_batch_identity_established": false,
+  "history_eligibility_for_k2_to_k6_established": false,
+  "new_model_solves": 0,
+  "fitting_performed": false,
+  "model_parameters_or_acceptance_gates_changed": false
+}

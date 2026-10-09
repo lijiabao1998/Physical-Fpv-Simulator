@@ -1,0 +1,78 @@
+name: Stanford k2 frozen state diagnostic 20261009
+on:
+  push:
+    branches: [battery/research-core-v1]
+    paths: [.github/workflows/stanford-k2-state.yml]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: stanford-k2-state-singleton
+  cancel-in-progress: false
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYBAMM_DISABLE_TELEMETRY: "true"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      PHYSICAL_FPV_RESEARCH_COMMIT: ${{ github.sha }}
+    steps:
+      - name: One authorized window only
+        run: test "$GITHUB_RUN_ATTEMPT" = "1"
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install existing pinned research dependencies
+        run: |
+          python -m pip install -r requirements-lock.txt
+          python -m pip install --no-deps -e .
+          python -m pip install --index-url https://pypi.org/simple --only-binary=:all: --no-deps --require-hashes -r requirements-data-lock.txt
+      - name: Software checks before diagnostic
+        run: |
+          ruff check src tests scripts
+          ruff format --check src tests scripts
+          pytest -q
+      - name: Reuse the already acquired original k2 input artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          artifact-ids: 11590866548
+          run-id: 37871885149
+          github-token: ${{ github.token }}
+          path: source-inputs
+          merge-multiple: true
+      - name: Verify frozen source and prepare exact diagnostic identity
+        run: python scripts/diagnose_stanford_k2_state.py --prepare-only
+      - name: Persist diagnostic inputs before the scientific solve
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: stanford-k2-state-inputs-${{ github.run_id }}
+          path: |
+            results/stanford-k2-state/input.json
+            source-inputs/
+            docs/stanford-k2-state-protocol.md
+          if-no-files-found: error
+          retention-days: 90
+      - name: One instrumented grid120 solve under total 1200 seconds and 4 GB
+        shell: bash
+        run: |
+          start=$(date -u +%FT%TZ)
+          printf '{"run_id":"%s","commit":"%s","started_at":"%s","original_attempt":"unknown","scientific_solve_limit":1}\n' "$GITHUB_RUN_ID" "$GITHUB_SHA" "$start" > results/stanford-k2-state/launch.json
+          set +e
+          timeout --signal=TERM --kill-after=5s 1200s python -u scripts/diagnose_stanford_k2_state.py
+          code=$?
+          set -e
+          printf '{"run_id":"%s","commit":"%s","started_at":"%s","finished_at":"%s","exit_code":%s}\n' "$GITHUB_RUN_ID" "$GITHUB_SHA" "$start" "$(date -u +%FT%TZ)" "$code" > results/stanford-k2-state/external-exit.json
+          exit "$code"
+      - name: Preserve complete or partial state evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: stanford-k2-state-evidence-${{ github.run_id }}
+          path: results/stanford-k2-state/
+          if-no-files-found: warn
+          retention-days: 90

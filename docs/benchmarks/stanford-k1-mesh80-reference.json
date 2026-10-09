@@ -1,0 +1,13 @@
+{
+  "csv_gzip_file": "docs/benchmarks/stanford-k1-mesh80-v2.csv.gz",
+  "csv_gzip_sha256": "92c90c495a880c458e4470234881e4bec8985c758995141a1d8f0e7742461215",
+  "csv_sha256": "76a8e07b2be05d5da5fc27888eac9f7106e38cec13e90c02187b392f8bdc4fed",
+  "csv_uncompressed_bytes": 498690,
+  "report_file": "docs/benchmarks/stanford-k1-mesh80-v2.json",
+  "report_sha256": "9a4000d2627adc21638a399a62d5f11accd0a808ef3aba031b02b7100378eb31",
+  "source_commit_sha": "be1cb751d78ea92ee0486966f3a5e66687797e63",
+  "ci_run_id": 37729197529,
+  "artifact_zip_sha256": "f644dd2e9436fdff281919a6ae0de5259864b62251cc7e3979dac7a9f699eb89",
+  "scope": "Completed mesh80 solution and passed physical audit reused exactly; empirical failure retained.",
+  "residual_sha256": "e315215a9dcfdc8882b6cd10a88e1b3472be75a83200653899f954b304c5e23b"
+}

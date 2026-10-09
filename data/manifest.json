@@ -1,0 +1,50 @@
+{
+  "dataset_doi": "10.5281/zenodo.4032561",
+  "record_url": "https://zenodo.org/records/4032561",
+  "license": "CC-BY-4.0",
+  "license_verified_from": "https://zenodo.org/api/records/4032561",
+  "verified_date": "2026-10-07",
+  "authors": [
+    "Chen, Chang-Hui",
+    "Brosa Planella, Ferran",
+    "O'Regan, Kieran",
+    "Gastol, Dominika",
+    "Widanage, W. Dhammika",
+    "Kendrick, Emma"
+  ],
+  "title": "Experimental data for \"Development of Experimental Techniques for Parameterization of Multi-scale Lithium-ion Battery Models\"",
+  "parameter_paper_doi": "10.1149/1945-7111/ab9050",
+  "nominal_capacity_ah": 5,
+  "measured_variables": {
+    "Step Time [s]": "s",
+    "Current [A]": "A (unsigned magnitude; Md selects discharge)",
+    "Voltage [V]": "V",
+    "Capacity [Ah]": "Ah",
+    "Temperature Cell [degC]": "degree Celsius, surface measurement",
+    "Temperature Chamber [degC]": "degree Celsius"
+  },
+  "scope": "three LG M50 cells, 0.1/0.5/1/1.5C constant-current discharges; same original parameterization study",
+  "files": [
+    {
+      "name": "LGM50_cell02.csv",
+      "bytes": 597715,
+      "md5": "0bbf959cbfc367296ec69d7a74d2f5c1",
+      "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35",
+      "url": "https://zenodo.org/api/records/4032561/files/LGM50_cell02.csv/content"
+    },
+    {
+      "name": "LGM50_cell03.csv",
+      "bytes": 590794,
+      "md5": "a09cbd8eff0af55dfe9bc8728fa89908",
+      "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb",
+      "url": "https://zenodo.org/api/records/4032561/files/LGM50_cell03.csv/content"
+    },
+    {
+      "name": "LGM50_cell04.csv",
+      "bytes": 595967,
+      "md5": "f17615476283d2e15087165697ff9d7c",
+      "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e",
+      "url": "https://zenodo.org/api/records/4032561/files/LGM50_cell04.csv/content"
+    }
+  ]
+}

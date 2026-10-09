@@ -1,0 +1,257 @@
+{
+  "protocol": "stanford-k2-fixed-mesh-tolerance-v1",
+  "source_commit": "c8e3088fd808b213992285cabfaf9b69e9528d89",
+  "run_id": "37954785347",
+  "baseline_archive_sha256": "f841d0016f9787186f129c5c563226696fd340ab5c6212fcc8c2eb59ae5546cb",
+  "effective_tolerances": {
+    "rtol": 1e-08,
+    "expanded_atol_min": 1e-08,
+    "expanded_atol_max": 1e-08,
+    "expanded_atol_count": 13363,
+    "model_level_atol_override": false,
+    "scope": "Solver state error weights; not a global physical error bound"
+  },
+  "execution_runtime_versions": {
+    "python": "3.12.15",
+    "pybamm": "26.9.0.0",
+    "numpy": "2.5.3",
+    "casadi": "3.8.1",
+    "scipy": "1.18.1",
+    "pybammsolvers": "0.10.0"
+  },
+  "baseline_verdict_preserved": "FAIL_PHYSICAL_CHARGE_CLOSURE_FINE_MESH_NOT_RUN",
+  "baseline_charge_closure_max_abs_error_ah": 1.1002957274186542e-06,
+  "tightened_charge_closure_max_abs_error_ah": 6.112778256905926e-07,
+  "closure_error_decreased": true,
+  "unchanged_charge_closure_gate_passed": true,
+  "narrow_charge_hypothesis_supported": true,
+  "diagnostic_evidence_valid_physical_cutoff": true,
+  "joint_charge_and_tolerance_stability_supported": true,
+  "diagnostic_status": "complete_fixed_mesh_diagnostic",
+  "input_upload_receipt": {
+    "artifact_id": 11626444919,
+    "run_id": "37954785347",
+    "source_commit": "c8e3088fd808b213992285cabfaf9b69e9528d89",
+    "manifest_sha256": "cc508ee87392e31babbc996e731a72fe0f33e3186aeb702d7a54828971e57ab6",
+    "artifact_sha256": "sha256:6be1d982ef524541de0710d4a41a1f91789d69d89f531c6c47f1bed85405a4f8",
+    "verified_not_expired": true,
+    "metadata_visibility": {
+      "attempts": 1,
+      "elapsed_s": 0.287839132000002,
+      "deadline_s": 60,
+      "retry_status": 404
+    }
+  },
+  "full_physical_audit": {
+    "lithium_inventory_relative_drift": 2.1209955785123835e-14,
+    "charge_integral_error_ah": 6.112778256905926e-07,
+    "concentration_bounds": {
+      "negative": {
+        "minimum_mol_m3": 892.0365268443002,
+        "maximum_mol_m3": 28866.000000000007,
+        "limit_mol_m3": 29583.0,
+        "passed": true
+      },
+      "positive": {
+        "minimum_mol_m3": 13975.0,
+        "maximum_mol_m3": 49543.448468442904,
+        "limit_mol_m3": 51765.0,
+        "passed": true
+      }
+    },
+    "electrolyte_min_mol_m3": 982.44106949293,
+    "all_spatial_finiteness_witnesses_finite": true,
+    "thermal_energy_balance": {
+      "stored_energy_j": 58.976166986802085,
+      "integrated_net_heat_j": 58.975958469845054,
+      "integrated_absolute_generated_heat_j": 476.14812845186526,
+      "relative_to_generated_heat": 4.379245545051087e-07,
+      "positive_heat_capacity": true,
+      "passed": true
+    },
+    "passed": true,
+    "audit_scope": "All prescribed sampled times; scalar extrema and whole-field finite witnesses"
+  },
+  "coarse_empirical": {
+    "voltage_rmse_v": 0.019210369463837404,
+    "voltage_max_error_v": 0.04725273399018359,
+    "common_interval_s": [
+      1.0,
+      70344.81573754286
+    ],
+    "observed_time_coverage": 0.9996432791175148,
+    "initial_assumed_charge_excluded_ah": 6.945052080684238e-05,
+    "measured_observed_charge_ah": 4.887153244363736,
+    "predicted_endpoint_observed_start_charge_ah": 4.885410147710849,
+    "predicted_cutoff_observed_start_charge_ah": 4.885410147710849,
+    "capacity_relative_error": 0.00035666912121021303,
+    "measured_observed_energy_wh": 17.947605238560488,
+    "predicted_endpoint_observed_start_energy_wh": 17.93039672599322,
+    "predicted_cutoff_observed_start_energy_wh": 17.93039672599322,
+    "energy_relative_error": 0.000958819426799972,
+    "termination": "event: Minimum voltage [V]",
+    "cutoff_qualification_available": true,
+    "electrical_gates": {
+      "voltage_rmse": true,
+      "voltage_max": true,
+      "capacity": true,
+      "energy": true,
+      "coverage": true,
+      "voltage_cutoff_reached": true,
+      "physical_audit": true
+    },
+    "electrical_gates_passed": true,
+    "temperature_proxy_rmse_k": 0.6670216177760052,
+    "temperature_proxy_max_error_k": 0.9772380894953017,
+    "thermal_proxy_gates": {
+      "rmse": true,
+      "maximum": true
+    },
+    "temperature_domains": {
+      "ranges": {
+        "surface_measurement_c": [
+          24.19158935546875,
+          25.158491134643555
+        ],
+        "volume_average_prediction_c": [
+          24.345535278320312,
+          25.41088404901086
+        ]
+      },
+      "measurement_domains_c": {
+        "solid_diffusion_measurements": [
+          5.0,
+          45.0
+        ],
+        "exchange_current_measurements": [
+          15.0,
+          45.0
+        ],
+        "heat_capacity_measurements": [
+          25.0,
+          100.0
+        ]
+      },
+      "breaches": [
+        {
+          "property": "heat_capacity_measurements",
+          "trajectory": "surface_measurement_c",
+          "supported_c": [
+            25.0,
+            100.0
+          ],
+          "observed_c": [
+            24.19158935546875,
+            25.158491134643555
+          ]
+        },
+        {
+          "property": "heat_capacity_measurements",
+          "trajectory": "volume_average_prediction_c",
+          "supported_c": [
+            25.0,
+            100.0
+          ],
+          "observed_c": [
+            24.345535278320312,
+            25.41088404901086
+          ]
+        }
+      ],
+      "inside_all_listed_measurement_domains": false,
+      "note": "measurement domains are not proof of universal model validity"
+    },
+    "independent_thermal_validation_established": false,
+    "independent_validation_established": false,
+    "parameters_fitted": false,
+    "empirical_thresholds": {
+      "voltage_rmse_v": 0.05,
+      "voltage_max_error_v": 0.3,
+      "temperature_rmse_k": 2.0,
+      "temperature_max_error_k": 5.0,
+      "capacity_relative_error": 0.05,
+      "energy_relative_error": 0.05,
+      "min_coverage": 0.95,
+      "numerical_temperature_max_difference_k": 0.1
+    }
+  },
+  "charge_closure_diagnosis": {
+    "oracle": "Exact rational PWL integral of the stored binary floats, rounded once to float",
+    "source_integrator_vs_exact_max_ah": 4.529709940470639e-14,
+    "sampled_grid_trapezoid_vs_exact_max_ah": 7.437250815200969e-11,
+    "solver_capacity_vs_exact_max_ah": 6.112778236921912e-07,
+    "solver_capacity_vs_exact_min_ah": -8.761757491759781e-08,
+    "maximum_error_time_s": 25103.0,
+    "minimum_error_time_s": 5200.0,
+    "endpoint_error_ah": 2.585888303485717e-07,
+    "relative_to_endpoint_charge": 1.2512136091376478e-07,
+    "failing_sample_count": 0,
+    "first_failing_sample_time_s": null,
+    "last_failing_sample_time_s": null,
+    "physical_charge_gate_ah": 1e-06,
+    "initial_solver_capacity_ah": 0.0,
+    "compiled_current_query_count": 137313,
+    "compiled_current_vs_source_max_a": 0.0,
+    "compiled_current_query_scope": "All source knots and all frozen output queries",
+    "compiled_capacity_rhs_vs_current_over_3600_max_ah_per_s": 1.3552527156068805e-20,
+    "consistent_initial_interval_exclusion_max_error_ah": 6.112778236921912e-07,
+    "cutoff_endpoint_and_interior_both_checked": true,
+    "threshold_changed": false,
+    "unique_solver_mechanism_identified": false,
+    "solver_capacity_vs_exact_signed_max_ah": 6.112778236921912e-07,
+    "signed_maximum_error_time_s": 25103.0,
+    "maximum_scope": "All prescribed saved samples and true endpoint; not continuous extrema"
+  },
+  "same_mesh_tolerance_comparison": {
+    "exact_shared_samples": 70354,
+    "exact_shared_interval_s": [
+      0.0,
+      70344.0
+    ],
+    "maximum_voltage_difference_v": 3.918555662174583e-06,
+    "maximum_temperature_difference_k": 3.3952775368106813e-05,
+    "earlier_actual_event_endpoint_s": 70344.80654940511,
+    "baseline_endpoint_s": 70344.80654940511,
+    "tightened_endpoint_s": 70344.81573754286,
+    "signed_cutoff_time_difference_s": 0.009188137744786218,
+    "baseline_endpoint_observed_start_charge_ah": 4.885410201343446,
+    "tightened_endpoint_observed_start_charge_ah": 4.885410147710849,
+    "endpoint_capacity_relative_difference": 1.0978115533514369e-08,
+    "descriptive_tolerance_stability_flags": {
+      "maximum_voltage_difference_le_5mv": true,
+      "maximum_temperature_difference_le_0_1k": true,
+      "endpoint_capacity_relative_difference_le_1percent": true,
+      "both_endpoint_voltages_at_cutoff": true
+    },
+    "descriptive_tolerance_stability_passed": true,
+    "spatial_convergence_claimed": false,
+    "both_voltage_cutoff_events_reached": true
+  },
+  "spatial_convergence_available": false,
+  "overall_model_qualification_passed": false,
+  "qualification_limit": "No mesh120 at tightened tolerance; no spatial convergence claim",
+  "historical_high_rate_rmse_v": 0.05500305419157363,
+  "historical_high_rate_gate_passed": false,
+  "new_source_downloads": 0,
+  "new_solver_executions_in_comparison": 0,
+  "final_state_observables_verified": 21,
+  "ledger": {
+    "run_id": "37954785347",
+    "source_commit": "c8e3088fd808b213992285cabfaf9b69e9528d89",
+    "started_at_utc": "2026-10-09T15:51:45.917102+00:00",
+    "shared_wall_limit_s": 1200,
+    "worker_address_space_limit_bytes": 4000000000,
+    "maximum_battery_dfns": 1,
+    "stages": [
+      {
+        "exit_code": 0,
+        "status": "exited",
+        "mesh": 80
+      }
+    ],
+    "status": "single_mesh80_complete_tolerance_comparison_pending",
+    "elapsed_s": 81.21341732900001
+  },
+  "worker_elapsed_s": 79.89245548800001,
+  "worker_peak_rss_kib": 751880
+}

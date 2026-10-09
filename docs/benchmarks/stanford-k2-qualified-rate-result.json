@@ -1,0 +1,766 @@
+{
+  "protocol": "docs/stanford-k2-qualified-rate-protocol.md",
+  "protocol_sha256": "c953629bcc96deeb230fc77d1454f80ef33aba1bf002696f5ca2a2c622ecc96c",
+  "low_archive_sha256": "a3b737252dd5893c4d2039ca9b049a4818b091cf5d771aa261a356f52cb66e2e",
+  "high_archive_sha256": "2fbea2b607ad1e6b149f1033af8a2123e86a39f18319b4c8b5f18ee5b040795d",
+  "low_array_sha256": {
+    "80": "5d3b85c8d269800d1776f7b960950c3f3dbe1e19fc999362c3b5f3668438b1c3",
+    "120": "32ab1ac3fa94b04afe5912b9abfc8f5a408c6ac21179786231d6a4c2ff4306bc"
+  },
+  "high_source_commit": "50c73ba21a6327c50e6d6c7ceec80f0e5c2dca84",
+  "low_runtime": {
+    "python": "3.12.15",
+    "pybamm": "26.9.0.0",
+    "numpy": "2.5.3",
+    "casadi": "3.8.1",
+    "scipy": "1.18.1",
+    "pybammsolvers": "0.10.0"
+  },
+  "high_recorded_runtime": {
+    "python": "3.12.15",
+    "pybamm": "26.9.0.0",
+    "numpy": "2.5.3"
+  },
+  "low_qualification": {
+    "mesh_pair_numerical_gates_passed": true,
+    "both_mesh_empirical_electrical_gates_passed": true,
+    "fine_thermal_proxy_gates_passed": true,
+    "joint_mesh_pair_and_dataset_gates_passed": true,
+    "asymptotic_convergence_or_order_established": false,
+    "independent_validation_established": false,
+    "universal_model_validity_established": false,
+    "scope": "Only this mesh80/120 pair, fixed tolerance and previously viewed record"
+  },
+  "historical_high_spatial_check": {
+    "voltage_max_difference_v": 0.0033620448676585646,
+    "capacity_relative_difference": 3.439951182162929e-05,
+    "temperature_max_difference_k": 0.018186767124916514,
+    "coarse_mesh": 80,
+    "fine_mesh": 120,
+    "coarse_tolerance": 1e-07,
+    "fine_tolerance": 1e-07,
+    "passed": true,
+    "shared_time_interval_s": [
+      0.0,
+      3333.132326188595
+    ],
+    "voltage_peak_difference_time_s": 141.0007,
+    "temperature_peak_difference_time_s": 913.0012,
+    "coarse_cutoff_time_s": 3333.246981584763,
+    "fine_cutoff_time_s": 3333.132326188595
+  },
+  "historical_high_rmse_v": 0.05500305419157363,
+  "historical_high_electrical_gates_passed": false,
+  "historical_high_config": {
+    "model": "DFN",
+    "thermal": "lumped",
+    "parameter_set": "ORegan2022",
+    "initial_temperature_k": 297.55456771850584,
+    "heat_transfer_coefficient_w_m2_k": 15,
+    "current_a": 5.000371049908914,
+    "ambient_temperature_k": 298.15,
+    "mesh_points": 120,
+    "tolerance": 1e-07,
+    "sample_period_s": 5,
+    "max_temperature_k": 333.15
+  },
+  "points": [
+    {
+      "conditional_charge_ah": 0.5,
+      "low": {
+        "80": {
+          "time_s": 7200.373661383002,
+          "model_voltage_v": 4.0815634446236695,
+          "model_temperature_k": 298.1031968647959,
+          "model_capacity_ah": 0.5000694320922667,
+          "measured_voltage_v": 4.07083563975481,
+          "measured_skin_k": 297.8940382204243,
+          "voltage_error_v": 0.010727804868859714
+        },
+        "120": {
+          "time_s": 7200.373661383002,
+          "model_voltage_v": 4.081561185943556,
+          "model_temperature_k": 298.1032069020831,
+          "model_capacity_ah": 0.500069405615571,
+          "measured_voltage_v": 4.07083563975481,
+          "measured_skin_k": 297.8940382204243,
+          "voltage_error_v": 0.010725546188746549
+        }
+      },
+      "high": {
+        "80": {
+          "time_s": 360.973333951915,
+          "model_voltage_v": 3.9080733596703454,
+          "model_temperature_k": 299.76108085635076,
+          "model_capacity_ah": 0.5013894086607054,
+          "measured_voltage_v": 3.852253488103131,
+          "measured_skin_k": 299.5268280905501,
+          "voltage_error_v": 0.05581987156721446
+        },
+        "120": {
+          "time_s": 360.973333951915,
+          "model_voltage_v": 3.909129902649061,
+          "model_temperature_k": 299.7482868161682,
+          "model_capacity_ah": 0.5013894076119019,
+          "measured_voltage_v": 3.852253488103131,
+          "measured_skin_k": 299.5268280905501,
+          "voltage_error_v": 0.056876414545929954
+        }
+      },
+      "observed_gap_v": 0.21858215165167882,
+      "pairs": {
+        "low80_high80": {
+          "model_gap_v": 0.17349008495332408,
+          "gap_discrepancy_v": -0.04509206669835475,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0010588016588286564
+        },
+        "low80_high120": {
+          "model_gap_v": 0.17243354197460858,
+          "gap_discrepancy_v": -0.04614860967707024,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 2.2586801131652123e-06
+        },
+        "low120_high80": {
+          "model_gap_v": 0.1734878262732109,
+          "gap_discrepancy_v": -0.045094325378467914,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0010565429787154912
+        },
+        "low120_high120": {
+          "model_gap_v": 0.17243128329449542,
+          "gap_discrepancy_v": -0.046150868357183406,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0
+        }
+      },
+      "saved_combination_min_v": -0.046150868357183406,
+      "saved_combination_max_v": -0.04509206669835475,
+      "same_discrepancy_sign_all_combinations": true
+    },
+    {
+      "conditional_charge_ah": 1.0,
+      "low": {
+        "80": {
+          "time_s": 14399.75912604915,
+          "model_voltage_v": 3.987895134631458,
+          "model_temperature_k": 298.1203252426949,
+          "model_capacity_ah": 1.0000697393489013,
+          "measured_voltage_v": 3.988406697759084,
+          "measured_skin_k": 297.5259822845459,
+          "voltage_error_v": -0.0005115631276262356
+        },
+        "120": {
+          "time_s": 14399.75912604915,
+          "model_voltage_v": 3.98789268490997,
+          "model_temperature_k": 298.12033256789056,
+          "model_capacity_ah": 1.0000691940416837,
+          "measured_voltage_v": 3.988406697759084,
+          "measured_skin_k": 297.5259822845459,
+          "voltage_error_v": -0.0005140128491141205
+        }
+      },
+      "high": {
+        "80": {
+          "time_s": 720.9473990817331,
+          "model_voltage_v": 3.8000902463818567,
+          "model_temperature_k": 301.2454024566739,
+          "model_capacity_ah": 1.0013894090763371,
+          "measured_voltage_v": 3.755363920333988,
+          "measured_skin_k": 300.70544090270994,
+          "voltage_error_v": 0.044726326047868525
+        },
+        "120": {
+          "time_s": 720.9473990817331,
+          "model_voltage_v": 3.801062880331644,
+          "model_temperature_k": 301.22934868154675,
+          "model_capacity_ah": 1.0013894102170289,
+          "measured_voltage_v": 3.755363920333988,
+          "measured_skin_k": 300.70544090270994,
+          "voltage_error_v": 0.04569895999765583
+        }
+      },
+      "observed_gap_v": 0.23304277742509605,
+      "pairs": {
+        "low80_high80": {
+          "model_gap_v": 0.1878048882496013,
+          "gap_discrepancy_v": -0.04523788917549476,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0009750836712751898
+        },
+        "low80_high120": {
+          "model_gap_v": 0.18683225429981398,
+          "gap_discrepancy_v": -0.046210523125282066,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 2.449721487884915e-06
+        },
+        "low120_high80": {
+          "model_gap_v": 0.1878024385281134,
+          "gap_discrepancy_v": -0.045240338896982646,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0009726339497873049
+        },
+        "low120_high120": {
+          "model_gap_v": 0.1868298045783261,
+          "gap_discrepancy_v": -0.04621297284676995,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0
+        }
+      },
+      "saved_combination_min_v": -0.04621297284676995,
+      "saved_combination_max_v": -0.04523788917549476,
+      "same_discrepancy_sign_all_combinations": true
+    },
+    {
+      "conditional_charge_ah": 1.5,
+      "low": {
+        "80": {
+          "time_s": 21599.162130890978,
+          "model_voltage_v": 3.8885453058480586,
+          "model_temperature_k": 298.13075636880814,
+          "model_capacity_ah": 1.5000699048677133,
+          "measured_voltage_v": 3.8877648116154995,
+          "measured_skin_k": 297.5092589670856,
+          "voltage_error_v": 0.0007804942325591036
+        },
+        "120": {
+          "time_s": 21599.162130890978,
+          "model_voltage_v": 3.8885534693755623,
+          "model_temperature_k": 298.13076730988286,
+          "model_capacity_ah": 1.5000691439842149,
+          "measured_voltage_v": 3.8877648116154995,
+          "measured_skin_k": 297.5092589670856,
+          "voltage_error_v": 0.0007886577600628719
+        }
+      },
+      "high": {
+        "80": {
+          "time_s": 1080.9218949452684,
+          "model_voltage_v": 3.701975534893974,
+          "model_temperature_k": 302.24078781147347,
+          "model_capacity_ah": 1.5013894107971661,
+          "measured_voltage_v": 3.6395836445096577,
+          "measured_skin_k": 301.275467300415,
+          "voltage_error_v": 0.06239189038431636
+        },
+        "120": {
+          "time_s": 1080.9218949452684,
+          "model_voltage_v": 3.7025093104116142,
+          "model_temperature_k": 302.2234273687213,
+          "model_capacity_ah": 1.501389412579342,
+          "measured_voltage_v": 3.6395836445096577,
+          "measured_skin_k": 301.275467300415,
+          "voltage_error_v": 0.06292566590195658
+        }
+      },
+      "observed_gap_v": 0.24818116710584182,
+      "pairs": {
+        "low80_high80": {
+          "model_gap_v": 0.18656977095408456,
+          "gap_discrepancy_v": -0.06161139615175726,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0005256119901364542
+        },
+        "low80_high120": {
+          "model_gap_v": 0.18603599543644433,
+          "gap_discrepancy_v": -0.06214517166939748,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": -8.163527503768364e-06
+        },
+        "low120_high80": {
+          "model_gap_v": 0.18657793448158833,
+          "gap_discrepancy_v": -0.06160323262425349,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0005337755176402226
+        },
+        "low120_high120": {
+          "model_gap_v": 0.1860441589639481,
+          "gap_discrepancy_v": -0.06213700814189371,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0
+        }
+      },
+      "saved_combination_min_v": -0.06214517166939748,
+      "saved_combination_max_v": -0.06160323262425349,
+      "same_discrepancy_sign_all_combinations": true
+    },
+    {
+      "conditional_charge_ah": 2.0,
+      "low": {
+        "80": {
+          "time_s": 28798.549753508432,
+          "model_voltage_v": 3.7672014697713827,
+          "model_temperature_k": 298.1370626464421,
+          "model_capacity_ah": 2.0000700332948,
+          "measured_voltage_v": 3.778413792137972,
+          "measured_skin_k": 297.4663751810945,
+          "voltage_error_v": -0.011212322366589422
+        },
+        "120": {
+          "time_s": 28798.549753508432,
+          "model_voltage_v": 3.7671989723600428,
+          "model_temperature_k": 298.1370694916394,
+          "model_capacity_ah": 2.0000690141528223,
+          "measured_voltage_v": 3.778413792137972,
+          "measured_skin_k": 297.4663751810945,
+          "voltage_error_v": -0.011214819777929375
+        }
+      },
+      "high": {
+        "80": {
+          "time_s": 1440.8953496583588,
+          "model_voltage_v": 3.586730654207321,
+          "model_temperature_k": 302.9979342024919,
+          "model_capacity_ah": 2.001389413794586,
+          "measured_voltage_v": 3.5313655951788765,
+          "measured_skin_k": 301.87746020239956,
+          "voltage_error_v": 0.05536505902844446
+        },
+        "120": {
+          "time_s": 1440.8953496583588,
+          "model_voltage_v": 3.5871843963819137,
+          "model_temperature_k": 302.9830089208185,
+          "model_capacity_ah": 2.001389408938466,
+          "measured_voltage_v": 3.5313655951788765,
+          "measured_skin_k": 301.87746020239956,
+          "voltage_error_v": 0.05581880120303717
+        }
+      },
+      "observed_gap_v": 0.24704819695909563,
+      "pairs": {
+        "low80_high80": {
+          "model_gap_v": 0.18047081556406175,
+          "gap_discrepancy_v": -0.06657738139503389,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0004562395859326607
+        },
+        "low80_high120": {
+          "model_gap_v": 0.18001707338946904,
+          "gap_discrepancy_v": -0.0670311235696266,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 2.4974113399522935e-06
+        },
+        "low120_high80": {
+          "model_gap_v": 0.1804683181527218,
+          "gap_discrepancy_v": -0.06657987880637384,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0004537421745927084
+        },
+        "low120_high120": {
+          "model_gap_v": 0.1800145759781291,
+          "gap_discrepancy_v": -0.06703362098096655,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0
+        }
+      },
+      "saved_combination_min_v": -0.06703362098096655,
+      "saved_combination_max_v": -0.06657738139503389,
+      "same_discrepancy_sign_all_combinations": true
+    },
+    {
+      "conditional_charge_ah": 2.5,
+      "low": {
+        "80": {
+          "time_s": 35997.92074272998,
+          "model_voltage_v": 3.660042388739223,
+          "model_temperature_k": 298.1609397236299,
+          "model_capacity_ah": 2.500069879970384,
+          "measured_voltage_v": 3.680007686256224,
+          "measured_skin_k": 297.4759045200013,
+          "voltage_error_v": -0.019965297517001268
+        },
+        "120": {
+          "time_s": 35997.92074272998,
+          "model_voltage_v": 3.6600403721505375,
+          "model_temperature_k": 298.1609447499587,
+          "model_capacity_ah": 2.500068929956909,
+          "measured_voltage_v": 3.680007686256224,
+          "measured_skin_k": 297.4759045200013,
+          "voltage_error_v": -0.01996731410568664
+        }
+      },
+      "high": {
+        "80": {
+          "time_s": 1800.8692323150758,
+          "model_voltage_v": 3.4887753038305367,
+          "model_temperature_k": 303.6962252654812,
+          "model_capacity_ah": 2.5013894105657846,
+          "measured_voltage_v": 3.4212253503058307,
+          "measured_skin_k": 302.3085959415128,
+          "voltage_error_v": 0.06754995352470594
+        },
+        "120": {
+          "time_s": 1800.8692323150758,
+          "model_voltage_v": 3.4890117827146754,
+          "model_temperature_k": 303.6884508336837,
+          "model_capacity_ah": 2.5013894070024945,
+          "measured_voltage_v": 3.4212253503058307,
+          "measured_skin_k": 302.3085959415128,
+          "voltage_error_v": 0.06778643240884463
+        }
+      },
+      "observed_gap_v": 0.25878233595039335,
+      "pairs": {
+        "low80_high80": {
+          "model_gap_v": 0.17126708490868614,
+          "gap_discrepancy_v": -0.08751525104170721,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.00023849547282406292
+        },
+        "low80_high120": {
+          "model_gap_v": 0.17103060602454745,
+          "gap_discrepancy_v": -0.0877517299258459,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 2.0165886853718007e-06
+        },
+        "low120_high80": {
+          "model_gap_v": 0.17126506832000077,
+          "gap_discrepancy_v": -0.08751726763039258,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.00023647888413869111
+        },
+        "low120_high120": {
+          "model_gap_v": 0.17102858943586208,
+          "gap_discrepancy_v": -0.08775374651453127,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0
+        }
+      },
+      "saved_combination_min_v": -0.08775374651453127,
+      "saved_combination_max_v": -0.08751525104170721,
+      "same_discrepancy_sign_all_combinations": true
+    },
+    {
+      "conditional_charge_ah": 3.0,
+      "low": {
+        "80": {
+          "time_s": 43197.27686926919,
+          "model_voltage_v": 3.592086609076284,
+          "model_temperature_k": 298.19067082666055,
+          "model_capacity_ah": 3.000069987901275,
+          "measured_voltage_v": 3.6100681277728133,
+          "measured_skin_k": 297.476237249435,
+          "voltage_error_v": -0.017981518696529086
+        },
+        "120": {
+          "time_s": 43197.27686926919,
+          "model_voltage_v": 3.5920845047515884,
+          "model_temperature_k": 298.1906793696401,
+          "model_capacity_ah": 3.0000688595101823,
+          "measured_voltage_v": 3.6100681277728133,
+          "measured_skin_k": 297.476237249435,
+          "voltage_error_v": -0.017983623021224915
+        }
+      },
+      "high": {
+        "80": {
+          "time_s": 2160.8420592732195,
+          "model_voltage_v": 3.3931022615493367,
+          "model_temperature_k": 304.445497850628,
+          "model_capacity_ah": 3.0013894111328168,
+          "measured_voltage_v": 3.3345189765313474,
+          "measured_skin_k": 302.583910369873,
+          "voltage_error_v": 0.05858328501798926
+        },
+        "120": {
+          "time_s": 2160.8420592732195,
+          "model_voltage_v": 3.3931805068653063,
+          "model_temperature_k": 304.44446776316147,
+          "model_capacity_ah": 3.0013894070099916,
+          "measured_voltage_v": 3.3345189765313474,
+          "measured_skin_k": 302.583910369873,
+          "voltage_error_v": 0.05866153033395882
+        }
+      },
+      "observed_gap_v": 0.27554915124146584,
+      "pairs": {
+        "low80_high80": {
+          "model_gap_v": 0.1989843475269475,
+          "gap_discrepancy_v": -0.07656480371451835,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 8.034964066538919e-05
+        },
+        "low80_high120": {
+          "model_gap_v": 0.19890610221097793,
+          "gap_discrepancy_v": -0.07664304903048791,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 2.104324695828552e-06
+        },
+        "low120_high80": {
+          "model_gap_v": 0.19898224320225166,
+          "gap_discrepancy_v": -0.07656690803921418,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 7.824531596956064e-05
+        },
+        "low120_high120": {
+          "model_gap_v": 0.1989039978862821,
+          "gap_discrepancy_v": -0.07664515335518374,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0
+        }
+      },
+      "saved_combination_min_v": -0.07664515335518374,
+      "saved_combination_max_v": -0.07656480371451835,
+      "same_discrepancy_sign_all_combinations": true
+    },
+    {
+      "conditional_charge_ah": 3.5,
+      "low": {
+        "80": {
+          "time_s": 50396.64161715133,
+          "model_voltage_v": 3.509108857526192,
+          "model_temperature_k": 298.2220864031693,
+          "model_capacity_ah": 3.5000699224450584,
+          "measured_voltage_v": 3.5280071335590204,
+          "measured_skin_k": 297.57047333305036,
+          "voltage_error_v": -0.018898276032828232
+        },
+        "120": {
+          "time_s": 50396.64161715133,
+          "model_voltage_v": 3.5091060610143923,
+          "model_temperature_k": 298.22209504863525,
+          "model_capacity_ah": 3.5000689502861277,
+          "measured_voltage_v": 3.5280071335590204,
+          "measured_skin_k": 297.57047333305036,
+          "voltage_error_v": -0.01890107254462814
+        }
+      },
+      "high": {
+        "80": {
+          "time_s": 2520.8150533074404,
+          "model_voltage_v": 3.289430658952483,
+          "model_temperature_k": 305.28520413405056,
+          "model_capacity_ah": 3.5013894110635464,
+          "measured_voltage_v": 3.253951291162801,
+          "measured_skin_k": 303.11238899230955,
+          "voltage_error_v": 0.0354793677896823
+        },
+        "120": {
+          "time_s": 2520.8150533074404,
+          "model_voltage_v": 3.289605668727094,
+          "model_temperature_k": 305.2869562289728,
+          "model_capacity_ah": 3.5013894072691394,
+          "measured_voltage_v": 3.253951291162801,
+          "measured_skin_k": 303.11238899230955,
+          "voltage_error_v": 0.03565437756429324
+        }
+      },
+      "observed_gap_v": 0.2740558423962196,
+      "pairs": {
+        "low80_high80": {
+          "model_gap_v": 0.21967819857370907,
+          "gap_discrepancy_v": -0.054377643822510535,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.00017780628641084206
+        },
+        "low80_high120": {
+          "model_gap_v": 0.21950318879909814,
+          "gap_discrepancy_v": -0.05455265359712147,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 2.796511799907364e-06
+        },
+        "low120_high80": {
+          "model_gap_v": 0.21967540206190916,
+          "gap_discrepancy_v": -0.05438044033431044,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0001750097746109347
+        },
+        "low120_high120": {
+          "model_gap_v": 0.21950039228729823,
+          "gap_discrepancy_v": -0.05455545010892138,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0
+        }
+      },
+      "saved_combination_min_v": -0.05455545010892138,
+      "saved_combination_max_v": -0.054377643822510535,
+      "same_discrepancy_sign_all_combinations": true
+    },
+    {
+      "conditional_charge_ah": 4.0,
+      "low": {
+        "80": {
+          "time_s": 57596.01104596428,
+          "model_voltage_v": 3.3933033994868453,
+          "model_temperature_k": 298.25585943375705,
+          "model_capacity_ah": 4.000069691450979,
+          "measured_voltage_v": 3.424701039816629,
+          "measured_skin_k": 297.5493045723069,
+          "voltage_error_v": -0.03139764032978354
+        },
+        "120": {
+          "time_s": 57596.01104596428,
+          "model_voltage_v": 3.3933076293799447,
+          "model_temperature_k": 298.2558624067701,
+          "model_capacity_ah": 4.000068872112989,
+          "measured_voltage_v": 3.424701039816629,
+          "measured_skin_k": 297.5493045723069,
+          "voltage_error_v": -0.0313934104366842
+        }
+      },
+      "high": {
+        "80": {
+          "time_s": 2880.7883348665173,
+          "model_voltage_v": 3.1675954061139984,
+          "model_temperature_k": 306.40325247376927,
+          "model_capacity_ah": 4.0013894115287965,
+          "measured_voltage_v": 3.146138897457048,
+          "measured_skin_k": 303.6580673541863,
+          "voltage_error_v": 0.02145650865695048
+        },
+        "120": {
+          "time_s": 2880.7883348665173,
+          "model_voltage_v": 3.1680765104848296,
+          "model_temperature_k": 306.3989155102828,
+          "model_capacity_ah": 4.001389407681688,
+          "measured_voltage_v": 3.146138897457048,
+          "measured_skin_k": 303.6580673541863,
+          "voltage_error_v": 0.021937613027781744
+        }
+      },
+      "observed_gap_v": 0.278562142359581,
+      "pairs": {
+        "low80_high80": {
+          "model_gap_v": 0.22570799337284697,
+          "gap_discrepancy_v": -0.05285414898673402,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0004768744777319256
+        },
+        "low80_high120": {
+          "model_gap_v": 0.2252268890020157,
+          "gap_discrepancy_v": -0.05333525335756528,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": -4.229893099338966e-06
+        },
+        "low120_high80": {
+          "model_gap_v": 0.2257122232659463,
+          "gap_discrepancy_v": -0.05284991909363468,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.00048110437083126456
+        },
+        "low120_high120": {
+          "model_gap_v": 0.22523111889511505,
+          "gap_discrepancy_v": -0.05333102346446594,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0
+        }
+      },
+      "saved_combination_min_v": -0.05333525335756528,
+      "saved_combination_max_v": -0.05284991909363468,
+      "same_discrepancy_sign_all_combinations": true
+    },
+    {
+      "conditional_charge_ah": 4.5,
+      "low": {
+        "80": {
+          "time_s": 64795.390131135224,
+          "model_voltage_v": 3.180103562000143,
+          "model_temperature_k": 298.48398621242933,
+          "model_capacity_ah": 4.500069692580701,
+          "measured_voltage_v": 3.137230399398385,
+          "measured_skin_k": 297.6582893371582,
+          "voltage_error_v": 0.042873162601758
+        },
+        "120": {
+          "time_s": 64795.390131135224,
+          "model_voltage_v": 3.1801008177885803,
+          "model_temperature_k": 298.48399356216095,
+          "model_capacity_ah": 4.500068793454177,
+          "measured_voltage_v": 3.137230399398385,
+          "measured_skin_k": 297.6582893371582,
+          "voltage_error_v": 0.04287041839019512
+        }
+      },
+      "high": {
+        "80": {
+          "time_s": 3240.7604027430957,
+          "model_voltage_v": 2.8587064215931086,
+          "model_temperature_k": 308.82703740241493,
+          "model_capacity_ah": 4.501389411178761,
+          "measured_voltage_v": 2.8880636056237683,
+          "measured_skin_k": 304.47290741683923,
+          "voltage_error_v": -0.029357184030659678
+        },
+        "120": {
+          "time_s": 3240.7604027430957,
+          "model_voltage_v": 2.8590580589334595,
+          "model_temperature_k": 308.82093904413887,
+          "model_capacity_ah": 4.501389407416748,
+          "measured_voltage_v": 2.8880636056237683,
+          "measured_skin_k": 304.47290741683923,
+          "voltage_error_v": -0.029005546690308748
+        }
+      },
+      "observed_gap_v": 0.24916679377461692,
+      "pairs": {
+        "low80_high80": {
+          "model_gap_v": 0.3213971404070346,
+          "gap_discrepancy_v": 0.07223034663241767,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.00035438155191380716
+        },
+        "low80_high120": {
+          "model_gap_v": 0.32104550306668367,
+          "gap_discrepancy_v": 0.07187870929206674,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 2.7442115628772967e-06
+        },
+        "low120_high80": {
+          "model_gap_v": 0.3213943961954717,
+          "gap_discrepancy_v": 0.0722276024208548,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.00035163734035092986
+        },
+        "low120_high120": {
+          "model_gap_v": 0.3210427588551208,
+          "gap_discrepancy_v": 0.07187596508050387,
+          "identity_closure_v": 0.0,
+          "difference_from_primary_v": 0.0
+        }
+      },
+      "saved_combination_min_v": 0.07187596508050387,
+      "saved_combination_max_v": 0.07223034663241767,
+      "same_discrepancy_sign_all_combinations": true
+    }
+  ],
+  "new_battery_solves": 0,
+  "new_source_downloads": 0,
+  "parameters_fitted": false,
+  "common_Ah_establishes_common_SOC": false,
+  "mesh_combination_range_is_uncertainty_bound": false,
+  "independent_validation_established": false,
+  "unique_physical_cause_identified": false,
+  "new_rate_acceptance_threshold_defined": false,
+  "low_sources": {
+    "80": {
+      "source_commit": "c8e3088fd808b213992285cabfaf9b69e9528d89",
+      "run_id": "37954785347"
+    },
+    "120": {
+      "source_commit": "5655bda1527c0941f99717018dc06553a7283dea",
+      "run_id": "37960046810"
+    }
+  },
+  "initial_assumed_charge_excluded_ah": {
+    "low": 6.945052080684238e-05,
+    "high": 0.001389411683652136
+  },
+  "profile_implementation_sha256": {
+    "low_current": "3ac01b06b0b43e6fa464d861e5117a7d28f1b4f55f339ec781069a76e74905a6",
+    "high_historical": "9324ed84ee6ddd5bd142db99383ee69116b0d51bde759cd503680acde144d5d7"
+  },
+  "saved_grid_point_counts": {
+    "low": {
+      "80": 70355,
+      "120": 70355
+    },
+    "high": {
+      "80": 3993,
+      "120": 3993
+    }
+  },
+  "grid_construction": {
+    "low": "1-second samples plus predeclared Ah-query times and true endpoint",
+    "high": "5-second samples plus current-profile knots and true endpoint"
+  }
+}

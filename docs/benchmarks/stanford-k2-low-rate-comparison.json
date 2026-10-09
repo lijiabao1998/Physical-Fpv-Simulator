@@ -1,0 +1,874 @@
+{
+  "protocol": "docs/stanford-k2-low-rate-protocol.md",
+  "protocol_sha256": "b432039658297330ddeb7908411fe50f079a6de257007ab4cb639ebbd0532b44",
+  "source_gzip_sha256": {
+    "stanford-k2-low-rate-discharge.csv.gz": "5c5f0969e411d2be96bcdbb02cfcb397e2fd79d8ad92a26e5466f311d70ae5ef",
+    "stanford-k2-rest-records.csv.gz": "513ad1debdf3fcf7eb9d716a8b34651a39349f136d1a6b23e84ed609fa2c2d6f",
+    "stanford-k2-state-scalars.csv.gz": "188d1ba8e5889fc88e200b47524be4876548bdf43a57bc2e68e5fc776454e21e"
+  },
+  "analysis_source_sha256": {
+    "src/physical_fpv/low_rate_reference.py": "b59934d49cd2a63ee6c0d7a4776a769067957eac2125701412688e86cb25d536",
+    "scripts/check_stanford_k2_low_rate.py": "69597196a49fbf7c87f6a6bfd4b8d6ec866cf3d497918aafeee632c55925ebf4"
+  },
+  "source_doi": "10.17632/kxsbr4x3j2.2",
+  "authors": [
+    "Edoardo Catenaro",
+    "Simona Onori"
+  ],
+  "license": "CC-BY-4.0",
+  "new_dfns_solved": 0,
+  "parameters_fitted": false,
+  "physical_parameter_update": false,
+  "blind_holdout": false,
+  "independent_ocv_validation": false,
+  "historical_1c_voltage_rmse_v": 0.05500305419157363,
+  "historical_gate_v": 0.05,
+  "historical_1c_passed": false,
+  "unknown_history_gap_s": 163788.327,
+  "source_rows": {
+    "low_rate": 70370,
+    "high_rate": 3436,
+    "model": 3993
+  },
+  "recorded_discharge_initials": {
+    "low_rate": [
+      1.0,
+      -0.25002187490463257,
+      4.178414344787598,
+      297.49524920338
+    ],
+    "high_rate": [
+      1.0003,
+      -5.000381946563721,
+      4.028350830078125,
+      297.54337921142576
+    ]
+  },
+  "scenarios": {
+    "recorded_start": {
+      "alignment": "recorded_start",
+      "absolute_soc_equivalence_established": false,
+      "arithmetic_closure_max_v": 0.0,
+      "common_charge_interval_ah": [
+        0.0,
+        4.628304107791516
+      ],
+      "source_support": {
+        "low_rate": {
+          "interval_ah": [
+            0.0,
+            4.887153244363709
+          ],
+          "excluded_beginning_ah": 0.0,
+          "excluded_end_ah": 0.2588491365721932,
+          "covered_charge_fraction": 0.9470347820849038
+        },
+        "high_rate": {
+          "interval_ah": [
+            0.0,
+            4.770869297629623
+          ],
+          "excluded_beginning_ah": 0.0,
+          "excluded_end_ah": 0.1425651898381073,
+          "covered_charge_fraction": 0.9701175653860524
+        },
+        "model": {
+          "interval_ah": [
+            -0.001389411683411037,
+            4.628304107791516
+          ],
+          "excluded_beginning_ah": 0.001389411683411037,
+          "excluded_end_ah": 0.0,
+          "covered_charge_fraction": 0.9996998912179463
+        }
+      },
+      "temperature_ranges_k": {
+        "low_rate_skin": [
+          297.3415893554687,
+          298.30849113464353
+        ],
+        "high_rate_skin": [
+          297.53526916503904,
+          304.8057521820068
+        ],
+        "model_bulk": [
+          297.55839792137186,
+          309.6264566081559
+        ]
+      },
+      "temperature_differences_k": {
+        "high_skin_minus_low_skin": {
+          "minimum_k": 0.013750944623666328,
+          "maximum_k": 7.203726634016391,
+          "charge_weighted_mean_k": 4.349676909671735
+        },
+        "model_bulk_minus_high_skin": {
+          "minimum_k": -0.05481493249180858,
+          "maximum_k": 4.912810291627579,
+          "charge_weighted_mean_k": 1.5210238569149725
+        },
+        "model_bulk_minus_low_skin": {
+          "minimum_k": 0.03953841661558499,
+          "maximum_k": 12.006028901421018,
+          "charge_weighted_mean_k": 5.870700766586707
+        }
+      },
+      "upper_reference_violation_intervals_ah": [
+        [
+          1.9813488392900915,
+          1.9813495506005394
+        ],
+        [
+          1.9817617111808317,
+          1.9817686221233557
+        ],
+        [
+          1.981958985113949,
+          1.9819841825931965
+        ],
+        [
+          1.9821083174126357,
+          1.9821194581154162
+        ],
+        [
+          1.9824146954586361,
+          1.982510098555542
+        ],
+        [
+          1.9827899473889317,
+          1.982826946861216
+        ],
+        [
+          1.9830019092217466,
+          1.9832059603470857
+        ],
+        [
+          1.9832408803905637,
+          1.9833960507002113
+        ],
+        [
+          1.9834575739025202,
+          1.9835630836614144
+        ],
+        [
+          1.9835826122266067,
+          4.084533747576269
+        ],
+        [
+          4.084601143160254,
+          4.084749691299746
+        ],
+        [
+          4.084994115237277,
+          4.085016009174191
+        ]
+      ],
+      "upper_reference_violation_details": [
+        {
+          "interval_ah": [
+            1.9813488392900915,
+            1.9813495506005394
+          ],
+          "width_ah": 7.113104478762011e-07,
+          "minimum_v": -8.886480977743361e-07
+        },
+        {
+          "interval_ah": [
+            1.9817617111808317,
+            1.9817686221233557
+          ],
+          "width_ah": 6.910942524029906e-06,
+          "minimum_v": -4.678092650589605e-06
+        },
+        {
+          "interval_ah": [
+            1.981958985113949,
+            1.9819841825931965
+          ],
+          "width_ah": 2.5197479247562882e-05,
+          "minimum_v": -3.458225262420456e-05
+        },
+        {
+          "interval_ah": [
+            1.9821083174126357,
+            1.9821194581154162
+          ],
+          "width_ah": 1.1140702780521039e-05,
+          "minimum_v": -1.534532073588224e-05
+        },
+        {
+          "interval_ah": [
+            1.9824146954586361,
+            1.982510098555542
+          ],
+          "width_ah": 9.540309690581061e-05,
+          "minimum_v": -6.0385591986289455e-05
+        },
+        {
+          "interval_ah": [
+            1.9827899473889317,
+            1.982826946861216
+          ],
+          "width_ah": 3.69994722844158e-05,
+          "minimum_v": -3.62775878097743e-05
+        },
+        {
+          "interval_ah": [
+            1.9830019092217466,
+            1.9832059603470857
+          ],
+          "width_ah": 0.00020405112533916636,
+          "minimum_v": -0.00015592452458168538
+        },
+        {
+          "interval_ah": [
+            1.9832408803905637,
+            1.9833960507002113
+          ],
+          "width_ah": 0.00015517030964762313,
+          "minimum_v": -0.0001790522226454705
+        },
+        {
+          "interval_ah": [
+            1.9834575739025202,
+            1.9835630836614144
+          ],
+          "width_ah": 0.00010550975889422887,
+          "minimum_v": -0.00010130637324223812
+        },
+        {
+          "interval_ah": [
+            1.9835826122266067,
+            4.084533747576269
+          ],
+          "width_ah": 2.1009511353496624,
+          "minimum_v": -0.01496257769464604
+        },
+        {
+          "interval_ah": [
+            4.084601143160254,
+            4.084749691299746
+          ],
+          "width_ah": 0.0001485481394922772,
+          "minimum_v": -5.568287787793835e-05
+        },
+        {
+          "interval_ah": [
+            4.084994115237277,
+            4.085016009174191
+          ],
+          "width_ah": 2.1893936914096912e-05,
+          "minimum_v": -3.2333866805345224e-05
+        }
+      ],
+      "upper_reference_violation_charge_ah": 2.10176267162414,
+      "windows": [
+        {
+          "charge_interval_ah": [
+            0.0,
+            4.628304107791516
+          ],
+          "terms": {
+            "static_reference": {
+              "mean_v": 0.0076595422758004295,
+              "rms_v": 0.020320388607636457,
+              "minimum_v": -0.01496257769464604,
+              "maximum_v": 0.06057863099962191,
+              "negative_charge_fraction": 0.45411075524349975,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 0.5458892447565002
+            },
+            "measured_rate_difference": {
+              "mean_v": 0.24938024945388276,
+              "rms_v": 0.25044485996945615,
+              "minimum_v": 0.15001927433027973,
+              "maximum_v": 0.28082551500546726,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "model_bulk_to_terminal": {
+              "mean_v": 0.21286898720391437,
+              "rms_v": 0.2190194286262547,
+              "minimum_v": 0.08191225971630267,
+              "maximum_v": 0.5967403320886286,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "terminal_residual": {
+              "mean_v": 0.04417080452576888,
+              "rms_v": 0.055003050992828005,
+              "minimum_v": -0.26280022540148407,
+              "maximum_v": 0.07011342606360493,
+              "negative_charge_fraction": 0.05407644390406193,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 0.945923556095938
+            }
+          }
+        },
+        {
+          "charge_interval_ah": [
+            0.0,
+            1.157076026947879
+          ],
+          "terms": {
+            "static_reference": {
+              "mean_v": 0.013206503365894311,
+              "rms_v": 0.013636275071937253,
+              "minimum_v": 0.001962171070434948,
+              "maximum_v": 0.019449741751722982,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "measured_rate_difference": {
+              "mean_v": 0.21729335873636021,
+              "rms_v": 0.21796749105708385,
+              "minimum_v": 0.15001927433027973,
+              "maximum_v": 0.23658887326689682,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "model_bulk_to_terminal": {
+              "mean_v": 0.17699879853678013,
+              "rms_v": 0.17843202925686735,
+              "minimum_v": 0.08191225971630267,
+              "maximum_v": 0.19738705380887112,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "terminal_residual": {
+              "mean_v": 0.053501063565474356,
+              "rms_v": 0.054097077520030325,
+              "minimum_v": 0.043034262875505824,
+              "maximum_v": 0.07011342606360493,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            }
+          }
+        },
+        {
+          "charge_interval_ah": [
+            1.157076026947879,
+            2.314152053895758
+          ],
+          "terms": {
+            "static_reference": {
+              "mean_v": 0.007590222396736174,
+              "rms_v": 0.014290295925368903,
+              "minimum_v": -0.01440798202949889,
+              "maximum_v": 0.01929863013661759,
+              "negative_charge_fraction": 0.28624786029870863,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 0.7137521397012914
+            },
+            "measured_rate_difference": {
+              "mean_v": 0.2473392815208552,
+              "rms_v": 0.24737545133466854,
+              "minimum_v": 0.23622573191467433,
+              "maximum_v": 0.2543418567426148,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "model_bulk_to_terminal": {
+              "mean_v": 0.1957032598408257,
+              "rms_v": 0.19597948199583182,
+              "minimum_v": 0.176723984519088,
+              "maximum_v": 0.20901784555862735,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "terminal_residual": {
+              "mean_v": 0.059226244076765605,
+              "rms_v": 0.05929095104345727,
+              "minimum_v": 0.05233730372410683,
+              "maximum_v": 0.06362836188511833,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            }
+          }
+        },
+        {
+          "charge_interval_ah": [
+            2.314152053895758,
+            3.471228080843637
+          ],
+          "terms": {
+            "static_reference": {
+              "mean_v": -0.00763393746944671,
+              "rms_v": 0.007967754681917245,
+              "minimum_v": -0.014093850396036611,
+              "maximum_v": -0.005451721897099304,
+              "negative_charge_fraction": 1.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 0.0
+            },
+            "measured_rate_difference": {
+              "mean_v": 0.26997046716285533,
+              "rms_v": 0.2701103583632536,
+              "minimum_v": 0.2541534119417026,
+              "maximum_v": 0.28082551500546726,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "model_bulk_to_terminal": {
+              "mean_v": 0.20412979229697628,
+              "rms_v": 0.20504513511791705,
+              "minimum_v": 0.17673109455771385,
+              "maximum_v": 0.23175671702999967,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "terminal_residual": {
+              "mean_v": 0.05820673739643233,
+              "rms_v": 0.05908907283290067,
+              "minimum_v": 0.03658450217103537,
+              "maximum_v": 0.06862000975314375,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            }
+          }
+        },
+        {
+          "charge_interval_ah": [
+            3.471228080843637,
+            4.628304107791516
+          ],
+          "terms": {
+            "static_reference": {
+              "mean_v": 0.01747538081001794,
+              "rms_v": 0.03461252811509266,
+              "minimum_v": -0.01496257769464604,
+              "maximum_v": 0.06057863099962191,
+              "negative_charge_fraction": 0.5301951606752905,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 0.4698048393247095
+            },
+            "measured_rate_difference": {
+              "mean_v": 0.26291789039546054,
+              "rms_v": 0.2631092259207301,
+              "minimum_v": 0.24556663146587399,
+              "maximum_v": 0.2802470699503803,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "model_bulk_to_terminal": {
+              "mean_v": 0.27464409814107527,
+              "rms_v": 0.28211449200542904,
+              "minimum_v": 0.2265566256290974,
+              "maximum_v": 0.5967403320886286,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "terminal_residual": {
+              "mean_v": 0.005749173064403223,
+              "rms_v": 0.04656085559760358,
+              "minimum_v": -0.26280022540148407,
+              "maximum_v": 0.03684654841382917,
+              "negative_charge_fraction": 0.21630577561624773,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 0.7836942243837522
+            }
+          }
+        }
+      ]
+    },
+    "command_start_hold": {
+      "alignment": "command_start_hold",
+      "absolute_soc_equivalence_established": false,
+      "arithmetic_closure_max_v": 0.0,
+      "common_charge_interval_ah": [
+        0.001389411683652136,
+        4.629693519474928
+      ],
+      "source_support": {
+        "low_rate": {
+          "interval_ah": [
+            6.945052080684238e-05,
+            4.8872226948845165
+          ],
+          "excluded_beginning_ah": 0.0013199611628452938,
+          "excluded_end_ah": 0.257529175409589,
+          "covered_charge_fraction": 0.9470347820848546
+        },
+        "high_rate": {
+          "interval_ah": [
+            0.001389411683652136,
+            4.772258709313276
+          ],
+          "excluded_beginning_ah": 0.0,
+          "excluded_end_ah": 0.14256518983834798,
+          "covered_charge_fraction": 0.9701175653860019
+        },
+        "model": {
+          "interval_ah": [
+            0.0,
+            4.629693519474928
+          ],
+          "excluded_beginning_ah": 0.001389411683652136,
+          "excluded_end_ah": 0.0,
+          "covered_charge_fraction": 0.9996998912178944
+        }
+      },
+      "temperature_ranges_k": {
+        "low_rate_skin": [
+          297.3415893554687,
+          298.30849113464353
+        ],
+        "high_rate_skin": [
+          297.53526916503904,
+          304.8057521820068
+        ],
+        "model_bulk": [
+          297.55839792137255,
+          309.6264566081559
+        ]
+      },
+      "temperature_differences_k": {
+        "high_skin_minus_low_skin": {
+          "minimum_k": 0.01395416259765625,
+          "maximum_k": 7.220273971557617,
+          "charge_weighted_mean_k": 4.349627338221693
+        },
+        "model_bulk_minus_high_skin": {
+          "minimum_k": -0.054814932490614865,
+          "maximum_k": 4.912810291627579,
+          "charge_weighted_mean_k": 1.5210238569154244
+        },
+        "model_bulk_minus_low_skin": {
+          "minimum_k": 0.03682515226847727,
+          "maximum_k": 12.000910633618332,
+          "charge_weighted_mean_k": 5.8706511951371185
+        }
+      },
+      "upper_reference_violation_intervals_ah": [
+        [
+          1.9864745672820041,
+          1.9864980761686508
+        ],
+        [
+          1.9868840489586514,
+          1.9887792649166296
+        ],
+        [
+          1.988781374322034,
+          4.083653304649748
+        ],
+        [
+          4.083723360765429,
+          4.083806533118994
+        ],
+        [
+          4.083912099360586,
+          4.083990502709133
+        ],
+        [
+          4.084242479792231,
+          4.084242756982546
+        ]
+      ],
+      "upper_reference_violation_details": [
+        {
+          "interval_ah": [
+            1.9864745672820041,
+            1.9864980761686508
+          ],
+          "width_ah": 2.3508886646705918e-05,
+          "minimum_v": -1.645151031670622e-05
+        },
+        {
+          "interval_ah": [
+            1.9868840489586514,
+            1.9887792649166296
+          ],
+          "width_ah": 0.001895215957978147,
+          "minimum_v": -0.00035973313735793155
+        },
+        {
+          "interval_ah": [
+            1.988781374322034,
+            4.083653304649748
+          ],
+          "width_ah": 2.094871930327714,
+          "minimum_v": -0.014716293251151313
+        },
+        {
+          "interval_ah": [
+            4.083723360765429,
+            4.083806533118994
+          ],
+          "width_ah": 8.317235356525288e-05,
+          "minimum_v": -9.270412793283e-05
+        },
+        {
+          "interval_ah": [
+            4.083912099360586,
+            4.083990502709133
+          ],
+          "width_ah": 7.84033485468072e-05,
+          "minimum_v": -0.00012446695034284971
+        },
+        {
+          "interval_ah": [
+            4.084242479792231,
+            4.084242756982546
+          ],
+          "width_ah": 2.771903142573251e-07,
+          "minimum_v": -1.321087168548729e-07
+        }
+      ],
+      "upper_reference_violation_charge_ah": 2.0969525080647653,
+      "windows": [
+        {
+          "charge_interval_ah": [
+            0.001389411683652136,
+            4.629693519474928
+          ],
+          "terms": {
+            "static_reference": {
+              "mean_v": 0.007983552271244814,
+              "rms_v": 0.020592222615855717,
+              "minimum_v": -0.014716293251151313,
+              "maximum_v": 0.06155390707641706,
+              "negative_charge_fraction": 0.4530714619989816,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 0.5469285380010185
+            },
+            "measured_rate_difference": {
+              "mean_v": 0.249056239458378,
+              "rms_v": 0.2501224501660843,
+              "minimum_v": 0.14734203937362444,
+              "maximum_v": 0.2805813995665303,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "model_bulk_to_terminal": {
+              "mean_v": 0.2128689872039212,
+              "rms_v": 0.21901942862625962,
+              "minimum_v": 0.08191225971737648,
+              "maximum_v": 0.5967403320886286,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "terminal_residual": {
+              "mean_v": 0.04417080452570163,
+              "rms_v": 0.0550030509927942,
+              "minimum_v": -0.2628002254017754,
+              "maximum_v": 0.07011342606242987,
+              "negative_charge_fraction": 0.05407644390432976,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 0.9459235560956702
+            }
+          }
+        },
+        {
+          "charge_interval_ah": [
+            0.001389411683652136,
+            1.158465438631471
+          ],
+          "terms": {
+            "static_reference": {
+              "mean_v": 0.013461817458624408,
+              "rms_v": 0.013864040752366764,
+              "minimum_v": 0.004683646406181907,
+              "maximum_v": 0.0195398657849859,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "measured_rate_difference": {
+              "mean_v": 0.21703804464358425,
+              "rms_v": 0.21771922240501745,
+              "minimum_v": 0.14734203937362444,
+              "maximum_v": 0.23625002076318857,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "model_bulk_to_terminal": {
+              "mean_v": 0.1769987985368029,
+              "rms_v": 0.1784320292568849,
+              "minimum_v": 0.08191225971737648,
+              "maximum_v": 0.19738705380887112,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "terminal_residual": {
+              "mean_v": 0.053501063565405786,
+              "rms_v": 0.05409707751996091,
+              "minimum_v": 0.043034262875452534,
+              "maximum_v": 0.07011342606242987,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            }
+          }
+        },
+        {
+          "charge_interval_ah": [
+            1.158465438631471,
+            2.31554146557929
+          ],
+          "terms": {
+            "static_reference": {
+              "mean_v": 0.00786262031108687,
+              "rms_v": 0.014437948263480582,
+              "minimum_v": -0.014140911882490226,
+              "maximum_v": 0.019606622695369502,
+              "negative_charge_fraction": 0.28405982725344225,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 0.7159401727465577
+            },
+            "measured_rate_difference": {
+              "mean_v": 0.2470668836064505,
+              "rms_v": 0.24710302274014434,
+              "minimum_v": 0.2360335846049031,
+              "maximum_v": 0.2541655515047747,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "model_bulk_to_terminal": {
+              "mean_v": 0.1957032598408237,
+              "rms_v": 0.19597948199582993,
+              "minimum_v": 0.176723984519088,
+              "maximum_v": 0.20901784555862735,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "terminal_residual": {
+              "mean_v": 0.05922624407671363,
+              "rms_v": 0.05929095104340539,
+              "minimum_v": 0.05233730372405265,
+              "maximum_v": 0.06362836188506993,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            }
+          }
+        },
+        {
+          "charge_interval_ah": [
+            2.31554146557929,
+            3.4726174925271085
+          ],
+          "terms": {
+            "static_reference": {
+              "mean_v": -0.007428631868758806,
+              "rms_v": 0.007765229478475549,
+              "minimum_v": -0.013847994459239565,
+              "maximum_v": -0.0052835699550004556,
+              "negative_charge_fraction": 1.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 0.0
+            },
+            "measured_rate_difference": {
+              "mean_v": 0.2697651615621281,
+              "rms_v": 0.2699054477482815,
+              "minimum_v": 0.2538717397282988,
+              "maximum_v": 0.2805813995665303,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "model_bulk_to_terminal": {
+              "mean_v": 0.20412979229698058,
+              "rms_v": 0.20504513511792127,
+              "minimum_v": 0.17673109455771385,
+              "maximum_v": 0.23175671702999967,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "terminal_residual": {
+              "mean_v": 0.05820673739638872,
+              "rms_v": 0.0590890728328575,
+              "minimum_v": 0.03658450217098563,
+              "maximum_v": 0.06862000975309845,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            }
+          }
+        },
+        {
+          "charge_interval_ah": [
+            3.4726174925271085,
+            4.629693519474928
+          ],
+          "terms": {
+            "static_reference": {
+              "mean_v": 0.01803840318402677,
+              "rms_v": 0.035145323503251814,
+              "minimum_v": -0.014716293251151313,
+              "maximum_v": 0.06155390707641706,
+              "negative_charge_fraction": 0.5282260207424838,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 0.4717739792575162
+            },
+            "measured_rate_difference": {
+              "mean_v": 0.26235486802134905,
+              "rms_v": 0.2625537010445278,
+              "minimum_v": 0.24458635391556172,
+              "maximum_v": 0.27981546338385677,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "model_bulk_to_terminal": {
+              "mean_v": 0.27464409814107754,
+              "rms_v": 0.2821144920054314,
+              "minimum_v": 0.2265566256290974,
+              "maximum_v": 0.5967403320886286,
+              "negative_charge_fraction": 0.0,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 1.0
+            },
+            "terminal_residual": {
+              "mean_v": 0.005749173064298359,
+              "rms_v": 0.04656085559764535,
+              "minimum_v": -0.2628002254017754,
+              "maximum_v": 0.03684654841377899,
+              "negative_charge_fraction": 0.21630577561731898,
+              "zero_plateau_charge_fraction": 0.0,
+              "positive_charge_fraction": 0.783694224382681
+            }
+          }
+        }
+      ]
+    }
+  },
+  "predictions": {
+    "recorded_start": {
+      "path": "stanford-k2-low-rate-recorded_start.csv.gz",
+      "committed": false,
+      "availability": "Regenerate with this script; source arrays and summary are committed",
+      "gzip_sha256": "e760f27907499e60abc58eb7458003fd7f4fbc588bee3dca861480732104de2a",
+      "rows": 73968
+    },
+    "command_start_hold": {
+      "path": "stanford-k2-low-rate-command_start_hold.csv.gz",
+      "committed": false,
+      "availability": "Regenerate with this script; source arrays and summary are committed",
+      "gzip_sha256": "ca62db042c667c8d1e563d520b32e1ac2a8a3cf762cc63b197ad5ad9c93d78d4",
+      "rows": 73968
+    }
+  },
+  "elapsed_s": 6.189846832006879
+}

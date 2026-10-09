@@ -1,0 +1,840 @@
+{
+  "schema_version": 1,
+  "scope": "Exploratory no-solve, no-fit audit of existing cell790 1C/25C grid120 evidence; not a new scientific gate.",
+  "software": {
+    "pybamm_version": "26.9.0.0",
+    "numpy_version": "2.5.3",
+    "script_sha256": "25c701621e43984e4ce37ef4cdc3654e9152b40aaa738631a822f377025dcdc2",
+    "frozen_parameter_fingerprint_reproduced": "ed8798d67bbda09fcd60debc01a664bb2dbe091271f5dc3523b5bf4661f3d4a5"
+  },
+  "sources": {
+    "data/oregan/raw/validation.zip": {
+      "sha256": "3848d0eb1d70e4fc86cc77c272433053760b0bdfe25825ef652135edc43275b8",
+      "matches_pinned_input": true
+    },
+    "docs/benchmarks/cell790-grid120-diagnosis.json": {
+      "sha256": "05f528e8b7d5bf4a50b1e8547d52dd426b3737d25e0cb812d2a03143b4232ba0",
+      "matches_pinned_input": true
+    },
+    "docs/benchmarks/thermal-grid120-reference.csv": {
+      "sha256": "61585bc925a0328513f7f6a905d55a926eed762530f5e9faae2e005d8a492846",
+      "matches_pinned_input": true
+    },
+    "brosaplanella-TEC-reduced-model-978f8c3/data/25degC/Cell790_1C_25degC.csv": {
+      "archive": "data/oregan/raw/validation.zip",
+      "sha256": "d50ad6da00d54d7aadf8e7c680f4885580e8bce263756fe8bfd4c0ec0720a4f5",
+      "header_csv_line": 16,
+      "units_csv_line": 17
+    },
+    "brosaplanella-TEC-reduced-model-978f8c3/tec_reduced_model/process_experimental_data.py": {
+      "archive": "data/oregan/raw/validation.zip",
+      "sha256": "c04e4a90518125d2775a00200f0d8dd159a1c9fa3cb293533d51043536c8b286",
+      "inspected_not_executed": true,
+      "get_idxs_lines_1_based_inclusive": [
+        84,
+        89
+      ]
+    }
+  },
+  "consistency_checks": {
+    "source_loader_transition_index_matches_last_range_row": true,
+    "residuals_derived_from_raw_and_checksum_pinned_model_csv": true,
+    "exact_piecewise_linear_metrics_match_existing_diagnosis": true,
+    "reconstructed_parameter_fingerprint_matches_frozen_simulation": true,
+    "inferred_initial_inventory_matches_saved_total_lithium": true,
+    "two_electrode_inferred_charge_transfer_conserves_solid_lithium": true,
+    "saved_model_cutoff_capacity_matches_current_times_time": true
+  },
+  "formulas": {
+    "error_sign": "prediction minus measurement",
+    "squared_error_integral": "sum(dt * (e_left^2 + e_left*e_right + e_right^2) / 3) on union knots, including interpolated phase boundaries",
+    "rmse": "sqrt(squared_error_integral / available_phase_duration)",
+    "bias": "trapezoidal_integral(e) / available_phase_duration (exact for piecewise-linear e)",
+    "measured_charge_ah": "integral(-recorded_current_a, discharge_step_time_s) / 3600, retaining last duplicate timestamp",
+    "negative_mean_concentration": "c_n0 - Q_Ah*3600/(F*N_parallel*A*L_n*epsilon_s_n)",
+    "positive_mean_concentration": "c_p0 + Q_Ah*3600/(F*N_parallel*A*L_p*epsilon_s_p)",
+    "stoichiometry": "inferred_mean_concentration/cmax; electrode stoichiometry, NOT measured cell SOC",
+    "uniform_state_ocv": "U_p(theta_p,T_ref)-U_n(theta_n,T_ref)+(T-T_ref)*(dU_p/dT-dU_n/dT); separately checked through installed PyBaMM U expression including clipping/asymptotes",
+    "initial_total_lithium": "sum(active_volume*c_initial) + N_parallel*A*c_e0*sum(region_thickness*electrolyte_porosity)",
+    "F_c_mol": 96485.33212331001,
+    "electrode_area_m2": 0.10270000000000001,
+    "reference_temperature_k": 298.15
+  },
+  "protocol_audit": {
+    "first_discharge": {
+      "status": "DCH",
+      "step": 11,
+      "csv_lines_1_based_inclusive": [
+        7775,
+        11418
+      ],
+      "measurement_rows_1_based_inclusive": [
+        7758,
+        11401
+      ],
+      "raw_row_count": 3644,
+      "first": {
+        "Step Time": 0.0,
+        "Prog Time": 14887.695,
+        "Voltage": 4.02309,
+        "Current": -4.99825,
+        "AhAccu": 0.08036,
+        "WhAccu": 0.33752,
+        "LogTemp001": 24.6,
+        "Step": "11",
+        "Status": "DCH",
+        "_line": 7775,
+        "_measurement_row": 7758
+      },
+      "last": {
+        "Step Time": 3491.048,
+        "Prog Time": 18378.743,
+        "Voltage": 2.49885,
+        "Current": -4.99969,
+        "AhAccu": -4.76848,
+        "WhAccu": -16.48437,
+        "LogTemp001": 37.3,
+        "Step": "11",
+        "Status": "DCH",
+        "_line": 11418,
+        "_measurement_row": 11401
+      }
+    },
+    "last_preceding_zero_current_range": {
+      "status": "RANGE",
+      "step": 10,
+      "csv_lines_1_based_inclusive": [
+        7773,
+        7774
+      ],
+      "measurement_rows_1_based_inclusive": [
+        7756,
+        7757
+      ],
+      "raw_row_count": 2,
+      "first": {
+        "Step Time": 0.0,
+        "Prog Time": 14887.691,
+        "Voltage": 4.17934,
+        "Current": 0.0,
+        "AhAccu": 0.08036,
+        "WhAccu": 0.33752,
+        "LogTemp001": 24.6,
+        "Step": "10",
+        "Status": "RANGE",
+        "_line": 7773,
+        "_measurement_row": 7756
+      },
+      "last": {
+        "Step Time": 0.0,
+        "Prog Time": 14887.691,
+        "Voltage": 4.17934,
+        "Current": 0.0,
+        "AhAccu": 0.08036,
+        "WhAccu": 0.33752,
+        "LogTemp001": 24.6,
+        "Step": "10",
+        "Status": "RANGE",
+        "_line": 7774,
+        "_measurement_row": 7757
+      }
+    },
+    "predischarge_rest": {
+      "status": "PAU",
+      "step": 9,
+      "csv_lines_1_based_inclusive": [
+        571,
+        7772
+      ],
+      "measurement_rows_1_based_inclusive": [
+        554,
+        7755
+      ],
+      "raw_row_count": 7202,
+      "first": {
+        "Step Time": 0.0,
+        "Prog Time": 7687.52,
+        "Voltage": 4.19991,
+        "Current": 0.0,
+        "AhAccu": 0.08036,
+        "WhAccu": 0.33752,
+        "LogTemp001": 24.7,
+        "Step": "9",
+        "Status": "PAU",
+        "_line": 571,
+        "_measurement_row": 554
+      },
+      "last": {
+        "Step Time": 7200.104,
+        "Prog Time": 14887.624,
+        "Voltage": 4.17934,
+        "Current": 0.0,
+        "AhAccu": 0.08036,
+        "WhAccu": 0.33752,
+        "LogTemp001": 24.6,
+        "Step": "9",
+        "Status": "PAU",
+        "_line": 7772,
+        "_measurement_row": 7755
+      },
+      "current_min_a": 0.0,
+      "current_max_a": 0.0,
+      "maximum_absolute_recorded_current_a": 0.0,
+      "signed_integrated_current_ah": 0.0,
+      "AhAccu_range_ah": [
+        0.08036,
+        0.08036
+      ],
+      "last_windows": [
+        {
+          "requested_start_s": 3600.0,
+          "actual_start_s": 3600.064,
+          "end_s": 7200.104,
+          "start_csv_line": 4171,
+          "end_csv_line": 7772,
+          "voltage_start_v": 4.17978,
+          "voltage_end_v": 4.17934,
+          "voltage_change_v": -0.000440000000000218,
+          "voltage_change_mv_per_min": -0.007333251852760824,
+          "temperature_start_c": 24.6,
+          "temperature_end_c": 24.6,
+          "voltage_range_v": [
+            4.17934,
+            4.1799
+          ]
+        },
+        {
+          "requested_start_s": 5400.0,
+          "actual_start_s": 5401.096,
+          "end_s": 7200.104,
+          "start_csv_line": 5972,
+          "end_csv_line": 7772,
+          "voltage_start_v": 4.17956,
+          "voltage_end_v": 4.17934,
+          "voltage_change_v": -0.0002200000000005531,
+          "voltage_change_mv_per_min": -0.007337377043366778,
+          "temperature_start_c": 24.6,
+          "temperature_end_c": 24.6,
+          "voltage_range_v": [
+            4.17934,
+            4.17956
+          ]
+        },
+        {
+          "requested_start_s": 6600.0,
+          "actual_start_s": 6600.035,
+          "end_s": 7200.104,
+          "start_csv_line": 7171,
+          "end_csv_line": 7772,
+          "voltage_start_v": 4.17945,
+          "voltage_end_v": 4.17934,
+          "voltage_change_v": -0.00011000000000027654,
+          "voltage_change_mv_per_min": -0.010998735145485916,
+          "temperature_start_c": 24.6,
+          "temperature_end_c": 24.6,
+          "voltage_range_v": [
+            4.17934,
+            4.17945
+          ]
+        }
+      ],
+      "equilibrium_established": false,
+      "note": "Recorded zero current is not proof of zero parasitic current. Finite rest and voltage drift do not prove equilibrium."
+    },
+    "first_postdischarge_rest": {
+      "status": "PAU",
+      "step": 12,
+      "csv_lines_1_based_inclusive": [
+        11419,
+        18620
+      ],
+      "measurement_rows_1_based_inclusive": [
+        11402,
+        18603
+      ],
+      "raw_row_count": 7202,
+      "first": {
+        "Step Time": 0.0,
+        "Prog Time": 18378.798,
+        "Voltage": 2.49763,
+        "Current": 0.0,
+        "AhAccu": -4.76848,
+        "WhAccu": -16.48437,
+        "LogTemp001": 37.3,
+        "Step": "12",
+        "Status": "PAU",
+        "_line": 11419,
+        "_measurement_row": 11402
+      },
+      "last": {
+        "Step Time": 7200.014,
+        "Prog Time": 25578.812,
+        "Voltage": 3.08964,
+        "Current": 0.0,
+        "AhAccu": -4.76848,
+        "WhAccu": -16.48437,
+        "LogTemp001": 24.2,
+        "Step": "12",
+        "Status": "PAU",
+        "_line": 18620,
+        "_measurement_row": 18603
+      },
+      "current_min_a": 0.0,
+      "current_max_a": 0.0,
+      "maximum_absolute_recorded_current_a": 0.0,
+      "signed_integrated_current_ah": 0.0,
+      "AhAccu_range_ah": [
+        -4.76848,
+        -4.76848
+      ],
+      "last_windows": [
+        {
+          "requested_start_s": 3600.0,
+          "actual_start_s": 3600.006,
+          "end_s": 7200.014,
+          "start_csv_line": 15019,
+          "end_csv_line": 18620,
+          "voltage_start_v": 3.06384,
+          "voltage_end_v": 3.08964,
+          "voltage_change_v": 0.025800000000000267,
+          "voltage_change_mv_per_min": 0.4299990444465723,
+          "temperature_start_c": 24.4,
+          "temperature_end_c": 24.2,
+          "voltage_range_v": [
+            3.06384,
+            3.08964
+          ]
+        },
+        {
+          "requested_start_s": 5400.0,
+          "actual_start_s": 5400.143,
+          "end_s": 7200.014,
+          "start_csv_line": 16819,
+          "end_csv_line": 18620,
+          "voltage_start_v": 3.07841,
+          "voltage_end_v": 3.08964,
+          "voltage_change_v": 0.011230000000000295,
+          "voltage_change_mv_per_min": 0.37436016247832077,
+          "temperature_start_c": 24.3,
+          "temperature_end_c": 24.2,
+          "voltage_range_v": [
+            3.07841,
+            3.08964
+          ]
+        },
+        {
+          "requested_start_s": 6600.0,
+          "actual_start_s": 6600.069,
+          "end_s": 7200.014,
+          "start_csv_line": 18019,
+          "end_csv_line": 18620,
+          "voltage_start_v": 3.08619,
+          "voltage_end_v": 3.08964,
+          "voltage_change_v": 0.003449999999999953,
+          "voltage_change_mv_per_min": 0.3450316278992196,
+          "temperature_start_c": 24.2,
+          "temperature_end_c": 24.2,
+          "voltage_range_v": [
+            3.08619,
+            3.08964
+          ]
+        }
+      ],
+      "equilibrium_established": false,
+      "note": "Recorded zero current is not proof of zero parasitic current. Finite rest and voltage drift do not prove equilibrium."
+    },
+    "normalized_first_discharge_rows": 3625,
+    "duplicate_rows_kept_last": 19,
+    "step_time_minus_elapsed_prog_time_max_abs_s": 2.2737367544323206e-12,
+    "source_loader_start_row": {
+      "Step Time": 0.0,
+      "Prog Time": 14887.691,
+      "Voltage": 4.17934,
+      "Current": 0.0,
+      "AhAccu": 0.08036,
+      "WhAccu": 0.33752,
+      "LogTemp001": 24.6,
+      "Step": "10",
+      "Status": "RANGE",
+      "_line": 7774,
+      "_measurement_row": 7757
+    },
+    "source_loader_start_to_first_discharge_s": 0.003999999998995918,
+    "raw_discharge_current_min_max_a": [
+      -5.00005,
+      -4.99825
+    ],
+    "measured_integrated_charge_ah": 4.848523920405555,
+    "warning": "Repeated cycles reuse step numbers. Select the first contiguous DCH and its adjacent rest blocks; never combine all rows with the same Step."
+  },
+  "residual_diagnostics": {
+    "phase_choice": "Exploratory thirds of full measured duration; no boundary chosen to minimize residuals. Missing tail retained as missing.",
+    "overall": {
+      "requested_interval_s": [
+        0.0,
+        3491.048
+      ],
+      "available_interval_s": [
+        0.0,
+        3333.391292865383
+      ],
+      "coverage_of_requested_phase": 0.954839719438227,
+      "voltage_error_v": {
+        "rmse": 0.054808617658313935,
+        "signed_time_mean": 0.009068556045330472,
+        "minimum": -0.3833522294724583,
+        "maximum": 0.09208744352711484,
+        "start": 0.08838692264896864,
+        "end": -0.3833522294724583,
+        "squared_error_integral": 10.013456008257414
+      },
+      "temperature_error_k": {
+        "rmse": 1.1722601819197203,
+        "signed_time_mean": -1.0586636639959166,
+        "minimum": -1.6296699782676,
+        "maximum": 0.7318450230115445,
+        "start": 0.0,
+        "end": 0.5760386824713919,
+        "squared_error_integral": 4580.726094685553
+      }
+    },
+    "thirds": [
+      {
+        "requested_interval_s": [
+          0.0,
+          1163.6826666666666
+        ],
+        "available_interval_s": [
+          0.0,
+          1163.6826666666666
+        ],
+        "coverage_of_requested_phase": 1.0,
+        "voltage_error_v": {
+          "rmse": 0.043119456855144934,
+          "signed_time_mean": 0.0403082964240846,
+          "minimum": 0.023640596856105756,
+          "maximum": 0.09208744352711484,
+          "start": 0.08838692264896864,
+          "end": 0.03314646621077595,
+          "squared_error_integral": 2.163620705318993
+        },
+        "temperature_error_k": {
+          "rmse": 1.1417190747417483,
+          "signed_time_mean": -1.0669993406005966,
+          "minimum": -1.489722011233141,
+          "maximum": 0.061123562386910635,
+          "start": 0.0,
+          "end": -1.309391115922048,
+          "squared_error_integral": 1516.8864755895884
+        }
+      },
+      {
+        "requested_interval_s": [
+          1163.6826666666666,
+          2327.365333333333
+        ],
+        "available_interval_s": [
+          1163.6826666666666,
+          2327.365333333333
+        ],
+        "coverage_of_requested_phase": 1.0,
+        "voltage_error_v": {
+          "rmse": 0.02949333825049843,
+          "signed_time_mean": 0.028696406658765213,
+          "minimum": 0.00819657276614998,
+          "maximum": 0.03715807991863995,
+          "start": 0.03314646621077595,
+          "end": 0.00819657276614998,
+          "squared_error_integral": 1.012237514726576
+        },
+        "temperature_error_k": {
+          "rmse": 1.4283708776904782,
+          "signed_time_mean": -1.4237275320198108,
+          "minimum": -1.6296699782676,
+          "maximum": -1.0752057763235143,
+          "start": -1.309391115922048,
+          "end": -1.1232388245140306,
+          "squared_error_integral": 2374.1958387411028
+        }
+      },
+      {
+        "requested_interval_s": [
+          2327.365333333333,
+          3491.0480000000002
+        ],
+        "available_interval_s": [
+          2327.365333333333,
+          3333.391292865383
+        ],
+        "coverage_of_requested_phase": 0.8645191583146805,
+        "voltage_error_v": {
+          "rmse": 0.08244174610941676,
+          "signed_time_mean": -0.04977061542121245,
+          "minimum": -0.3833522294724583,
+          "maximum": 0.00819657276614998,
+          "start": 0.00819657276614998,
+          "end": -0.3833522294724583,
+          "squared_error_integral": 6.837597788211844
+        },
+        "temperature_error_k": {
+          "rmse": 0.8279570685226827,
+          "signed_time_mean": -0.6267477937259153,
+          "minimum": -1.2098247911133058,
+          "maximum": 0.7318450230115445,
+          "start": -1.1232388245140306,
+          "end": 0.5760386824713919,
+          "squared_error_integral": 689.6437803548624
+        }
+      }
+    ],
+    "first_60_seconds": {
+      "requested_interval_s": [
+        0.0,
+        60.0
+      ],
+      "available_interval_s": [
+        0.0,
+        60.0
+      ],
+      "coverage_of_requested_phase": 1.0,
+      "voltage_error_v": {
+        "rmse": 0.06858073564681792,
+        "signed_time_mean": 0.06807287345077731,
+        "minimum": 0.06241500747970319,
+        "maximum": 0.09208744352711484,
+        "start": 0.08838692264896864,
+        "end": 0.06446888216272395,
+        "squared_error_integral": 0.2821990381115234
+      },
+      "temperature_error_k": {
+        "rmse": 0.09524308691034243,
+        "signed_time_mean": -0.06078712674765107,
+        "minimum": -0.20530781247657615,
+        "maximum": 0.061123562386910635,
+        "start": 0.0,
+        "end": -0.17450426704118627,
+        "squared_error_integral": 0.5442747362526624
+      }
+    },
+    "final_measured_decile": {
+      "requested_interval_s": [
+        3141.9431999999997,
+        3491.048
+      ],
+      "available_interval_s": [
+        3141.9431999999997,
+        3333.391292865383
+      ],
+      "coverage_of_requested_phase": 0.5483971943822696,
+      "voltage_error_v": {
+        "rmse": 0.17709391927763096,
+        "signed_time_mean": -0.1614146320138749,
+        "minimum": -0.3833522294724583,
+        "maximum": -0.08657781138594774,
+        "start": -0.08657781138594774,
+        "end": -0.3833522294724583,
+        "squared_error_integral": 6.004244146082165
+      },
+      "temperature_error_k": {
+        "rmse": 0.40615310424557843,
+        "signed_time_mean": 0.3338758260460327,
+        "minimum": -0.08734342201836398,
+        "maximum": 0.7318450230115445,
+        "start": -0.07569566896831537,
+        "end": 0.5760386824713919,
+        "squared_error_integral": 31.58134327412623
+      }
+    },
+    "tail_fraction_of_observed_voltage_squared_error": 0.6828409474784074,
+    "model_cutoff_s": 3333.391292865383,
+    "measured_endpoint_s": 3491.048,
+    "model_cutoff_minus_measured_endpoint_s": -157.65670713461668,
+    "full_measured_time_coverage": 0.954839719438227,
+    "capacity_relative_error_unchanged": 0.04512998079789908,
+    "energy_relative_error_unchanged": 0.03300244266659331,
+    "scientific_gates_unchanged": {
+      "voltage_rmse": false,
+      "voltage_max": false,
+      "capacity": true,
+      "coverage": true,
+      "voltage_cutoff_reached": true,
+      "physical_audit": true,
+      "temperature_rmse": true,
+      "temperature_max_error": true,
+      "delivered_energy": true
+    }
+  },
+  "parameter_values_scalar": {
+    "Negative current collector thickness [m]": 1.2e-05,
+    "Negative electrode thickness [m]": 8.52e-05,
+    "Separator thickness [m]": 1.2e-05,
+    "Positive electrode thickness [m]": 7.56e-05,
+    "Positive current collector thickness [m]": 1.6e-05,
+    "Electrode height [m]": 0.065,
+    "Electrode width [m]": 1.58,
+    "Cell cooling surface area [m2]": 0.00531,
+    "Cell volume [m3]": 2.42e-05,
+    "Negative current collector conductivity [S.m-1]": 58411000.0,
+    "Positive current collector conductivity [S.m-1]": 36914000.0,
+    "Negative current collector density [kg.m-3]": 8933.0,
+    "Positive current collector density [kg.m-3]": 2702.0,
+    "Positive current collector thermal conductivity [W.m-1.K-1]": 237.0,
+    "Nominal cell capacity [A.h]": 5.0,
+    "Current function [A]": 5,
+    "Contact resistance [Ohm]": 0,
+    "Negative electrode conductivity [S.m-1]": 215.0,
+    "Maximum concentration in negative electrode [mol.m-3]": 29583.0,
+    "Negative electrode porosity": 0.25,
+    "Negative electrode active material volume fraction": 0.75,
+    "Negative particle radius [m]": 5.86e-06,
+    "Negative electrode Bruggeman coefficient (electrolyte)": 1.5,
+    "Negative electrode Bruggeman coefficient (electrode)": 0.0,
+    "Negative electrode charge transfer coefficient": 0.5,
+    "Negative electrode double-layer capacity [F.m-2]": 0.2,
+    "Negative electrode density [kg.m-3]": 2060.0,
+    "Maximum concentration in positive electrode [mol.m-3]": 51765.0,
+    "Positive electrode porosity": 0.335,
+    "Positive electrode active material volume fraction": 0.665,
+    "Positive particle radius [m]": 5.22e-06,
+    "Positive electrode Bruggeman coefficient (electrolyte)": 1.5,
+    "Positive electrode Bruggeman coefficient (electrode)": 0.0,
+    "Positive electrode charge transfer coefficient": 0.5,
+    "Positive electrode double-layer capacity [F.m-2]": 0.2,
+    "Positive electrode density [kg.m-3]": 3699.0,
+    "Separator porosity": 0.47,
+    "Separator Bruggeman coefficient (electrolyte)": 1.5,
+    "Separator Bruggeman coefficient (electrode)": 1.5,
+    "Separator density [kg.m-3]": 1548.0,
+    "Separator thermal conductivity [W.m-1.K-1]": 0.3344,
+    "Initial concentration in electrolyte [mol.m-3]": 1000.0,
+    "Reference temperature [K]": 298.15,
+    "Total heat transfer coefficient [W.m-2.K-1]": 15,
+    "Ambient temperature [K]": 298.15,
+    "Number of electrodes connected in parallel to make a cell": 1.0,
+    "Number of cells connected in series to make a battery": 1.0,
+    "Lower voltage cut-off [V]": 2.5,
+    "Upper voltage cut-off [V]": 4.4,
+    "Open-circuit voltage at 0% SOC [V]": 2.5,
+    "Open-circuit voltage at 100% SOC [V]": 4.4,
+    "Initial concentration in negative electrode [mol.m-3]": 28866.0,
+    "Initial concentration in positive electrode [mol.m-3]": 13975.0,
+    "Initial temperature [K]": 297.75,
+    "citations": [
+      "ORegan2022",
+      "Chen2020"
+    ]
+  },
+  "parameter_functions_and_exact_sources": {
+    "Negative electrode OCP [V]": {
+      "name": "graphite_LGM50_ocp_Chen2020",
+      "package_file": "pybamm/input/parameters/lithium_ion/ORegan2022.py",
+      "file_sha256": "c0c8111cb37fd4e79726f17e0d02f0aaac6d06532060a677efb5743c92a0b259",
+      "lines_1_based_inclusive": [
+        294,
+        325
+      ],
+      "function_sha256": "5441b46ffa256a48d8f774f23e8bac7f2359cbce18ebca03424ba0f3dc66b3e1"
+    },
+    "Positive electrode OCP [V]": {
+      "name": "nmc_LGM50_ocp_Chen2020",
+      "package_file": "pybamm/input/parameters/lithium_ion/ORegan2022.py",
+      "file_sha256": "c0c8111cb37fd4e79726f17e0d02f0aaac6d06532060a677efb5743c92a0b259",
+      "lines_1_based_inclusive": [
+        571,
+        602
+      ],
+      "function_sha256": "1fe429bb28129ec5adb23db30fffd0a1ec862a61feefeef0ccf391028767b892"
+    },
+    "Negative electrode OCP entropic change [V.K-1]": {
+      "name": "graphite_LGM50_entropic_change_ORegan2022",
+      "package_file": "pybamm/input/parameters/lithium_ion/ORegan2022.py",
+      "file_sha256": "c0c8111cb37fd4e79726f17e0d02f0aaac6d06532060a677efb5743c92a0b259",
+      "lines_1_based_inclusive": [
+        443,
+        482
+      ],
+      "function_sha256": "8b1c287133f2cc0eb0f3bc4c3bd7b97e78badf80bdc3a4d97f7de769851d976c"
+    },
+    "Positive electrode OCP entropic change [V.K-1]": {
+      "name": "nmc_LGM50_entropic_change_ORegan2022",
+      "package_file": "pybamm/input/parameters/lithium_ion/ORegan2022.py",
+      "file_sha256": "c0c8111cb37fd4e79726f17e0d02f0aaac6d06532060a677efb5743c92a0b259",
+      "lines_1_based_inclusive": [
+        719,
+        752
+      ],
+      "function_sha256": "78e4874f148def64ba307049f419fb844245fa7187e409ae064f69be1ac2862f"
+    },
+    "PyBaMM temperature/asymptote application": {
+      "name": "U",
+      "package_file": "pybamm/parameters/lithium_ion_parameters.py",
+      "file_sha256": "f9295e5c29b871cfd215eef014de21f7a0be834b5a94cf87c29e1e3472795490",
+      "lines_1_based_inclusive": [
+        723,
+        757
+      ],
+      "function_sha256": "89c83d089f9452dfa25998977d54b5523beb158d041872bee72c5048caecd3fb"
+    }
+  },
+  "conservation_diagnostics": {
+    "initial": {
+      "discharged_charge_ah": 0.0,
+      "temperature_k": 297.75,
+      "electrodes": {
+        "negative": {
+          "active_volume_m3": 6.562530000000001e-06,
+          "initial_concentration_mol_m3": 28866.0,
+          "maximum_concentration_mol_m3": 29583.0,
+          "initial_stoichiometry": 0.9757631071899402,
+          "ah_per_mol_m3": 0.0001758855240608849,
+          "full_stoichiometric_span_ah": 5.203221458293158,
+          "initial_charge_to_stoichiometric_limit_ah": 5.077111537541504,
+          "inferred_mean_concentration_mol_m3": 28866.0,
+          "inferred_mean_stoichiometry": 0.9757631071899402,
+          "inferred_solid_lithium_mol": 0.18943399098000002,
+          "reference_ocp_v": 0.09202000008791406,
+          "entropic_coefficient_v_k": -7.936485751952134e-05,
+          "temperature_corrected_ocp_v": 0.09205174603092187,
+          "pybamm_parameter_expression_ocp_v": 0.09205174603092187,
+          "pybamm_clipping_and_asymptote_correction_v": 0.0
+        },
+        "positive": {
+          "active_volume_m3": 5.163139800000001e-06,
+          "initial_concentration_mol_m3": 13975.0,
+          "maximum_concentration_mol_m3": 51765.0,
+          "initial_stoichiometry": 0.26997005698831256,
+          "ah_per_mol_m3": 0.00013837979400057793,
+          "full_stoichiometric_span_ah": 7.163230036439916,
+          "initial_charge_to_stoichiometric_limit_ah": 5.22937241528184,
+          "inferred_mean_concentration_mol_m3": 13975.0,
+          "inferred_mean_stoichiometry": 0.26997005698831256,
+          "inferred_solid_lithium_mol": 0.07215487870500001,
+          "reference_ocp_v": 4.273047879883171,
+          "entropic_coefficient_v_k": 3.3897617783677504e-05,
+          "temperature_corrected_ocp_v": 4.273034320836057,
+          "pybamm_parameter_expression_ocp_v": 4.273034320836057,
+          "pybamm_clipping_and_asymptote_correction_v": 0.0
+        }
+      },
+      "uniform_state_reference_ocv_v": 4.1810278797952565,
+      "uniform_state_entropic_coefficient_v_k": 0.00011326247530319885,
+      "uniform_state_temperature_corrected_ocv_v": 4.180982574805135,
+      "uniform_state_pybamm_expression_ocv_v": 4.180982574805135,
+      "total_solid_lithium_mol": 0.26158886968500006,
+      "recorded_pre_discharge_rest_voltage_v": 4.17934,
+      "uniform_state_minus_recorded_rest_v": 0.0016425748051354105
+    },
+    "at_saved_model_cutoff": {
+      "discharged_charge_ah": 4.6297101289794975,
+      "temperature_k": 309.62603868247135,
+      "electrodes": {
+        "negative": {
+          "active_volume_m3": 6.562530000000001e-06,
+          "initial_concentration_mol_m3": 28866.0,
+          "maximum_concentration_mol_m3": 29583.0,
+          "initial_stoichiometry": 0.9757631071899402,
+          "ah_per_mol_m3": 0.0001758855240608849,
+          "full_stoichiometric_span_ah": 5.203221458293158,
+          "initial_charge_to_stoichiometric_limit_ah": 5.077111537541504,
+          "inferred_mean_concentration_mol_m3": 2543.7079654556037,
+          "inferred_mean_stoichiometry": 0.08598546345724246,
+          "inferred_solid_lithium_mol": 0.016693159834541366,
+          "reference_ocp_v": 0.45356898836235027,
+          "entropic_coefficient_v_k": 0.0003750322446338668,
+          "temperature_corrected_ocp_v": 0.4578728729089426,
+          "pybamm_parameter_expression_ocp_v": 0.4578728729089426,
+          "pybamm_clipping_and_asymptote_correction_v": 0.0
+        },
+        "positive": {
+          "active_volume_m3": 5.163139800000001e-06,
+          "initial_concentration_mol_m3": 13975.0,
+          "maximum_concentration_mol_m3": 51765.0,
+          "initial_stoichiometry": 0.26997005698831256,
+          "ah_per_mol_m3": 0.00013837979400057793,
+          "full_stoichiometric_span_ah": 7.163230036439916,
+          "initial_charge_to_stoichiometric_limit_ah": 5.22937241528184,
+          "inferred_mean_concentration_mol_m3": 47431.54734072058,
+          "inferred_mean_stoichiometry": 0.9162860492750039,
+          "inferred_solid_lithium_mol": 0.24489570985045864,
+          "reference_ocp_v": 3.555024743296812,
+          "entropic_coefficient_v_k": -3.701074305305898e-05,
+          "temperature_corrected_ocp_v": 3.5546000065778682,
+          "pybamm_parameter_expression_ocp_v": 3.5546000065778682,
+          "pybamm_clipping_and_asymptote_correction_v": 0.0
+        }
+      },
+      "uniform_state_reference_ocv_v": 3.1014557549344617,
+      "uniform_state_entropic_coefficient_v_k": -0.0004120429876869258,
+      "uniform_state_temperature_corrected_ocv_v": 3.0967271336689257,
+      "uniform_state_pybamm_expression_ocv_v": 3.0967271336689257,
+      "total_solid_lithium_mol": 0.261588869685,
+      "existing_model_terminal_voltage_v": 2.4999999999997207,
+      "uniform_state_minus_terminal_voltage_v": 0.596727133669205
+    },
+    "at_measured_charge_with_frozen_inventory": {
+      "discharged_charge_ah": 4.848523920405555,
+      "temperature_k": 297.34999999999997,
+      "electrodes": {
+        "negative": {
+          "active_volume_m3": 6.562530000000001e-06,
+          "initial_concentration_mol_m3": 28866.0,
+          "maximum_concentration_mol_m3": 29583.0,
+          "initial_stoichiometry": 0.9757631071899402,
+          "ah_per_mol_m3": 0.0001758855240608849,
+          "full_stoichiometric_span_ah": 5.203221458293158,
+          "initial_charge_to_stoichiometric_limit_ah": 5.077111537541504,
+          "inferred_mean_concentration_mol_m3": 1299.6386050327892,
+          "inferred_mean_stoichiometry": 0.043931940811709064,
+          "inferred_solid_lithium_mol": 0.008528917334685832,
+          "reference_ocp_v": 0.7538725092468986,
+          "entropic_coefficient_v_k": 0.0002797054252718295,
+          "temperature_corrected_ocp_v": 0.7536487449066812,
+          "pybamm_parameter_expression_ocp_v": 0.7536487449066812,
+          "pybamm_clipping_and_asymptote_correction_v": 0.0
+        },
+        "positive": {
+          "active_volume_m3": 5.163139800000001e-06,
+          "initial_concentration_mol_m3": 13975.0,
+          "maximum_concentration_mol_m3": 51765.0,
+          "initial_stoichiometry": 0.26997005698831256,
+          "ah_per_mol_m3": 0.00013837979400057793,
+          "full_stoichiometric_span_ah": 7.163230036439916,
+          "initial_charge_to_stoichiometric_limit_ah": 5.22937241528184,
+          "inferred_mean_concentration_mol_m3": 49012.802703950445,
+          "inferred_mean_stoichiometry": 0.9468328543214614,
+          "inferred_solid_lithium_mol": 0.2530599523503142,
+          "reference_ocp_v": 3.5303122737295602,
+          "entropic_coefficient_v_k": -2.5824431818932603e-05,
+          "temperature_corrected_ocp_v": 3.5303329332750155,
+          "pybamm_parameter_expression_ocp_v": 3.5303329332750155,
+          "pybamm_clipping_and_asymptote_correction_v": 0.0
+        }
+      },
+      "uniform_state_reference_ocv_v": 2.7764397644826615,
+      "uniform_state_entropic_coefficient_v_k": -0.0003055298570907621,
+      "uniform_state_temperature_corrected_ocv_v": 2.776684188368334,
+      "uniform_state_pybamm_expression_ocv_v": 2.776684188368334,
+      "total_solid_lithium_mol": 0.26158886968500006,
+      "recorded_two_hour_rest_voltage_v": 3.08964,
+      "uniform_state_minus_two_hour_rest_v": -0.31295581163166597
+    },
+    "initial_electrolyte_lithium_mol": 0.005367718200000001,
+    "calculated_initial_total_lithium_mol": 0.26695658788500004,
+    "saved_initial_total_lithium_mol": 0.2669565878849953,
+    "saved_final_total_lithium_mol": 0.26695658788499993,
+    "saved_max_relative_total_lithium_drift": 2.5368770644952138e-14,
+    "model_cutoff_current_integral_ah": 4.629710128979698,
+    "model_cutoff_capacity_minus_current_integral_ah": -2.007283228522283e-13
+  },
+  "limits_and_interpretation": [
+    "No model solve, optimization, parameter update of the frozen run, or author-archive code execution was performed.",
+    "In-memory ParameterValues only reproduce existing experiment settings and evaluate published functions. No parameters are fitted or written back.",
+    "Endpoint electrode means are inferred from charge conservation under the frozen single-phase DFN assumptions: uniform initial concentrations, fixed active volumes, one-electron transfer and no side-reaction/storage sink. The CSV exports total lithium and capacity, not endpoint spatial electrode concentration arrays; direct endpoint means cannot be verified from these exports.",
+    "The stoichiometries at measured Q are a hypothetical state under frozen model inventory, not an observation of actual cell state of charge. Actual physical endpoint SOC cannot be inferred uniquely here.",
+    "The uniform-state OCV calculation assumes homogeneous relaxed electrodes and the fitted OCP/entropic laws. It is not a simulation of the two-hour relaxation.",
+    "Post-discharge voltage is still rising at two hours; equilibrium has not been established. Hysteresis, residual gradients, parameter applicability, active-capacity and initial-inventory discrepancies remain possible. The approximately -313 mV mismatch prioritizes an audit; it does not identify a unique cause or authorize fitting.",
+    "OCV agreement at the start does not establish both initial stoichiometries or lithium inventory. The late voltage residual cannot be removed by one constant voltage offset.",
+    "Measured-temperature forcing would test conditional temperature-trajectory sensitivity, jointly bypassing heat generation, heat capacity and cooling, with a surface-versus-volume proxy assumption. It does not isolate a thermal boundary error, and cannot count as forward temperature validation.",
+    "Residual partitions and relaxation checks are exploratory diagnostics outside the frozen discharge scientific gate. No extrapolation, missing-tail score imputation, capacity/time stretching, threshold changes, exclusions or full-cohort reruns are made."
+  ]
+}

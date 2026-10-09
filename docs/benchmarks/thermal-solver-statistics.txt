@@ -1,0 +1,15 @@
+Solver Stats:
+	Number of steps = 21719
+	Number of calls to residual function = 49308
+	Number of calls to residual function in preconditioner = 0
+	Number of linear solver setup calls = 1624
+	Number of error test failures = 1221
+	Method order used on last step = 4
+	Method order used on next step = 4
+	Initial step size = 8.277803723843658e-05
+	Step size on last step = 0.9192022343425421
+	Step size on next step = 0.9192022343425421
+	Current internal time reached = 3333.9045873330065
+	Number of nonlinear iterations performed = 49308
+	Number of nonlinear convergence failures = 92
+	Number of Jacobian evaluations = 1624

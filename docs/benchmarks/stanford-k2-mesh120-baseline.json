@@ -1,0 +1,168 @@
+{
+  "run_id": "37954785347",
+  "source_commit": "c8e3088fd808b213992285cabfaf9b69e9528d89",
+  "archive_sha256": "a35aa5d8dc2fb0c744f2f62fd4d0ea46eba553c4885aeed2a674fd2aa04b56da",
+  "members": {
+    "evidence/mesh80/scalar-arrays.npz": {
+      "bytes": 8392519,
+      "sha256": "5d3b85c8d269800d1776f7b960950c3f3dbe1e19fc999362c3b5f3668438b1c3"
+    },
+    "evidence/mesh80/final-state.npy": {
+      "bytes": 107032,
+      "sha256": "62d85d54c06c39a9e1da658f59915f6c0edbfd91626ce19e9f13ce08c05df0ad"
+    },
+    "evidence/mesh80/report.json": {
+      "bytes": 15269,
+      "sha256": "94c0f013904ab6f7fceda1c8f1ddd91e744b850cb23f793ccbd42e6031734adb"
+    },
+    "evidence/mesh80/effective-tolerances.json": {
+      "bytes": 226,
+      "sha256": "6dbdc0ae258c627735a233f302500a21c33f60e962b28d83762b901591cc41f5"
+    },
+    "evidence/tolerance-comparison.json": {
+      "bytes": 9455,
+      "sha256": "0cd4b594079e996a6ecbdbab15aeb338a4ee283f6d37092e1da730591e5a075b"
+    },
+    "evidence/launch.json": {
+      "bytes": 456,
+      "sha256": "7a536983b62cc3b3c1f240341c7ad1425db435b0289d00d79f2328f025e099a8"
+    },
+    "inputs/manifest.json": {
+      "bytes": 14837,
+      "sha256": "cc508ee87392e31babbc996e731a72fe0f33e3186aeb702d7a54828971e57ab6"
+    },
+    "upload-receipt.json": {
+      "bytes": 473,
+      "sha256": "25be384de3a8ad90364f62fcf0ea3a0d913e34db0aaf519dc1fb7123c4fe645d"
+    }
+  },
+  "source_sha256": {
+    ".github/workflows/k2-low-rate-model-20261009-v1.yml": "54803d83e9d998df3fbd4b3e9d2770c645c3a3437f865e9f06415310369605d6",
+    ".github/workflows/k2-low-rate-model-20261009-v2.yml": "93640681c051cbb8b6fbb1baf6ef085a6744b10590e0478fd2251d4c8905e8a5",
+    ".github/workflows/k2-tolerance-20261009-v1.yml": "fa95de7c3dfbb565b01a8dd529705412826eeb40cd139eea14fe3c59af72f28a",
+    "docs/benchmarks/stanford-cross-rate-onset.json": "92bdf117f74347824d3bcfda6553f0b0b66afc914c3152ba7317924836f83382",
+    "docs/benchmarks/stanford-k2-low-rate-discharge.csv.gz": "5c5f0969e411d2be96bcdbb02cfcb397e2fd79d8ad92a26e5466f311d70ae5ef",
+    "docs/benchmarks/stanford-k2-low-rate-model-artifact.json": "42f1796891898073f8e437b3c365d87897d777cd96fac7cdf4f9b0a0b5cbc091",
+    "docs/benchmarks/stanford-k2-low-rate-model-evidence.zip.001": "ff5ff020abc147f05ecab745f69a660e01c501d47f350537369068443a3677c2",
+    "docs/benchmarks/stanford-k2-low-rate-model-evidence.zip.002": "c95af66c31b75961def4404db789b4c12e8e5a7203c9b15c2bad9f8a8de96d7c",
+    "docs/benchmarks/stanford-k2-low-rate-source.json": "984b83c1f105493f14d5894441c7bcebee2474e2c3904313213e71633ac89eda",
+    "docs/benchmarks/stanford-k2-recovery-evidence.zip": "2fbea2b607ad1e6b149f1033af8a2123e86a39f18319b4c8b5f18ee5b040795d",
+    "docs/benchmarks/stanford-k2-rest-records.csv.gz": "513ad1debdf3fcf7eb9d716a8b34651a39349f136d1a6b23e84ed609fa2c2d6f",
+    "docs/experiments/stanford-k2-low-rate-model.workflow.yml": "93640681c051cbb8b6fbb1baf6ef085a6744b10590e0478fd2251d4c8905e8a5",
+    "docs/experiments/stanford-k2-tolerance.workflow.yml": "fa95de7c3dfbb565b01a8dd529705412826eeb40cd139eea14fe3c59af72f28a",
+    "docs/stanford-k2-low-rate-model-protocol.md": "7efb77b091551e5ec9ed92f28e2e250e33de56f024aa8a4e0f17b2311f0942cc",
+    "docs/stanford-k2-tolerance-protocol.md": "c1b816e49b7db9741abb15a26c00094cbdcacdd8e7150eec5076af95122bb933",
+    "pyproject.toml": "b9407d6c6afafb0d0ab4ae96176f13133600a4b2fe373fe6803c11c95034077d",
+    "requirements-data-lock.txt": "ce63f4e1fcc9fd16eff0e59a4468a6b8e50fb896fc728ec2ed38e300710e080e",
+    "requirements-lock.txt": "99e788261bf013158962b719b1710fde854c864ab67fac1c72dc69902830a20b",
+    "scripts/compare_stanford_k2_rates.py": "00c01fd1f97b15c38236f59949af6fb908ee12fd003169e671317d9e0aa1b73d",
+    "scripts/compare_stanford_k2_tolerance.py": "807c2fb3c7a37f51fd7ce806a62ab0e00d25ddafc3c09ec5783d5c74d80af2ce",
+    "scripts/run_stanford_k2_low_rate_model.py": "091e994ba06c581eb4e36e96396d5e93ab5c74c5a4c5711f252167a2387559c9",
+    "scripts/run_stanford_k2_tolerance.py": "b65fe965477bfdc46087560221030fc5f2fe4ea965a01a68da9a2e794b0c2162",
+    "scripts/verify_managed_input_artifact.py": "329bf1cf38cb3d5a02e1dea6d5f8401ea819180f8f12b5722b349a46d17ac063",
+    "scripts/verify_stanford_k2_low_rate_evidence.py": "12fae0621906d9dea68b660ec6d46b17a958cbecf95af510295a07a45bd017d0",
+    "src/physical_fpv/__init__.py": "297fcf6ea2b19a5bf2f8d56d2e3f1bc7013293748142a72da9430e73f5049cee",
+    "src/physical_fpv/__main__.py": "ccf2eb6d58f429eb089acc505a3513ce94fa8ed6d561c9e08a1f0ec1fd08010a",
+    "src/physical_fpv/attribution.py": "28b7c64de5adc12984b409a62bedf6289103d0a1c8f6cb870b3dc27cb42cb0b0",
+    "src/physical_fpv/cli.py": "d8bb0b92238322ae08f0678357fadf7b801c51ad2f20d606f3b0935e4bf38c11",
+    "src/physical_fpv/contrast_persistence.py": "6cdb3663979bad35cb2afc57a2bb100fd37e9475d1e0a686cb1c31a2872fd01e",
+    "src/physical_fpv/cooling_characterization.py": "9ea314497de165bd7fc22c13535b7bf168d305f748e5c8cec0947f7ff71c1495",
+    "src/physical_fpv/core.py": "1295d1b51e0989021b037ecc8a5b7b66d8e38da43958cfd1df98bc1c031f506b",
+    "src/physical_fpv/cross_rate_response.py": "ef028d7fbf6fa73a621c851c0f870e7552fc6fceb3c40d2159cd539ecdb9f20d",
+    "src/physical_fpv/current_profile.py": "3ac01b06b0b43e6fa464d861e5117a7d28f1b4f55f339ec781069a76e74905a6",
+    "src/physical_fpv/data.py": "11bd252b15fbf5010e7c756302b14159c62e7f9762d6b75765d0ea2b0c2d9004",
+    "src/physical_fpv/experimental_low_rate.py": "46bd38902f54fcce3dc57eca988e6159854104760b417331bd863b118e66e667",
+    "src/physical_fpv/full_rate_shape.py": "6c09515a62b3eecd1f4389b8fd3a8e196b0958472c06ff9d6ec542626c8adada",
+    "src/physical_fpv/low_rate_reference.py": "b59934d49cd2a63ee6c0d7a4776a769067957eac2125701412688e86cb25d536",
+    "src/physical_fpv/materials.py": "d3024ad0f7195d2cd99fae2355418059f4c75567e979604017fdd8798793ab68",
+    "src/physical_fpv/onset_response.py": "6bd0377d1fd5ec44bde80e5d6f9d39c1804beca13ae78de08bb0f85c346d3cad",
+    "src/physical_fpv/onset_transfer.py": "9515df646c03e9daace3dd2aebe1e93fa781da9f2ff72e95f09a622902ebfb9d",
+    "src/physical_fpv/parameter_support.py": "a5d172ef4ba28d20569e956d535faad58cdaf5219e9f6439d2c459693ad5d905",
+    "src/physical_fpv/polarization.py": "5388eb06efef675c03d023e1486b0b1eee8fff421d3555e715cff31109d3673f",
+    "src/physical_fpv/replay_verification.py": "94265a26543552a0e06b89abe81a316df030360f29f16830e4db71183581867d",
+    "src/physical_fpv/series_loss_compatibility.py": "be4408b188da52f8459c51f6ad701fd74792ae0f44364cadb782816934716a1b",
+    "src/physical_fpv/stanford_benchmark.py": "7e4390422670056f5afe9b4ec9039ff7171d32f0224be3f1ed9b059710841a1f",
+    "src/physical_fpv/stanford_boundaries.py": "4d4d0dd3404c17311acf644de56a8a409777dbdd41b42f4351c3cfa0f0a67f13",
+    "src/physical_fpv/stanford_chronology.py": "4f0fd2c9f94074c5e3d936955d776e3cbed45c43b1dde073a093045fe75f836b",
+    "src/physical_fpv/stanford_cohort.py": "a2de5abfe60a1f199e29a82e588bec8068def473865fcdbb0e67d90708783d2f",
+    "src/physical_fpv/stanford_data.py": "a0df0f6203ae433e7d5db3336a52c7626953d7133dfcedab7d755b274b108f6f",
+    "src/physical_fpv/stanford_history.py": "cdea6812e242895e49919d321c60f813510545a753636e74630fa25268f207ad",
+    "src/physical_fpv/stanford_k2.py": "f805fa594005bc13469202cc477d0dbd5f695fa9384951dbc9daacb2f9f0c081",
+    "src/physical_fpv/stanford_reference.py": "e3c44cde83b7eb9923cc873e12a519ae1237d98f7278a778c29ed062dcb4c803",
+    "src/physical_fpv/stanford_transitions.py": "9292fceff2297feae8ea2a01451ea71c4c4e75569bc49fd0009f61d15e3599cc",
+    "src/physical_fpv/thermal_benchmark.py": "cd7f101bb67b0e6d6dfe2da54727ff89286cfee788307a367461a3e6664a2ba4",
+    "src/physical_fpv/thermal_data.py": "b480d5bb9a1c36f520ecd3f7a351c4a97006624b7f32938c91a8a8abac2758e0",
+    "src/physical_fpv/validation.py": "e7fd1abeb8d47b7c522bd60668c5fb1dcd5b1a68ad5e542f9b9a1a2c37cb425c"
+  },
+  "derived_input_sha256": {
+    "forcing.csv": "054613383ab36be34279fa0f157eb76a722450e19833b01670dafb11d20aec24",
+    "observed.csv": "cf546604fe5532eb1289d85e4a7c5a46ff60403a87e12f946ab00d8c1fe77af2",
+    "output-times.npy": "67fa228fed18d7c3755be2ef21056f8713d7f11786f44b142ab878739cbf324f",
+    "parameters-mesh80.json": "aee597252843f676b9fa249cbd57c97eb0bce33a40f4e33d6f8cf8a9495f9e04"
+  },
+  "config": {
+    "experimental_protocol": "stanford-k2-low-rate-model-v1",
+    "parameter_set": "ORegan2022",
+    "model": "DFN",
+    "thermal": "lumped",
+    "mesh_points": 80,
+    "tolerance": 1e-08,
+    "initial_concentrations_mol_m3": {
+      "negative": 28866.0,
+      "positive": 13975.0
+    },
+    "initial_temperature_k": 297.4955352783203,
+    "ambient_temperature_k": 298.15,
+    "heat_transfer_coefficient_w_m2_k": 15,
+    "minimum_voltage_v": 2.5,
+    "maximum_temperature_k": 333.15,
+    "mean_observed_current_a": 0.25002163213187073,
+    "parameter_and_profile_fingerprint_sha256": "41c6a2ed0040346c00d2439acd07ead7d60714011e68e9a4895f638cd355574d",
+    "forcing_sha256": "714120a8075418c258952f9a6105bddb7ec793f9a4afc6b47ee85a1f37844d2a",
+    "output_storage": "IDAKLU scalar output variables plus final state",
+    "scalar_output_names": {
+      "voltage_v": "Terminal voltage [V]",
+      "capacity_ah": "Discharge capacity [A.h]",
+      "temperature_k": "Volume-averaged cell temperature [K]",
+      "lithium_inventory_mol": "Total lithium [mol]",
+      "heating_w": "Total heating [W]",
+      "cooling_w": "Surface total cooling [W]",
+      "heat_capacity_volumetric_j_k_m3": "Volume-averaged effective heat capacity [J.K-1.m-3]",
+      "negative_node_min_mol_m3": "Experimental audit negative_node min",
+      "negative_node_max_mol_m3": "Experimental audit negative_node max",
+      "negative_node_finite_sum_mol_m3": "Experimental finite witness negative_node",
+      "negative_surface_min_mol_m3": "Experimental audit negative_surface min",
+      "negative_surface_max_mol_m3": "Experimental audit negative_surface max",
+      "negative_surface_finite_sum_mol_m3": "Experimental finite witness negative_surface",
+      "positive_node_min_mol_m3": "Experimental audit positive_node min",
+      "positive_node_max_mol_m3": "Experimental audit positive_node max",
+      "positive_node_finite_sum_mol_m3": "Experimental finite witness positive_node",
+      "positive_surface_min_mol_m3": "Experimental audit positive_surface min",
+      "positive_surface_max_mol_m3": "Experimental audit positive_surface max",
+      "positive_surface_finite_sum_mol_m3": "Experimental finite witness positive_surface",
+      "electrolyte_min_mol_m3": "Experimental audit electrolyte min",
+      "electrolyte_finite_sum_mol_m3": "Experimental finite witness electrolyte"
+    },
+    "finite_witness_field_sizes": {
+      "negative_node": 6400,
+      "negative_surface": 80,
+      "positive_node": 6400,
+      "positive_surface": 80,
+      "electrolyte": 200
+    },
+    "electrode_maximum_concentrations_mol_m3": {
+      "negative": 29583.0,
+      "positive": 51765.0
+    },
+    "cell_volume_m3": 2.42e-05,
+    "ordinary_core_certification_claimed": false
+  },
+  "runtime_versions": {
+    "python": "3.12.15",
+    "pybamm": "26.9.0.0",
+    "numpy": "2.5.3",
+    "casadi": "3.8.1",
+    "scipy": "1.18.1",
+    "pybammsolvers": "0.10.0"
+  }
+}

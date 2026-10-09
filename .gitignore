@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+data/raw/
+results/
+build/
+dist/
+data/oregan/raw/
+data/rashid/raw/
+data/stanford/raw/
+
+.cache/fpv-raw-v1/

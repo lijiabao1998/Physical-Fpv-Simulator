@@ -1,0 +1,244 @@
+{
+  "scope": "Exploratory analysis after the mesh80 result; no new acceptance gates, model solves or fitting",
+  "source": {
+    "filename": "NMC_k1_1C_25degC.xlsx",
+    "bytes": 1868963,
+    "sha256": "b42a2ad343be13d6baba84ebf149ef79876ef719a067b8dcc8d4f7da9de124f6",
+    "inflated_bytes": 10538544
+  },
+  "recorded_reference": {
+    "csv_gzip_file": "docs/benchmarks/stanford-k1-mesh80-v2.csv.gz",
+    "csv_gzip_sha256": "92c90c495a880c458e4470234881e4bec8985c758995141a1d8f0e7742461215",
+    "csv_sha256": "76a8e07b2be05d5da5fc27888eac9f7106e38cec13e90c02187b392f8bdc4fed",
+    "csv_uncompressed_bytes": 498690,
+    "report_file": "docs/benchmarks/stanford-k1-mesh80-v2.json",
+    "report_sha256": "9a4000d2627adc21638a399a62d5f11accd0a808ef3aba031b02b7100378eb31",
+    "source_commit_sha": "be1cb751d78ea92ee0486966f3a5e66687797e63",
+    "ci_run_id": 37729197529,
+    "artifact_zip_sha256": "f644dd2e9436fdff281919a6ae0de5259864b62251cc7e3979dac7a9f699eb89",
+    "scope": "Completed mesh80 solution and passed physical audit reused exactly; empirical failure retained.",
+    "residual_sha256": "e315215a9dcfdc8882b6cd10a88e1b3472be75a83200653899f954b304c5e23b",
+    "reused": true,
+    "new_solve_performed": false,
+    "rechecked_from_recorded_observables": {
+      "charge_integral_error_ah": 2.11445849718217e-08,
+      "lithium_inventory_relative_drift": 2.1625837271106654e-14
+    },
+    "spatial_and_heat_audits": "original source report; unavailable raw states were not rebuilt",
+    "empirical_result": "original report retained without changing thresholds or gate labels"
+  },
+  "software": {
+    "pybamm_version": "26.9.0.0",
+    "script_sha256": "a98f29a33f9b0922ed7ec4594082e45fd6eecc22e77a72dfe9f8c2c7ba907a83",
+    "parameter_function_file_sha256": "c0c8111cb37fd4e79726f17e0d02f0aaac6d06532060a677efb5743c92a0b259"
+  },
+  "pre_discharge_rest": {
+    "first": {
+      "excel_row": 18078,
+      "source_test_time_s": 18075.70552,
+      "source_step_time_s": 0.9998,
+      "voltage_v": 4.196846008300781,
+      "current_a": 0.0,
+      "skin_temperature_c": 25.194759368896484
+    },
+    "last": {
+      "excel_row": 21678,
+      "source_test_time_s": 21674.70662,
+      "source_step_time_s": 3600.0009,
+      "voltage_v": 4.186448097229004,
+      "current_a": 0.0,
+      "skin_temperature_c": 25.18794059753418
+    },
+    "record_count": 3601,
+    "maximum_absolute_recorded_current_a": 0.0,
+    "signed_observed_charge_ah": 0.0,
+    "last_600s_voltage_change_v": -0.0008439136505122846,
+    "equilibrium_established": false
+  },
+  "post_discharge_rest": {
+    "first": {
+      "excel_row": 25070,
+      "source_test_time_s": 25066.287480000003,
+      "source_step_time_s": 1.0,
+      "voltage_v": 2.8482704162597656,
+      "current_a": 0.0,
+      "skin_temperature_c": 31.138418197631836
+    },
+    "last": {
+      "excel_row": 28670,
+      "source_test_time_s": 28665.28828,
+      "source_step_time_s": 3600.0008,
+      "voltage_v": 3.061777353286743,
+      "current_a": 0.0,
+      "skin_temperature_c": 25.35819435119629
+    },
+    "record_count": 3601,
+    "maximum_absolute_recorded_current_a": 0.0,
+    "signed_observed_charge_ah": 0.0,
+    "last_600s_voltage_change_v": 0.004123008863803346,
+    "equilibrium_established": false
+  },
+  "loaded_first": {
+    "excel_row": 21679,
+    "source_test_time_s": 21675.7522,
+    "source_step_time_s": 1.0006,
+    "voltage_v": 3.8799378871917725,
+    "current_a": -5.000240325927734,
+    "skin_temperature_c": 25.18794059753418
+  },
+  "loaded_last": {
+    "excel_row": 25069,
+    "source_test_time_s": 25065.148400000002,
+    "source_step_time_s": 3390.3968,
+    "voltage_v": 2.49998140335083,
+    "current_a": -5.0003557205200195,
+    "skin_temperature_c": 31.138418197631836
+  },
+  "first_load_transition": {
+    "source_sample_gap_s": 1.0455799999981537,
+    "observed_voltage_drop_v": 0.30651021003723145,
+    "apparent_step_ratio_ohm": 0.06129909565503978,
+    "predicted_loaded_voltage_at_first_observed_time_v": 4.100792411976408,
+    "predicted_average_temperature_at_first_observed_time_k": 298.3405764135736,
+    "model_uniform_initial_ocv_minus_first_loaded_voltage_v": 0.08025675443613522,
+    "warning": "Includes unresolved sub-second response, polarization, finite rest and sensing; not isolated ohmic/contact resistance"
+  },
+  "initial_uniform_state": {
+    "discharged_charge_ah": 0.0,
+    "temperature_k": 298.33794059753416,
+    "electrodes": {
+      "negative": {
+        "active_volume_m3": 6.562530000000001e-06,
+        "mean_concentration_mol_m3": 28866.0,
+        "mean_stoichiometry": 0.9757631071899402,
+        "solid_lithium_mol": 0.18943399098000002,
+        "uniform_ocp_v": 0.09200508420916863
+      },
+      "positive": {
+        "active_volume_m3": 5.163139800000001e-06,
+        "mean_concentration_mol_m3": 13975.0,
+        "mean_stoichiometry": 0.26997005698831256,
+        "solid_lithium_mol": 0.07215487870500001,
+        "uniform_ocp_v": 4.273054250621712
+      }
+    },
+    "uniform_ocv_v": 4.181049166412543,
+    "solid_lithium_mol": 0.26158886968500006
+  },
+  "initial_uniform_ocv_minus_measured_rest_v": -0.005398930816460812,
+  "conditional_post_discharge_uniform_state": {
+    "discharged_charge_ah": 4.7091907647239895,
+    "temperature_k": 298.50819435119627,
+    "electrodes": {
+      "negative": {
+        "active_volume_m3": 6.562530000000001e-06,
+        "mean_concentration_mol_m3": 2091.8195217143293,
+        "mean_stoichiometry": 0.07071018901782541,
+        "solid_lithium_mol": 0.013727628365835938,
+        "uniform_ocp_v": 0.5192007327293664
+      },
+      "positive": {
+        "active_volume_m3": 5.163139800000001e-06,
+        "mean_concentration_mol_m3": 48005.9132466574,
+        "mean_stoichiometry": 0.9273816912326359,
+        "solid_lithium_mol": 0.2478612413191641,
+        "uniform_ocp_v": 3.5460365691986504
+      }
+    },
+    "uniform_ocv_v": 3.0268358364692842,
+    "solid_lithium_mol": 0.26158886968500006
+  },
+  "conditional_uniform_ocv_minus_one_hour_rest_v": -0.03494151681745894,
+  "observed_discharge_charge_ah": 4.707800975704511,
+  "assumed_initial_gap_charge_ah": 0.0013897890194786919,
+  "conditional_state_warning": "Uses published active volumes, initial concentrations, charge conservation and OCP/entropy expressions. Assumes unmeasured initial current and complete uniform redistribution; not an actual relaxation simulation or measured cell SOC. Finite rest and unknown parasitic/history effects remain.",
+  "residuals": {
+    "error_sign": "prediction minus measurement",
+    "overall": {
+      "requested_interval_s": [
+        1.0006,
+        3390.3968
+      ],
+      "available_interval_s": [
+        1.0006,
+        3333.2915326846605
+      ],
+      "coverage": 0.9831517875321453,
+      "voltage_rmse_v": 0.19089933729045996,
+      "signed_time_mean_error_v": 0.18809315052480197,
+      "minimum_error_v": -0.11393960325296248,
+      "maximum_error_v": 0.2208545247846354,
+      "squared_error_integral_v2_s": 121.43720218142292
+    },
+    "first_60s": {
+      "requested_interval_s": [
+        1.0006,
+        60.0
+      ],
+      "available_interval_s": [
+        1.0006,
+        60.0
+      ],
+      "coverage": 1.0,
+      "voltage_rmse_v": 0.20596045834488827,
+      "signed_time_mean_error_v": 0.2059088255721623,
+      "minimum_error_v": 0.20189226366582602,
+      "maximum_error_v": 0.2208545247846354,
+      "squared_error_integral_v2_s": 2.5027374618703098
+    },
+    "observed_duration_thirds": [
+      {
+        "requested_interval_s": [
+          1.0006,
+          1130.7993333333334
+        ],
+        "available_interval_s": [
+          1.0006,
+          1130.7993333333334
+        ],
+        "coverage": 1.0,
+        "voltage_rmse_v": 0.20210856670274482,
+        "signed_time_mean_error_v": 0.20194920301186006,
+        "minimum_error_v": 0.18914710363817822,
+        "maximum_error_v": 0.2208545247846354,
+        "squared_error_integral_v2_s": 46.149874874955046
+      },
+      {
+        "requested_interval_s": [
+          1130.7993333333334,
+          2260.5980666666665
+        ],
+        "available_interval_s": [
+          1130.7993333333334,
+          2260.5980666666665
+        ],
+        "coverage": 1.0,
+        "voltage_rmse_v": 0.2046073495733098,
+        "signed_time_mean_error_v": 0.2045607856097838,
+        "minimum_error_v": 0.1926566242781278,
+        "maximum_error_v": 0.21102673904284464,
+        "squared_error_integral_v2_s": 47.29808341289311
+      },
+      {
+        "requested_interval_s": [
+          2260.5980666666665,
+          3390.3968
+        ],
+        "available_interval_s": [
+          2260.5980666666665,
+          3333.2915326846605
+        ],
+        "coverage": 0.9494553625964358,
+        "voltage_rmse_v": 0.16153170070962786,
+        "signed_time_mean_error_v": 0.1561551692708807,
+        "minimum_error_v": -0.11393960325296248,
+        "maximum_error_v": 0.19278795273308474,
+        "squared_error_integral_v2_s": 27.98924389357478
+      }
+    ]
+  },
+  "original_electrical_gates_passed": false,
+  "fitting_performed": false,
+  "new_model_solves": 0,
+  "unique_physical_cause_established": false
+}

@@ -1,0 +1,38 @@
+{
+  "ci_run_id": 37681264082,
+  "commit_sha": "f746e0e1483f9f5d616fdfd95c7a1cb03ffa2aea",
+  "ci_url": "https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/37681264082",
+  "artifact_id": 11510186568,
+  "artifact_zip_sha256": "7e09719322a9de3c5dcae2b9d01ded3d97642d5082ba98ccfd9154c502486057",
+  "supervised_elapsed_seconds": 880.0621305699999,
+  "comparison": {
+    "reference_mesh": 80,
+    "candidate_mesh": 120,
+    "reference_sha256": "c6a19fbed16508bf16499b485247776ff994d8946f01d321267dea89de6b0134",
+    "voltage_max_difference_v": 0.0033209300229870564,
+    "temperature_max_difference_k": 0.018017734930026563,
+    "capacity_relative_difference": 3.4459802158082156e-05,
+    "voltage_peak_time_s": 140.0,
+    "temperature_peak_time_s": 920.0,
+    "common_interval_s": [
+      0.0,
+      3333.391292865383
+    ],
+    "reference_cutoff_time_s": 3333.506160869621,
+    "candidate_cutoff_time_s": 3333.391292865383,
+    "physical_audit_passed": true,
+    "passed": true,
+    "scope": "single representative case; no whole-cohort validation"
+  },
+  "calculation_contract": {
+    "src/physical_fpv/core.py": "8d10606d09f232b6256fc0cf93c46c344f755a25082c3cf1378b604579424eb9",
+    "scripts/verify_thermal_grid.py": "acda23604cf8c2b5bea27289ce7ca090a1fee39735404e94cccfad65194435d9",
+    "requirements-lock.txt": "99e788261bf013158962b719b1710fde854c864ab67fac1c72dc69902830a20b",
+    "pyproject.toml": "b9407d6c6afafb0d0ab4ae96176f13133600a4b2fe373fe6803c11c95034077d",
+    "docs/benchmarks/thermal-grid80-reference.csv": "c6a19fbed16508bf16499b485247776ff994d8946f01d321267dea89de6b0134",
+    "docs/benchmarks/thermal-reference-manifest.json": "31d55cf6a66f2a2035a773ca3eb8a07e58ac6392cecf06e1c01aaf0feff22cbe",
+    "docs/benchmarks/thermal-representative-grid80.json": "8b7ce0008064e78c9376f4b9bbaba55994f910e695d96f716f4008b783d5660e",
+    "validation.py::write_timeseries": "a9eacb192a9767ad8e956f9e86192057c92ab1571252cd62d97a379239a38be8"
+  },
+  "scope": "Exact unchanged calculation evidence; not a new run or whole-cohort validation"
+}
