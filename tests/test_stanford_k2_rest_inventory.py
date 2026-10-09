@@ -81,3 +81,36 @@ def test_archived_source_records_match_original_workbook():
     if not path.exists():
         pytest.skip("Original k2 workbook not present; do not acquire it for this test")
     assert module().verify_original_workbook(path)
+
+
+def test_recorded_order_is_not_continuous_state_history():
+    m = module()
+    history = json.loads(Path("docs/benchmarks/stanford-k2-k6-history-partial.json").read_text())
+    k2 = history["saved_report_analysis"]["histories"]["k2"]
+    assert k2["complete"] and k2["history_qualified"]
+    previous, following = k2["ordered_intervals"][:2]
+    boundary = m.history_boundary(previous, following)
+    assert boundary["previous_end_naive_local"] == "2019-08-31T21:41:12.806000"
+    assert boundary["following_start_naive_local"] == "2019-09-02T19:11:01.133000"
+    assert boundary["unobserved_gap_s"] == pytest.approx(163788.327, rel=0, abs=1e-6)
+    assert boundary["continuous_state_replay_allowed"] is False
+    assert boundary["following_workbook_sha256"] == m.SOURCE_SHA256
+    with pytest.raises(ValueError, match="continuous state replay is not supported"):
+        m.require_continuous_state_replay(previous, following)
+
+
+@pytest.mark.parametrize("date", ["2019-08-31T21:41:12.806000", "2019-08-30T00:00:00"])
+def test_nonpositive_file_gap_does_not_establish_continuity(date):
+    with pytest.raises(ValueError, match="does not establish continuous"):
+        module().history_boundary(
+            {"end_naive_local": "2019-08-31T21:41:12.806000"},
+            {"start_naive_local": date},
+        )
+
+
+def test_utc_conversion_cannot_silently_replace_source_naive_dates():
+    with pytest.raises(ValueError, match="original naive-local timestamps"):
+        module().history_boundary(
+            {"end_naive_local": "2019-08-31T21:41:12.806000+00:00"},
+            {"start_naive_local": "2019-09-02T19:11:01.133000+00:00"},
+        )

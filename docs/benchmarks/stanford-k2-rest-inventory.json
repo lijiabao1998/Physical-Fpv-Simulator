@@ -546,6 +546,19 @@
     "same_soc_as_1c_endpoint_established": false,
     "equilibrium_or_independent_electrode_inventory_established": false
   },
+  "inter_file_history_boundary": {
+    "previous_filename": "NMC_k2_0_05C_25degC.xlsx",
+    "previous_workbook_sha256": "6bfaeb45fe90b76b6bd5973f0cb481b5d42db81cd2729e9be44121b44296d174",
+    "previous_end_naive_local": "2019-08-31T21:41:12.806000",
+    "following_filename": "NMC_k2_1C_25degC.xlsx",
+    "following_workbook_sha256": "20ec90e107e228515a95346dc3159d08df62e78bb0f371d10161e62de49e8086",
+    "following_start_naive_local": "2019-09-02T19:11:01.133000",
+    "timezone": "Unspecified in source; no UTC conversion",
+    "unobserved_gap_s": 163788.327,
+    "unobserved_gap_hours": 45.496757499999994,
+    "continuous_state_replay_allowed": false,
+    "reason": "No current, temperature or state observations bridge the inter-file gap"
+  },
   "new_model_solves": 0,
   "new_source_downloads": 0,
   "fitting_performed": false,

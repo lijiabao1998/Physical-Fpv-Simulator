@@ -46,6 +46,39 @@ def verify_original_workbook(path):
     return True
 
 
+def history_boundary(previous, following):
+    """Record chronology without promoting file-order qualification to continuity."""
+    end = datetime.fromisoformat(previous["end_naive_local"])
+    start = datetime.fromisoformat(following["start_naive_local"])
+    if end.tzinfo is not None or start.tzinfo is not None:
+        raise ValueError("Expected original naive-local timestamps, not converted UTC")
+    gap = (start - end).total_seconds()
+    if gap <= 0:
+        raise ValueError("Nonpositive boundary does not establish continuous state history")
+    return {
+        "previous_filename": previous["filename"],
+        "previous_workbook_sha256": previous["source_sha256"],
+        "previous_end_naive_local": previous["end_naive_local"],
+        "following_filename": following["filename"],
+        "following_workbook_sha256": following["source_sha256"],
+        "following_start_naive_local": following["start_naive_local"],
+        "timezone": "Unspecified in source; no UTC conversion",
+        "unobserved_gap_s": gap,
+        "unobserved_gap_hours": gap / 3600,
+        "continuous_state_replay_allowed": False,
+        "reason": "No current, temperature or state observations bridge the inter-file gap",
+    }
+
+
+def require_continuous_state_replay(previous, following):
+    """Fail closed: ordered endpoint summaries cannot authorize state carry-over."""
+    boundary = history_boundary(previous, following)
+    raise ValueError(
+        f"Unobserved inter-file gap ({boundary['unobserved_gap_s']} s): "
+        "continuous state replay is not supported"
+    )
+
+
 def last_window(time, voltage, temperature, seconds=600):
     boundary = time[-1] - seconds
     if boundary < time[0]:
@@ -237,6 +270,8 @@ def audit(root=Path(".")):
     low_rate = next(
         x for x in history["ordered_intervals"] if x["filename"] == "NMC_k2_0_05C_25degC.xlsx"
     )
+    target = next(x for x in history["ordered_intervals"] if x["source_sha256"] == SOURCE_SHA256)
+    boundary = history_boundary(low_rate, target)
     low_steps = {p["step"]: p for p in low_rate["contiguous_steps"]}
     return {
         "source_workbook_sha256": SOURCE_SHA256,
@@ -271,6 +306,7 @@ def audit(root=Path(".")):
             "same_soc_as_1c_endpoint_established": False,
             "equilibrium_or_independent_electrode_inventory_established": False,
         },
+        "inter_file_history_boundary": boundary,
         "new_model_solves": 0,
         "new_source_downloads": 0,
         "fitting_performed": False,

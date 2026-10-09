@@ -107,6 +107,24 @@ passed charge/history; it cannot be treated as the same SOC or as equilibrium
 merely because current was lower. This audit reads that prior qualified summary,
 not a newly downloaded/re-read low-rate workbook.
 
+The previous low-rate file ends at source naive-local timestamp
+`2019-08-31T21:41:12.806000`; the target begins at
+`2019-09-02T19:11:01.133000`: an unobserved **163788.327 s / 45.4967575 h**
+gap. The source does not specify a timezone; these are not UTC timestamps.
+The earlier endpoint is 2.760849 V and the target initial-rest first sample is
+2.956163 V. Their difference does not identify what happened during the gap.
+The preceding workbook SHA256 is
+`6bfaeb45fe90b76b6bd5973f0cb481b5d42db81cd2729e9be44121b44296d174`;
+the target hash is the source hash below. The machine-readable output also pins
+the inspected history-summary hash and exact boundary identities.
+
+A complete, ordered inventory of 15 test files is not continuous current,
+temperature or state history. The audit records replay eligibility as false,
+and its reusable `require_continuous_state_replay` guard raises for this
+unobserved boundary. Regression tests ensure prior `history_qualified` and
+`complete` flags cannot silently authorize state carry-over. This is a
+fail-closed audit safeguard, not a claim that a replay solver already exists.
+
 These records do **not** supply a quantified bound on finite-rest equilibrium
 error, internal temperature, voltage/current calibration, intercalation
 efficiency, or independently measured electrode active capacities/inventory.
