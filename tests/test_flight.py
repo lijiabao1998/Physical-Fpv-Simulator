@@ -36,6 +36,15 @@ def model(ac, **extras):
     return QuadModel(ac, replace(ac.extras, **extras))
 
 
+def rigid_body_model(ac, **extras):
+    """The model with no rotor aerodynamics while the rotors are stopped (legacy
+    axial model, zero momentum drag), for rigid-body verification: the
+    oblique-flow model gives a stopped prop its real flat-plate drag."""
+    prop = replace(ac.powertrain.prop, blade=None)
+    ac = replace(ac, powertrain=replace(ac.powertrain, prop=prop))
+    return QuadModel(ac, replace(ac.extras, rotor_drag_factor=0.0, flap_fraction=None, **extras))
+
+
 def run(m, state, duties, dt, seconds):
     for _ in range(int(round(seconds / dt))):
         state = m.step(state, duties, dt)
@@ -50,7 +59,7 @@ def out():
 
 
 def test_free_fall_is_exact_without_drag(aircraft):
-    m = model(aircraft, cda=(0.0, 0.0, 0.0))
+    m = rigid_body_model(aircraft, cda=(0.0, 0.0, 0.0))
     s = run(m, m.initial_state(position=(0, 0, -100.0)), [0.0] * 4, 1e-3, 1.0)
     g = aircraft.env.g
     assert s[2] == pytest.approx(-100.0 + 0.5 * g, abs=1e-9)  # RK4 is exact for constant acceleration
@@ -59,7 +68,7 @@ def test_free_fall_is_exact_without_drag(aircraft):
 
 def test_terminal_velocity_matches_drag_balance(aircraft):
     # drag centre at the CG: an offset drag centre pitches the falling quad over (tested in test_variants)
-    m = model(aircraft, cda_center=tuple(float(x) for x in aircraft.mass_props.cg))
+    m = rigid_body_model(aircraft, cda_center=tuple(float(x) for x in aircraft.mass_props.cg))
     s = run(m, m.initial_state(position=(0, 0, -5000.0)), [0.0] * 4, 2e-3, 20.0)
     cda_z = aircraft.extras.cda[2]
     v_t = math.sqrt(2 * aircraft.mass_props.mass * aircraft.env.g / (aircraft.env.rho * cda_z))
@@ -67,7 +76,7 @@ def test_terminal_velocity_matches_drag_balance(aircraft):
 
 
 def test_torque_free_rotation_conserves_momentum_and_energy(aircraft):
-    m = model(aircraft, cda=(0.0, 0.0, 0.0))
+    m = rigid_body_model(aircraft, cda=(0.0, 0.0, 0.0))
     s = m.initial_state(position=(0, 0, -1000.0))
     s[10:13] = [3.0, -2.0, 5.0]
     I = np.array(m.inertia)
@@ -91,7 +100,7 @@ def test_torque_free_rotation_conserves_momentum_and_energy(aircraft):
 
 def test_intermediate_axis_is_unstable(aircraft):
     """Dzhanibekov effect: a spin about the intermediate principal axis flips."""
-    m = model(aircraft, cda=(0.0, 0.0, 0.0))
+    m = rigid_body_model(aircraft, cda=(0.0, 0.0, 0.0))
     moments, axes = np.linalg.eigh(np.array(m.inertia))
     mid = axes[:, 1]
     s = m.initial_state(position=(0, 0, -1000.0))
@@ -152,13 +161,31 @@ def test_control_moment_signs(aircraft):
 
 
 def test_rotor_drag_opposes_motion(aircraft):
+    """Oblique-flow tables: in level edgewise flow the rotors' in-plane force is
+    their tabulated drag (body rates zero, so every hub sees the same flow)."""
     m = model(aircraft, cda=(0.0, 0.0, 0.0))
     hp = hover_point(aircraft)
     s = m.initial_state(position=(0, 0, -50.0), omega=hp.omega)
     s[3] = 2.0  # 2 m/s north, level, nose north
     d = m.derivative(s, [hp.duty] * 4)
-    expected = -m.k_rotor_drag * 4 * hp.omega * 2.0 / aircraft.mass_props.mass
+    expected = -m.rotor_drag(2.0, hp.omega) / aircraft.mass_props.mass
+    assert expected < 0.0
+    assert d[3] == pytest.approx(expected, rel=1e-6)
+
+
+def test_legacy_rotor_drag_without_blade_geometry(aircraft):
+    """A prop without blade geometry uses momentum drag k omega v and the axial curves."""
+    prop = replace(aircraft.powertrain.prop, blade=None)
+    ac = replace(aircraft, powertrain=replace(aircraft.powertrain, prop=prop))
+    m = QuadModel(ac, replace(ac.extras, cda=(0.0, 0.0, 0.0), rotor_drag_factor=0.5, flap_fraction=None))
+    assert m.rotor is None
+    hp = hover_point(ac)
+    s = m.initial_state(position=(0, 0, -50.0), omega=hp.omega)
+    s[3] = 2.0
+    d = m.derivative(s, [hp.duty] * 4)
+    expected = -m.k_rotor_drag * 4 * hp.omega * 2.0 / ac.mass_props.mass
     assert d[3] == pytest.approx(expected, rel=0.02)
+    assert m.rotor_drag(2.0, hp.omega) == pytest.approx(m.k_rotor_drag * 4 * hp.omega * 2.0)
 
 
 def test_bus_power_balance(aircraft):

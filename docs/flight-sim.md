@@ -13,7 +13,7 @@
 
 | 模組 | 內容 |
 |---|---|
-| `dynamics.py` | 剛體 6DOF、馬達與 ESC 動態、槳 Ct(J)、槳盤阻力、機身阻力、電池、地面接觸 |
+| `dynamics.py` | 剛體 6DOF、馬達與 ESC 動態、槳在斜向氣流中的力與力矩（`rotor_ff.py`）、機身阻力、電池、地面接觸 |
 | `sensors.py` | 陀螺儀：白雜訊與鎖定轉速的振動 |
 | `filters.py` | PT1/PT2/PT3、biquad 低通與陷波，含精確頻率響應 |
 | `flightcontroller.py` | Acro 飛控：Actual rates、PID、濾波、RPM 濾波、airmode 混控 |
@@ -91,7 +91,7 @@ time [s],roll [1],pitch [1],yaw [1],throttle [1]
 | `vbat`、`current`、`mah` | 電池電壓、電流、用電量 | ✓ |
 | `pos_*`、`alt`、`vel_*`、`att_*`、`rate_*` | 真實位置、速度、姿態、角速度 | 模擬限定 |
 | `motor_current_*`、`thrust_*` | 各馬達相電流、推力 | 模擬限定 |
-| `saturated`、`on_ground`、`descent_ratio`、`max_advance_ratio`、`tip_mach`、`soc` | 混控飽和與模型適用範圍監測 | 模擬限定 |
+| `saturated`、`on_ground`、`descent_ratio`、`max_advance_ratio`、`max_edgewise_ratio`、`rotor_off_design`、`tip_mach`、`soc` | 混控飽和與模型適用範圍監測：渦環狀態區、軸向前進比 J、旋翼前進比 μ（以槳尖速度計，上限 10）、低轉速高速狀態（μ 或 \|λ\| > 0.5） | 模擬限定 |
 
 真機可得的欄位可以用相同的分析工具處理實機 Blackbox 數據（需先轉成同樣的欄位名稱與單位）。
 

@@ -53,6 +53,9 @@ class Prop:
     curves: PropCurves
     ct_scale: float = 1.0
     cp_scale: float = 1.0
+    # (BladeGeometry, Airfoil) when the blade geometry is known: enables the
+    # oblique-flow rotor model (rotor_ff.py), anchored to the curves above
+    blade: tuple | None = None
 
     @property
     def radius(self) -> float:

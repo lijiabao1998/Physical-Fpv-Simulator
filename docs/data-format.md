@@ -46,7 +46,7 @@ name = "..."
 | 類別 | 必要參數 | 其他 |
 |---|---|---|
 | `motor` | `kv`、`rm`、`i0_ref`、`v_i0_ref`、`i0_speed_fraction`、`rotor_inertia`、`max_current` | |
-| `prop` | `diameter`、`pitch`、`spin_inertia`、`rotor_drag_factor` | `[config] blades`；`[coefficients]`（實測）或 `[bemt]`（幾何估計） |
+| `prop` | `diameter`、`pitch`、`spin_inertia`；有 `[bemt]` 槳葉幾何時 `flap_fraction`，沒有時 `rotor_drag_factor`（只能二擇一） | `[config] blades`；`[coefficients]`（實測）或 `[bemt]`（幾何估計），兩者都有時軸向用實測、斜向氣流用幾何 |
 | `esc` | `r_on`、`quiescent_power`、`max_current`、`drive_current_limit`、`brake_current_limit` | |
 | `battery` | `capacity`、`r0_cell`、`r1_cell`、`tau1`、`c_rating`、`r_ref_temperature`、`resistance_activation_energy`、`specific_heat`、`ha_hover`、`ha_ref`、`ha_speed`、`max_temperature`、`capacity_fade`、`resistance_growth` | `[config] series, parallel`；`[ocv] soc, cell_voltage, source` |
 | `frame` | `thrust_interference`、`cda_x/y/z`（作用在頂層鍵 `drag_center`）、`contact_stiffness`、`contact_damping`、`ground_friction`、`vib_amp_1/2/3`、`vib_ref_speed`、`vib_exponent`、`vib_yaw_ratio` | `[[rotors]]` 安裝點與轉向；`[[contacts]]` 地面接觸點（至少 3 個）；`[[parts]]` 機架零件與 `placements` |

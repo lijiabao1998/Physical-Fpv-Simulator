@@ -16,12 +16,25 @@ State vector (plain Python floats, for speed in the inner loop):
     [15+n]  battery temperature, K (lumped; R0 and R1 follow it, see battery.py)
 
 Forces and moments per rotor i (hub at r_i from the CG, spin sign s_i = +1 for
-CW seen from above, i.e. spin vector +z):
+CW seen from above, i.e. spin vector +z), with the hub's air-relative velocity
+v_hub = v + w x r_i in body axes:
 
-    thrust      T_i = Ct(J_i) rho n_i^2 D^4, along -z, times frame interference
-    J_i         = axial inflow / (n_i D), axial inflow = -(v_hub . z)
-    rotor drag  F_i = -k_rd omega_i v_hub,inplane     (momentum drag, low advance ratio)
-    reaction    M_z = -s_i tau_motor,i                (motor torque reacts on the frame)
+* props with blade geometry (rotor_ff.py): coefficients looked up at
+  mu = |v_hub,inplane| / V_ref and lambda = -(v_hub . z) / V_ref, with
+  V_ref = sqrt((omega R)^2 + |v_hub|^2) (so idle and stopped props are
+  covered) and q = rho A V_ref^2:
+      thrust      C_T q along -z, times frame interference
+      rotor drag  C_H q against the in-plane motion, side force C_Y q
+      hub moment  C_Mx q R about the in-plane motion, C_My q R about its normal
+      shaft torque C_Q q R
+  (anchored to the axial Ct(J), Cp(J) curves, so hover and axial climb are
+  as before). The table lookup is done once per RK4 step, at its first
+  stage; the coefficients are held over the other three stages while q
+  still follows the rotor speed and air speed at every stage;
+* props without geometry (legacy): T_i = Ct(J_i) rho n_i^2 D^4 with
+  J_i = axial inflow / (n_i D), and momentum-theory rotor drag
+  F_i = -k_rd omega_i v_hub,inplane;
+* reaction    M_z = -s_i tau_motor,i      (motor torque reacts on the frame).
 
 Body: I w' = sum(r_i x F_i) + M_reaction + M_ground - w x (I w + h_rotors),
 where h_rotors = sum(J_r omega_i s_i) z is the rotors' spin angular momentum.
@@ -48,6 +61,7 @@ import numpy as np
 from .airframe import AirframeExtras
 from .design import Aircraft
 from .performance import hover_point
+from .rotor_ff import CLASSICAL_LIMIT, anchored_rotor
 
 
 @dataclass
@@ -58,10 +72,12 @@ class Outputs:
     i_bus: float
     i_motor: list[float]
     thrust: list[float]
-    advance_ratio: list[float]
-    descent_ratio: float  # worst axial descent speed / hover induced velocity
+    advance_ratio: list[float]  # axial J of each rotor
+    descent_ratio: float  # worst axial descent / hover induced velocity, rotors whose wake is not blown away
     on_ground: bool
     max_contact_speed: float
+    edgewise_ratio: float = 0.0  # worst rotor advance ratio mu = V_inplane / (omega R), capped at 10
+    off_design: bool = False  # a rotor beyond rotorcraft mu or |lambda| of 0.5 (low rpm, high speed)
 
 
 class QuadModel:
@@ -98,8 +114,17 @@ class QuadModel:
         self.ct_grid = [prop.ct_scale * float(c) for c in prop.curves.ct]
         self.cp_grid = [prop.cp_scale * float(c) for c in prop.curves.cp]
         self.k_thrust_static = prop.k_thrust(rho)
-        # momentum drag of a rotor in edgewise flow: rho A v_i v_h with v_i = sqrt(kT / (2 rho A)) omega
-        self.k_rotor_drag = extras.rotor_drag_factor * math.sqrt(rho * prop.disk_area * self.k_thrust_static / 2.0)
+        self.radius = prop.radius
+        self.rho_area = rho * prop.disk_area
+        if prop.blade is not None:  # oblique-flow tables
+            self.rotor = anchored_rotor(prop, extras.flap_fraction)
+            self.rotor_cells = [self.rotor.cells[0 if sp < 0 else 1] for sp in self.spin]
+            self.k_rotor_drag = None
+        else:  # legacy: momentum drag rho A v_i v_h with v_i = sqrt(kT / (2 rho A)) omega
+            self.rotor = None
+            self.k_rotor_drag = extras.rotor_drag_factor * math.sqrt(rho * prop.disk_area * self.k_thrust_static / 2.0)
+        self._frozen = [None] * self.n  # coefficients held over an RK4 step
+        self._off_design = False
         self.interference = ac.thrust_interference
         hover = hover_point(ac)
         self.v_induced_hover = math.sqrt(ac.weight / (self.n * 2.0 * rho * prop.disk_area))
@@ -206,9 +231,20 @@ class QuadModel:
         ) / v_bus + self.p_aux / v_bus
         return v_bus, currents, i_bus
 
+    def rotor_drag(self, speed: float, omega: float) -> float:
+        """Total in-plane rotor drag (N) of all rotors at ``omega`` in level edgewise
+        flow at ``speed``, for a first-order drag budget."""
+        if self.rotor is None:
+            return self.n * self.k_rotor_drag * omega * speed
+        rho = self.rho_area / (math.pi * self.radius**2)
+        return sum(self.rotor.loads((speed, 0.0, 0.0), omega, sp, rho)["h_force"] for sp in self.spin)
+
     # --------------------------------------------------------------- derivative
 
-    def derivative(self, s: list[float], duties: list[float], wind=(0.0, 0.0, 0.0), out: Outputs | None = None) -> list[float]:
+    def derivative(self, s: list[float], duties: list[float], wind=(0.0, 0.0, 0.0), out: Outputs | None = None,
+                   fresh: bool = True) -> list[float]:
+        """State derivative. ``fresh=False`` reuses the rotor coefficients of the
+        last fresh call (the later RK4 stages of a step)."""
         n = self.n
         qw, qx, qy, qz = s[6], s[7], s[8], s[9]
         wx, wy, wz = s[10], s[11], s[12]
@@ -246,6 +282,12 @@ class QuadModel:
         thrusts = [0.0] * n if out is not None else None
         js = [0.0] * n if out is not None else None
         worst_descent = 0.0
+        rotor = self.rotor
+        R = self.radius
+        vh2 = self.v_induced_hover * self.v_induced_hover
+        worst_mu = 0.0
+        if fresh:
+            self._off_design = False
         for i in range(n):
             w = omegas[i]
             hx, hy, hz = self.hub[i]
@@ -255,20 +297,52 @@ class QuadModel:
             vhz = wb + wx * hy - wy * hx
             n_rev = w / (2.0 * math.pi)
             v_axial = -vhz
-            if v_axial < 0.0:
+            v_e2 = vhx * vhx + vhy * vhy
+            if v_axial < 0.0 and v_e2 < vh2:  # descending into its own wake, not blown away by edgewise flow
                 worst_descent = max(worst_descent, -v_axial)
             J = v_axial / (n_rev * D) if n_rev > 1.0 else 0.0
-            ct, cp = self._coeffs(J)
-            thrust = ct * rho * n_rev * n_rev * D**4
-            q_aero = cp * rho * n_rev * n_rev * D**5 / (2.0 * math.pi)
-            f_net = self.interference * thrust
-            k = self.k_rotor_drag * w
-            frx, fry, frz = -k * vhx, -k * vhy, -f_net
+            hmx = hmy = 0.0
+            if rotor is not None:
+                omega_r = w * R
+                v_ref2 = omega_r * omega_r + v_e2 + v_axial * v_axial
+                if fresh:
+                    if v_ref2 > 1e-18:
+                        v_ref = math.sqrt(v_ref2)
+                        mu, lam = math.sqrt(v_e2) / v_ref, v_axial / v_ref
+                    else:
+                        mu = lam = 0.0
+                    self._frozen[i] = rotor.lookup(self.rotor_cells[i], mu, lam)
+                    # rotorcraft ratios, for the validity monitor
+                    lim = CLASSICAL_LIMIT * omega_r
+                    if v_e2 > lim * lim or v_axial * v_axial > lim * lim:
+                        self._off_design = True
+                    worst_mu = max(worst_mu, min(math.sqrt(v_e2) / omega_r, 10.0) if omega_r > 1e-6 else 10.0)
+                ct_r, ch_r, cy_r, cq_r, cmx_r, cmy_r = self._frozen[i]
+                qd = self.rho_area * v_ref2
+                thrust = ct_r * qd
+                q_aero = cq_r * qd * R
+                if v_e2 > 1e-18:
+                    v_e = math.sqrt(v_e2)
+                    e1x, e1y = vhx / v_e, vhy / v_e
+                else:
+                    e1x, e1y = 1.0, 0.0
+                # in-plane force -C_H e1 + C_Y e2, hub moment C_Mx e1 + C_My e2, with e2 = up x e1 = (e1y, -e1x)
+                frx = (-ch_r * e1x + cy_r * e1y) * qd
+                fry = (-ch_r * e1y - cy_r * e1x) * qd
+                hmx = (cmx_r * e1x + cmy_r * e1y) * qd * R
+                hmy = (cmx_r * e1y - cmy_r * e1x) * qd * R
+            else:
+                ct, cp = self._coeffs(J)
+                thrust = ct * rho * n_rev * n_rev * D**4
+                q_aero = cp * rho * n_rev * n_rev * D**5 / (2.0 * math.pi)
+                k = self.k_rotor_drag * w
+                frx, fry = -k * vhx, -k * vhy
+            frz = -self.interference * thrust
             fx += frx
             fy += fry
             fz += frz
-            mx += hy * frz - hz * fry
-            my += hz * frx - hx * frz
+            mx += hy * frz - hz * fry + hmx
+            my += hz * frx - hx * frz + hmy
             mz += hx * fry - hy * frx
             tau = kt * (currents[i] - (self.i0_const + self.i0_slope * w))
             mz -= self.spin[i] * tau
@@ -354,6 +428,8 @@ class QuadModel:
             out.thrust = thrusts
             out.advance_ratio = js
             out.descent_ratio = worst_descent / self.v_induced_hover
+            out.edgewise_ratio = worst_mu
+            out.off_design = self._off_design
             out.on_ground = on_ground
             out.max_contact_speed = max_contact_speed
 
@@ -391,14 +467,15 @@ class QuadModel:
         return (q - ha * (t_batt - self.t_ambient)) / battery.heat_capacity
 
     def step(self, s: list[float], duties: list[float], dt: float, wind=(0.0, 0.0, 0.0), out: Outputs | None = None) -> list[float]:
-        """Classic RK4 with duties held over the step, then quaternion renormalised."""
+        """Classic RK4 with duties held over the step (and the rotor table
+        lookup from its first stage), then quaternion renormalised."""
         k1 = self.derivative(s, duties, wind, out)
         s2 = [a + 0.5 * dt * b for a, b in zip(s, k1)]
-        k2 = self.derivative(s2, duties, wind)
+        k2 = self.derivative(s2, duties, wind, fresh=False)
         s3 = [a + 0.5 * dt * b for a, b in zip(s, k2)]
-        k3 = self.derivative(s3, duties, wind)
+        k3 = self.derivative(s3, duties, wind, fresh=False)
         s4 = [a + dt * b for a, b in zip(s, k3)]
-        k4 = self.derivative(s4, duties, wind)
+        k4 = self.derivative(s4, duties, wind, fresh=False)
         new = [a + dt / 6.0 * (b + 2.0 * c + 2.0 * d + e) for a, b, c, d, e in zip(s, k1, k2, k3, k4)]
         norm = math.sqrt(new[6] ** 2 + new[7] ** 2 + new[8] ** 2 + new[9] ** 2)
         for k in range(6, 10):

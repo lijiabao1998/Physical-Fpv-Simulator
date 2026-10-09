@@ -128,6 +128,7 @@ _MEASUREMENT_METHODS = (
     (".cda_", "風洞或滑行減速測試"),
     ("frame.cda", "風洞或滑行減速測試"),
     ("prop.rotor_drag_factor", "定速平飛：傾角對速度"),
+    ("prop.flap_fraction", "風洞：槳在斜向氣流中的 H 力（`fpvsim fit-tunnel`），或定速平飛的傾角對速度"),
 )
 
 

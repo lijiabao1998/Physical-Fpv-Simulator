@@ -389,7 +389,9 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
                   "Ixz (g·m²)", "阻力面積 x / y / z (cm²)"], table))
     add("\n- 前飛時的阻力力矩：重心高於槳平面時，槳盤阻力作用在重心下方、指向後方，產生**低頭**力矩；"
         "機架本身的阻力作用在機架上的固定點（機架檔的 `drag_center`），重心升高後它也在重心下方，同樣產生低頭力矩；"
-        "零件自己的阻力（例如相機）作用在零件位置，裝得比重心高時產生**抬頭**力矩。三者都由飛控修正，且都已包含在飛行模擬中。")
+        "零件自己的阻力（例如相機）作用在零件位置，裝得比重心高時產生**抬頭**力矩。三者都由飛控修正，且都已包含在飛行模擬中。"
+        + ("槳本身另有槳轂力矩（斜向氣流模型）：前進側升力較大造成的滾轉力矩在左右旋成對時互相抵消，俯仰力矩對參考槳很小（docs/models.md）。"
+           if base.build.prop_blade is not None else ""))
     add("- Ixz 是滾轉與偏航之間的慣性積（張量形式），不為零時兩軸的運動會互相耦合；裝在高處且偏前的零件會讓它變大。")
     add(f"\n**槳葉間隙：** 每個零件（機架與動力系統以外）要在槳盤外 {_mm(PROP_TIP_MARGIN)} 以上，或離槳平面 {_mm(PROP_MARGIN)} 以上。"
         "餘量是最差的零件在較容易的方向上還能移動多少，負值表示兩條都不滿足。"
@@ -442,13 +444,22 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
                      and vs[i].flight_summary["forward_pitch"] < base.flight_summary["forward_pitch"]]
             if lower:
                 speed = base.flight_summary["forward_speed"]
-                ratio = []
+                ratio, shares, per_weight = [], [], {}
                 for i in [0] + lower:
                     rotor, body = forward_drag_split(acs[i], speed)
-                    ratio.append(f"{tags[i]} {(rotor + body) / acs[i].weight:.3f}（槳盤阻力占 {rotor / (rotor + body):.0%}）")
-                add(f"\n前飛段末傾角：{'、'.join(tags[i] for i in lower)} 比基準重，傾角卻較小。定速前飛時 tan(傾角) ≈ 阻力 ÷ 重量；"
-                    f"在 {speed:.1f} m/s 時阻力以槳盤阻力為主，它隨推力的平方根增加，比重量增加得慢，所以阻力 ÷ 重量反而變小："
-                    + "、".join(ratio) + "（一階估計，旋翼在懸停轉速）。\n")
+                    shares.append(rotor / (rotor + body))
+                    per_weight[i] = (rotor + body) / acs[i].weight
+                    ratio.append(f"{tags[i]} {per_weight[i]:.3f}（槳盤阻力占 {rotor / (rotor + body):.0%}）")
+                smaller = [i for i in lower if per_weight[i] < per_weight[0]]
+                why = ("槳盤阻力大約隨轉速（推力的平方根）增加，比重量增加得慢" if min(shares) > 0.5
+                       else "阻力的增加比重量的增加少")
+                if smaller == lower:
+                    add(f"\n前飛段末傾角：{'、'.join(tags[i] for i in lower)} 比基準重，傾角卻較小。定速前飛時 tan(傾角) ≈ 阻力 ÷ 重量；"
+                        f"在 {speed:.1f} m/s 時{why}，所以阻力 ÷ 重量反而變小："
+                        + "、".join(ratio) + "（一階估計，旋翼在懸停轉速）。\n")
+                else:
+                    add(f"\n前飛段末傾角：{'、'.join(tags[i] for i in lower)} 比基準重，傾角卻較小；一階阻力估計（旋翼在懸停轉速）"
+                        "的阻力 ÷ 重量是 " + "、".join(ratio) + "，不足以解釋這個差異；前飛段末未必已到定速，應以定速配平曲線（`fpvsim tunnel`）比較。\n")
         add("![Flight comparison](flight.png)\n")
         crashed = [t for t, v in zip(tags, vs) if v.flight_summary.get("crashed")]
         if crashed:
@@ -512,8 +523,9 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
         add(f"{n}. 最影響版本差異的估計值（第 3 節敏感度）：" + "；".join(f"`{k}` — {measurement_method(k)}" for k in top) + "。")
         n += 1
     if flown:
-        add(f"{n}. 第 6 節的飛行結果另外取決於阻力面積與槳盤阻力係數（`prop.rotor_drag_factor`），"
-            "它們只能由飛行測試辨識（定速平飛的傾角對速度、滑行減速）；目前飛行結果沒有不確定度。")
+        drag_key = "prop.flap_fraction" if cmp.base.build.prop_blade is not None else "prop.rotor_drag_factor"
+        add(f"{n}. 第 6 節的飛行結果另外取決於阻力面積與槳盤阻力（`{drag_key}`），"
+            "它們要由風洞（`fpvsim fit-tunnel`）或飛行測試（定速平飛的傾角對速度、滑行減速）辨識；目前飛行結果沒有不確定度。")
         n += 1
     if tuned:
         add(f"{n}. 採用的版本依第 7 節的建議重新調參後，再飛一次比較。")

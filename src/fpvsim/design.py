@@ -47,7 +47,7 @@ SPEC_SCHEMA = "fpvsim.spec/1"
 
 _REQUIRED = {
     "motor": ("kv", "rm", "i0_ref", "v_i0_ref", "i0_speed_fraction", "rotor_inertia", "max_current"),
-    "prop": ("diameter", "pitch", "spin_inertia", "rotor_drag_factor"),
+    "prop": ("diameter", "pitch", "spin_inertia"),
     "esc": ("r_on", "quiescent_power", "max_current", "brake_current_limit", "drive_current_limit"),
     "battery": ("capacity", "r0_cell", "r1_cell", "tau1", "c_rating", "r_ref_temperature", "resistance_activation_energy",
                 "specific_heat", "ha_hover", "ha_ref", "ha_speed", "max_temperature", "capacity_fade", "resistance_growth"),
@@ -268,6 +268,7 @@ class Build:
     prop_curve_source: Source
     component_files: dict[str, Path]
     model_inputs: ParamSet = field(default_factory=ParamSet)  # inputs of derived models, not sampled
+    prop_blade: tuple | None = None  # (BladeGeometry, Airfoil) for the oblique-flow rotor model, if the geometry is known
     tables: list[DataTable] = field(default_factory=list)
     files: list[Path] = field(default_factory=list)
     lineage: list[dict] = field(default_factory=list)  # base first: id, name, change, path
@@ -292,6 +293,7 @@ class Build:
             curves=self.prop_curves,
             ct_scale=v("prop.ct_scale"),
             cp_scale=v("prop.cp_scale"),
+            blade=self.prop_blade,
         )
         motor = Motor(
             kv=v("motor.kv"),
@@ -360,7 +362,8 @@ class Build:
                     for p in self.parts
                     if any(p.drag_keys)
                 ),
-                rotor_drag_factor=v("prop.rotor_drag_factor"),
+                rotor_drag_factor=None if self.prop_blade else v("prop.rotor_drag_factor"),
+                flap_fraction=min(max(v("prop.flap_fraction"), 0.0), 1.0) if self.prop_blade else None,
                 brake_current_limit=v("esc.brake_current_limit"),
                 drive_current_limit=v("esc.drive_current_limit"),
                 contacts=tuple(tuple(float(x) for x in c) for c in self.contacts),
@@ -600,7 +603,17 @@ def load_build(path: str | Path) -> Build:
     _rotor_parts(comp, rotors, parts)
     model_inputs = ParamSet()
     tables: list[DataTable] = []
-    prop_curves, prop_curve_source = _prop_curves(component_files["prop"], comp["prop"], params, model_inputs, tables)
+    prop_curves, prop_curve_source, prop_blade = _prop_curves(component_files["prop"], comp["prop"], params, model_inputs,
+                                                              tables)
+    # rotor drag: from the blade geometry (flap fraction) or, without one, the legacy momentum estimate
+    prop_params = comp["prop"].get("params", {})
+    needed, unused = ("flap_fraction", "rotor_drag_factor") if prop_blade else ("rotor_drag_factor", "flap_fraction")
+    if needed not in prop_params:
+        raise DesignError(f"{component_files['prop']}: [params] needs {needed} "
+                          f"({'the prop has blade geometry' if prop_blade else 'the prop has no blade geometry'})")
+    if unused in prop_params:
+        raise DesignError(f"{component_files['prop']}: [params] {unused} is not used "
+                          f"({'the prop has blade geometry, use flap_fraction' if prop_blade else 'flap_fraction needs [bemt] blade geometry'})")
 
     for i, entry in enumerate(data.get("parts", [])):
         parts.append(_build_part(path, base, i, entry, comp, params, files))
@@ -649,6 +662,7 @@ def load_build(path: str | Path) -> Build:
         prop_blades=_int(str(component_files["prop"]), comp["prop"].get("config", {}), "blades"),
         prop_curves=prop_curves,
         prop_curve_source=prop_curve_source,
+        prop_blade=prop_blade,
         component_files=component_files,
         model_inputs=model_inputs,
         tables=tables,
@@ -722,8 +736,12 @@ def _table(path: Path, name: str, table: Mapping[str, Any]) -> DataTable:
 
 def _prop_curves(
     path: Path, data: dict[str, Any], params: ParamSet, model_inputs: ParamSet, tables: list[DataTable]
-) -> tuple[PropCurves, Source]:
-    """Measured coefficient tables take precedence; otherwise run BEMT."""
+) -> tuple[PropCurves, Source, tuple | None]:
+    """Measured coefficient tables take precedence; otherwise run BEMT. The
+    blade geometry, when given, is also returned (geometry, airfoil) for the
+    oblique-flow rotor model, which is anchored to whichever axial curves
+    are used."""
+    blade_model = None
     if "coefficients" in data:
         table = data["coefficients"]
         tables.append(_table(path, "prop.coefficients", table))
@@ -733,10 +751,13 @@ def _prop_curves(
         )
         ref = str(table.get("ref", ""))
         u_ct, u_cp = float(table.get("ct_u_rel", 0.0)), float(table.get("cp_u_rel", 0.0))
+        if "bemt" in data:  # geometry for the oblique-flow model only
+            blades = _int(str(path), data.get("config", {}), "blades")
+            _, *blade_model = _run_bemt(path, data["bemt"], blades, params, model_inputs, tables)
     elif "bemt" in data:
         bemt = data["bemt"]
         blades = _int(str(path), data.get("config", {}), "blades")
-        curves = _run_bemt(path, bemt, blades, params, model_inputs, tables)
+        curves, *blade_model = _run_bemt(path, bemt, blades, params, model_inputs, tables)
         source = Source.DERIVED
         ref = "BEMT（fpvsim.bemt，由槳葉幾何計算）"
         u_ct, u_cp = float(bemt["ct_model_u_rel"]), float(bemt["cp_model_u_rel"])
@@ -756,12 +777,12 @@ def _prop_curves(
                 stream=component_stream(_component_id(path, data), name),
             )
         )
-    return curves, source
+    return curves, source, tuple(blade_model) if blade_model else None
 
 
 def _run_bemt(
     path: Path, bemt: Mapping[str, Any], blades: int, params: ParamSet, model_inputs: ParamSet, tables: list[DataTable]
-) -> PropCurves:
+) -> tuple[PropCurves, BladeGeometry, Airfoil]:
     """Run BEMT once at nominal inputs. Its inputs are recorded for provenance
     but not sampled: their uncertainty is carried by ct_scale and cp_scale."""
     for key in ("ct_model_u_rel", "cp_model_u_rel"):
@@ -786,7 +807,8 @@ def _run_bemt(
         blades=blades,
     )
     J = np.asarray(bemt.get("J", np.round(np.arange(0.0, 1.0001, 0.05), 4).tolist()), dtype=float)
-    return coefficient_curves(geom, Airfoil(**foil_values), J)
+    foil = Airfoil(**foil_values)
+    return coefficient_curves(geom, foil, J), geom, foil
 
 
 def _build_part(

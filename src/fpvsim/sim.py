@@ -72,7 +72,8 @@ def _define_columns(log: FlightLog, n: int) -> None:
         log.define(f"motor_current_{i}", "A")
     for i in range(n):
         log.define(f"thrust_{i}", "gf")
-    for name in ("saturated", "on_ground", "descent_ratio", "max_advance_ratio", "tip_mach", "soc"):
+    for name in ("saturated", "on_ground", "descent_ratio", "max_advance_ratio", "max_edgewise_ratio", "rotor_off_design",
+                 "tip_mach", "soc"):
         log.define(name, "1")
 
 
@@ -191,6 +192,8 @@ def simulate(
                 "on_ground": 1.0 if out.on_ground else 0.0,
                 "descent_ratio": out.descent_ratio,
                 "max_advance_ratio": max(out.advance_ratio),
+                "max_edgewise_ratio": out.edgewise_ratio,
+                "rotor_off_design": 1.0 if out.off_design else 0.0,
                 "tip_mach": max(omegas) * radius / speed_of_sound,
                 "soc": prev[13 + n],
             }

@@ -48,8 +48,23 @@ def test_drag_free_rotor_obeys_momentum_theory():
 def test_trends_with_advance_ratio_and_pitch():
     c = coefficient_curves(GEOM, FOIL, np.linspace(0.0, 0.9, 10))
     assert all(np.diff(c.ct) < 0)  # thrust falls as inflow rises
-    steeper = coefficient_curves(replace(GEOM, pitch=0.13), FOIL, np.array([0.0]))
-    assert steeper.ct[0] > c.ct[0]
+    flatter = coefficient_curves(replace(GEOM, pitch=0.09), FOIL, np.array([0.0]))
+    assert flatter.ct[0] < c.ct[0]
+    # at J = 0 more pitch stops paying once the blade is past stall (post-stall polar)
+    stalled = coefficient_curves(replace(GEOM, pitch=0.15), FOIL, np.array([0.0]))
+    assert stalled.ct[0] < c.ct[0]
+
+
+def test_polar_blends_into_flat_plate():
+    from fpvsim.bemt import FLAT_PLATE_CN, polar
+
+    a = np.radians([5.0, 19.9, 45.0, 90.0, 180.0, -90.0])
+    cl, cd = polar(FOIL, a)
+    assert cl[0] == pytest.approx(FOIL.cl_alpha * (a[0] - FOIL.alpha0))  # attached
+    assert cl[2] == pytest.approx(FLAT_PLATE_CN * 0.5)  # flat plate at 45 degrees
+    assert cl[3] == pytest.approx(0.0, abs=1e-12) and cd[3] == pytest.approx(FOIL.cd_min + FLAT_PLATE_CN)
+    assert cl[4] == pytest.approx(0.0, abs=1e-12) and cd[4] == pytest.approx(FOIL.cd_min)  # reverse flow, edge on
+    assert cd[5] == pytest.approx(cd[3])
 
 
 def test_descent_is_rejected():

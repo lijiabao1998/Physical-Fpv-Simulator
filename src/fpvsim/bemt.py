@@ -19,7 +19,10 @@ Assumptions and limits (also in docs/models.md):
 * axial flow only, V >= 0; momentum theory is invalid in descent (vortex ring);
 * swirl (tangential induction) neglected, typically a 1-3 % effect on props;
 * one airfoil polar for the whole blade, no Reynolds or Mach dependence;
-* post-stall behaviour is crude (lift saturates, drag keeps growing).
+* post-stall: lift saturates at cl_max / cl_min, then between |alpha| = 20
+  and 40 degrees blends into a flat plate (normal-force coefficient 2.0,
+  Hoerner 1965), which also covers reverse flow; no stall delay from
+  rotation. The same polar is used by the oblique-flow model (rotor_ff.py).
 
 References: Glauert, "Airplane Propellers" (1935); Leishman, "Principles of
 Helicopter Aerodynamics", 2nd ed. (2006), ch. 3.
@@ -36,6 +39,10 @@ from scipy.optimize import brentq
 from .prop import PropCurves
 
 
+POST_STALL = (math.radians(20.0), math.radians(40.0))  # |alpha| over which the polar blends into a flat plate
+FLAT_PLATE_CN = 2.0  # normal-force coefficient of a two-dimensional flat plate broadside on (Hoerner 1965)
+
+
 @dataclass(frozen=True)
 class Airfoil:
     cl_alpha: float  # 1/rad
@@ -47,10 +54,26 @@ class Airfoil:
     k_cd: float  # drag polar curvature
 
     def coefficients(self, alpha: float) -> tuple[float, float]:
-        cl_linear = self.cl_alpha * (alpha - self.alpha0)
-        cl = min(max(cl_linear, self.cl_min), self.cl_max)
-        cd = self.cd_min + self.k_cd * (cl_linear - self.cl_cd_min) ** 2
-        return cl, cd
+        cl, cd = polar(self, np.asarray(alpha, dtype=float))
+        return float(cl), float(cd)
+
+
+def polar(foil: Airfoil, alpha: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Lift and drag coefficients at any angle of attack (rad, wrapped to +-pi):
+    the section polar (linear lift clipped at cl_max / cl_min, parabolic drag)
+    blended into a flat plate, cl = C_N sin a cos a, cd = cd_min + C_N sin^2 a,
+    between |alpha| = 20 and 40 degrees (cosine weight)."""
+    a = np.mod(alpha + np.pi, 2.0 * np.pi) - np.pi
+    cl_linear = foil.cl_alpha * (a - foil.alpha0)
+    cl = np.clip(cl_linear, foil.cl_min, foil.cl_max)
+    cd = foil.cd_min + foil.k_cd * (cl_linear - foil.cl_cd_min) ** 2
+    lo, hi = POST_STALL
+    x = np.clip((np.abs(a) - lo) / (hi - lo), 0.0, 1.0)
+    w = 0.5 * (1.0 + np.cos(np.pi * x))  # 1 below 20 deg, 0 above 40 deg
+    sa, ca = np.sin(a), np.cos(a)
+    cl_plate = FLAT_PLATE_CN * sa * ca
+    cd_plate = foil.cd_min + FLAT_PLATE_CN * sa * sa
+    return w * cl + (1.0 - w) * cl_plate, w * cd + (1.0 - w) * cd_plate
 
 
 @dataclass(frozen=True)

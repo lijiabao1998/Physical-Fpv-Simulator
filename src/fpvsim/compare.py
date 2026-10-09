@@ -189,7 +189,7 @@ def forward_drag_split(ac, speed: float) -> tuple[float, float]:
     from .dynamics import QuadModel
 
     m = QuadModel(ac, ac.extras)
-    rotor = m.n * m.k_rotor_drag * m.hover_omega * speed
+    rotor = m.rotor_drag(speed, m.hover_omega)
     cda_x = ac.extras.cda[0] + sum(areas[0] for _, areas in ac.extras.drag_points)
     return rotor, 0.5 * ac.env.rho * speed * speed * cda_x
 

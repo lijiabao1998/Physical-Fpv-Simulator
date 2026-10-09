@@ -15,6 +15,7 @@ from .blackbox import FlightLog
 from .design import Build
 from .flightcontroller import FcConfig
 from .report import git_version, md_table, rel_path
+from .rotor_ff import CLASSICAL_LIMIT
 
 AXES = ("roll", "pitch", "yaw")
 AXIS_ZH = {"roll": "滾轉", "pitch": "俯仰", "yaw": "偏航"}
@@ -37,13 +38,26 @@ def _excursion(t: np.ndarray, mask: np.ndarray, title: str, note: str) -> Excurs
     return Excursion(title, float(mask.mean()), float(t[idx[0]]) if len(idx) else None, note)
 
 
-def envelope(log: FlightLog, j_max: float) -> list[Excursion]:
+def envelope(log: FlightLog, j_max: float, oblique: bool = False) -> list[Excursion]:
+    """Excursions out of the models' validity range. ``oblique``: the rotors use
+    the oblique-flow tables (rotor_ff.py) rather than the axial curves."""
     t = log.time
+    if oblique:
+        wake = _excursion(t, log["descent_ratio"] > DESCENT_LIMIT,
+                          f"渦環狀態區（軸向下降 > {DESCENT_LIMIT:g} 倍懸停誘導速度，且水平速度低於懸停誘導速度）",
+                          "平均誘導速度用經驗曲線（Leishman），平均推力的不確定度較大；推力脈動（propwash）未建模")
+        table = _excursion(t, log["rotor_off_design"] > 0.5,
+                           f"槳在低轉速高速狀態（前進比 μ 或入流比 |λ| > {CLASSICAL_LIMIT:g}，以槳尖速度計）",
+                           "葉片大部分失速或逆流，槳力來自平板失速模型，只能定性參考；常見於收油後的高速俯衝或爬升滑行")
+    else:
+        wake = _excursion(t, log["descent_ratio"] > DESCENT_LIMIT,
+                          f"下降進入自身尾流（下降速度 > {DESCENT_LIMIT:g} 倍懸停誘導速度）",
+                          "動量理論在此失效，渦環狀態與 propwash 未建模；這段的推力與抖動不可信")
+        table = _excursion(t, log["max_advance_ratio"] >= j_max, f"前進比超出槳係數表（J ≥ {j_max:g}）",
+                           "槳係數以表格最後一點外插，推力估計不可信")
     return [
-        _excursion(t, log["descent_ratio"] > DESCENT_LIMIT, f"下降進入自身尾流（下降速度 > {DESCENT_LIMIT:g} 倍懸停誘導速度）",
-                   "動量理論在此失效，渦環狀態與 propwash 未建模；這段的推力與抖動不可信"),
-        _excursion(t, log["max_advance_ratio"] >= j_max, f"前進比超出槳係數表（J ≥ {j_max:g}）",
-                   "槳係數以表格最後一點外插，推力估計不可信"),
+        wake,
+        table,
         _excursion(t, log["tip_mach"] > MACH_LIMIT, f"槳尖馬赫數 > {MACH_LIMIT:g}", "未計入壓縮性，推力與扭矩偏樂觀"),
         _excursion(t, log["saturated"] > 0.5, "混控飽和", "馬達已到 0% 或 100%，姿態控制能力受限；不是模型問題，是飛行限制"),
         _excursion(t, log["on_ground"] > 0.5, "接觸地面", "接地模型為簡化的彈簧阻尼與庫侖摩擦"),
@@ -74,6 +88,7 @@ def summary(log: FlightLog, cells: int) -> list[tuple[str, str]]:
 
 def generate(build: Build, cfg: FcConfig, log: FlightLog, title: str, out_dir: Path, j_max: float) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
+    oblique = build.prop_blade is not None
     log.write_csv(out_dir / "flight_log.csv")
     t = log.time
     cells = build.battery_series
@@ -111,6 +126,8 @@ def generate(build: Build, cfg: FcConfig, log: FlightLog, title: str, out_dir: P
         [
             {"title": "Descent into own wake", "ylabel": "v_descent / v_i", "series": [("descent ratio", t, log["descent_ratio"])],
              "refs": [(DESCENT_LIMIT, "model limit")]},
+            {"title": "Edgewise advance ratio (worst rotor)", "ylabel": "mu", "series": [("mu", t, log["max_edgewise_ratio"])],
+             "refs": [(CLASSICAL_LIMIT, "flat-plate regime")], "ylim": (0, 2)} if oblique else
             {"title": "Advance ratio (worst rotor)", "ylabel": "J", "series": [("J", t, log["max_advance_ratio"])],
              "refs": [(j_max, "end of prop table")]},
             {"title": "Tip Mach number", "ylabel": "Mach", "series": [("Mach", t, log["tip_mach"])], "refs": [(MACH_LIMIT, "model limit")]},
@@ -159,15 +176,21 @@ def generate(build: Build, cfg: FcConfig, log: FlightLog, title: str, out_dir: P
     add("## 3. 模型適用範圍監測\n")
     add("模擬器會記錄飛行是否離開物理模型的適用範圍。超出範圍的片段，數值只能當作定性參考。\n")
     add(md_table(["狀況", "時間占比", "首次發生", "影響"], [
-        [e.title, f"{e.fraction:.1%}", "—" if e.first is None else f"{e.first:.2f} s", e.note] for e in envelope(log, j_max)
+        [e.title, f"{e.fraction:.1%}", "—" if e.first is None else f"{e.first:.2f} s", e.note] for e in envelope(log, j_max, oblique)
     ]))
     add("")
     add("![Validity](validity.png)\n")
 
     add("## 4. 這次模擬沒有包含的東西\n")
-    add("- 下降進入自身尾流時的渦環狀態與 propwash 抖動（只監測，不模擬）")
+    if oblique:
+        add("- 渦環狀態只模擬平均誘導速度（經驗曲線）；推力脈動與 propwash 抖動不模擬")
+    else:
+        add("- 下降進入自身尾流時的渦環狀態與 propwash 抖動（只監測，不模擬）")
     add("- 機架彈性與共振；振動只進入陀螺儀量測，不影響剛體運動")
-    add("- 槳在斜向氣流中的非軸向效應（只計入軸向前進比與槳盤阻力）")
+    if oblique:
+        add("- 槳的斜向氣流係數以剛性與自由揮舞兩個極限混合（`prop.flap_fraction`），尚未用風洞數據確認")
+    else:
+        add("- 槳在斜向氣流中的非軸向效應（只計入軸向前進比與槳盤阻力）")
     add("- 自動測試飛手只是測試工具，不代表人類飛手的反應與習慣")
     path = out_dir / "report.md"
     path.write_text("\n".join(md) + "\n", encoding="utf-8")

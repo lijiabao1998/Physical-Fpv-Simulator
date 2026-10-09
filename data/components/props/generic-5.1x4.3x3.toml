@@ -17,7 +17,7 @@ blades = 3
 diameter = { value = 5.1, unit = "in", source = "nominal" }
 pitch = { value = 4.3, unit = "in", source = "nominal", note = "75% 半徑處的幾何螺距，模型視為等螺距" }
 spin_inertia = { value = 4900, unit = "g*mm^2", source = "estimate", u_rel = 0.30, note = "三片葉片共約 3.5 g，以均勻細桿 (1/3) m R² 估算" }
-rotor_drag_factor = { value = 0.5, unit = "1", source = "estimate", u_rel = 0.5, note = "對動量理論槳盤阻力 ρ·A·v_i·v_h 的修正倍數。該式假設穿過槳盤的水平動量全部被轉向，是上限；取 1.0 時參考機在 40° 傾角只能飛約 7.5 m/s，不合理，因此取 0.5 為中間估計。應由定速平飛的傾角對速度辨識" }
+flap_fraction = { value = 0.5, unit = "1", source = "estimate", u = 0.2886, dist = "uniform", note = "槳葉在前飛時的揮舞程度：0 = 剛性葉片（前進側多出的升力全部變成槳轂滾轉力矩），1 = 自由揮舞（槳盤後傾，部分推力變成槳盤阻力）。塑膠槳介於兩者之間，沒有數據前取 0 到 1 的均勻分布。應以風洞量測槳在斜向氣流中的 H 力辨識（fpvsim fit-tunnel）" }
 
 [bemt]
 hub_radius = { value = 6, unit = "mm", source = "estimate" }
