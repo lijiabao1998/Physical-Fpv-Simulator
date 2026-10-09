@@ -1,6 +1,8 @@
 """No-refit cross-cell transfer and archived source contracts."""
 
+import hashlib
 import importlib.util
+import io
 import math
 from pathlib import Path
 
@@ -96,7 +98,15 @@ def test_saved_transfer_reproduces_from_repo_without_fit_solve_or_download(tmp_p
         tmp_path,
     )
     assert_reproduced_metrics(actual["scenarios"], expected["scenarios"])
-    assert actual["prediction_csv_sha256"] == expected["prediction_csv_sha256"]
+    assert expected["prediction_csv_sha256"] == (
+        "7d8d7ee64206573fd9ad693ea5ba16fef08baa47545b8b6d42570359a50375a2"
+    )
+    assert_prediction_reproduction(
+        tmp_path / "stanford-k1-cooling-transfer-predictions.csv",
+        m.ROOT / "docs/benchmarks/stanford-k1-cooling-transfer-predictions.csv",
+        actual["prediction_csv_sha256"],
+        expected["prediction_csv_sha256"],
+    )
     assert not actual["original_workbook_rechecked"]
     assert not actual["blind_validation"]
     assert not any(
@@ -137,3 +147,56 @@ def test_metric_reproduction_allows_roundoff_but_rejects_material_changes():
     ):
         with pytest.raises(AssertionError):
             assert_reproduced_metrics(changed, original)
+
+
+def assert_prediction_reproduction(actual_path, expected_path, actual_digest, expected_digest):
+    """Immutable bytes keep exact identity; recomputed math has a roundoff budget."""
+    actual_bytes, expected_bytes = actual_path.read_bytes(), expected_path.read_bytes()
+    assert hashlib.sha256(actual_bytes).hexdigest() == actual_digest
+    assert hashlib.sha256(expected_bytes).hexdigest() == expected_digest
+    assert actual_bytes.splitlines()[0] == expected_bytes.splitlines()[0]
+    actual = np.loadtxt(io.BytesIO(actual_bytes), delimiter=",", skiprows=1, ndmin=2)
+    expected = np.loadtxt(io.BytesIO(expected_bytes), delimiter=",", skiprows=1, ndmin=2)
+    assert actual.shape == expected.shape and expected.shape[1] >= 3
+    assert np.isfinite(actual).all() and np.isfinite(expected).all()
+    # Clocks and measured temperatures originate in identical pinned input arrays.
+    assert np.array_equal(actual[:, :2], expected[:, :2])
+    limit = 64 * np.finfo(float).eps * np.maximum(1.0, abs(expected[:, 2:]))
+    assert np.all(abs(actual[:, 2:] - expected[:, 2:]) <= limit)
+
+
+def test_prediction_reproduction_distinguishes_byte_identity_from_math(tmp_path):
+    expected = tmp_path / "expected.csv"
+    actual = tmp_path / "actual.csv"
+    original = np.array([[60.0, 30.0, 29.0, 28.0], [61.0, 29.9, 28.9, 27.9]])
+
+    def write(path, data, header="time,measured,predicted,prior"):
+        np.savetxt(path, data, delimiter=",", header=header, comments="")
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+
+    expected_digest = write(expected, original)
+    rounded = original.copy()
+    rounded[0, 2] = np.nextafter(rounded[0, 2], np.inf)
+    actual_digest = write(actual, rounded)
+    assert actual_digest != expected_digest
+    assert_prediction_reproduction(actual, expected, actual_digest, expected_digest)
+    for kind in ("prediction", "measured", "clock", "nonfinite", "rows", "header", "digest"):
+        changed = original.copy()
+        header = "time,measured,predicted,prior"
+        if kind == "prediction":
+            changed[0, 2] += 1e-10
+        if kind == "measured":
+            changed[0, 1] += 1e-12
+        if kind == "clock":
+            changed[0, 0] += 1e-12
+        if kind == "nonfinite":
+            changed[0, 2] = np.nan
+        if kind == "rows":
+            changed = changed[:1]
+        if kind == "header":
+            header = "time,measured,prior,predicted"
+        actual_digest = write(actual, changed, header)
+        if kind == "digest":
+            actual_digest = "0" * 64
+        with pytest.raises(AssertionError):
+            assert_prediction_reproduction(actual, expected, actual_digest, expected_digest)
