@@ -227,8 +227,12 @@ exact digest match against the upload action's returned SHA-256. This is a
 bounded metadata-read policy, not a scientific retry or a weakened persistence
 gate. A second preflight failure stops the replacement; no blind restart follows.
 
-The original input/evidence artifacts remain on GitHub. The connected artifact
-download tool produced a temporary file reference, but its cloud materialization
-returned HTTP403; that retrieval path was stopped. Zero-solve classification is
-based on completed GitHub job steps/logs, not a claim to have inspected ZIP
-members that were unavailable locally.
+The original input/evidence artifacts remain on GitHub. Direct access to a
+returned temporary file URL produced HTTP403 and was stopped. The supported
+consumer-local reusable-file transfer subsequently materialized the archive.
+Independent verification confirmed its 5,415,210 bytes and SHA-256, all 53 members,
+45 source-file hashes and 5 derived-input hashes. Every member is a prepared
+input; there is no solver-stage directory. The complete verified
+[evidence archive](benchmarks/stanford-k2-low-rate-preflight-evidence.zip) is
+preserved in the repo alongside the receipt. Zero-solve classification now rests
+on both completed GitHub job steps/logs and the independently inspected archive.

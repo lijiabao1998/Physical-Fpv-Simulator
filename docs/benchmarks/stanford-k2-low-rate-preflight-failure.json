@@ -24,13 +24,34 @@
   "evidence_artifact_id": 11624101603,
   "evidence_artifact_sha256": "f720bae1dc0607dcc2b43264041580ae36f68bd24a804a652096dd41687b9602",
   "evidence_artifact_bytes": 5415210,
-  "cloud_materialization_status": "HTTP403; stopped that retrieval path",
+  "cloud_materialization_status": "Resolved through supported consumer-local reusable-file transfer; original temporary URL was not retried",
   "source_of_zero_solve_evidence": "GitHub completed job steps and logs, scientific execution skipped",
-  "archive_digests_origin": "GitHub upload-action logs and artifact metadata; not locally recomputed because temporary file materialization returned HTTP403",
+  "archive_digests_origin": "GitHub upload logs/metadata; final evidence ZIP digest independently recomputed after supported materialization",
   "ordinary_ci": {
     "battery": 37946432010,
     "stanford": 37946432231,
     "thermal": 37946432167,
     "all_conclusions": "success"
-  }
+  },
+  "independent_archive_verification": {
+    "archive_bytes": 5415210,
+    "archive_sha256": "f720bae1dc0607dcc2b43264041580ae36f68bd24a804a652096dd41687b9602",
+    "members": 53,
+    "all_members_are_prepared_inputs": true,
+    "source_files_verified": 45,
+    "derived_inputs_verified": 5,
+    "runtime_versions": {
+      "python": "3.12.15",
+      "pybamm": "26.9.0.0",
+      "numpy": "2.5.3",
+      "casadi": "3.8.1",
+      "scipy": "1.18.1",
+      "pybammsolvers": "0.10.0"
+    },
+    "no_solver_stage_directory": true,
+    "materialization": "supported consumer-local reusable-file transfer",
+    "source_commit": "e99e9219b35324a3cc77ff3aa6e6e86e688dd7f3",
+    "run_id": "37946424176"
+  },
+  "durable_evidence_path": "docs/benchmarks/stanford-k2-low-rate-preflight-evidence.zip"
 }
