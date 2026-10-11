@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "module_source": "/workspace/shared/fpv-completion-20261011/results/wheels/physical_fpv-0.1.0-py3-none-any.whl/physical_fpv/fpv/simulator.py",
+  "real_powertrain_current_a": 11.44489203850074,
+  "gui_asset_readable": true,
+  "source_checks": [
+    "paused disconnect",
+    "byte-preserved export"
+  ]
+}

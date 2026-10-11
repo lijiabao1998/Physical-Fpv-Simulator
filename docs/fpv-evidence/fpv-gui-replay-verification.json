@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "requests": 845,
+  "time_s": 42.200000000003136,
+  "claim": "exact same-environment replay; not validation"
+}

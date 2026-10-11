@@ -1,0 +1,44 @@
+{
+  "base_commit": "1990e23ce35b16d73d2d65b0d9a586064963dd6a",
+  "candidate_source_sha256": {
+    "src/physical_fpv/fpv/__init__.py": "ca3628148e044aca483ad5abeccf18d399b7ff7b3c1b099f223c0b9ce51750dc",
+    "src/physical_fpv/fpv/__main__.py": "3a4b15a55148cfbe7281bd756d8b0c582697a962d6fe7196f64af3d98daf77ec",
+    "src/physical_fpv/fpv/atomistic.py": "48f08616eb4348ec0b55a3ebca871dc66b2c2b57601676392a1f37bd16035d98",
+    "src/physical_fpv/fpv/electrochemical_pack.py": "7ac9437451fc24cfbdecb0c9e2403fc1622c7f12a6c4c7de615479d4db8c56b8",
+    "src/physical_fpv/fpv/flight.py": "bda3f76012065e99997ad20d1ee25a0eb010e58c46a04ca4b50dcdc07d378888",
+    "src/physical_fpv/fpv/material_bridge.py": "1336f93fe1597a5e35146df040f0f5cff9dddeba1583745ea8d2f2177f0ce033",
+    "src/physical_fpv/fpv/powertrain.py": "12bd80fe214baffaa1a237a13505999a3f872ba3199f5f45ab0564bab0c35b4f",
+    "src/physical_fpv/fpv/server.py": "f0bcee0bcdf1bdbd6d2e2ab86f26e7d21cfe52019b5148a23841b0dc4c189219",
+    "src/physical_fpv/fpv/simulator.py": "a25743941988953cc575302c4f2e0d64047f9bba68dbccddc883b0451094de98",
+    "src/physical_fpv/fpv/web/index.html": "51e6d7674c47a9ade900cb8c9aa1a85f6fe1bc8d88265a72eae061b33ab3294f"
+  },
+  "empirical_gate": "NOT ESTABLISHED",
+  "preserved_failures": [
+    "Chen 6/12 fail",
+    "ORegan combined empirical 30/36 fail",
+    "Stanford high-rate fail"
+  ],
+  "stages": {
+    "focused_tests": {
+      "exit_code": 0,
+      "passed": true
+    },
+    "lint": {
+      "exit_code": 0,
+      "passed": true
+    },
+    "format": {
+      "exit_code": 0,
+      "passed": true
+    },
+    "demo": {
+      "exit_code": 0,
+      "passed": true
+    },
+    "replay": {
+      "exit_code": 0,
+      "passed": true
+    }
+  },
+  "software_checks_passed": true
+}

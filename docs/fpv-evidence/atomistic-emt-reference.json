@@ -1,0 +1,50 @@
+{
+  "schema": "fpv-emt-al-eos-v1",
+  "ase_version": "3.26.0",
+  "method": "ASE empirical EMT / Birch-Murnaghan EOS; zero-K perfect fcc Al",
+  "source": "https://docs.ase-lib.org/ase/calculators/emt.html",
+  "structure": {
+    "element": "Al",
+    "lattice": "fcc",
+    "initial_lattice_a": 4.05,
+    "atoms": 32,
+    "periodic": true
+  },
+  "volume_per_atom_a3": [
+    14.693280768000008,
+    15.157245368531237,
+    15.630875552250005,
+    16.114270964343742,
+    16.607531250000008,
+    17.110756054406245,
+    17.62404502275001,
+    18.14749780021874,
+    18.681214032000007
+  ],
+  "energy_per_atom_ev": [
+    0.007684655788872785,
+    6.488580398533728e-07,
+    -0.004165700388688548,
+    -0.004626005486421669,
+    -0.0015020475862313198,
+    0.005015450705568941,
+    0.014733613844280818,
+    0.027488371936414735,
+    0.04319624554675326
+  ],
+  "equilibrium_volume_per_atom_a3": 15.92696366270484,
+  "energy_min_ev_per_atom": -0.004833192373454516,
+  "bulk_modulus_gpa": 38.739777413031966,
+  "density_kg_m3": 2813.0847151630965,
+  "max_force_ev_a": 1.417442552220649e-14,
+  "battery_mapping_allowed": false,
+  "empirical_gate": "NOT ESTABLISHED",
+  "limits": [
+    "empirical potential, not ab initio",
+    "no lithium migration or defect kinetics",
+    "not measured frame or electrode density",
+    "zero-temperature reference only"
+  ],
+  "structure_sha256": "99b7277af58fa8fab9d5f18457eb669555e2914e4ceaf3ce150d1ff484ef9920",
+  "sha256": "bbe79eafb26b1d8f7c92e059c39d7fda4fbdd0cf183e803595b010d56a6ee70c"
+}
