@@ -1,0 +1,9 @@
+PASS: keyboard and gamepad roll signs match x-forward/y-left/z-up
+PASS: Space disarms even when a range slider has focus
+PASS: repeated reset requests queue while a step is in flight
+PASS: paused arm/disarm emits zero-duration events and then stays idle
+PASS: held gamepad disarm button cannot generate a paused request loop
+PASS: persistent server errors pause rather than retry indefinitely
+PASS: paused gamepad disconnect clears commands and synchronizes disarm
+PASS: replay export preserves server JSON bytes and numeric representation
+8 mocked DOM/Gamepad checks passed; browser/hardware NOT RUN.

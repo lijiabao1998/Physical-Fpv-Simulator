@@ -1,0 +1,944 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-10-11T04:47:53.302033+00:00",
+  "scope": "Bounded thermal/physical audit: initial offline verification followed by one denied official raw-data acquisition attempt. No acquired raw archive, PyBaMM solve, parameter fit, threshold change or core edit. Synthetic powertrain time steps are analytic-model verification, not measurements.",
+  "software": {
+    "python": "3.12.14",
+    "numpy": "2.5.3"
+  },
+  "claims": {
+    "oregan_cohort_empirical_validation": "FAIL",
+    "oregan_independent_thermal_validation": false,
+    "new_fpv_hardware_validation": false,
+    "new_fpv_equation_and_accounting_verification": "PASS within declared synthetic model",
+    "unique_real_cell_failure_cause_identified": false
+  },
+  "cohort_summary_recalculation": {
+    "provenance": "Recomputed thresholds, counts and ranges from saved scalar summaries; NOT a fresh raw-data residual calculation. Recorded concentration/heat flags are not independently reproduced.",
+    "cases": 36,
+    "unique_cells": 12,
+    "empirical_pass": 6,
+    "empirical_fail": 30,
+    "numerical_status_counts": {
+      "not_run": 36
+    },
+    "gate_failure_counts": {
+      "voltage_rmse": 23,
+      "voltage_max": 26,
+      "capacity": 16,
+      "delivered_energy": 16,
+      "temperature_rmse": 11,
+      "temperature_max_error": 8,
+      "coverage": 12
+    },
+    "temperature_proxy_pass": 25,
+    "temperature_proxy_fail": 11,
+    "recorded_physical_audit_pass": 36,
+    "regating_mismatches": [],
+    "voltage_rmse_v_range": [
+      0.024512443607962356,
+      0.08799922324259482
+    ],
+    "temperature_rmse_k_range": [
+      0.3520306989114618,
+      14.680688015149764
+    ],
+    "groups": [
+      {
+        "ambient_c": 0,
+        "c_rate": 0.5,
+        "passing_cells": [],
+        "failing_cells": [
+          "785",
+          "786",
+          "787",
+          "788"
+        ],
+        "gate_failure_counts": {
+          "voltage_rmse": 4,
+          "voltage_max": 4,
+          "capacity": 4,
+          "delivered_energy": 4
+        }
+      },
+      {
+        "ambient_c": 0,
+        "c_rate": 1,
+        "passing_cells": [
+          "790",
+          "792"
+        ],
+        "failing_cells": [
+          "789",
+          "791"
+        ],
+        "gate_failure_counts": {
+          "temperature_rmse": 2,
+          "temperature_max_error": 2
+        }
+      },
+      {
+        "ambient_c": 0,
+        "c_rate": 2,
+        "passing_cells": [],
+        "failing_cells": [
+          "793",
+          "794",
+          "795",
+          "796"
+        ],
+        "gate_failure_counts": {
+          "voltage_rmse": 4,
+          "voltage_max": 4,
+          "capacity": 4,
+          "coverage": 4,
+          "delivered_energy": 4
+        }
+      },
+      {
+        "ambient_c": 10,
+        "c_rate": 0.5,
+        "passing_cells": [],
+        "failing_cells": [
+          "785",
+          "786",
+          "787",
+          "788"
+        ],
+        "gate_failure_counts": {
+          "voltage_rmse": 4,
+          "voltage_max": 4
+        }
+      },
+      {
+        "ambient_c": 10,
+        "c_rate": 1,
+        "passing_cells": [
+          "790",
+          "792"
+        ],
+        "failing_cells": [
+          "789",
+          "791"
+        ],
+        "gate_failure_counts": {
+          "temperature_rmse": 2,
+          "temperature_max_error": 1
+        }
+      },
+      {
+        "ambient_c": 10,
+        "c_rate": 2,
+        "passing_cells": [],
+        "failing_cells": [
+          "793",
+          "794",
+          "795",
+          "796"
+        ],
+        "gate_failure_counts": {
+          "voltage_rmse": 4,
+          "voltage_max": 4,
+          "capacity": 4,
+          "coverage": 4,
+          "temperature_rmse": 2,
+          "delivered_energy": 4
+        }
+      },
+      {
+        "ambient_c": 25,
+        "c_rate": 0.5,
+        "passing_cells": [
+          "787",
+          "788"
+        ],
+        "failing_cells": [
+          "785",
+          "786"
+        ],
+        "gate_failure_counts": {
+          "voltage_max": 2
+        }
+      },
+      {
+        "ambient_c": 25,
+        "c_rate": 1,
+        "passing_cells": [],
+        "failing_cells": [
+          "789",
+          "790",
+          "791",
+          "792"
+        ],
+        "gate_failure_counts": {
+          "voltage_max": 4,
+          "voltage_rmse": 3,
+          "temperature_rmse": 1,
+          "temperature_max_error": 1
+        }
+      },
+      {
+        "ambient_c": 25,
+        "c_rate": 2,
+        "passing_cells": [],
+        "failing_cells": [
+          "793",
+          "794",
+          "795",
+          "796"
+        ],
+        "gate_failure_counts": {
+          "voltage_rmse": 4,
+          "voltage_max": 4,
+          "capacity": 4,
+          "coverage": 4,
+          "temperature_rmse": 4,
+          "temperature_max_error": 4,
+          "delivered_energy": 4
+        }
+      }
+    ],
+    "disjoint_electrical_temperature_categories": {
+      "electrical_only_fail": 19,
+      "temperature_only_fail": 4,
+      "both_fail": 7,
+      "both_pass": 6
+    }
+  },
+  "independent_saved_curve_80_to_120_recalculation": {
+    "provenance": "Directly recomputed from locally present historical model CSVs; no measured raw trace, new solver or remote receipt verification.",
+    "voltage_v_max_difference": 0.0033209300229870564,
+    "voltage_v_peak_time_s": 140.0,
+    "temperature_k_max_difference": 0.018017734930026563,
+    "temperature_k_peak_time_s": 920.0,
+    "capacity_relative_difference": 3.4459802158082156e-05,
+    "common_interval_s": [
+      0.0,
+      3333.391292865383
+    ],
+    "passed": true,
+    "model_array_internal_checks": {
+      "mesh80": {
+        "rows": 335,
+        "finite": true,
+        "time_strictly_increasing": true,
+        "charge_integral_error_ah": 2.349231920106831e-13,
+        "lithium_relative_drift": 1.8506726126235504e-14,
+        "cutoff_time_s": 3333.506160869621,
+        "cutoff_voltage_v": 2.499999999999708
+      },
+      "mesh120": {
+        "rows": 335,
+        "finite": true,
+        "time_strictly_increasing": true,
+        "charge_integral_error_ah": 2.4424906541753444e-13,
+        "lithium_relative_drift": 2.5368770644952138e-14,
+        "cutoff_time_s": 3333.391292865383,
+        "cutoff_voltage_v": 2.4999999999997207
+      }
+    }
+  },
+  "availability": {
+    "thermal_raw_validation_archive_present": false,
+    "cohort_model_timeseries_present": false,
+    "cohort_raw_residual_recalculation": "NOT AVAILABLE in this checkout; compact scalar report cannot replace raw I/V/T samples and all 36 model trajectories.",
+    "mesh40_to_80_recalculation": "NOT AVAILABLE: mesh40 trajectory not retained locally. Saved result remains FAIL: 14.331230934 mV, 0.207438233 K.",
+    "cohort_heat_balance_recalculation": "NOT AVAILABLE: heating/cooling/C(T) arrays and native concentration fields not retained for all 36 cases.",
+    "full_cohort_refinement": "NOT RUN in retained 36-case report; separate one-case 80-to-120 result cannot qualify the cohort.",
+    "official_raw_acquisition": "One attempted official fetch returned URLError: <urlopen error Tunnel connection failed: 403 Forbidden>; no retry or alternative route."
+  },
+  "independent_powertrain_probes": {
+    "zero_load_cooling": {
+      "duration_s": 2,
+      "steps_s": [
+        0.2,
+        0.1,
+        0.05
+      ],
+      "exact_final_temperature_k": 305.5646325947852,
+      "absolute_error_k": [
+        0.003550618420149476,
+        0.0008872602924157036,
+        0.0002217904461758735
+      ],
+      "error_ratios": [
+        4.0017776637815805,
+        4.000444147680425
+      ],
+      "passed": true
+    },
+    "cold_cell_ambient_warming": {
+      "expected_midpoint_temperature_k": 283.8379606879607,
+      "observed_temperature_k": 283.8379606879607,
+      "cooling_is_signed_negative": true,
+      "thermal_balance_max_abs_j": 1.5987211554602254e-14,
+      "passed": true
+    },
+    "analytic_circulating_current_heat_and_cooling": {
+      "config": {
+        "series": 1,
+        "parallel": 2,
+        "cell_capacity_ah": 0.1,
+        "cell_resistance_ohm": 0.01,
+        "cell_harness_resistance_ohm": 0.003,
+        "cell_thermal_capacity_j_k": 2,
+        "initial_soc": [
+          [
+            0.9,
+            0.7
+          ]
+        ],
+        "initial_temperature_k": 299.15,
+        "ocv_empty_v": 3.1,
+        "ocv_full_v": 4.2,
+        "harness_resistance_ohm": 0.006,
+        "ambient_temperature_k": 298.15,
+        "cooling_w_k": 0.7,
+        "airspeed_cooling_w_k_per_m_s": 0.02,
+        "motor_resistance_ohm": 0.06,
+        "motor_constant_si": 0.0045,
+        "motor_viscous_friction_nm_s": 1e-06,
+        "esc_resistance_ohm": 0.008,
+        "propeller_diameter_m": 0.127,
+        "thrust_coefficient": 0.11,
+        "torque_coefficient": 0.012,
+        "air_density_kg_m3": 1.225,
+        "max_step_s": 1
+      },
+      "duration_s": 2,
+      "steps_s": [
+        0.2,
+        0.1,
+        0.05
+      ],
+      "lambda_per_s": 0.23504273504273504,
+      "beta_per_s": 0.35,
+      "initial_cell_heating_w": 0.7159763313609467,
+      "exact_final_temperature_k": 298.96265536615823,
+      "absolute_error_k": [
+        0.00014560168546040586,
+        3.63670973229091e-05,
+        9.089693719488423e-06
+      ],
+      "error_ratios": [
+        4.003665295791575,
+        4.000915591351287
+      ],
+      "ledgers": [
+        {
+          "dt_s": 0.2,
+          "cell_heat_total_j": 1.856650777592213,
+          "branch_harness_heat_j": 0.556995233277664,
+          "thermal_balance_max_abs_j": 1.5010215292932116e-13,
+          "energy_balance_error_j": -4.916067553040193e-13
+        },
+        {
+          "dt_s": 0.1,
+          "cell_heat_total_j": 1.8564962470766564,
+          "branch_harness_heat_j": 0.556948874122997,
+          "thermal_balance_max_abs_j": 1.0813572259849025e-13,
+          "energy_balance_error_j": -4.716227408607665e-13
+        },
+        {
+          "dt_s": 0.05,
+          "cell_heat_total_j": 1.8564576233187433,
+          "branch_harness_heat_j": 0.5569372869956227,
+          "thermal_balance_max_abs_j": 2.8044233602031454e-13,
+          "energy_balance_error_j": -7.953637748414621e-13
+        }
+      ],
+      "passed": true
+    },
+    "adiabatic_heat_allocation": {
+      "duration_s": 2,
+      "cell_internal_heat_total_j": 12.864389211137365,
+      "branch_harness_heat_j": 64.32194605568681,
+      "shared_harness_heat_j": 45.0253622389808,
+      "maximum_cell_node_mismatch_j": 4.725109192804666e-13,
+      "thermal_balance_max_abs_j": 4.725109192804666e-13,
+      "energy_balance_error_j": -1.0459189070388675e-11,
+      "passed": true
+    },
+    "airspeed_cooling_units": {
+      "speed_m_s": 12,
+      "thermal_conductance_w_k_per_cell": 0.36,
+      "expected_midpoint_temperature_k": 309.9905237904838,
+      "observed_temperature_k": 309.9905237904838,
+      "passed": true
+    }
+  },
+  "all_independent_powertrain_probes_passed": true,
+  "existing_focused_suite": {
+    "command": ".venv/bin/pytest -q tests/test_fpv_powertrain.py",
+    "result": "55 passed",
+    "wall_seconds_reported_by_pytest": 1.41,
+    "scope": "Existing implementation tests, separately distinguished from this audit's new analytical probes."
+  },
+  "retained_cell790_evidence": {
+    "provenance": "Values quoted/recombined from saved reports, NOT recomputed from raw measurement data.",
+    "empirical": {
+      "cell": "790",
+      "step": 11,
+      "implementation_split": "implementation_check",
+      "independence": "same-source reproduction; published fitted parameters",
+      "current_a": 5.0,
+      "c_rate": 1.0,
+      "source_sha256": "d50ad6da00d54d7aadf8e7c680f4885580e8bce263756fe8bfd4c0ec0720a4f5",
+      "measured_capacity_ah": 4.848523920405555,
+      "raw_reported_capacity_ah": 4.84884,
+      "raw_capacity_consistency_error_ah": 0.00031607959444546196,
+      "predicted_capacity_ah": 4.6297101289794975,
+      "predicted_cutoff_capacity_ah": 4.6297101289794975,
+      "termination": "event: Minimum voltage [V]",
+      "capacity_relative_error": 0.04512998079789908,
+      "measured_cutoff_time_s": 3491.048,
+      "predicted_endpoint_time_s": 3333.391292865383,
+      "predicted_cutoff_time_s": 3333.391292865383,
+      "voltage_rmse_v": 0.054808617658313935,
+      "voltage_max_abs_error_v": 0.3833522294724583,
+      "time_coverage": 0.954839719438227,
+      "common_interval_s": [
+        0.0,
+        3333.391292865383
+      ],
+      "measured_temperature_range_k": [
+        297.75,
+        310.45
+      ],
+      "measured_chamber_temperature_range_k": [
+        298.15,
+        298.15
+      ],
+      "thermal_comparison": {
+        "rmse_k": 1.1722601819197203,
+        "max_absolute_error_k": 1.6296699782676,
+        "full_discharge_peak_difference_k": -0.8239613175286422,
+        "observable": "lumped volume-average prediction vs surface thermocouple proxy",
+        "independent_thermal_validation": false
+      },
+      "gates": {
+        "voltage_rmse": false,
+        "voltage_max": false,
+        "capacity": true,
+        "coverage": true,
+        "voltage_cutoff_reached": true,
+        "physical_audit": true,
+        "temperature_rmse": true,
+        "temperature_max_error": true,
+        "delivered_energy": true
+      },
+      "protocol": "oregan2022-thermal-v1",
+      "parameter_set": "ORegan2022",
+      "nominal_temperature_c": 25,
+      "initial_temperature_k": 297.75,
+      "initial_temperature_source": "last zero-current RANGE / LogTemp001",
+      "initial_rest_voltage_v": 4.17934,
+      "ambient_sensor": "absent; nominal ambient used",
+      "measured_energy_wh": 16.821161367031646,
+      "predicted_delivered_energy_wh": 16.26602195343067,
+      "energy_relative_error": 0.03300244266659331,
+      "accumulator_energy_error_wh": 0.0007286329683537929,
+      "data_quality_flags": [],
+      "duplicate_records_kept_last": 19,
+      "changed_duplicate_records": 1,
+      "original_discharge_rows": 3644,
+      "normalized_discharge_rows": 3625,
+      "changed_duplicate_fields": [
+        "AhAccu",
+        "Voltage",
+        "WhAccu"
+      ],
+      "duplicate_policy": "keep last, first constant-current DCH block only",
+      "temperature_applicability": {
+        "ranges": {
+          "surface_measurement_c": [
+            24.600000000000023,
+            37.30000000000001
+          ],
+          "volume_average_prediction_c": [
+            24.600000000000023,
+            36.47603868247137
+          ]
+        },
+        "measurement_domains_c": {
+          "solid_diffusion_measurements": [
+            5.0,
+            45.0
+          ],
+          "exchange_current_measurements": [
+            15.0,
+            45.0
+          ],
+          "heat_capacity_measurements": [
+            25.0,
+            100.0
+          ]
+        },
+        "breaches": [
+          {
+            "property": "heat_capacity_measurements",
+            "trajectory": "surface_measurement_c",
+            "supported_c": [
+              25.0,
+              100.0
+            ],
+            "observed_c": [
+              24.600000000000023,
+              37.30000000000001
+            ]
+          },
+          {
+            "property": "heat_capacity_measurements",
+            "trajectory": "volume_average_prediction_c",
+            "supported_c": [
+              25.0,
+              100.0
+            ],
+            "observed_c": [
+              24.600000000000023,
+              36.47603868247137
+            ]
+          }
+        ],
+        "inside_all_listed_measurement_domains": false,
+        "note": "measurement domains are not proof of universal model validity"
+      },
+      "simulation": {
+        "config": {
+          "model": "DFN",
+          "thermal": "lumped",
+          "parameter_set": "ORegan2022",
+          "initial_temperature_k": 297.75,
+          "heat_transfer_coefficient_w_m2_k": 15,
+          "current_a": 5,
+          "ambient_temperature_k": 298.15,
+          "mesh_points": 120,
+          "tolerance": 1e-07,
+          "sample_period_s": 10.0,
+          "max_temperature_k": 333.15
+        },
+        "pybamm_version": "26.9.0.0",
+        "parameter_set": "ORegan2022",
+        "parameter_fingerprint": "ed8798d67bbda09fcd60debc01a664bb2dbe091271f5dc3523b5bf4661f3d4a5",
+        "compiled_template_cache": {
+          "hit": true,
+          "templates": 1,
+          "maximum_templates": 6,
+          "state_reset": "fresh initial conditions every solve"
+        },
+        "initial_state": "ORegan2022 initial concentrations; no SOC fit",
+        "termination": "event: Minimum voltage [V]",
+        "voltage_cutoff_reached": true,
+        "endpoint_time_s": 3333.391292865383,
+        "cutoff_capacity_ah": 4.6297101289794975,
+        "capacity_ah": 4.6297101289794975,
+        "physical_audit": {
+          "lithium_inventory_relative_drift": 2.5368770644952138e-14,
+          "charge_integral_error_ah": 2.4424906541753444e-13,
+          "concentration_bounds": {
+            "negative": {
+              "node_min_mol_m3": 1192.801868098311,
+              "node_max_mol_m3": 28866.0,
+              "surface_min_mol_m3": 1149.8006703609944,
+              "surface_max_mol_m3": 28866.000000000007,
+              "node_array_shape": [
+                120,
+                120,
+                335
+              ],
+              "min_mol_m3": 1149.8006703609944,
+              "max_mol_m3": 28866.000000000007,
+              "limit_mol_m3": 29583.0,
+              "passed": true
+            },
+            "positive": {
+              "node_min_mol_m3": 13975.0,
+              "node_max_mol_m3": 51490.149832573195,
+              "surface_min_mol_m3": 13975.000000000002,
+              "surface_max_mol_m3": 51536.05756529595,
+              "node_array_shape": [
+                120,
+                120,
+                335
+              ],
+              "min_mol_m3": 13975.0,
+              "max_mol_m3": 51536.05756529595,
+              "limit_mol_m3": 51765.0,
+              "passed": true
+            }
+          },
+          "electrolyte_min_mol_m3": 714.4968704314284,
+          "thermal_energy_balance": {
+            "stored_energy_j": 740.1586075206014,
+            "integrated_net_heat_j": 740.0900758451584,
+            "absolute_residual_j": 0.06853167544306871,
+            "relative_residual": 9.259052687725612e-05,
+            "relative_to_generated_heat": 3.1986748875957816e-05,
+            "passed": true,
+            "note": "trapezoidal sampled-output audit, not experimental validation"
+          },
+          "passed": true
+        },
+        "temperature_status": "lumped volume-average prediction; empirical qualification reported separately",
+        "scope": "fresh LG M50 benchmark; not certified for FPV, abuse, aging or safety",
+        "outside_benchmark_temperature": false,
+        "concentration_audit_scope": "finite-volume nodes and surface states at output times; no plotting ghost points",
+        "elapsed_seconds": 868.6198631030001,
+        "diagnostic_method": "default IDAKLU VM; solver statistics enabled"
+      },
+      "empirical_gate_passed": false,
+      "evidence_note": "Reuses verified CI grid120 solution; no new solve or fitting",
+      "ci_run_id": 37681264082,
+      "commit_sha": "f746e0e1483f9f5d616fdfd95c7a1cb03ffa2aea",
+      "initial_ocv_reference_temperature_v": 4.1810278797952565,
+      "initial_rest_voltage_difference_v": 0.0016878797952566416
+    },
+    "model_internal_cutoff": {
+      "terminal_voltage_v": 2.499999999999719,
+      "bulk_ocv_v": 3.096727133873872,
+      "bulk_temperature_k": 309.62603862316695,
+      "imposed_surface_boundary_temperature_k": 298.15,
+      "ambient_temperature_k": 298.15,
+      "negative_volume_mean_stoichiometry": 0.08598546350033798,
+      "positive_volume_mean_stoichiometry": 0.9162860492437042,
+      "negative_surface_x_average_stoichiometry": 0.04126543079311835,
+      "positive_surface_x_average_stoichiometry": 0.9896798292291146,
+      "negative_surface_min_stoichiometry": 0.038866939496867585,
+      "negative_surface_max_stoichiometry": 0.04285551785567358,
+      "positive_surface_min_stoichiometry": 0.9863267340593223,
+      "positive_surface_max_stoichiometry": 0.9955772735720615,
+      "negative_bulk_ocp_signed_v": -0.45787287273137534,
+      "positive_bulk_ocp_signed_v": 3.554600006605247,
+      "negative_particle_signed_v": -0.33865090877254667,
+      "positive_particle_signed_v": -0.05910596572848448,
+      "negative_reaction_signed_v": -0.07312128559980047,
+      "positive_reaction_signed_v": -0.07281046252449608,
+      "electrolyte_concentration_signed_v": -0.033087911280202706,
+      "electrolyte_ohmic_signed_v": -0.01860428297782714,
+      "negative_solid_ohmic_signed_v": -6.037933177396255e-06,
+      "positive_solid_ohmic_signed_v": -0.0013402782520279821,
+      "contact_signed_v": -0.0
+    },
+    "voltage_reconstruction_max_error_v": 9.934346678619477e-10,
+    "physical_audit": {
+      "lithium_inventory_relative_drift": 2.391318544401225e-14,
+      "charge_integral_error_ah": 1.3677947663381929e-13,
+      "concentration_bounds": {
+        "negative": {
+          "node_min_mol_m3": 1192.8018685411162,
+          "node_max_mol_m3": 28866.0,
+          "surface_min_mol_m3": 1149.8006711358337,
+          "surface_max_mol_m3": 28866.000000000007,
+          "node_array_shape": [
+            120,
+            120,
+            335
+          ],
+          "min_mol_m3": 1149.8006711358337,
+          "max_mol_m3": 28866.000000000007,
+          "limit_mol_m3": 29583.0,
+          "passed": true
+        },
+        "positive": {
+          "node_min_mol_m3": 13975.0,
+          "node_max_mol_m3": 51490.14983371743,
+          "surface_min_mol_m3": 13975.000000000002,
+          "surface_max_mol_m3": 51536.05756645778,
+          "node_array_shape": [
+            120,
+            120,
+            335
+          ],
+          "min_mol_m3": 13975.0,
+          "max_mol_m3": 51536.05756645778,
+          "limit_mol_m3": 51765.0,
+          "passed": true
+        }
+      },
+      "electrolyte_min_mol_m3": 714.4968704126414,
+      "thermal_energy_balance": {
+        "stored_energy_j": 740.1586037140811,
+        "integrated_net_heat_j": 740.0900893088733,
+        "absolute_residual_j": 0.06851440520779306,
+        "relative_residual": 9.25671941986366e-05,
+        "relative_to_generated_heat": 3.1978687902582856e-05,
+        "passed": true,
+        "note": "trapezoidal sampled-output audit, not experimental validation"
+      },
+      "passed": true
+    },
+    "unique_cause_identified": false
+  },
+  "causality": {
+    "established": [
+      "30/36 saved cohort empirical gates fail; all retained scalar thresholds/aggregate flags agree.",
+      "Single representative 40-to-80 grid sensitivity failed; saved 80-to-120 curves meet the three numerical comparison targets.",
+      "Cell790 refined voltage still fails with passing temperature-proxy targets.",
+      "Recorded model-internal negative-particle polarization dominates the model cutoff loss.",
+      "Eight published initial/geometry scalars match the audited parameter table; no numerical transcription error established by that limited comparison.",
+      "Temperature observables differ; no casing/core temperature model is provided by the lumped node.",
+      "Several parameter laws are outside their measured temperature or stoichiometry support."
+    ],
+    "not_identified": [
+      "Unique cause or fraction of each of the 30 failures attributable to cooling, inventory, diffusion, OCP, sensors, aging/history or other model error.",
+      "True ambient/fixture thermal boundary for each experiment.",
+      "Cell791 anomaly as specifically sensor failure versus real-cell behavior.",
+      "Volume-average/core temperature error or safety margin from surface-proxy agreement.",
+      "Full-cohort discretization and tolerance error.",
+      "Real FPV high-C pack, ESC, motor or propeller predictive validity."
+    ]
+  },
+  "thermal_model_assumptions": {
+    "equation": "C_i dT_i/dt=i_i^2 R_internal,i-H(v)(T_i-T_ambient)",
+    "units": {
+      "C_i": "J/K",
+      "R_internal,i": "ohm",
+      "H(v)": "W/K per cell",
+      "airspeed_gain": "W/K per (m/s)"
+    },
+    "midpoint_update": "T_new=T_old+dt*(q_mid-H*(T_old-Ta))/(C+dt*H/2)",
+    "allocation": "Branch/shared harness heat and motor/ESC losses are energy outflows outside cell nodes. No temperature state or conductive coupling is modeled for those components.",
+    "reversible_heat": "Absent; consistent with a synthetic temperature-independent OCV source, insufficient for measured battery calorimetry.",
+    "ambient_role": "Ideal prescribed reservoir; H and airspeed coefficient are invented, not measured convection correlations.",
+    "lumped_applicability": "No geometry/conductivity/Biot or spatial-temperature evidence establishes uniform real-cell temperature.",
+    "electrical_temperature_feedback": false,
+    "implementation_correction_required_by_this_audit": false,
+    "qualification_corrections_required": [
+      "Do not call analytical ledger closure real thermal validation.",
+      "Do not conflate per-cell H [W/K] with research-cell h [W/(m^2 K)] or transfer numerical values directly.",
+      "Do not inject all harness heat into each cell without a measured/declared thermal coupling model."
+    ]
+  },
+  "required_independent_measurements": [
+    {
+      "purpose": "Separate heat generation from cooling",
+      "measurements": [
+        "Time-synchronized current, terminal voltage, ambient air temperature next to the cell, multi-location casing temperature, sensor uncertainty/time constants and mounting details.",
+        "Independent calorimetric heat generation and heat capacity versus temperature/SOC, or independently characterized thermal relaxation with heat generation demonstrably negligible.",
+        "Fixture/contact conductance, tab leads, effective exposed area, airflow/propwash speed and orientation; core-to-surface gradient or calibrated multi-node thermal transfer."
+      ]
+    },
+    {
+      "purpose": "Resolve inventory/history versus transport/OCP",
+      "measurements": [
+        "Per-cell full conditioning/charge/hold/rest chronology, aging/storage history and calibrated coulomb count.",
+        "Independently measured active-electrode capacities/initial stoichiometries and matched OCP/entropy functions; one cell rest voltage alone is insufficient.",
+        "Qualified low-rate reference and pulse/rest profiles across temperature and SOC with electrode/kinetic support where the model exits sampled data."
+      ]
+    },
+    {
+      "purpose": "Qualify actual FPV powertrain",
+      "measurements": [
+        "Actual pack branch currents, four-wire cell/connector/lead resistances versus SOC/temperature, individual cell temperatures, and thermal coupling geometry.",
+        "Motor/ESC torque-speed-current efficiency/loss maps and dynamic step response; separate motor/ESC temperatures/cooling.",
+        "Propeller CT/CQ versus advance ratio/RPM and Reynolds conditions plus airframe inflow/propwash; held-out flight profiles at rated operating limits."
+      ]
+    }
+  ],
+  "source_sha256": {
+    "src/physical_fpv/fpv/powertrain.py": "12bd80fe214baffaa1a237a13505999a3f872ba3199f5f45ab0564bab0c35b4f",
+    "tests/test_fpv_powertrain.py": "0246758be48d01534be090977959ce167fb2f0a6af32e8d0425f465abbde9b9d",
+    "docs/fpv-powertrain.md": "10520b9072441e3193ba0570d03cacc3e129c07a371d75e2608cdadeaf0f4cf1",
+    "docs/thermal-protocol.md": "bb16c670d090854d1a2ade8ef300eec6c5ab39d1eb073182186113fb6de5d6cf",
+    "docs/causal-diagnosis.md": "99c2e4ccbae2de3d94c5480dba7fba077b7ac4c5fbb41e2fe9ce977cb0436903",
+    "docs/polarization-findings.md": "a1da9fef63d733aab4add70ce2e6b6b670b76bf81286b7df84f516f3cb21cf61",
+    "src/physical_fpv/thermal_benchmark.py": "cd7f101bb67b0e6d6dfe2da54727ff89286cfee788307a367461a3e6664a2ba4",
+    "src/physical_fpv/core.py": "1295d1b51e0989021b037ecc8a5b7b66d8e38da43958cfd1df98bc1c031f506b",
+    "docs/benchmarks/thermal-summary.json": "7da41604b665f7ccf81621a75a28668fe8973ff92bd455ceec9659f144fb4610",
+    "docs/benchmarks/thermal-representative-grid-comparison.json": "5954d8ff4e06b8bff0bbd4ed918f79a9901352d534f1aad53269230020047332",
+    "docs/benchmarks/thermal-grid80-to120.json": "5d2ab064c72213faeeb3fe231b0144f3ed015d15c739a00ce6bc009706f8d66c",
+    "docs/benchmarks/thermal-grid80-reference.csv": "c6a19fbed16508bf16499b485247776ff994d8946f01d321267dea89de6b0134",
+    "docs/benchmarks/thermal-grid120-reference.csv": "61585bc925a0328513f7f6a905d55a926eed762530f5e9faae2e005d8a492846",
+    "docs/benchmarks/cell790-grid120-diagnosis.json": "05f528e8b7d5bf4a50b1e8547d52dd426b3737d25e0cb812d2a03143b4232ba0",
+    "docs/benchmarks/cell790-rest-state.json": "b8670145da7c0ac21197bdfaeaf08e1439edf4718f19d567d223d6bd9f57c48d",
+    "docs/benchmarks/oregan-definition-audit.json": "f77ea824b8e235a1c8a6589bc94feaaa370f9c538dfd62939581010ee50191a4",
+    "docs/benchmarks/oregan-parameter-support.json": "129b86a3f8c12893448b715c44fda2696796609c825524699557f31286110b6c",
+    "docs/benchmarks/polarization-grid120-summary.json": "465058421f31a1ba22bb9e065b27c5250e3efabe5c145ca0e325afb4b3c73690"
+  },
+  "source_attribution": {
+    "schema_version": 1,
+    "datasets": [
+      {
+        "id": "tec_validation",
+        "title": "TEC-reduced-model v1.0 thermal validation archive",
+        "authors": [
+          "Ferran Brosa Planella",
+          "Muhammad Sheikh",
+          "W. Dhammika Widanage"
+        ],
+        "archive_creator": "Ferran Brosa Planella",
+        "authors_basis": "Related source-paper authors; archive creator is Ferran Brosa Planella.",
+        "doi": "10.5281/zenodo.4864437",
+        "source_url": "https://zenodo.org/records/4864437",
+        "paper_doi": "10.1016/j.electacta.2021.138524",
+        "license": "BSD-3-Clause",
+        "license_url": "https://github.com/brosaplanella/TEC-reduced-model/blob/v1.0/LICENSE",
+        "license_basis": "v1.0 archive LICENSE; Zenodo record label is other-open",
+        "copyright": "Copyright (c) 2020, Ferran Brosa Planella",
+        "license_notice": "BSD 3-Clause License\n\nCopyright (c) 2020, Ferran Brosa Planella\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n",
+        "license_notice_file": "licenses/TEC-BSD-3-Clause.txt",
+        "modifications": "The downloaded archive is unmodified. Analysis selects the first contiguous discharge, retains the last row at duplicate timestamps, converts Celsius to Kelvin and changes discharge current to a positive magnitude. Initial cell temperature uses the preceding rest; electrode concentrations stay published and nominal ambient is used by the model. Generated comparisons, interpolated residuals and integrated metrics are derived analyses. Duplicate conflicts and source quality warnings are retained in the reports."
+      },
+      {
+        "id": "oregan2022_parameters",
+        "title": "O'Regan et al. thermal-electrochemical parameter measurements",
+        "authors_basis": "Official Zenodo record creator list verified on 2026-10-08.",
+        "authors": [
+          "O'Regan, Kieran",
+          "Brosa-Planella, Ferran",
+          "Widanage, W. Dhammika",
+          "Kendrick, Emma"
+        ],
+        "doi": "10.5281/zenodo.5171874",
+        "source_url": "https://zenodo.org/records/5171874",
+        "paper_doi": "10.1016/j.electacta.2022.140700",
+        "license": "CC-BY-4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "modifications": "Measurement-source provenance for the published ORegan2022 parameterization. The model uses the installed PyBaMM implementation of published functions and corrections; no new parameter fitting is performed. Exports distinguish unchanged source CSV members, declared unit conversions, fixed-function comparisons and derived model outputs. PyBaMM's BSD-3-Clause software license does not replace this data license."
+      }
+    ],
+    "software": [
+      {
+        "name": "PyBaMM",
+        "authors": [
+          "Valentin Sulzer",
+          "Scott G. Marquis",
+          "Robert Timms",
+          "Martin Robinson",
+          "S. Jon Chapman"
+        ],
+        "doi": "10.5334/jors.309",
+        "source_url": "https://github.com/pybamm-team/PyBaMM",
+        "license": "BSD-3-Clause",
+        "license_url": "https://github.com/pybamm-team/PyBaMM/blob/main/LICENSE.txt",
+        "scope": "Software implementation only; measurement-data licenses are listed separately."
+      }
+    ],
+    "original_project_code_license": "No license has been selected.",
+    "scope": "Source licenses remain separate. This attribution is not a blanket license for the evidence bundle or original project code. Cited authors and projects do not endorse this analysis. Source paper licenses are not inferred from dataset licenses."
+  },
+  "offline_parameter_definition_recheck": {
+    "pybamm_version": "26.9.0.0",
+    "values": {
+      "Initial concentration in negative electrode [mol.m-3]": {
+        "saved_published_value": 28866.0,
+        "installed_value": 28866.0,
+        "match": true
+      },
+      "Initial concentration in positive electrode [mol.m-3]": {
+        "saved_published_value": 13975.0,
+        "installed_value": 13975.0,
+        "match": true
+      },
+      "Maximum concentration in negative electrode [mol.m-3]": {
+        "saved_published_value": 29583.0,
+        "installed_value": 29583.0,
+        "match": true
+      },
+      "Maximum concentration in positive electrode [mol.m-3]": {
+        "saved_published_value": 51765.0,
+        "installed_value": 51765.0,
+        "match": true
+      },
+      "Negative electrode active material volume fraction": {
+        "saved_published_value": 0.75,
+        "installed_value": 0.75,
+        "match": true
+      },
+      "Positive electrode active material volume fraction": {
+        "saved_published_value": 0.665,
+        "installed_value": 0.665,
+        "match": true
+      },
+      "Negative electrode thickness [m]": {
+        "saved_published_value": 8.52e-05,
+        "installed_value": 8.52e-05,
+        "match": true
+      },
+      "Positive electrode thickness [m]": {
+        "saved_published_value": 7.56e-05,
+        "installed_value": 7.56e-05,
+        "match": true
+      }
+    },
+    "all_match": true,
+    "scope": "Installed scalars compared to the retained published-definition ledger; paper not newly fetched or independently re-read."
+  },
+  "cell790_parameter_support_recalculation": {
+    "source": "Cell790 polarization summary surface extrema compared to locally vendored released exchange-current points. The separate oregan-parameter-support.json uses Stanford k1; its temperature results are NOT relabelled as ORegan cohort results.",
+    "electrodes": {
+      "negative": {
+        "released_kinetic_sample_x_range": [
+          0.1585,
+          1.0
+        ],
+        "released_temperature_c_range": [
+          15.0,
+          45.0
+        ],
+        "cell790_recorded_surface_x_range": [
+          0.038866939496867585,
+          0.9757631071899404
+        ],
+        "outside_sampled_stoichiometry_envelope": true,
+        "crossing_time_s": null,
+        "outside_duration_s": null
+      },
+      "positive": {
+        "released_kinetic_sample_x_range": [
+          0.2598,
+          0.8499
+        ],
+        "released_temperature_c_range": [
+          15.0,
+          45.0
+        ],
+        "cell790_recorded_surface_x_range": [
+          0.2699700569883126,
+          0.9955772735720617
+        ],
+        "outside_sampled_stoichiometry_envelope": true,
+        "crossing_time_s": null,
+        "outside_duration_s": null
+      }
+    },
+    "interpretation": "Support exit is established. It does not quantify function error or cause the voltage discrepancy uniquely."
+  },
+  "reproduction": {
+    "cohort": "Load docs/benchmarks/thermal-summary.json, reapply gates to saved scalar metrics, and count every retained case; raw residuals cannot be reproduced from this compact summary.",
+    "mesh": "Union the two CSV time grids over their common interval without extrapolation; interpolate each piecewise-linear series, compute max absolute voltage/temperature differences and absolute endpoint-capacity difference divided by mesh120 capacity.",
+    "analytical_oracle_python": "from dataclasses import asdict\nimport numpy as np\nfrom physical_fpv.fpv.powertrain import Powertrain, PowertrainConfig\n# Independent closed-form cooling / warming oracle, deliberately different parameters from tests.\nchecks={}; errors=[]\nfor dt in [.2,.1,.05]:\n cfg=PowertrainConfig(initial_temperature_k=318.15,ambient_temperature_k=293.15,cooling_w_k=.7,cell_thermal_capacity_j_k=2,max_step_s=1)\n p=Powertrain(cfg)\n for _ in range(round(2/dt)):o=p.step([0]*4,dt)\n exact=293.15+25*np.exp(-.7*2/2);err=float(abs(o.cell_temperature_k[0,0]-exact));errors.append(err)\nchecks['zero_load_cooling']={'duration_s':2,'steps_s':[.2,.1,.05],'exact_final_temperature_k':float(exact),'absolute_error_k':errors,'error_ratios':[errors[0]/errors[1],errors[1]/errors[2]],'passed':all(3.9<x<4.1 for x in [errors[0]/errors[1],errors[1]/errors[2]])}\np=Powertrain(PowertrainConfig(initial_temperature_k=283.15,ambient_temperature_k=303.15,cooling_w_k=.7,cell_thermal_capacity_j_k=2,max_step_s=1)); o=p.step([0]*4,.1);tel=p.telemetry();expected=283.15+.1*.7*20/(2+.1*.7/2)\nchecks['cold_cell_ambient_warming']={'expected_midpoint_temperature_k':expected,'observed_temperature_k':float(o.cell_temperature_k[0,0]),'cooling_is_signed_negative':bool(np.all(np.asarray(tel['integrals']['cell_cooling_j'])<0)),'thermal_balance_max_abs_j':tel['audits']['thermal_balance_max_abs_j'],'passed':abs(o.cell_temperature_k[0,0]-expected)<1e-12 and bool(np.all(np.asarray(tel['integrals']['cell_cooling_j'])<0))}\n# Exact zero-load two-cell equalization, with nonzero branch heating and simultaneous cooling.\n# dz_difference/dt=-lambda*dz_difference; q_cell=A exp(-2 lambda t).\ncfg=PowertrainConfig(series=1,parallel=2,initial_soc=[[.9,.7]],cell_capacity_ah=.1,cell_resistance_ohm=.01,cell_harness_resistance_ohm=.003,initial_temperature_k=299.15,ambient_temperature_k=298.15,cell_thermal_capacity_j_k=2,cooling_w_k=.7,max_step_s=1)\nlam=(cfg.ocv_full_v-cfg.ocv_empty_v)/((cfg.cell_resistance_ohm+cfg.cell_harness_resistance_ohm)*cfg.cell_capacity_ah*3600);beta=cfg.cooling_w_k/cfg.cell_thermal_capacity_j_k;A=((cfg.ocv_full_v-cfg.ocv_empty_v)*.2/(2*(cfg.cell_resistance_ohm+cfg.cell_harness_resistance_ohm)))**2*cfg.cell_resistance_ohm;tend=2\nexact=cfg.ambient_temperature_k+(cfg.initial_temperature_k-cfg.ambient_temperature_k)*np.exp(-beta*tend)+A/cfg.cell_thermal_capacity_j_k*(np.exp(-2*lam*tend)-np.exp(-beta*tend))/(beta-2*lam);errors=[];heats=[]\nfor dt in [.2,.1,.05]:\n p=Powertrain(cfg)\n for _ in range(round(tend/dt)):o=p.step([0]*4,dt)\n errors.append(float(abs(o.cell_temperature_k[0,0]-exact)));tel=p.telemetry();heats.append({'dt_s':dt,'cell_heat_total_j':float(np.sum(tel['integrals']['cell_heat_j'])),'branch_harness_heat_j':tel['integrals']['branch_harness_heat_j'],'thermal_balance_max_abs_j':tel['audits']['thermal_balance_max_abs_j'],'energy_balance_error_j':tel['audits']['energy_balance_error_j']})\nchecks['analytic_circulating_current_heat_and_cooling']={'config':asdict(cfg),'duration_s':tend,'steps_s':[.2,.1,.05],'lambda_per_s':lam,'beta_per_s':beta,'initial_cell_heating_w':A,'exact_final_temperature_k':float(exact),'absolute_error_k':errors,'error_ratios':[errors[0]/errors[1],errors[1]/errors[2]],'ledgers':heats,'passed':all(3.9<x<4.1 for x in [errors[0]/errors[1],errors[1]/errors[2]])}\ncfg=PowertrainConfig(cell_resistance_ohm=.01,cell_harness_resistance_ohm=.05,harness_resistance_ohm=.07,cooling_w_k=0,airspeed_cooling_w_k_per_m_s=0)\np=Powertrain(cfg)\nfor _ in range(40):o=p.step([.6]*4,.05)\ntel=p.telemetry();inte=tel['integrals'];state_heat=cfg.cell_thermal_capacity_j_k*(o.cell_temperature_k-cfg.initial_temperature_k);err=float(abs(state_heat-np.asarray(inte['cell_heat_j'])).max())\nchecks['adiabatic_heat_allocation']={'duration_s':2,'cell_internal_heat_total_j':float(np.sum(inte['cell_heat_j'])),'branch_harness_heat_j':inte['branch_harness_heat_j'],'shared_harness_heat_j':inte['shared_harness_heat_j'],'maximum_cell_node_mismatch_j':err,'thermal_balance_max_abs_j':tel['audits']['thermal_balance_max_abs_j'],'energy_balance_error_j':tel['audits']['energy_balance_error_j'],'passed':err<1e-9 and inte['branch_harness_heat_j']>0 and inte['shared_harness_heat_j']>0}\n# With a fixed initial state at electrical rest, only H(v) changes the cooling solution.\np=Powertrain(PowertrainConfig(initial_temperature_k=310));o=p.step([0]*4,.1,airspeed_m_s=12);H=.12+.02*12;expected=310+.1*(-H*(310-298.15))/(45+.05*H)\nchecks['airspeed_cooling_units']={'speed_m_s':12,'thermal_conductance_w_k_per_cell':H,'expected_midpoint_temperature_k':expected,'observed_temperature_k':float(o.cell_temperature_k[0,0]),'passed':abs(expected-o.cell_temperature_k[0,0])<1e-12}\n\nassert all(x['passed'] for x in checks.values())\nprint(checks)\n",
+    "run_saved_oracle": ".venv/bin/python -c \"import json; exec(json.load(open('results/fpv-thermal-audit.json'))['reproduction']['analytical_oracle_python'])\""
+  },
+  "initial_offline_stage_scope": "Bounded offline thermal/physical audit. No downloads, PyBaMM solve, parameter fit, threshold change, or core edit. Synthetic powertrain time steps are analytic-model verification, not measurements.",
+  "updated_utc": "2026-10-11T04:52:44.152092+00:00",
+  "official_raw_acquisition_attempt": {
+    "requested_utc": "2026-10-11T04:51:42.101929+00:00",
+    "max_wall_s": 120,
+    "max_download_bytes": 24000001,
+    "network_attempts": 1,
+    "method": "Unmodified physical_fpv.thermal_data.fetch_thermal_data; SIGALRM bounds complete acquisition to120s; downloader limits content to24000001 bytes.",
+    "target": "data/oregan/raw/validation.zip",
+    "status": "blocked_or_failed",
+    "error_type": "URLError",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+    "elapsed_s": 6.331180186003621,
+    "url": "https://zenodo.org/records/4864437/files/brosaplanella/TEC-reduced-model-v1.0.zip?download=1",
+    "expected_bytes": 23155564,
+    "expected_sha256": "3848d0eb1d70e4fc86cc77c272433053760b0bdfe25825ef652135edc43275b8",
+    "expected_md5": "f9306803d4a2e2a5e27ad9b43596fa12",
+    "archive_created": false,
+    "checksum_verified": false,
+    "retry_performed": false,
+    "alternate_route_attempted": false,
+    "conclusion": "Official-source request denied by network tunnel. Stop at this access denial; raw-data acquisition and empirical replay remain blocked."
+  },
+  "raw_cell790_empirical_replay": {
+    "status": "blocked_missing_verified_raw_archive",
+    "new_empirical_metrics_computed": false,
+    "new_source_cohort_inspection_computed": false,
+    "reason": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+    "retained_metrics": "Previously recorded cell790 metrics remain labelled saved-report evidence, not new raw-derived reproduction.",
+    "full_cohort_model_trajectories_available": false
+  }
+}

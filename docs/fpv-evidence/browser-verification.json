@@ -1,0 +1,28 @@
+{
+  "browser": "dot cloud Chromium, actual live UI",
+  "environment": "assistant cloud computer; user's computer untouched",
+  "passed": [
+    "GUI loads actual Python telemetry, rendered 3D perspective scene",
+    "arming and throttle change bus voltage/current/thrust and flight altitude",
+    "pitch input changes motion and contacts",
+    "FPV and chase camera projections render",
+    "pause stops simulated time advancement",
+    "repeated reset restores state while request is in flight",
+    "focused-slider Space disarm sets current/thrust to zero while paused without time change",
+    "actual browser download replays 845 requests over 42.2 simulated seconds exactly"
+  ],
+  "observed_and_fixed": [
+    "busy reset request dropped",
+    "keyboard/gamepad roll sign",
+    "focused-slider Space ignored",
+    "paused disarm backend state not synchronized",
+    "export snapshot aliasing",
+    "paused gamepad disconnect and retry loop (mocked input regression)",
+    "JSON parse/reserialize changed number representation and invalidated export checksum"
+  ],
+  "environment_incident": "One cloud Chromium renderer crash was observed during concurrent full regression. Cause not established. Reload succeeded and subsequent interaction/export verification passed.",
+  "not_run": ["physical joystick device", "measured flight", "camera optical calibration", "long-duration GUI stability"],
+  "screenshot": "fpv-gui-final.png",
+  "replay": "fpv-gui-replay-verification.json",
+  "mocked_ui_checks": "8 passing Node VM cases; distinct from actual browser and hardware"
+}

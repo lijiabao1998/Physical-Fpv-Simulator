@@ -1,0 +1,52 @@
+........................................................................ [  8%]
+........................................................................ [ 16%]
+..........................sss........................................... [ 25%]
+........................................................................ [ 33%]
+........................................................................ [ 42%]
+........................................................................ [ 50%]
+.............................................ss.s....................... [ 59%]
+..............s......................................................... [ 67%]
+....................................s................................... [ 76%]
+........................................................................ [ 84%]
+...s.....s.............................................................. [ 93%]
+.....................s....................................               [100%]
+=============================== warnings summary ===============================
+tests/test_experimental_low_rate.py::test_output_only_analytic_ode_preserves_observables_and_final_state
+tests/test_experimental_low_rate.py::test_output_only_analytic_ode_preserves_observables_and_final_state
+tests/test_experimental_low_rate.py::test_actual_event_endpoint_and_grid_retained_in_output_mode
+  /workspace/shared/fpv-completion-20261011/.venv/lib/python3.12/site-packages/pybamm/discretisations/discretisation.py:772: DeprecationWarning: `block_diag` is switching to the sparse array interface.
+  
+          For the case where input arrays are numpy arrays, this function is
+          switching to returning a sparse array instead of sparse matrix.
+          Recover the sparse matrix return value by making one input a sparse matrix.
+          For example, block_diag([coo_matrix(A), B]).
+          Avoid this message for sparse array output using block_diag([coo_array(A), B]).
+          For more information, see the spmatrix to sparray migration guide
+          https://docs.scipy.org/doc/scipy/reference/sparse.migration_to_sparray.html
+  
+          This function will be changed no earlier than v1.20.
+          
+    mass_matrix = pybamm.Matrix(block_diag(mass_list, format="csr"))
+
+tests/test_fpv_material_bridge.py: 20 warnings
+  /workspace/shared/fpv-completion-20261011/.venv/lib/python3.12/site-packages/ase/atoms.py:585: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+  As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+    a.shape = (-1,) + shape
+
+tests/test_stanford_k2_rest_inventory.py::test_saved_source_audit_reproduces_without_solve_download_or_fit
+tests/test_stanford_k2_rest_inventory.py::test_initial_inventory_cannot_be_refitted_in_saved_metadata
+tests/test_stanford_k2_state_analysis.py::test_state_analysis_is_exactly_reproducible_without_solve_or_download
+  /workspace/shared/fpv-completion-20261011/.venv/lib/python3.12/site-packages/pybamm/parameters/parameter_store.py:165: DeprecationWarning: The parameter 'Negative particle diffusivity [m2.s-1]' has been renamed to 'Negative electrode diffusivity [m2.s-1]' and will be removed in a future release. Using 'Negative electrode diffusivity [m2.s-1]'
+    return self._data[key]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [3] tests/test_data.py:24: Run physical-fpv fetch-data to obtain real public benchmark
+SKIPPED [2] tests/test_replay_verification.py:258: Saved artifact ZIPs absent; never download them for a unit test
+SKIPPED [1] tests/test_rest_diagnostic.py:20: Run physical-fpv thermal-fetch-data
+SKIPPED [1] tests/test_stanford_benchmark.py:101: Acquire the predeclared Stanford pilot
+SKIPPED [1] tests/test_stanford_data.py:153: Run python scripts/inspect_stanford_pilot.py --fetch
+SKIPPED [1] tests/test_stanford_k2.py:475: Pinned Stanford k2 workbook is not locally available
+SKIPPED [1] tests/test_stanford_k2_rest_inventory.py:82: Original k2 workbook not present; do not acquire it for this test
+SKIPPED [1] tests/test_thermal.py:50: Run physical-fpv thermal-fetch-data
+839 passed, 11 skipped, 26 warnings in 293.65s (0:04:53)

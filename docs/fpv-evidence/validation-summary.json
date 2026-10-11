@@ -1,0 +1,47 @@
+{
+  "base_commit": "1990e23ce35b16d73d2d65b0d9a586064963dd6a",
+  "tested_implementation_commit": "55f7afb4f6c139334b21532a98418572afd56aba",
+  "test_command": ".venv/bin/python -m pytest -q -rs",
+  "tests": {
+    "passed": 839,
+    "skipped": 11,
+    "warnings": 26,
+    "wall_seconds": 293.65
+  },
+  "fpv_focused_tests": {
+    "passed": 114,
+    "warnings": 20
+  },
+  "mocked_dom_gamepad_cases": 8,
+  "lint": "PASS",
+  "format": "PASS",
+  "actual_browser_replay": {
+    "requests": 845,
+    "simulated_time_s": 42.2,
+    "exact_same_environment_replay": "PASS"
+  },
+  "wheel_smoke": "PASS",
+  "remote_push": false,
+  "main_merge": false,
+  "deployment": false,
+  "empirical_qualification": "NOT ESTABLISHED",
+  "raw_thermal_reacquisition": {
+    "status": "BLOCKED",
+    "attempts": 1,
+    "error": "Tunnel connection failed: 403 Forbidden",
+    "bypass_or_retry": false
+  },
+  "not_completed": [
+    "DFT/NEB electrode qualification",
+    "high-C pack validation",
+    "independent measured FPV thermal/flight validation",
+    "physical gamepad hardware validation"
+  ],
+  "skips": [
+    "3 Chen raw data tests",
+    "2 absent replay artifact ZIP tests",
+    "2 thermal raw data tests",
+    "4 Stanford original workbook tests"
+  ],
+  "original_research_files_changed": false
+}

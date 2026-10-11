@@ -1,0 +1,1 @@
+recursive-include src/physical_fpv/fpv/web *.html

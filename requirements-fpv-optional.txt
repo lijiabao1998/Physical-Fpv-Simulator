@@ -1,0 +1,2 @@
+# Optional empirical-potential reference only; numerical core lock stays unchanged.
+ase==3.26.0

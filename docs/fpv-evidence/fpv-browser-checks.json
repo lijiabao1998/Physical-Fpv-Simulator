@@ -1,0 +1,14 @@
+[
+  {
+    "stage": "armed_paused",
+    "time": "13.00",
+    "current": "9.82 A"
+  },
+  {
+    "stage": "focused_slider_space_disarm",
+    "time": "13.00",
+    "current": "0.00 A",
+    "thrust": "0.00 N",
+    "armButton": "解鎖 ARM"
+  }
+]
