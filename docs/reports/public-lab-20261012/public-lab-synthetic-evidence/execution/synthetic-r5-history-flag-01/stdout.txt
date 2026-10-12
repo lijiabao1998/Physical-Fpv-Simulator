@@ -1,0 +1,13 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.11, pytest-8.4.2, pluggy-1.6.0
+rootdir: <LOCAL_PATH>
+configfile: pyproject.toml
+plugins: platformdirs-4.12.3
+collected 1 item
+
+tests\test_synthetic_envelope.py .
+
+=================================== PASSES ====================================
+=========================== short test summary info ===========================
+PASSED tests/test_synthetic_envelope.py::test_extrapolation_flag_includes_preparation_heat_peak
+============================== 1 passed in 2.17s ==============================

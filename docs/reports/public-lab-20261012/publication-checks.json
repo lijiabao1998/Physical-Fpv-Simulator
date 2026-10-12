@@ -1,0 +1,23 @@
+{
+  "publication_only": true,
+  "new_simulations": 0,
+  "new_gui_runs": 0,
+  "new_fits": 0,
+  "files": 60,
+  "total_bytes": 1293374,
+  "largest_bytes": 466758,
+  "valid_json_files": 24,
+  "privacy_findings": 0,
+  "unchanged_main_README": true,
+  "case_pairs": 364,
+  "numeric": 224,
+  "invalid": 140,
+  "status_counts": {
+    "DOMAIN_END_WITHOUT_PHYSICAL_CUTOFF": 29,
+    "PHYSICAL_CUTOFF_2P5_V": 195,
+    "INVALID_HISTORY_UPPER_VOLTAGE_PRIOR": 60,
+    "INVALID_INITIAL_RC_ENERGY_PRIOR": 72,
+    "INVALID_CHARGE_DOMAIN": 8
+  },
+  "broken_local_links": []
+}

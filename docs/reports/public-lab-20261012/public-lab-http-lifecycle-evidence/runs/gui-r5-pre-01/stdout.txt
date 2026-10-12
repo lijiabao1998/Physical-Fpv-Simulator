@@ -1,0 +1,227 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.11, pytest-8.4.2, pluggy-1.6.0 -- <LOCAL_PATH>
+cachedir: .pytest_cache
+rootdir: <LOCAL_PATH>
+configfile: pyproject.toml
+plugins: platformdirs-4.12.3
+collecting ... collected 10 items
+
+tests/test_fpv_integration.py::test_end_to_end_hover_replay_and_control PASSED
+tests/test_fpv_integration.py::test_disarm_reset_and_transactional_reject PASSED
+tests/test_fpv_integration.py::test_material_mass_reaches_dynamics PASSED
+tests/test_fpv_integration.py::test_http_controls_reset_and_reject FAILED
+tests/test_fpv_integration.py::test_export_roundtrip_and_tamper_rejection PASSED
+tests/test_fpv_integration.py::test_whole_chain_time_refinement_and_initial_disarm PASSED
+tests/test_fpv_integration.py::test_zero_time_disarm_preserves_states_and_replay PASSED
+tests/test_fpv_integration.py::test_exported_snapshots_do_not_alias_live_state PASSED
+tests/test_fpv_browser_logic.py::test_actual_ui_script_with_mocked_dom_and_gamepad PASSED
+tests/test_fpv_browser_logic.py::test_snapshot_mutation_cannot_change_simulator_or_old_replay PASSED
+
+================================== FAILURES ===================================
+_____________________ test_http_controls_reset_and_reject _____________________
+
+self = <urllib.request.HTTPHandler object at 0x00000191CAB47CE0>
+http_class = <class 'http.client.HTTPConnection'>
+req = <urllib.request.Request object at 0x00000191CAB93A40>, http_conn_args = {}
+host = '127.0.0.1:52773'
+h = <http.client.HTTPConnection object at 0x00000191C9E27890>
+headers = {'Connection': 'close', 'Content-Type': 'application/json', 'Host': '127.0.0.1:52773', 'User-Agent': 'Python-urllib/3.12'}
+
+    def do_open(self, http_class, req, **http_conn_args):
+        """Return an HTTPResponse object for the request, using http_class.
+    
+        http_class must implement the HTTPConnection API from http.client.
+        """
+        host = req.host
+        if not host:
+            raise URLError('no host given')
+    
+        # will parse host:port
+        h = http_class(host, timeout=req.timeout, **http_conn_args)
+        h.set_debuglevel(self._debuglevel)
+    
+        headers = dict(req.unredirected_hdrs)
+        headers.update({k: v for k, v in req.headers.items()
+                        if k not in headers})
+    
+        # TODO(jhylton): Should this be redesigned to handle
+        # persistent connections?
+    
+        # We want to make an HTTP/1.1 request, but the addinfourl
+        # class isn't prepared to deal with a persistent connection.
+        # It will try to read all remaining data from the socket,
+        # which will block while the server waits for the next request.
+        # So make sure the connection gets closed after the (only)
+        # request.
+        headers["Connection"] = "close"
+        headers = {name.title(): val for name, val in headers.items()}
+    
+        if req._tunnel_host:
+            tunnel_headers = {}
+            proxy_auth_hdr = "Proxy-Authorization"
+            if proxy_auth_hdr in headers:
+                tunnel_headers[proxy_auth_hdr] = headers[proxy_auth_hdr]
+                # Proxy-Authorization should not be sent to origin
+                # server.
+                del headers[proxy_auth_hdr]
+            h.set_tunnel(req._tunnel_host, headers=tunnel_headers)
+    
+        try:
+            try:
+>               h.request(req.get_method(), req.selector, req.data, headers,
+                          encode_chunked=req.has_header('Transfer-encoding'))
+
+<LOCAL_PATH> 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+<LOCAL_PATH> in request
+    self._send_request(method, url, body, headers, encode_chunked)
+<LOCAL_PATH> in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+<LOCAL_PATH> in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+<LOCAL_PATH> in _send_output
+    self.send(msg)
+<LOCAL_PATH> in send
+    self.connect()
+<LOCAL_PATH> in connect
+    self.sock = self._create_connection(
+<LOCAL_PATH> in create_connection
+    raise exceptions[0]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+address = ('127.0.0.1', 52773), timeout = <object object at 0x00000191C7299230>
+source_address = None
+
+    def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
+                          source_address=None, *, all_errors=False):
+        """Connect to *address* and return the socket object.
+    
+        Convenience function.  Connect to *address* (a 2-tuple ``(host,
+        port)``) and return the socket object.  Passing the optional
+        *timeout* parameter will set the timeout on the socket instance
+        before attempting to connect.  If no *timeout* is supplied, the
+        global default timeout setting returned by :func:`getdefaulttimeout`
+        is used.  If *source_address* is set it must be a tuple of (host, port)
+        for the socket to bind as a source address before making the connection.
+        A host of '' or port 0 tells the OS to use the default. When a connection
+        cannot be created, raises the last error if *all_errors* is False,
+        and an ExceptionGroup of all errors if *all_errors* is True.
+        """
+    
+        host, port = address
+        exceptions = []
+        for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+            af, socktype, proto, canonname, sa = res
+            sock = None
+            try:
+                sock = socket(af, socktype, proto)
+                if timeout is not _GLOBAL_DEFAULT_TIMEOUT:
+                    sock.settimeout(timeout)
+                if source_address:
+                    sock.bind(source_address)
+>               sock.connect(sa)
+E               PermissionError: [WinError 10013] 以一种访问权限不允许的方式做了一个访问套接字的尝试。
+
+<LOCAL_PATH> PermissionError
+
+During handling of the above exception, another exception occurred:
+
+    def test_http_controls_reset_and_reject():
+        server = make_server(0)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        base = f"http://127.0.0.1:{server.server_port}"
+    
+        def req(path, body=None, origin=None):
+            headers = {"Content-Type": "application/json"}
+            if origin:
+                headers["Origin"] = origin
+            request = urllib.request.Request(
+                base + path, data=None if body is None else json.dumps(body).encode(), headers=headers
+            )
+            return json.load(urllib.request.urlopen(request))
+    
+        try:
+>           assert req("/state")["controls"]["armed"] is False
+                   ^^^^^^^^^^^^^
+
+tests\test_fpv_integration.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_fpv_integration.py:70: in req
+    return json.load(urllib.request.urlopen(request))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<LOCAL_PATH> in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<LOCAL_PATH> in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+<LOCAL_PATH> in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+<LOCAL_PATH> in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+<LOCAL_PATH> in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <urllib.request.HTTPHandler object at 0x00000191CAB47CE0>
+http_class = <class 'http.client.HTTPConnection'>
+req = <urllib.request.Request object at 0x00000191CAB93A40>, http_conn_args = {}
+host = '127.0.0.1:52773'
+h = <http.client.HTTPConnection object at 0x00000191C9E27890>
+headers = {'Connection': 'close', 'Content-Type': 'application/json', 'Host': '127.0.0.1:52773', 'User-Agent': 'Python-urllib/3.12'}
+
+    def do_open(self, http_class, req, **http_conn_args):
+        """Return an HTTPResponse object for the request, using http_class.
+    
+        http_class must implement the HTTPConnection API from http.client.
+        """
+        host = req.host
+        if not host:
+            raise URLError('no host given')
+    
+        # will parse host:port
+        h = http_class(host, timeout=req.timeout, **http_conn_args)
+        h.set_debuglevel(self._debuglevel)
+    
+        headers = dict(req.unredirected_hdrs)
+        headers.update({k: v for k, v in req.headers.items()
+                        if k not in headers})
+    
+        # TODO(jhylton): Should this be redesigned to handle
+        # persistent connections?
+    
+        # We want to make an HTTP/1.1 request, but the addinfourl
+        # class isn't prepared to deal with a persistent connection.
+        # It will try to read all remaining data from the socket,
+        # which will block while the server waits for the next request.
+        # So make sure the connection gets closed after the (only)
+        # request.
+        headers["Connection"] = "close"
+        headers = {name.title(): val for name, val in headers.items()}
+    
+        if req._tunnel_host:
+            tunnel_headers = {}
+            proxy_auth_hdr = "Proxy-Authorization"
+            if proxy_auth_hdr in headers:
+                tunnel_headers[proxy_auth_hdr] = headers[proxy_auth_hdr]
+                # Proxy-Authorization should not be sent to origin
+                # server.
+                del headers[proxy_auth_hdr]
+            h.set_tunnel(req._tunnel_host, headers=tunnel_headers)
+    
+        try:
+            try:
+                h.request(req.get_method(), req.selector, req.data, headers,
+                          encode_chunked=req.has_header('Transfer-encoding'))
+            except OSError as err: # timeout error
+>               raise URLError(err)
+E               urllib.error.URLError: <urlopen error [WinError 10013] 以一种访问权限不允许的方式做了一个访问套接字的尝试。>
+
+<LOCAL_PATH> URLError
+- generated xml file: <LOCAL_PATH> -
+=========================== short test summary info ===========================
+FAILED tests/test_fpv_integration.py::test_http_controls_reset_and_reject - urllib.error.URLError: <urlopen error [WinError 10013] 以一种访问权限不允许的方式做了一个访问套接字的尝试。>
+========================= 1 failed, 9 passed in 4.86s =========================

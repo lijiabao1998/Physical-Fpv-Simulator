@@ -1,0 +1,1126 @@
+{
+  "label": "\u5be6\u6e2c\u8cc7\u6599\u6821\u6e96\u4e4b\u6a21\u64ec\u9810\u6e2c",
+  "own_measurements": false,
+  "started_at": "2026-10-11T22:11:49.697992+00:00",
+  "finished_at": "2026-10-11T22:11:49.935329+00:00",
+  "frozen": {
+    "protocol_sha256": "d3e545b6fee15c660228e4e00d214e4ec4fd86bd8ef7bc6c1473d8d005f64a19",
+    "protocol_commit": "4a887be57a8d0a5ab2a9a822d998453000228ee6",
+    "base_sha": "839f775fd4c32563d3ee9fc2ed8967b2d9dbf9cc",
+    "train": [
+      {
+        "cell": "02",
+        "step": 7,
+        "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+      },
+      {
+        "cell": "02",
+        "step": 12,
+        "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+      },
+      {
+        "cell": "02",
+        "step": 17,
+        "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+      },
+      {
+        "cell": "02",
+        "step": 22,
+        "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+      }
+    ],
+    "holdout": [
+      {
+        "cell": "03",
+        "step": 7,
+        "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+      },
+      {
+        "cell": "03",
+        "step": 12,
+        "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+      },
+      {
+        "cell": "03",
+        "step": 17,
+        "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+      },
+      {
+        "cell": "03",
+        "step": 22,
+        "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+      },
+      {
+        "cell": "04",
+        "step": 7,
+        "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+      },
+      {
+        "cell": "04",
+        "step": 12,
+        "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+      },
+      {
+        "cell": "04",
+        "step": 17,
+        "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+      },
+      {
+        "cell": "04",
+        "step": 22,
+        "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+      }
+    ],
+    "code_sha256": {
+      "<LOCAL_PATH>": "702e0d67577dfe4055bfd66376c07d22de1fa152b8e24be4c60c381c069faa45",
+      "src\\physical_fpv\\fpv\\public_lab_ecm.py": "3617b5e97399316b3abaffea791138eb65221f299a11b3ad1665cf556406cf1a",
+      "src\\physical_fpv\\fpv\\public_lab_pack.py": "b4b62479ef6b42a757d933ba07c43fb298d6732a721ad3dad2fca14560d5c2c3",
+      "src\\physical_fpv\\data.py": "11bd252b15fbf5010e7c756302b14159c62e7f9762d6b75765d0ea2b0c2d9004",
+      "src\\physical_fpv\\fpv\\powertrain.py": "12bd80fe214baffaa1a237a13505999a3f872ba3199f5f45ab0564bab0c35b4f"
+    },
+    "resume": {
+      "from": "docs\\benchmarks\\public-lab-chen-v1",
+      "fitting_rerun": false,
+      "parameter_sha256": "01d086e50d981c3a52349531b51aca82c8990c4c2e0b6462bc111267f84d7cef",
+      "original_fit_freeze": {
+        "protocol_sha256": "d3e545b6fee15c660228e4e00d214e4ec4fd86bd8ef7bc6c1473d8d005f64a19",
+        "protocol_commit": "4a887be57a8d0a5ab2a9a822d998453000228ee6",
+        "base_sha": "839f775fd4c32563d3ee9fc2ed8967b2d9dbf9cc",
+        "train": [
+          {
+            "cell": "02",
+            "step": 7,
+            "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+          },
+          {
+            "cell": "02",
+            "step": 12,
+            "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+          },
+          {
+            "cell": "02",
+            "step": 17,
+            "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+          },
+          {
+            "cell": "02",
+            "step": 22,
+            "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+          }
+        ],
+        "holdout": [
+          {
+            "cell": "03",
+            "step": 7,
+            "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+          },
+          {
+            "cell": "03",
+            "step": 12,
+            "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+          },
+          {
+            "cell": "03",
+            "step": 17,
+            "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+          },
+          {
+            "cell": "03",
+            "step": 22,
+            "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+          },
+          {
+            "cell": "04",
+            "step": 7,
+            "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+          },
+          {
+            "cell": "04",
+            "step": 12,
+            "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+          },
+          {
+            "cell": "04",
+            "step": 17,
+            "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+          },
+          {
+            "cell": "04",
+            "step": 22,
+            "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+          }
+        ],
+        "code_sha256": {
+          "<LOCAL_PATH>": "7e7bb57e4a0be7133cbb09bd5a4df6767bf9192b7a3169797567af8bc43b4f91",
+          "src\\physical_fpv\\fpv\\public_lab_ecm.py": "6f360f99e5834f9e6ca02d576d2c68eaeb9c2905a038feea376b0f5d986aec61",
+          "src\\physical_fpv\\fpv\\public_lab_pack.py": "9b31c72515e92051974ff0e0985cd91fed7c30913d4196a5534712c274c14bc1",
+          "src\\physical_fpv\\data.py": "f9f7194dad23787d89101fd5612da63b1ce93487d91ccc99f5c06aea9c35ec8c",
+          "src\\physical_fpv\\fpv\\powertrain.py": "c3540f7be70cdaa5e8dcdeef91acd16d2e8038e39bd098b9044e969e501c0304"
+        }
+      }
+    }
+  },
+  "parameters": {
+    "capacity_ah": 4.997664743700524,
+    "ocv_v": [
+      2.5913398150569926,
+      2.8860641715845565,
+      3.0488171884503403,
+      3.264534226848956,
+      3.448467889080426,
+      3.5929402068275875,
+      3.770936333992439,
+      3.9905481357454105,
+      4.146307701214474
+    ],
+    "r0_ohm": 0.03102386588207771,
+    "r1_ohm": 0.010865970068002046,
+    "thermal_capacity_j_k": 106.44690868465227,
+    "cooling_w_k": 0.06678497955842376,
+    "soc_knots": [
+      0.0,
+      0.025,
+      0.05,
+      0.1,
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ],
+    "tau_s": 30.0
+  },
+  "source": {
+    "doi": "10.5281/zenodo.4032561",
+    "license": "CC-BY-4.0",
+    "institutions": [
+      "University of Warwick WMG",
+      "University of Birmingham"
+    ],
+    "cell": "LG M50 21700 nominal 5Ah",
+    "conditions": "CC .1/.5/1/1.5C, ~25C chamber"
+  },
+  "comparisons": {
+    "prefit": [
+      {
+        "cell": "02",
+        "step": 7,
+        "nominal_current_a": 0.5,
+        "source_sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35",
+        "samples": 1213,
+        "voltage_rmse_mv": 38.49410912080535,
+        "voltage_peak_mv": 88.9008337499999,
+        "temperature_proxy_rmse_k": 0.43506821126021633,
+        "temperature_proxy_peak_k": 1.6898632345942701,
+        "model_stop_s": 36000.0,
+        "model_stop": "soc_zero_before_voltage_cutoff",
+        "measured_cutoff_s": 35985.27,
+        "measured_capacity_ah": 4.997664743700524,
+        "model_capacity_ah": 5.0,
+        "capacity_error_pct": 0.04672694987033488,
+        "energy_error_pct": -0.4988359104742268,
+        "measured_energy_wh": 18.275560895851402,
+        "model_energy_wh": 18.18439583526231,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 300.01559999999995,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": false
+        },
+        "passed": false,
+        "partition": "calibration"
+      },
+      {
+        "cell": "02",
+        "step": 12,
+        "nominal_current_a": 2.5,
+        "source_sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35",
+        "samples": 284,
+        "voltage_rmse_mv": 48.84983393820132,
+        "voltage_peak_mv": 187.88051666666527,
+        "temperature_proxy_rmse_k": 2.2329680414057895,
+        "temperature_proxy_peak_k": 5.789544252250494,
+        "model_stop_s": 7187.142857142857,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 7090.57002,
+        "measured_capacity_ah": 4.9239811993885,
+        "model_capacity_ah": 4.991071428571428,
+        "capacity_error_pct": 1.3625200110686908,
+        "energy_error_pct": 1.7671144978068432,
+        "measured_energy_wh": 17.55251305715525,
+        "model_energy_wh": 17.862686060117678,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 299.9989,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": false,
+          "temperature_peak": false,
+          "voltage_cutoff_reached": true
+        },
+        "passed": false,
+        "partition": "calibration"
+      },
+      {
+        "cell": "02",
+        "step": 17,
+        "nominal_current_a": 5.0,
+        "source_sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35",
+        "samples": 176,
+        "voltage_rmse_mv": 62.81128816223773,
+        "voltage_peak_mv": 120.33334999999967,
+        "temperature_proxy_rmse_k": 4.82747741297506,
+        "temperature_proxy_peak_k": 9.8138021271605,
+        "model_stop_s": 3574.2857142857138,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 3549.40002,
+        "measured_capacity_ah": 4.9297115986255005,
+        "model_capacity_ah": 4.9642857142857135,
+        "capacity_error_pct": 0.7013415484559582,
+        "energy_error_pct": 2.050134628749567,
+        "measured_energy_wh": 17.07392017613786,
+        "model_energy_wh": 17.42395852615392,
+        "time_coverage_pct": 99.99999999999999,
+        "temperature_initial_condition_k": 299.9989,
+        "gates": {
+          "voltage_rmse": false,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": false,
+          "temperature_peak": false,
+          "voltage_cutoff_reached": true
+        },
+        "passed": false,
+        "partition": "calibration"
+      },
+      {
+        "cell": "02",
+        "step": 22,
+        "nominal_current_a": 7.5,
+        "source_sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35",
+        "samples": 146,
+        "voltage_rmse_mv": 73.37693246347669,
+        "voltage_peak_mv": 141.47572434375766,
+        "temperature_proxy_rmse_k": 6.33101569225489,
+        "temperature_proxy_peak_k": 12.605636966186069,
+        "model_stop_s": 2370.0,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 2362.87998,
+        "measured_capacity_ah": 4.922605843470667,
+        "model_capacity_ah": 4.9375,
+        "capacity_error_pct": 0.3025665064995575,
+        "energy_error_pct": 2.199703725375679,
+        "measured_energy_wh": 16.622633006519795,
+        "model_energy_wh": 16.98828168401974,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 299.9822,
+        "gates": {
+          "voltage_rmse": false,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": false,
+          "temperature_peak": false,
+          "voltage_cutoff_reached": true
+        },
+        "passed": false,
+        "partition": "calibration"
+      },
+      {
+        "cell": "03",
+        "step": 7,
+        "nominal_current_a": 0.5,
+        "source_sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb",
+        "samples": 1214,
+        "voltage_rmse_mv": 38.71837304086382,
+        "voltage_peak_mv": 89.10083374999988,
+        "temperature_proxy_rmse_k": 0.3667036674992007,
+        "temperature_proxy_peak_k": 1.093257350916815,
+        "model_stop_s": 36000.0,
+        "model_stop": "soc_zero_before_voltage_cutoff",
+        "measured_cutoff_s": 36014.4,
+        "measured_capacity_ah": 5.001834136420768,
+        "model_capacity_ah": 5.0,
+        "capacity_error_pct": -0.03666927712401291,
+        "energy_error_pct": -0.5736536824853644,
+        "measured_energy_wh": 18.289313153669617,
+        "model_energy_wh": 18.18439583526231,
+        "time_coverage_pct": 99.96001599360255,
+        "temperature_initial_condition_k": 299.5546,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": false
+        },
+        "passed": false,
+        "partition": "holdout"
+      },
+      {
+        "cell": "03",
+        "step": 12,
+        "nominal_current_a": 2.5,
+        "source_sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb",
+        "samples": 284,
+        "voltage_rmse_mv": 47.74787055866205,
+        "voltage_peak_mv": 188.22781666666666,
+        "temperature_proxy_rmse_k": 1.4559167267801625,
+        "temperature_proxy_peak_k": 4.596413183100196,
+        "model_stop_s": 7187.142857142857,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 7090.33998,
+        "measured_capacity_ah": 4.923763638901668,
+        "model_capacity_ah": 4.991071428571428,
+        "capacity_error_pct": 1.366998796164287,
+        "energy_error_pct": 1.684665217329373,
+        "measured_energy_wh": 17.56674521368584,
+        "model_energy_wh": 17.862686060117678,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 299.5546,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": true
+        },
+        "passed": true,
+        "partition": "holdout"
+      },
+      {
+        "cell": "03",
+        "step": 17,
+        "nominal_current_a": 5.0,
+        "source_sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb",
+        "samples": 176,
+        "voltage_rmse_mv": 57.171900178849,
+        "voltage_peak_mv": 113.20834999999985,
+        "temperature_proxy_rmse_k": 3.562815233652658,
+        "temperature_proxy_peak_k": 8.088242372552315,
+        "model_stop_s": 3574.2857142857138,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 3552.97998,
+        "measured_capacity_ah": 4.934725016545084,
+        "model_capacity_ah": 4.9642857142857135,
+        "capacity_error_pct": 0.5990343462202841,
+        "energy_error_pct": 1.7705124636064218,
+        "measured_energy_wh": 17.12083206064704,
+        "model_energy_wh": 17.42395852615392,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 299.488,
+        "gates": {
+          "voltage_rmse": false,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": false,
+          "temperature_peak": false,
+          "voltage_cutoff_reached": true
+        },
+        "passed": false,
+        "partition": "holdout"
+      },
+      {
+        "cell": "03",
+        "step": 22,
+        "nominal_current_a": 7.5,
+        "source_sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb",
+        "samples": 148,
+        "voltage_rmse_mv": 63.21479162132214,
+        "voltage_peak_mv": 129.99696782205694,
+        "temperature_proxy_rmse_k": 4.733105596488806,
+        "temperature_proxy_peak_k": 10.130709794531697,
+        "model_stop_s": 2370.0,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 2367.31002,
+        "measured_capacity_ah": 4.931820111751667,
+        "model_capacity_ah": 4.9375,
+        "capacity_error_pct": 0.11516819591208538,
+        "energy_error_pct": 1.711067680325673,
+        "measured_energy_wh": 16.702490762768626,
+        "model_energy_wh": 16.98828168401974,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 299.50469999999996,
+        "gates": {
+          "voltage_rmse": false,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": false,
+          "temperature_peak": false,
+          "voltage_cutoff_reached": true
+        },
+        "passed": false,
+        "partition": "holdout"
+      },
+      {
+        "cell": "04",
+        "step": 7,
+        "nominal_current_a": 0.5,
+        "source_sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e",
+        "samples": 1212,
+        "voltage_rmse_mv": 38.19013853366627,
+        "voltage_peak_mv": 88.80083375000014,
+        "temperature_proxy_rmse_k": 0.4275353165289182,
+        "temperature_proxy_peak_k": 1.5698177548683816,
+        "model_stop_s": 36000.0,
+        "model_stop": "soc_zero_before_voltage_cutoff",
+        "measured_cutoff_s": 35953.11,
+        "measured_capacity_ah": 4.993272393322291,
+        "model_capacity_ah": 5.0,
+        "capacity_error_pct": 0.1347334202457251,
+        "energy_error_pct": -0.40945244902067524,
+        "measured_energy_wh": 18.259158406528407,
+        "model_energy_wh": 18.18439583526231,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 299.5872,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": false
+        },
+        "passed": false,
+        "partition": "holdout"
+      },
+      {
+        "cell": "04",
+        "step": 12,
+        "nominal_current_a": 2.5,
+        "source_sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e",
+        "samples": 284,
+        "voltage_rmse_mv": 46.18287285427221,
+        "voltage_peak_mv": 176.54166666666748,
+        "temperature_proxy_rmse_k": 2.467438084863643,
+        "temperature_proxy_peak_k": 6.573019798513712,
+        "model_stop_s": 7187.142857142857,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 7096.35,
+        "measured_capacity_ah": 4.927975130990751,
+        "model_capacity_ah": 4.991071428571428,
+        "capacity_error_pct": 1.2803696427744038,
+        "energy_error_pct": 1.5999028164431772,
+        "measured_energy_wh": 17.581400734594734,
+        "model_energy_wh": 17.862686060117678,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 299.5705,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": false,
+          "temperature_peak": false,
+          "voltage_cutoff_reached": true
+        },
+        "passed": false,
+        "partition": "holdout"
+      },
+      {
+        "cell": "04",
+        "step": 17,
+        "nominal_current_a": 5.0,
+        "source_sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e",
+        "samples": 177,
+        "voltage_rmse_mv": 55.741700345970926,
+        "voltage_peak_mv": 110.84165000000024,
+        "temperature_proxy_rmse_k": 5.944240224978533,
+        "temperature_proxy_peak_k": 11.844237869434835,
+        "model_stop_s": 3574.2857142857138,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 3550.45998,
+        "measured_capacity_ah": 4.9312206947525,
+        "model_capacity_ah": 4.9642857142857135,
+        "capacity_error_pct": 0.6705240259962331,
+        "energy_error_pct": 1.7815758433311624,
+        "measured_energy_wh": 17.11897107289242,
+        "model_energy_wh": 17.42395852615392,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 299.5705,
+        "gates": {
+          "voltage_rmse": false,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": false,
+          "temperature_peak": false,
+          "voltage_cutoff_reached": true
+        },
+        "passed": false,
+        "partition": "holdout"
+      },
+      {
+        "cell": "04",
+        "step": 22,
+        "nominal_current_a": 7.5,
+        "source_sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e",
+        "samples": 148,
+        "voltage_rmse_mv": 61.976078695745656,
+        "voltage_peak_mv": 128.33358010063645,
+        "temperature_proxy_rmse_k": 8.196153498524831,
+        "temperature_proxy_peak_k": 16.06172657202933,
+        "model_stop_s": 2370.0,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 2363.07,
+        "measured_capacity_ah": 4.923014863867334,
+        "model_capacity_ah": 4.9375,
+        "capacity_error_pct": 0.2942330367307955,
+        "energy_error_pct": 1.8094274705808155,
+        "measured_energy_wh": 16.686354207157024,
+        "model_energy_wh": 16.98828168401974,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 299.5872,
+        "gates": {
+          "voltage_rmse": false,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": false,
+          "temperature_peak": false,
+          "voltage_cutoff_reached": true
+        },
+        "passed": false,
+        "partition": "holdout"
+      }
+    ],
+    "postfit": [
+      {
+        "cell": "02",
+        "step": 7,
+        "nominal_current_a": 0.5,
+        "source_sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35",
+        "samples": 1213,
+        "voltage_rmse_mv": 16.562937256963117,
+        "voltage_peak_mv": 68.52531431360065,
+        "temperature_proxy_rmse_k": 0.3846367614058263,
+        "temperature_proxy_peak_k": 1.5918906182606065,
+        "model_stop_s": 35983.18615464377,
+        "model_stop": "soc_zero_before_voltage_cutoff",
+        "measured_cutoff_s": 35985.27,
+        "measured_capacity_ah": 4.997664743700524,
+        "model_capacity_ah": 4.997664743700524,
+        "capacity_error_pct": 0.0,
+        "energy_error_pct": -0.30793249026904723,
+        "measured_energy_wh": 18.275560895851402,
+        "model_energy_wh": 18.21928450607417,
+        "time_coverage_pct": 99.99420917126307,
+        "temperature_initial_condition_k": 300.01559999999995,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": false
+        },
+        "passed": false,
+        "partition": "calibration"
+      },
+      {
+        "cell": "02",
+        "step": 12,
+        "nominal_current_a": 2.5,
+        "source_sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35",
+        "samples": 284,
+        "voltage_rmse_mv": 21.41999145484132,
+        "voltage_peak_mv": 160.46632301566888,
+        "temperature_proxy_rmse_k": 0.7847436835150207,
+        "temperature_proxy_peak_k": 3.5859148205648808,
+        "model_stop_s": 7188.466429411092,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 7090.57002,
+        "measured_capacity_ah": 4.9239811993885,
+        "model_capacity_ah": 4.991990575979925,
+        "capacity_error_pct": 1.381186764073572,
+        "energy_error_pct": 1.335789575478663,
+        "measured_energy_wh": 17.55251305715525,
+        "model_energy_wh": 17.78697769680726,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 299.9989,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": true
+        },
+        "passed": true,
+        "partition": "calibration"
+      },
+      {
+        "cell": "02",
+        "step": 17,
+        "nominal_current_a": 5.0,
+        "source_sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35",
+        "samples": 176,
+        "voltage_rmse_mv": 10.15319922902121,
+        "voltage_peak_mv": 42.159951186617306,
+        "temperature_proxy_rmse_k": 0.5061273846326124,
+        "temperature_proxy_peak_k": 2.2872872131522968,
+        "model_stop_s": 3562.2683946203797,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 3549.40002,
+        "measured_capacity_ah": 4.9297115986255005,
+        "model_capacity_ah": 4.947594992528305,
+        "capacity_error_pct": 0.3627675482636983,
+        "energy_error_pct": 0.48791967533847735,
+        "measured_energy_wh": 17.07392017613786,
+        "model_energy_wh": 17.157227192028824,
+        "time_coverage_pct": 99.99999999999999,
+        "temperature_initial_condition_k": 299.9989,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": true
+        },
+        "passed": true,
+        "partition": "calibration"
+      },
+      {
+        "cell": "02",
+        "step": 22,
+        "nominal_current_a": 7.5,
+        "source_sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35",
+        "samples": 146,
+        "voltage_rmse_mv": 14.575946126360927,
+        "voltage_peak_mv": 57.88162536846686,
+        "temperature_proxy_rmse_k": 0.6356678587647872,
+        "temperature_proxy_peak_k": 1.1018316488607525,
+        "model_stop_s": 2353.5357163568087,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 2362.87998,
+        "measured_capacity_ah": 4.922605843470667,
+        "model_capacity_ah": 4.903199409076684,
+        "capacity_error_pct": -0.3942309218139761,
+        "energy_error_pct": -0.5376707366616773,
+        "measured_energy_wh": 16.622633006519795,
+        "model_energy_wh": 16.533257973181072,
+        "time_coverage_pct": 99.6045392181455,
+        "temperature_initial_condition_k": 299.9822,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": true
+        },
+        "passed": true,
+        "partition": "calibration"
+      },
+      {
+        "cell": "03",
+        "step": 7,
+        "nominal_current_a": 0.5,
+        "source_sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb",
+        "samples": 1214,
+        "voltage_rmse_mv": 17.198296478230596,
+        "voltage_peak_mv": 68.0383349477971,
+        "temperature_proxy_rmse_k": 0.4127578934592687,
+        "temperature_proxy_peak_k": 0.9950650519845112,
+        "model_stop_s": 35983.18615464377,
+        "model_stop": "soc_zero_before_voltage_cutoff",
+        "measured_cutoff_s": 36014.4,
+        "measured_capacity_ah": 5.001834136420768,
+        "model_capacity_ah": 4.997664743700524,
+        "capacity_error_pct": -0.08335727668146165,
+        "energy_error_pct": -0.38289380802359885,
+        "measured_energy_wh": 18.289313153669617,
+        "model_energy_wh": 18.21928450607417,
+        "time_coverage_pct": 99.9133295421936,
+        "temperature_initial_condition_k": 299.5546,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": false
+        },
+        "passed": false,
+        "partition": "holdout"
+      },
+      {
+        "cell": "03",
+        "step": 12,
+        "nominal_current_a": 2.5,
+        "source_sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb",
+        "samples": 284,
+        "voltage_rmse_mv": 20.623219451979924,
+        "voltage_peak_mv": 160.7431567439801,
+        "temperature_proxy_rmse_k": 0.7658537430160937,
+        "temperature_proxy_peak_k": 2.398049964104075,
+        "model_stop_s": 7188.466429411092,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 7090.33998,
+        "measured_capacity_ah": 4.923763638901668,
+        "model_capacity_ah": 4.991990575979925,
+        "capacity_error_pct": 1.3856663739747699,
+        "energy_error_pct": 1.2536897441299377,
+        "measured_energy_wh": 17.56674521368584,
+        "model_energy_wh": 17.78697769680726,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 299.5546,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": true
+        },
+        "passed": true,
+        "partition": "holdout"
+      },
+      {
+        "cell": "03",
+        "step": 17,
+        "nominal_current_a": 5.0,
+        "source_sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb",
+        "samples": 176,
+        "voltage_rmse_mv": 6.728277295279649,
+        "voltage_peak_mv": 43.472423904847176,
+        "temperature_proxy_rmse_k": 1.1229289444207358,
+        "temperature_proxy_peak_k": 1.8935170304187636,
+        "model_stop_s": 3562.2683946203797,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 3552.97998,
+        "measured_capacity_ah": 4.934725016545084,
+        "model_capacity_ah": 4.947594992528305,
+        "capacity_error_pct": 0.2608043191884235,
+        "energy_error_pct": 0.2125780525903398,
+        "measured_energy_wh": 17.12083206064704,
+        "model_energy_wh": 17.157227192028824,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 299.488,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": true
+        },
+        "passed": true,
+        "partition": "holdout"
+      },
+      {
+        "cell": "03",
+        "step": 22,
+        "nominal_current_a": 7.5,
+        "source_sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb",
+        "samples": 148,
+        "voltage_rmse_mv": 23.56999980039173,
+        "voltage_peak_mv": 79.16125661281504,
+        "temperature_proxy_rmse_k": 1.9380410783767492,
+        "temperature_proxy_peak_k": 3.3146160477975855,
+        "model_stop_s": 2353.5357163568087,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 2367.31002,
+        "measured_capacity_ah": 4.931820111751667,
+        "model_capacity_ah": 4.903199409076684,
+        "capacity_error_pct": -0.5803273847475476,
+        "energy_error_pct": -1.013218878496791,
+        "measured_energy_wh": 16.702490762768626,
+        "model_energy_wh": 16.533257973181072,
+        "time_coverage_pct": 99.4181453410487,
+        "temperature_initial_condition_k": 299.50469999999996,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": true
+        },
+        "passed": true,
+        "partition": "holdout"
+      },
+      {
+        "cell": "04",
+        "step": 7,
+        "nominal_current_a": 0.5,
+        "source_sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e",
+        "samples": 1212,
+        "voltage_rmse_mv": 15.56906626338224,
+        "voltage_peak_mv": 80.24858295191927,
+        "temperature_proxy_rmse_k": 0.45535330247814887,
+        "temperature_proxy_peak_k": 1.4705641114729815,
+        "model_stop_s": 35983.18615464377,
+        "model_stop": "soc_zero_before_voltage_cutoff",
+        "measured_cutoff_s": 35953.11,
+        "measured_capacity_ah": 4.993272393322291,
+        "model_capacity_ah": 4.997664743700524,
+        "capacity_error_pct": 0.08796536684252398,
+        "energy_error_pct": -0.2183775372690766,
+        "measured_energy_wh": 18.259158406528407,
+        "model_energy_wh": 18.21928450607417,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 299.5872,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": false
+        },
+        "passed": false,
+        "partition": "holdout"
+      },
+      {
+        "cell": "04",
+        "step": 12,
+        "nominal_current_a": 2.5,
+        "source_sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e",
+        "samples": 284,
+        "voltage_rmse_mv": 18.65915267544675,
+        "voltage_peak_mv": 150.89800701429556,
+        "temperature_proxy_rmse_k": 1.009933178177288,
+        "temperature_proxy_peak_k": 4.365952621203803,
+        "model_stop_s": 7188.466429411092,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 7096.35,
+        "measured_capacity_ah": 4.927975130990751,
+        "model_capacity_ah": 4.991990575979925,
+        "capacity_error_pct": 1.2990212671041501,
+        "energy_error_pct": 1.1692865961926202,
+        "measured_energy_wh": 17.581400734594734,
+        "model_energy_wh": 17.78697769680726,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 299.5705,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": true
+        },
+        "passed": true,
+        "partition": "holdout"
+      },
+      {
+        "cell": "04",
+        "step": 17,
+        "nominal_current_a": 5.0,
+        "source_sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e",
+        "samples": 177,
+        "voltage_rmse_mv": 6.516801853821628,
+        "voltage_peak_mv": 41.69271757754789,
+        "temperature_proxy_rmse_k": 1.5169460289145085,
+        "temperature_proxy_peak_k": 4.361249349715308,
+        "model_stop_s": 3562.2683946203797,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 3550.45998,
+        "measured_capacity_ah": 4.9312206947525,
+        "model_capacity_ah": 4.947594992528305,
+        "capacity_error_pct": 0.3320536392384499,
+        "energy_error_pct": 0.22347207068409425,
+        "measured_energy_wh": 17.11897107289242,
+        "model_energy_wh": 17.157227192028824,
+        "time_coverage_pct": 100.0,
+        "temperature_initial_condition_k": 299.5705,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": true
+        },
+        "passed": true,
+        "partition": "holdout"
+      },
+      {
+        "cell": "04",
+        "step": 22,
+        "nominal_current_a": 7.5,
+        "source_sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e",
+        "samples": 148,
+        "voltage_rmse_mv": 23.926503433642807,
+        "voltage_peak_mv": 68.10244947069721,
+        "temperature_proxy_rmse_k": 1.8331984998558863,
+        "temperature_proxy_peak_k": 3.418058438985497,
+        "model_stop_s": 2353.5357163568087,
+        "model_stop": "voltage_cutoff_2p5_v",
+        "measured_cutoff_s": 2363.07,
+        "measured_capacity_ah": 4.923014863867334,
+        "model_capacity_ah": 4.903199409076684,
+        "capacity_error_pct": -0.4025064993422256,
+        "energy_error_pct": -0.9174936122972044,
+        "measured_energy_wh": 16.686354207157024,
+        "model_energy_wh": 16.533257973181072,
+        "time_coverage_pct": 99.5965297835785,
+        "temperature_initial_condition_k": 299.5872,
+        "gates": {
+          "voltage_rmse": true,
+          "voltage_peak": true,
+          "capacity": true,
+          "energy": true,
+          "coverage": true,
+          "temperature_rmse": true,
+          "temperature_peak": true,
+          "voltage_cutoff_reached": true
+        },
+        "passed": true,
+        "partition": "holdout"
+      }
+    ]
+  },
+  "summary": {
+    "prefit": {
+      "calibration": {
+        "voltage_equal_curve_rms_rmse_mv": 57.440262123234604,
+        "thermal_equal_curve_rms_rmse_k": 4.140100496689387,
+        "passes": 0,
+        "count": 4
+      },
+      "holdout": {
+        "voltage_equal_curve_rms_rmse_mv": 51.94134133551695,
+        "thermal_equal_curve_rms_rmse_k": 4.273933598643137,
+        "passes": 1,
+        "count": 8
+      }
+    },
+    "postfit": {
+      "calibration": {
+        "voltage_equal_curve_rms_rmse_mv": 16.19176167504902,
+        "thermal_equal_curve_rms_rmse_k": 0.5966587473554593,
+        "passes": 3,
+        "count": 4
+      },
+      "holdout": {
+        "voltage_equal_curve_rms_rmse_mv": 17.77434690822562,
+        "thermal_equal_curve_rms_rmse_k": 1.258119992239049,
+        "passes": 6,
+        "count": 8
+      }
+    }
+  },
+  "holdout_voltage_improvement_pct": 65.77996168136747,
+  "candidate_gates": {
+    "all_eight_cases": false,
+    "voltage_improvement_ge_20_pct": true,
+    "thermal_no_regression": true
+  },
+  "candidate_passed": false,
+  "negative_controls": {
+    "corrupt_source_bytes": {
+      "rejected": true,
+      "error": "Checksum mismatch for cell02; data must not be used"
+    },
+    "heldout_to_fitter": {
+      "rejected": true,
+      "error": "fitter accepts only complete verified cell02 partition"
+    },
+    "partition_overlap": {
+      "rejected": true,
+      "error": "complete cell02 / cell03+04 partition required; overlap prohibited"
+    },
+    "negative_resistance": {
+      "rejected": true,
+      "error": "effective cell parameter outside frozen physical bounds"
+    },
+    "inverted_ocv": {
+      "rejected": true,
+      "error": "effective OCV must be finite, monotone and within frozen bounds"
+    },
+    "wrong_ah_seconds_scale": {
+      "rejected": true,
+      "error": "effective cell parameter outside frozen physical bounds"
+    },
+    "wrong_ampere_milliampere_scale": {
+      "rejected": true,
+      "error": "nominal discharge current/time outside source domain"
+    },
+    "negative_discharge_current": {
+      "rejected": true,
+      "error": "nominal discharge current/time outside source domain"
+    },
+    "unsupported_soc": {
+      "rejected": true,
+      "error": "SOC outside calibrated discharge domain [0,1]"
+    },
+    "unsupported_scenario_temperature": {
+      "rejected": true,
+      "error": "initial temperature outside calibration-observed range"
+    },
+    "permuted_heldout_voltage": {
+      "all_fail": true,
+      "voltage_equal_curve_rms_rmse_mv": 678.1802304911593
+    },
+    "zero_joule_heat": {
+      "worse_than_candidate": true,
+      "thermal_equal_curve_rms_rmse_k": 10.747215049028705
+    }
+  },
+  "scenarios": [],
+  "scenario_refinement": {},
+  "historical_failures_unchanged": {
+    "Chen_DFN": "6/12 FAIL",
+    "ORegan": "30/36 FAIL"
+  },
+  "limits": [
+    "effective CC model only; no high-C racing LiPo transfer",
+    "holdouts previously studied; not blind independent laboratory replication",
+    "no electrode-state or true thermodynamic OCV identification",
+    "temperature is surface-equivalent proxy; no core/motor/ESC temperature",
+    "pack load/thrust/endurance have no joint experimental error bound",
+    "no original failure threshold altered; no refitting to holdout"
+  ]
+}

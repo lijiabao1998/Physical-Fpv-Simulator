@@ -1,0 +1,376 @@
+"""Opt-in synthetic histories; no fitted coefficient or measured-state restoration.
+
+Current is positive on discharge. Temperatures are a lumped proxy. Every new
+state/slow branch/potential stress is an assumption, not an identified quantity.
+"""
+
+from __future__ import annotations
+
+import math
+from dataclasses import dataclass
+
+import numpy as np
+
+KNOTS = np.array([0, 0.001, 0.002, 0.005, 0.01, 0.025, 0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0])
+EVENT_TOL_S = 1e-6
+
+
+@dataclass(frozen=True)
+class State:
+    z: float
+    fast_v: float
+    slow_v: float
+    temperature_k: float
+
+
+@dataclass(frozen=True)
+class SyntheticCell:
+    capacity_ah: float
+    u_v: tuple[float, ...]
+    r0: float
+    r_fast: float
+    tau_fast: float
+    r_slow: float
+    tau_slow: float
+    heat_capacity: float
+    cooling: float
+
+    def __post_init__(self):
+        values = (
+            self.capacity_ah,
+            self.r0,
+            self.r_fast,
+            self.tau_fast,
+            self.heat_capacity,
+            self.cooling,
+        )
+        if not all(math.isfinite(x) and x > 0 for x in values):
+            raise ValueError("INVALID_POSITIVE_PARAMETER")
+        if not (
+            math.isfinite(self.r_slow)
+            and self.r_slow >= 0
+            and math.isfinite(self.tau_slow)
+            and self.tau_slow > 0
+        ):
+            raise ValueError("INVALID_SLOW_BRANCH")
+        if not (
+            4 <= self.capacity_ah <= 6
+            and 0.001 <= self.r0 <= 0.15
+            and 0.0001 <= self.r_fast <= 0.2
+            and 30 <= self.heat_capacity <= 120
+            and 0.01 <= self.cooling <= 1
+        ):
+            raise ValueError("INVALID_LEGACY_PARAMETER_BOUNDS")
+        u = np.asarray(self.u_v)
+        if (
+            u.shape != KNOTS.shape
+            or not np.isfinite(u).all()
+            or min(u) < 2.3
+            or max(u) > 4.25
+            or np.any(np.diff(u) < 0.001 - 1e-10)
+        ):
+            raise ValueError("INVALID_POTENTIAL_PRIOR")
+
+    @classmethod
+    def from_scenario(cls, base, scenario):
+        u = np.interp(KNOTS, base["soc_knots"], base["ocv_v"])
+        u += scenario["u_stress_v"] * (1 - KNOTS)
+        scale = scenario["heat_capacity_scale"]
+        capacity = 120.0 if scale == "120_J_per_K" else base["thermal_capacity_j_k"] * scale
+        return cls(
+            base["capacity_ah"],
+            tuple(u),
+            base["r0_ohm"],
+            base["r1_ohm"],
+            base["tau_s"],
+            scenario["r_slow_ohm"],
+            scenario["tau_slow_s"],
+            capacity,
+            base["cooling_w_k"] * scenario["cooling_scale"],
+        )
+
+    def check_state(self, state):
+        if not all(
+            math.isfinite(x) for x in (state.z, state.fast_v, state.slow_v, state.temperature_k)
+        ):
+            raise ValueError("INVALID_NONFINITE_STATE")
+        if not 0 <= state.z <= 1:
+            raise ValueError("INVALID_CHARGE_DOMAIN")
+        if state.temperature_k <= 0:
+            raise ValueError("INVALID_KELVIN")
+        if self.r_slow == 0 and state.slow_v != 0:
+            raise ValueError("INVALID_DISABLED_BRANCH_STATE")
+
+    def branches(self, state):
+        pairs = [(self.r_fast, self.tau_fast, state.fast_v)]
+        if self.r_slow:
+            pairs.append((self.r_slow, self.tau_slow, state.slow_v))
+        return pairs
+
+    def rc_energy(self, state):
+        self.check_state(state)
+        return sum(tau * p * p / (2 * r) for r, tau, p in self.branches(state))
+
+    def u(self, z):
+        z = np.asarray(z, dtype=float)
+        if not np.isfinite(z).all() or np.any(z < 0) or np.any(z > 1):
+            raise ValueError("INVALID_CHARGE_DOMAIN")
+        return np.interp(z, KNOTS, self.u_v)
+
+    def trace(self, state, current, ambient_k, times):
+        """Exact constant-input solution, no charge clipping or time stepping."""
+        self.check_state(state)
+        t = np.asarray(times, dtype=float)
+        if (
+            not math.isfinite(current)
+            or not math.isfinite(ambient_k)
+            or ambient_k <= 0
+            or not np.isfinite(t).all()
+            or np.any(t < 0)
+        ):
+            raise ValueError("INVALID_INPUT")
+        z = state.z - current * t / (3600 * self.capacity_ah)
+        potential = self.u(z)
+        poles = []
+        polarizations = []
+        q0 = current * current * self.r0
+        for r, tau, p0 in self.branches(state):
+            amplitude = p0 - current * r
+            p = current * r + amplitude * np.exp(-t / tau)
+            polarizations.append(p)
+            q0 += current * current * r
+            poles.extend([(1 / tau, 2 * current * amplitude), (2 / tau, amplitude * amplitude / r)])
+        k = self.cooling / self.heat_capacity
+        decay = np.exp(-k * t)
+        temp = ambient_k + (state.temperature_k - ambient_k) * decay
+        temp += q0 / self.cooling * (-np.expm1(-k * t))
+        for alpha, coefficient in poles:
+            diff = abs(k - alpha)
+            kernel = (
+                t * decay
+                if diff == 0
+                else (np.exp(-min(k, alpha) * t) * (-np.expm1(-diff * t)) / diff)
+            )
+            temp += coefficient / self.heat_capacity * kernel
+        fast = polarizations[0]
+        slow = polarizations[1] if self.r_slow else np.zeros_like(t)
+        heat = current * current * self.r0 + fast * fast / self.r_fast
+        if self.r_slow:
+            heat += slow * slow / self.r_slow
+        return {
+            "time_s": t,
+            "charge_z": z,
+            "potential_v": potential,
+            "voltage_v": potential - current * self.r0 - fast - slow,
+            "fast_v": fast,
+            "slow_v": slow,
+            "temperature_k": temp,
+            "heat_w": heat,
+        }
+
+    def end_state(self, state, current, ambient_k, duration):
+        value = self.trace(state, current, ambient_k, [duration])
+        return State(
+            float(value["charge_z"][0]),
+            float(value["fast_v"][0]),
+            float(value["slow_v"][0]),
+            float(value["temperature_k"][0]),
+        )
+
+    def voltage(self, state, current, time):
+        z = state.z - current * time / (3600 * self.capacity_ah)
+        p = sum(
+            current * r + (p0 - current * r) * math.exp(-time / tau)
+            for r, tau, p0 in self.branches(state)
+        )
+        return float(self.u(z)) - current * self.r0 - p
+
+    @staticmethod
+    def _bisect(function, left, right):
+        fleft = function(left)
+        for _ in range(64):
+            mid = (left + right) / 2
+            value = function(mid)
+            if value == 0:
+                return mid
+            if (fleft < 0) == (value < 0):
+                left, fleft = mid, value
+            else:
+                right = mid
+            if right - left <= EVENT_TOL_S:
+                break
+        return (left + right) / 2
+
+    def partitions(self, state, current, duration):
+        """Every potential knot and voltage stationary point in the interval.
+
+        Within each linear-potential interval the derivative has two exponentials
+        and a constant. Its derivative has at most one root (equal poles reduce
+        to one exponential), so partitioning there isolates all stationary roots.
+        """
+        self.check_state(state)
+        # Verify endpoint domain before computing any interpolation.
+        self.u(state.z - current * duration / (3600 * self.capacity_ah))
+        boundaries = [0.0, duration]
+        if current:
+            boundaries += [
+                float((state.z - z) * 3600 * self.capacity_ah / current)
+                for z in KNOTS
+                if 0 < (state.z - z) * 3600 * self.capacity_ah / current < duration
+            ]
+        boundaries = sorted(set(boundaries))
+        stationary = []
+        for left, right in zip(boundaries[:-1], boundaries[1:], strict=True):
+            zmid = state.z - current * (left + right) / 2 / (3600 * self.capacity_ah)
+            index = max(0, min(len(KNOTS) - 2, int(np.searchsorted(KNOTS, zmid) - 1)))
+            slope = (self.u_v[index + 1] - self.u_v[index]) / (KNOTS[index + 1] - KNOTS[index])
+            branches = [
+                (tau, (p - current * r) * math.exp(-left / tau))
+                for r, tau, p in self.branches(state)
+            ]
+
+            def derivative(t, slope=slope, branches=branches):
+                return -slope * current / (3600 * self.capacity_ah) + sum(
+                    a / tau * math.exp(-t / tau) for tau, a in branches
+                )
+
+            stops = [0.0, right - left]
+            if len(branches) == 2:
+                (tf, af), (ts, ass) = branches
+                if af * ass < 0 and tf != ts:
+                    critical = math.log(-af * ts * ts / (ass * tf * tf)) / (1 / tf - 1 / ts)
+                    if 0 < critical < right - left:
+                        stops.append(critical)
+            stops.sort()
+            for a, b in zip(stops[:-1], stops[1:], strict=True):
+                fa, fb = derivative(a), derivative(b)
+                if fa == 0:
+                    stationary.append(left + a)
+                if fb == 0:
+                    stationary.append(left + b)
+                if fa * fb < 0:
+                    stationary.append(left + self._bisect(derivative, a, b))
+        return sorted(set(boundaries + stationary))
+
+    def first_crossing(self, state, current, duration, level, *, upper=False):
+        partition = self.partitions(state, current, duration)
+        sign = -1 if upper else 1
+
+        def residual(t):
+            return sign * (self.voltage(state, current, t) - level)
+
+        start = residual(0)
+        if start < 0 or (start == 0 and not upper):
+            return 0.0
+        for a, b in zip(partition[:-1], partition[1:], strict=True):
+            fa, fb = residual(a), residual(b)
+            if fa < 0 or (fa == 0 and not upper):
+                return a
+            if fb < 0 or (fb == 0 and not upper):
+                return self._bisect(residual, a, b) if fa != 0 else a
+        return None
+
+
+def prepare_history(cell, scenario, *, collect_traces=False):
+    state = State(
+        scenario["anchor_z"],
+        scenario["p_fast_v"],
+        scenario["p_slow_v"],
+        scenario["initial_temperature_c"] + 273.15,
+    )
+    cell.check_state(state)
+    initial_energy = cell.rc_energy(state)
+    limit = 0.1 * 3600 * cell.capacity_ah * 4.25
+    if initial_energy > limit:
+        raise ValueError("INVALID_INITIAL_RC_ENERGY_PRIOR")
+    ambient = scenario["ambient_c"] + 273.15
+    history = []
+    for name, current, duration in [
+        ("synthetic_gap", scenario["gap_current_a"], scenario["gap_s"]),
+        ("synthetic_rest", 0.0, 7200.0),
+    ]:
+        # A domain-overflow history is recorded invalid rather than truncated/reset.
+        points = cell.partitions(state, current, duration)
+        voltages = [cell.voltage(state, current, t) for t in points]
+        if max(voltages) > 4.25:
+            raise ValueError("INVALID_HISTORY_UPPER_VOLTAGE_PRIOR")
+        after = cell.end_state(state, current, ambient, duration)
+        cell.check_state(after)
+        history.append(
+            {
+                "name": name,
+                "current_a": current,
+                "duration_s": duration,
+                "start": state.__dict__,
+                "end": after.__dict__,
+                "voltage_min_v": min(voltages),
+                "voltage_max_v": max(voltages),
+            }
+        )
+        if collect_traces:
+            times = np.unique(np.r_[np.arange(0, duration, 5.0), points, duration])
+            history[-1]["trace"] = cell.trace(state, current, ambient, times)
+        state = after
+    return state, history, initial_energy
+
+
+def simulate_scenario(base, scenario, current):
+    """Return every outcome, including invalids; no fitting or selected winner."""
+    result = {
+        "id": scenario["id"],
+        "kind": scenario["kind"],
+        "current_a": current,
+        "label": "SYNTHETIC_ASSUMED",
+        "full_physical_cutoff_s": None,
+        "status": "NOT_RUN",
+        "trace": None,
+        "history_traces": [],
+    }
+    try:
+        cell = SyntheticCell.from_scenario(base, scenario)
+        state, history, initial_energy = prepare_history(cell, scenario, collect_traces=True)
+        history_traces = [
+            {"name": h["name"], "current_a": h["current_a"], "trace": h.pop("trace")}
+            for h in history
+        ]
+        duration = state.z * 3600 * cell.capacity_ah / current
+        # Define endpoint from the same arithmetic to avoid a one-ulp negative z.
+        # No out-of-domain z is silently clamped: use nextafter towards zero time.
+        while state.z - current * duration / (3600 * cell.capacity_ah) < 0:
+            duration = math.nextafter(duration, 0.0)
+        cutoff = cell.first_crossing(state, current, duration, 2.5)
+        upper = cell.first_crossing(state, current, duration, 4.25, upper=True)
+        stop = duration
+        status = "DOMAIN_END_WITHOUT_PHYSICAL_CUTOFF"
+        if cutoff is not None:
+            stop, status = cutoff, "PHYSICAL_CUTOFF_2P5_V"
+        if upper is not None and upper < stop:
+            stop, status = upper, "INVALID_PROFILE_UPPER_VOLTAGE_PRIOR"
+        points = cell.partitions(state, current, stop)
+        times = np.unique(np.r_[np.arange(0, stop, 5.0), points, stop])
+        trace = cell.trace(state, current, scenario["ambient_c"] + 273.15, times)
+        if not np.isfinite(trace["temperature_k"]).all() or min(trace["temperature_k"]) <= 0:
+            raise ValueError("INVALID_TEMPERATURE")
+        main_peak_k = float(max(trace["temperature_k"]))
+        history_peak_k = max(float(max(h["trace"]["temperature_k"])) for h in history_traces)
+        all_peak_k = max(main_peak_k, history_peak_k)
+        result.update(
+            status=status,
+            model_stop_s=stop,
+            initial_state=state.__dict__,
+            history=history,
+            initial_rc_energy_j=initial_energy,
+            terminal_voltage_v=float(trace["voltage_v"][-1]),
+            terminal_temperature_c=float(trace["temperature_k"][-1] - 273.15),
+            sampled_main_peak_temperature_c=main_peak_k-273.15,
+            sampled_history_peak_temperature_c=history_peak_k-273.15,
+            sampled_peak_temperature_c=all_peak_k-273.15,
+            thermal_extrapolation=bool(all_peak_k > 328.15),
+            discharge_ah=current * stop / 3600,
+            full_physical_cutoff_s=stop if status == "PHYSICAL_CUTOFF_2P5_V" else None,
+            trace=trace,
+            history_traces=history_traces,
+        )
+    except ValueError as failure:
+        result.update(status=str(failure), model_stop_s=None)
+    return result
