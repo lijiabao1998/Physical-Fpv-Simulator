@@ -1,0 +1,21 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.11, pytest-8.4.2, pluggy-1.6.0 -- <LOCAL_PATH>
+cachedir: .pytest_cache
+rootdir: <LOCAL_PATH>
+configfile: pyproject.toml
+plugins: platformdirs-4.12.3
+collecting ... collected 10 items
+
+tests/test_fpv_integration.py::test_end_to_end_hover_replay_and_control PASSED
+tests/test_fpv_integration.py::test_disarm_reset_and_transactional_reject PASSED
+tests/test_fpv_integration.py::test_material_mass_reaches_dynamics PASSED
+tests/test_fpv_integration.py::test_http_controls_reset_and_reject PASSED
+tests/test_fpv_integration.py::test_export_roundtrip_and_tamper_rejection PASSED
+tests/test_fpv_integration.py::test_whole_chain_time_refinement_and_initial_disarm PASSED
+tests/test_fpv_integration.py::test_zero_time_disarm_preserves_states_and_replay PASSED
+tests/test_fpv_integration.py::test_exported_snapshots_do_not_alias_live_state PASSED
+tests/test_fpv_browser_logic.py::test_actual_ui_script_with_mocked_dom_and_gamepad PASSED
+tests/test_fpv_browser_logic.py::test_snapshot_mutation_cannot_change_simulator_or_old_replay PASSED
+
+- generated xml file: <LOCAL_PATH> -
+============================= 10 passed in 2.52s ==============================

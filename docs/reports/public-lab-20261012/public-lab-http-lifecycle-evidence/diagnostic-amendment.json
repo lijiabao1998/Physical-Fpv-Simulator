@@ -1,0 +1,25 @@
+{
+  "title": "One finite permission-contrast diagnostic amendment",
+  "recorded_clock_utc": "2026-10-12T02:48:54Z",
+  "authorization_order": "Explicit parent authorization was received before this clock snapshot and before execution; an exact message timestamp was not supplied.",
+  "original_plan_commit": "d9ac41e9a6b92e473c3f9dbbeb57ed74ea05c67c",
+  "original_plan_retained_unchanged": true,
+  "new_evidence": {
+    "gui-r5-pre-01": "9pass/1fail with Win10013 on initial GET/state in restricted exec. It did not reach the historical rejected POST and is permission-blocked, not a Win10053 reproduction.",
+    "gui-r5-pre-02": "One authorized split-send request: original handler consumed0 bytes with2 kernel bytes pending, closed its connection, and client still parsed403 with correct JSON. No Win10053. Diagnostic fails only its new body-consumption assertion0==2; that does not establish a defect in the old HTTP status/security contract."
+  },
+  "cause_status": "UNREAD_BODY_TO_WIN10053_CAUSAL_HYPOTHESIS_NOT_CONFIRMED",
+  "amended_job": {
+    "name": "gui-r5-amended-03",
+    "runs_max": 1,
+    "command_scope": "Original tests/test_fpv_integration.py and tests/test_fpv_browser_logic.py only;10 original tests; no diagnostic fixture collected",
+    "production_and_original_tests_assertions": "byte-identical baseline",
+    "condition": "explicit authorized localhost exec permission; no Windows/network/security settings changes",
+    "runner": "shared run_fpv_serial lease, one core/IDLE/single-thread, --coordinate-cs,120-second limit",
+    "priority": "wait for root synthetic/style job completion notice before acquiring"
+  },
+  "budget_interpretation": "One additional distinct-permission diagnosis is explicitly authorized within the original four-start total envelope. No fourth job or production change without an established code defect and parent review.",
+  "interpretation_if_pass": "Win10053 remains UNRESOLVED/intermittent/not reproduced under this condition. A passing permission contrast does not prove a historical cause or constitute a code fix.",
+  "record_retention": "Keep both original r2 failures, the permission-blocked run, exact diagnostic source, trace, all raw outputs and receipts; do not rename failures or change assertions.",
+  "forbidden": "No more random retries, newsource/physics work, assertion relaxation, remote publication or settings changes."
+}

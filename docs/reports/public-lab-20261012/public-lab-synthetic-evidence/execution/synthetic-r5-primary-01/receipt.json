@@ -1,0 +1,34 @@
+{
+  "command": [
+    ".venv\\Scripts\\python.exe",
+    "scripts\\run_public_lab_synthetic.py",
+    "--output",
+    "docs\\public-lab-synthetic-evidence\\primary-01"
+  ],
+  "cwd": "<LOCAL_PATH>",
+  "started_at": "2026-10-12T03:01:12.612477+00:00",
+  "wall_limit_s": 1800,
+  "scientific_execution": true,
+  "cost_usd": 0,
+  "cpu_affinity_mask": 1,
+  "priority": "IDLE_PRIORITY_CLASS",
+  "child_temp_directory": "<LOCAL_PATH>",
+  "python_utf8_mode": true,
+  "thread_limits": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1"
+  },
+  "cs_coordination": {
+    "enabled": true,
+    "initial_processes": [],
+    "pauses": []
+  },
+  "pid": 12612,
+  "timeout": false,
+  "finished_at": "2026-10-12T03:01:24.623646+00:00",
+  "elapsed_wall_s": 12.0,
+  "exit_code": 0
+}

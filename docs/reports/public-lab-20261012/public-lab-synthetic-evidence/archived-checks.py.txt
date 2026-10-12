@@ -1,0 +1,351 @@
+"""Physics and numerical checks; never a new measured-validation claim."""
+
+import json
+from dataclasses import replace
+from pathlib import Path
+
+import numpy as np
+import pytest
+from scipy.integrate import quad, solve_ivp
+from scipy.optimize import brentq
+
+from physical_fpv.fpv.public_lab_ecm import EffectiveCell, cutoff_time, thermal_curve
+from physical_fpv.fpv.synthetic_envelope import (
+    KNOTS,
+    State,
+    SyntheticCell,
+    prepare_history,
+    simulate_scenario,
+)
+
+ROOT = Path(__file__).resolve().parents[1]
+BASE = json.loads(
+    (ROOT / "docs/benchmarks/public-lab-chen-final-validation/parameters.json").read_text(
+        encoding="utf-8"
+    )
+)
+MANIFEST = json.loads(
+    (ROOT / "docs/public-lab-synthetic-evidence/scenarios.json").read_text(encoding="utf-8")
+)
+REFS = {s["id"]: s for s in MANIFEST["scenarios"]}
+ORACLES = json.loads(
+    (ROOT / "docs/public-lab-synthetic-evidence/oracle-cases.json").read_text(encoding="utf-8")
+)
+
+
+def independent_rhs(cell, current, ambient):
+    def rhs(_time, y):
+        z, pf, ps, temp = y
+        heat = current * current * cell.r0 + pf * pf / cell.r_fast
+        dps = 0
+        if cell.r_slow:
+            heat += ps * ps / cell.r_slow
+            dps = (current * cell.r_slow - ps) / cell.tau_slow
+        return [
+            -current / (3600 * cell.capacity_ah),
+            (current * cell.r_fast - pf) / cell.tau_fast,
+            dps,
+            (heat - cell.cooling * (temp - ambient)) / cell.heat_capacity,
+        ]
+
+    return rhs
+
+
+def independent_event(cell, current):
+    def event(_time, y):
+        return np.interp(y[0], KNOTS, cell.u_v) - current * cell.r0 - y[1] - y[2] - 2.5
+
+    event.direction = -1
+    event.terminal = False
+    return event
+
+
+@pytest.mark.parametrize("index", range(4))
+def test_independent_full_history_oracle(index):
+    spec = ORACLES["cases"][index]
+    scenario = dict(REFS[spec["base"]], **spec["changes"])
+    cell = SyntheticCell.from_scenario(BASE, scenario)
+    current = ORACLES["current_a"]
+    result = simulate_scenario(BASE, scenario, current)
+    assert result["status"] == "PHYSICAL_CUTOFF_2P5_V"
+    y = [
+        scenario["anchor_z"],
+        scenario["p_fast_v"],
+        scenario["p_slow_v"],
+        scenario["initial_temperature_c"] + 273.15,
+    ]
+    ambient = scenario["ambient_c"] + 273.15
+    for phase, (amps, duration) in enumerate(
+        [
+            (scenario["gap_current_a"], scenario["gap_s"]),
+            (0, 7200),
+            (current, result["model_stop_s"]),
+        ]
+    ):
+        if duration == 0:
+            continue
+        initial = State(*y)
+        times = np.linspace(0, duration, 101)
+        sol = solve_ivp(
+            independent_rhs(cell, amps, ambient),
+            (0, duration + 2e-6 if phase == 2 else duration),
+            y,
+            method="DOP853",
+            rtol=1e-11,
+            atol=1e-12,
+            max_step=30,
+            t_eval=times,
+            events=independent_event(cell, amps) if phase == 2 else None,
+        )
+        assert sol.success
+        if phase == 2:
+            assert len(sol.t_events[0]) >= 1
+            event_error = abs(float(sol.t_events[0][0]) - duration)
+            assert event_error <= 1e-6
+            print(
+                json.dumps(
+                    {
+                        "label": "INDEPENDENT_ODE_FIRST_CUTOFF",
+                        "case": index,
+                        "event_time_error_s": event_error,
+                    }
+                )
+            )
+        exact = cell.trace(initial, amps, ambient, times)
+        np.testing.assert_allclose(exact["charge_z"], sol.y[0], rtol=0, atol=1e-10)
+        np.testing.assert_allclose(exact["fast_v"], sol.y[1], rtol=0, atol=1e-7)
+        np.testing.assert_allclose(exact["slow_v"], sol.y[2], rtol=0, atol=1e-7)
+        np.testing.assert_allclose(exact["temperature_k"], sol.y[3], rtol=0, atol=1e-5)
+        numerical_u = np.interp(sol.y[0], KNOTS, cell.u_v)
+        numerical_v = numerical_u - amps * cell.r0 - sol.y[1] - sol.y[2]
+        np.testing.assert_allclose(exact["voltage_v"], numerical_v, rtol=0, atol=1e-7)
+        print(
+            json.dumps(
+                {
+                    "label": "NUMERICAL_ORACLE_NOT_MEASUREMENT",
+                    "case": index,
+                    "current_a": amps,
+                    "duration_s": duration,
+                    "voltage_max_abs_error_v": float(max(abs(exact["voltage_v"] - numerical_v))),
+                    "temperature_max_abs_error_k": float(
+                        max(abs(exact["temperature_k"] - sol.y[3]))
+                    ),
+                    "charge_max_abs_error_z": float(max(abs(exact["charge_z"] - sol.y[0]))),
+                }
+            )
+        )
+        y = sol.y[:, -1].tolist()
+    assert abs(y[0] - result["trace"]["charge_z"][-1]) < 1e-10
+
+
+@pytest.mark.parametrize("current", MANIFEST["currents_a"])
+def test_disabled_branch_preserves_old_numerics_and_failures(current):
+    old = EffectiveCell(**{k: v for k, v in BASE.items() if k not in ("soc_knots", "tau_s")})
+    row = simulate_scenario(BASE, REFS["old_reference"], current)
+    duration, reason = cutoff_time(old, current)
+    assert abs(row["model_stop_s"] - duration) <= 1e-6
+    t = row["trace"]["time_s"]
+    np.testing.assert_allclose(
+        row["trace"]["voltage_v"], old.voltage(t, current), rtol=0, atol=1e-7
+    )
+    np.testing.assert_allclose(
+        row["trace"]["temperature_k"],
+        thermal_curve(old, t, current, 299.95, np.full(t.shape, 299.95)),
+        rtol=0,
+        atol=1e-5,
+    )
+    print(
+        json.dumps(
+            {
+                "label": "OLD_MODEL_NUMERICAL_REGRESSION_ONLY",
+                "current_a": current,
+                "stop_time_error_s": abs(row["model_stop_s"] - duration),
+                "voltage_max_abs_error_v": float(
+                    max(abs(row["trace"]["voltage_v"] - old.voltage(t, current)))
+                ),
+                "old_stop_reason": reason,
+                "new_stop_reason": row["status"],
+            }
+        )
+    )
+    if current <= 0.5:
+        assert reason == "soc_zero_before_voltage_cutoff"
+        assert row["full_physical_cutoff_s"] is None
+        assert row["status"] == "DOMAIN_END_WITHOUT_PHYSICAL_CUTOFF"
+        assert row["terminal_voltage_v"] > 2.5
+
+
+def test_charge_and_energy_balance_with_nonzero_stored_energy():
+    cell = SyntheticCell.from_scenario(BASE, REFS["memory_reference"])
+    initial = State(0.98, 0.03, 0.04, 313.15)
+    current, ambient, duration = 2.5, 299.95, 600
+    sol = solve_ivp(
+        independent_rhs(cell, current, ambient),
+        (0, duration),
+        list(initial.__dict__.values()),
+        method="DOP853",
+        rtol=1e-11,
+        atol=1e-12,
+        max_step=30,
+        dense_output=True,
+    )
+    assert sol.success
+    final = State(*sol.y[:, -1])
+    assert abs(final.z - initial.z + current * duration / (3600 * cell.capacity_ah)) < 1e-10
+
+    def dissipation(t):
+        y = sol.sol(t)
+        return current * current * cell.r0 + y[1] ** 2 / cell.r_fast + y[2] ** 2 / cell.r_slow
+
+    def supplied(t):
+        y = sol.sol(t)
+        return current * (y[1] + y[2] + current * cell.r0)
+
+    heat = quad(dissipation, 0, duration, epsabs=1e-8, epsrel=1e-11)[0]
+    work = quad(supplied, 0, duration, epsabs=1e-8, epsrel=1e-11)[0]
+    delta = cell.rc_energy(final) - cell.rc_energy(initial)
+    assert abs(work - heat - delta) / max(1, abs(work), abs(heat), abs(delta)) < 1e-8
+    cooling = quad(
+        lambda t: cell.cooling * (sol.sol(t)[3] - ambient), 0, duration, epsabs=1e-8, epsrel=1e-11
+    )[0]
+    thermal = cell.heat_capacity * (final.temperature_k - initial.temperature_k)
+    assert abs(thermal - heat + cooling) / max(1, heat) < 1e-8
+    print(
+        json.dumps(
+            {
+                "label": "PASSIVE_ENERGY_NUMERICAL_CHECK",
+                "rc_energy_relative_residual": abs(work - heat - delta)
+                / max(1, abs(work), abs(heat), abs(delta)),
+                "thermal_energy_relative_residual": abs(thermal - heat + cooling) / max(1, heat),
+            }
+        )
+    )
+
+
+def test_equal_thermal_and_fast_poles_limit_is_finite():
+    cell = SyntheticCell.from_scenario(BASE, REFS["memory_reference"])
+    cell = replace(cell, heat_capacity=30.0, cooling=1.0, r_slow=0)
+    state = State(0.98, 0.03, 0, 300.0)
+    times = np.linspace(0, 300, 31)
+    sol = solve_ivp(
+        independent_rhs(cell, 2.5, 300.0),
+        (0, 300),
+        list(state.__dict__.values()),
+        method="DOP853",
+        rtol=1e-11,
+        atol=1e-12,
+        max_step=30,
+        t_eval=times,
+    )
+    assert sol.success
+    np.testing.assert_allclose(
+        cell.trace(state, 2.5, 300.0, times)["temperature_k"], sol.y[3], rtol=0, atol=1e-5
+    )
+
+
+def test_first_cutoff_before_rebound_with_two_stationary_points():
+    # A synthetic dip and rebound: a slow positive state relaxes after a fast
+    # negative state rises. A flat-ish low-potential interval makes both crossings.
+    cell = SyntheticCell.from_scenario(BASE, REFS["memory_reference"])
+    cell = replace(
+        cell, r_slow=0.05, tau_slow=300.0, u_v=tuple(2.6 + 0.001 * np.arange(len(KNOTS)))
+    )
+    state = State(0.98, -0.3, 0.35, 300.0)
+    current, duration = 0.5, 6000.0
+    times = np.linspace(0, duration, 60001)
+    voltage = cell.trace(state, current, 300.0, times)["voltage_v"]
+    assert voltage[0] > 2.5 and voltage[-1] > 2.5 and min(voltage) < 2.5
+    crossings = np.flatnonzero((voltage[:-1] > 2.5) & (voltage[1:] <= 2.5))
+    assert len(crossings) == 1
+    index = crossings[0]
+    oracle = brentq(
+        lambda t: cell.voltage(state, current, t) - 2.5, times[index], times[index + 1], xtol=1e-10
+    )
+    actual = cell.first_crossing(state, current, duration, 2.5)
+    assert actual is not None and abs(actual - oracle) <= 1e-6
+    event = independent_event(cell, current)
+    event.terminal = True
+    sol = solve_ivp(
+        independent_rhs(cell, current, 300.0),
+        (0, duration),
+        list(state.__dict__.values()),
+        method="DOP853",
+        rtol=1e-11,
+        atol=1e-12,
+        max_step=0.1,
+        events=event,
+    )
+    assert sol.success and len(sol.t_events[0]) == 1
+    assert abs(actual - float(sol.t_events[0][0])) <= 1e-6
+    print(
+        json.dumps(
+            {
+                "label": "NONMONOTONIC_FIRST_CROSSING_NEGATIVE_CONTROL",
+                "first_crossing_s": actual,
+                "independent_error_s": abs(actual - float(sol.t_events[0][0])),
+                "shared_form_brent_error_s": abs(actual - oracle),
+                "start_v": voltage[0],
+                "end_v": voltage[-1],
+                "sampled_min_v": min(voltage),
+            }
+        )
+    )
+
+
+@pytest.mark.parametrize(
+    "changes,status",
+    [
+        ({"anchor_z": 1.0, "gap_current_a": -0.05}, "INVALID_CHARGE_DOMAIN"),
+        (
+            {"r_slow_ohm": 0.05, "tau_slow_s": 100000.0, "p_slow_v": 0.4},
+            "INVALID_INITIAL_RC_ENERGY_PRIOR",
+        ),
+        ({"r_slow_ohm": 0.0, "p_slow_v": 0.4}, "INVALID_DISABLED_BRANCH_STATE"),
+        ({"p_slow_v": -0.4}, "INVALID_HISTORY_UPPER_VOLTAGE_PRIOR"),
+    ],
+)
+def test_invalid_synthetic_inputs_are_not_repaired(changes, status):
+    scenario = dict(REFS["memory_reference"], **changes)
+    result = simulate_scenario(BASE, scenario, 2.5)
+    assert result["status"] == status and result["trace"] is None
+    assert result["full_physical_cutoff_s"] is None
+
+
+def test_current_jump_cutoff_and_all_design_ids_preserved():
+    cell = SyntheticCell.from_scenario(BASE, REFS["memory_reference"])
+    state = State(0.001, 0, 0, 300.0)
+    assert cell.voltage(state, 0, 0) > 2.5
+    assert cell.voltage(state, 7.5, 0) < 2.5
+    assert cell.first_crossing(state, 7.5, 1.0, 2.5) == 0
+    scenarios = MANIFEST["scenarios"]
+    assert len(scenarios) == 91
+    assert len({s["id"] for s in scenarios}) == len(scenarios)
+    assert sum(s["kind"] == "seeded" for s in scenarios) == 64
+    assert any(s["p_slow_v"] < 0 for s in scenarios)
+    rng = np.random.Generator(np.random.PCG64(MANIFEST["seed"]))
+    protocol = json.loads((ROOT / "docs/public-lab-synthetic-protocol.json").read_text("utf-8"))
+    for row in (s for s in scenarios if s["kind"] == "seeded"):
+        for axis, values in protocol["scenario_design"]["axes"].items():
+            assert row[axis] == values[int(rng.integers(len(values)))]
+
+
+def test_history_has_one_global_charge_anchor():
+    scenario = dict(REFS["memory_reference"], gap_current_a=0.05)
+    cell = SyntheticCell.from_scenario(BASE, scenario)
+    state, history, _ = prepare_history(cell, scenario)
+    assert state.z < scenario["anchor_z"]
+    expected = scenario["anchor_z"] - 0.05 * scenario["gap_s"] / (3600 * cell.capacity_ah)
+    assert abs(state.z - expected) < 1e-10
+    assert history[0]["end"] == history[1]["start"]
+
+
+def test_extrapolation_flag_includes_preparation_heat_peak():
+    scenario = dict(REFS["memory_reference"], gap_s=0., ambient_c=28.2,
+                    initial_temperature_c=55., p_slow_v=.4, r_slow_ohm=.05,
+                    tau_slow_s=1000., cooling_scale=.5)
+    result = simulate_scenario(BASE, scenario, .5)
+    assert result["status"] in ("PHYSICAL_CUTOFF_2P5_V", "DOMAIN_END_WITHOUT_PHYSICAL_CUTOFF")
+    assert result["sampled_history_peak_temperature_c"] > 55
+    assert result["sampled_main_peak_temperature_c"] < 55
+    assert result["sampled_peak_temperature_c"] == result["sampled_history_peak_temperature_c"]
+    assert result["thermal_extrapolation"]

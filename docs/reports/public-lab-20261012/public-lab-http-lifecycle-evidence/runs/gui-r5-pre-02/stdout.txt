@@ -1,0 +1,125 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.11, pytest-8.4.2, pluggy-1.6.0 -- <LOCAL_PATH>
+cachedir: .pytest_cache
+rootdir: <LOCAL_PATH>
+configfile: pyproject.toml
+plugins: platformdirs-4.12.3
+collecting ... collected 1 item
+
+tests/test_fpv_http_lifecycle.py::test_cross_origin_body_is_consumed_before_connection_close HTTP_LIFECYCLE_TRACE {"body_reads": [], "client_payload": {"error": "Cross-origin requests are disabled"}, "client_status": 403, "consumed_before_response": 0, "controlled_timing": "body after parsed headers; client reads after server close", "phases": [{"event": "headers_parsed_post_entered", "time_ns": 156297312000000}, {"event": "client_body_sent", "time_ns": 156297312000000}, {"consumed": 0, "event": "response_started", "queued_unread": 2, "status": 403, "time_ns": 156297312000000}, {"event": "response_written", "time_ns": 156297312000000}, {"event": "server_shutdown_started", "time_ns": 156297312000000}, {"event": "server_shutdown_finished", "time_ns": 156297312000000}, {"event": "client_response_parse_started", "time_ns": 156297312000000}], "request_body_bytes": 2, "server_source_sha256": "84f19480f9fb26c05e44a4af57e3dc0f39df9ac32cef77d50c00873d95145af0", "server_thread_stopped": true, "test_source_sha256": "328af1e42dfb0c87d707e90a5c4fb6ce5d41685b95d5f86cf8c6d2eb7e45befa", "unread_kernel_bytes_before_response": 2}
+FAILED
+
+================================== FAILURES ===================================
+_________ test_cross_origin_body_is_consumed_before_connection_close __________
+
+    def test_cross_origin_body_is_consumed_before_connection_close():
+        """Queue body after header parsing; read reply only after server-side close."""
+        server = make_server(0)
+        handler = server.RequestHandlerClass
+        entered, body_sent, closed = (threading.Event() for _ in range(3))
+        phases, body_reads = [], []
+        trace = {
+            "test_source_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            "server_source_sha256": hashlib.sha256(
+                Path(__file__).resolve().parents[1]
+                .joinpath("src/physical_fpv/fpv/server.py")
+                .read_bytes()
+            ).hexdigest(),
+            "controlled_timing": "body after parsed headers; client reads after server close",
+            "request_body_bytes": 2,
+            "body_reads": body_reads,
+            "phases": phases,
+        }
+    
+        def note(event, **fields):
+            phases.append({"event": event, "time_ns": time.monotonic_ns(), **fields})
+    
+        class ReadRecorder:
+            def __init__(self, stream):
+                self.stream = stream
+    
+            def read(self, length=-1):
+                note("body_read_started", requested_bytes=length)
+                data = self.stream.read(length)
+                body_reads.append({"requested_bytes": length, "received_bytes": len(data)})
+                note("body_read_finished", received_bytes=len(data))
+                return data
+    
+            def __getattr__(self, name):
+                return getattr(self.stream, name)
+    
+        original_post, original_respond = handler.do_POST, handler.respond
+        original_shutdown = server.shutdown_request
+    
+        def observed_post(self):
+            self.connection.settimeout(3)
+            self.rfile = ReadRecorder(self.rfile)
+            note("headers_parsed_post_entered")
+            entered.set()
+            return original_post(self)
+    
+        def observed_respond(self, status, payload, content_type="application/json"):
+            if not body_sent.wait(3):
+                raise AssertionError("Controlled client failed to send its one body")
+            consumed = sum(row["received_bytes"] for row in body_reads)
+            pending = self.connection.recv(4096, socket.MSG_PEEK) if consumed == 0 else b""
+            trace["consumed_before_response"] = consumed
+            trace["unread_kernel_bytes_before_response"] = len(pending)
+            note("response_started", status=status, consumed=consumed, queued_unread=len(pending))
+            result = original_respond(self, status, payload, content_type)
+            note("response_written")
+            return result
+    
+        def observed_shutdown(request):
+            note("server_shutdown_started")
+            original_shutdown(request)
+            note("server_shutdown_finished")
+            closed.set()
+    
+        handler.do_POST, handler.respond = observed_post, observed_respond
+        server.shutdown_request = observed_shutdown
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        client = response = None
+        try:
+            client = socket.create_connection(("127.0.0.1", server.server_port), timeout=5)
+            client.sendall(
+                (
+                    "POST /reset HTTP/1.1\r\n"
+                    f"Host: 127.0.0.1:{server.server_port}\r\n"
+                    "Origin: https://example.com\r\n"
+                    "Content-Type: application/json\r\n"
+                    "Content-Length: 2\r\n"
+                    "Connection: close\r\n\r\n"
+                ).encode("ascii")
+            )
+            assert entered.wait(3), "Server never parsed the controlled headers"
+            client.sendall(b"{}")
+            note("client_body_sent")
+            body_sent.set()
+            assert closed.wait(5), "Server never completed its one connection shutdown"
+            note("client_response_parse_started")
+            response = http.client.HTTPResponse(client)
+            try:
+                response.begin()
+                payload = response.read()
+            except OSError as exc:
+                trace["client_error"] = {
+                    "type": type(exc).__name__,
+                    "errno": exc.errno,
+                    "winerror": getattr(exc, "winerror", None),
+                    "message": str(exc),
+                }
+                raise
+            trace["client_status"] = response.status
+            trace["client_payload"] = json.loads(payload)
+            assert response.status == 403
+            assert trace["client_payload"] == {"error": "Cross-origin requests are disabled"}
+>           assert trace["consumed_before_response"] == 2
+E           assert 0 == 2
+
+tests\test_fpv_http_lifecycle.py:117: AssertionError
+- generated xml file: <LOCAL_PATH> -
+=========================== short test summary info ===========================
+FAILED tests/test_fpv_http_lifecycle.py::test_cross_origin_body_is_consumed_before_connection_close - assert 0 == 2
+============================== 1 failed in 0.91s ==============================

@@ -1,0 +1,9 @@
+{
+  "base": "ee5ca8ada4542cb3ad985ba07971b9fe02b42cf5",
+  "tracked_files": 840,
+  "all_baseline_bytes_unchanged": true,
+  "changed": [],
+  "fits": 0,
+  "battery_solves": 0,
+  "old_scientific_acceptance": "FAIL:6/8, two low-current cutoff failures"
+}

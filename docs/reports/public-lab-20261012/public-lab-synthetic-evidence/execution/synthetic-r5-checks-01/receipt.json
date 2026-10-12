@@ -1,0 +1,37 @@
+{
+  "command": [
+    ".venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests\\test_synthetic_envelope.py",
+    "tests\\test_public_lab_archive_readers.py",
+    "-rA",
+    "-s"
+  ],
+  "cwd": "<LOCAL_PATH>",
+  "started_at": "2026-10-12T02:49:55.959093+00:00",
+  "wall_limit_s": 600,
+  "scientific_execution": true,
+  "cost_usd": 0,
+  "cpu_affinity_mask": 1,
+  "priority": "IDLE_PRIORITY_CLASS",
+  "child_temp_directory": "<LOCAL_PATH>",
+  "python_utf8_mode": true,
+  "thread_limits": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1"
+  },
+  "cs_coordination": {
+    "enabled": true,
+    "initial_processes": [],
+    "pauses": []
+  },
+  "pid": 11016,
+  "timeout": false,
+  "finished_at": "2026-10-12T02:55:18.064508+00:00",
+  "elapsed_wall_s": 322.0940000000119,
+  "exit_code": 4294967295
+}

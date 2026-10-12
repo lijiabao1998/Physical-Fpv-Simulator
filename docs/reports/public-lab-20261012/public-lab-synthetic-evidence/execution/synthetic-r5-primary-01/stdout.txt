@@ -1,0 +1,174 @@
+{
+  "started_at": "2026-10-12T03:01:12.879951+00:00",
+  "finished_at": "2026-10-12T03:01:24.580555+00:00",
+  "elapsed_wall_s": 11.687999999994645,
+  "cases": 364,
+  "trace_rows": 936456,
+  "results_sha256": "d4438ed36554f1fa4fd12e315ea5f540ce52ae48e2b3b335e5b54cf4f622a5c3",
+  "summaries": [
+    {
+      "current_a": 0.5,
+      "all_inputs": 91,
+      "statuses": {
+        "DOMAIN_END_WITHOUT_PHYSICAL_CUTOFF": 19,
+        "INVALID_CHARGE_DOMAIN": 2,
+        "INVALID_HISTORY_UPPER_VOLTAGE_PRIOR": 15,
+        "INVALID_INITIAL_RC_ENERGY_PRIOR": 18,
+        "PHYSICAL_CUTOFF_2P5_V": 37
+      },
+      "numeric_cases": 56,
+      "feasible_cases": 56,
+      "range_scope": "Admissible frozen inputs; invalid partial traces retained separately",
+      "invalid_partial_traces": 0,
+      "model_stop_s": {
+        "minimum": 33585.60101152181,
+        "maximum": 35983.18615464377,
+        "count": 56
+      },
+      "physical_cutoff_s": {
+        "minimum": 33585.60101152181,
+        "maximum": 35901.24597066395,
+        "count": 37
+      },
+      "terminal_voltage_v": {
+        "minimum": 2.4999999998841687,
+        "maximum": 2.945394897081953,
+        "count": 56
+      },
+      "terminal_temperature_c": {
+        "minimum": 14.25273996778435,
+        "maximum": 30.010938463732316,
+        "count": 56
+      },
+      "sampled_peak_temperature_c": {
+        "minimum": 26.80000000000001,
+        "maximum": 55.02975229915313,
+        "count": 56
+      },
+      "thermal_extrapolations": 1
+    },
+    {
+      "current_a": 2.5,
+      "all_inputs": 91,
+      "statuses": {
+        "DOMAIN_END_WITHOUT_PHYSICAL_CUTOFF": 5,
+        "INVALID_CHARGE_DOMAIN": 2,
+        "INVALID_HISTORY_UPPER_VOLTAGE_PRIOR": 15,
+        "INVALID_INITIAL_RC_ENERGY_PRIOR": 18,
+        "PHYSICAL_CUTOFF_2P5_V": 51
+      },
+      "numeric_cases": 56,
+      "feasible_cases": 56,
+      "range_scope": "Admissible frozen inputs; invalid partial traces retained separately",
+      "invalid_partial_traces": 0,
+      "model_stop_s": {
+        "minimum": 405.35951156156045,
+        "maximum": 7188.466428982182,
+        "count": 56
+      },
+      "physical_cutoff_s": {
+        "minimum": 405.35951156156045,
+        "maximum": 7188.466428982182,
+        "count": 51
+      },
+      "terminal_voltage_v": {
+        "minimum": 2.499999999531264,
+        "maximum": 2.8525865252437788,
+        "count": 56
+      },
+      "terminal_temperature_c": {
+        "minimum": 18.234745525876804,
+        "maximum": 65.94128816877361,
+        "count": 56
+      },
+      "sampled_peak_temperature_c": {
+        "minimum": 26.80000000000001,
+        "maximum": 65.94128816877361,
+        "count": 56
+      },
+      "thermal_extrapolations": 2
+    },
+    {
+      "current_a": 5.0,
+      "all_inputs": 91,
+      "statuses": {
+        "DOMAIN_END_WITHOUT_PHYSICAL_CUTOFF": 4,
+        "INVALID_CHARGE_DOMAIN": 2,
+        "INVALID_HISTORY_UPPER_VOLTAGE_PRIOR": 15,
+        "INVALID_INITIAL_RC_ENERGY_PRIOR": 18,
+        "PHYSICAL_CUTOFF_2P5_V": 52
+      },
+      "numeric_cases": 56,
+      "feasible_cases": 56,
+      "range_scope": "Admissible frozen inputs; invalid partial traces retained separately",
+      "invalid_partial_traces": 0,
+      "model_stop_s": {
+        "minimum": 128.56687781523388,
+        "maximum": 3571.918615464377,
+        "count": 56
+      },
+      "physical_cutoff_s": {
+        "minimum": 128.56687781523388,
+        "maximum": 3562.268394812811,
+        "count": 52
+      },
+      "terminal_voltage_v": {
+        "minimum": 2.499999998846874,
+        "maximum": 2.7472624056262442,
+        "count": 56
+      },
+      "terminal_temperature_c": {
+        "minimum": 15.703354712575504,
+        "maximum": 117.92859842194031,
+        "count": 56
+      },
+      "sampled_peak_temperature_c": {
+        "minimum": 26.80000000000001,
+        "maximum": 117.92859842194031,
+        "count": 56
+      },
+      "thermal_extrapolations": 15
+    },
+    {
+      "current_a": 7.5,
+      "all_inputs": 91,
+      "statuses": {
+        "DOMAIN_END_WITHOUT_PHYSICAL_CUTOFF": 1,
+        "INVALID_CHARGE_DOMAIN": 2,
+        "INVALID_HISTORY_UPPER_VOLTAGE_PRIOR": 15,
+        "INVALID_INITIAL_RC_ENERGY_PRIOR": 18,
+        "PHYSICAL_CUTOFF_2P5_V": 55
+      },
+      "numeric_cases": 56,
+      "feasible_cases": 56,
+      "range_scope": "Admissible frozen inputs; invalid partial traces retained separately",
+      "invalid_partial_traces": 0,
+      "model_stop_s": {
+        "minimum": 73.25067865394057,
+        "maximum": 2353.5357163095277,
+        "count": 56
+      },
+      "physical_cutoff_s": {
+        "minimum": 73.25067865394057,
+        "maximum": 2353.5357163095277,
+        "count": 55
+      },
+      "terminal_voltage_v": {
+        "minimum": 2.499999998762108,
+        "maximum": 2.6423348335464696,
+        "count": 56
+      },
+      "terminal_temperature_c": {
+        "minimum": 15.450704227212213,
+        "maximum": 91.38780335906563,
+        "count": 56
+      },
+      "sampled_peak_temperature_c": {
+        "minimum": 34.08841927726144,
+        "maximum": 91.38780335906563,
+        "count": 56
+      },
+      "thermal_extrapolations": 31
+    }
+  ]
+}
