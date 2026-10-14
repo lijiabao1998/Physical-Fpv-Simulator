@@ -341,7 +341,7 @@ def compare(
                 f"{b.id} is checked against a different spec ({b.spec.id}) than the base ({builds[0].spec.id}); "
                 "compare versions under one spec, or compare each spec separately"
             )
-    code_version = git_version(builds[0].path.parent)  # before the long run, not after it
+    code_version = git_version()  # before the long run, not after it
     versions = [analyse_version(b, samples, seed) for b in builds]
     man = MANEUVERS[maneuver] if maneuver else None
     for path, v in zip(build_paths, versions):

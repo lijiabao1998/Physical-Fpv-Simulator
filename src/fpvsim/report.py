@@ -23,8 +23,9 @@ from .performance import METRICS, evaluate, full_throttle_burst, full_throttle_p
 from .stand import run_stand, write_csv
 from .uncertainty import MonteCarloResult, TornadoBar, monte_carlo, tornado
 
-TORNADO_METRICS = ("endurance", "thrust_to_weight", "hover_duty", "auw")
-PRIORITY_METRICS = ("endurance", "thrust_to_weight", "hover_duty")
+TORNADO_METRICS = ("endurance", "thrust_to_weight", "hover_duty", "auw", "full_throttle_time")
+# the full-throttle duration (R8) is the requirement that fails at the design points, so it ranks measurements too
+PRIORITY_METRICS = ("endurance", "thrust_to_weight", "hover_duty", "full_throttle_time")
 STAND_CELL_VOLTAGES = (4.2, 3.8, 3.5)
 
 
@@ -73,7 +74,9 @@ def md_table(header: list[str], rows: list[list[str]]) -> str:
     return "\n".join(lines)
 
 
-def git_version(cwd: Path) -> str:
+def git_version(cwd: Path | None = None) -> str:
+    """Commit of the code that is running (the fpvsim package's own repository by default)."""
+    cwd = Path(__file__).resolve().parent if cwd is None else cwd
     try:
         commit = subprocess.run(
             ["git", "rev-parse", "--short=12", "HEAD"], cwd=cwd, capture_output=True, text=True, check=True
@@ -84,6 +87,17 @@ def git_version(cwd: Path) -> str:
         return commit + ("（工作區有未提交的修改）" if dirty else "")
     except (OSError, subprocess.CalledProcessError):
         return "無法取得（不在 git 儲存庫中）"
+
+
+def code_version_text(commit: str | None = None) -> str:
+    """Code provenance for report headers: package version, git commit and the numerical libraries."""
+    import platform
+
+    import matplotlib
+    import scipy
+
+    return (f"fpvsim {__version__}，git `{commit or git_version()}`；Python {platform.python_version()}、"
+            f"numpy {np.__version__}、scipy {scipy.__version__}、matplotlib {matplotlib.__version__}")
 
 
 def rel_path(path: Path, root: Path) -> str:
@@ -193,7 +207,7 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
             }
         )
     plots.histograms(hist_panels, out_dir / "monte_carlo.png")
-    for key in ("endurance", "thrust_to_weight"):
+    for key in ("endurance", "thrust_to_weight", "full_throttle_time"):
         m = METRICS[key]
         plots.tornado(
             [_scaled_bar(b, m.unit) for b in bars[key]],
@@ -219,7 +233,7 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
         [
             ["設計檔", f"`{rel_path(build.path, root)}`"],
             ["規格", f"{spec.name}（`{spec.id}`）"],
-            ["程式版本", f"fpvsim {__version__}，git `{git_version(build.path.parent)}`"],
+            ["程式版本", code_version_text()],
             ["輸入檔雜湊 (SHA-256)", f"`{build.input_hash()[:16]}`"],
             ["蒙地卡羅", f"{mc.n} 組樣本，隨機種子 {mc.seed}"],
             ["環境", f"氣壓高度 {ac.env.altitude:.0f} m，氣溫 {ac.env.temperature - 273.15:.1f} °C，"
@@ -427,9 +441,11 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
     add("敏感度（龍捲風圖）：每次只把一個參數移動 ±1σ，其餘維持標稱值。條越長，代表該參數的不確定度對結果影響越大。\n")
     add("![Endurance sensitivity](tornado_endurance.png)\n")
     add("![Thrust-to-weight sensitivity](tornado_thrust_to_weight.png)\n")
+    add("![Full-throttle duration sensitivity](tornado_full_throttle_time.png)\n")
     add("### 建議優先量測\n")
-    add("依參數對續航、推重比與懸停油門的相對影響加總排序。先量測前幾項，最能縮小預測的不確定度。\n")
-    add(md_table(["順序", "參數", "目前來源", "目前不確定度", "對續航影響 (±1σ)", "對推重比影響 (±1σ)", "建議量測方法"],
+    add("依參數對續航、推重比、懸停油門與全油門可持續時間的相對影響加總排序。先量測前幾項，最能縮小預測的不確定度。\n")
+    add(md_table(["順序", "參數", "目前來源", "目前不確定度", "對續航影響 (±1σ)", "對推重比影響 (±1σ)", "對全油門持續時間影響 (±1σ)",
+                  "建議量測方法"],
                _priorities(build, bars, nominal)))
     add("")
 
@@ -505,11 +521,11 @@ def _priorities(build: Build, bars, nominal) -> list[list[str]]:
     for i, (key, _) in enumerate(ranked, 1):
         p = build.params[key]
         effects = []
-        for metric in ("endurance", "thrust_to_weight"):
+        for metric in ("endurance", "thrust_to_weight", "full_throttle_time"):
             lo, hi = spans.get((key, metric), (math.nan, math.nan))
             m = METRICS[metric]
             effects.append(f"±{abs(units.from_si(hi, m.unit) - units.from_si(lo, m.unit)) / 2:{m.fmt}}"
                            + ("" if m.unit == "1" else f" {m.unit}"))
         rows.append([str(i), f"`{key}`", p.source.label_zh, fmt_u_rel(p) if math.isfinite(p.u_rel) else f"±{p.display_u:.3g} {p.unit}",
-                     effects[0], effects[1], measurement_method(key)])
+                     effects[0], effects[1], effects[2], measurement_method(key)])
     return rows

@@ -12,10 +12,10 @@ from pathlib import Path
 
 import numpy as np
 
-from . import __version__, plots, units
+from . import plots, units
 from .compare import COMPARE_METRICS, Comparison, forward_drag_split, summarise_delta
 from .performance import METRICS
-from .report import fmt_metric, fmt_probability, git_version, md_table, measurement_method, rel_path, verdict
+from .report import code_version_text, fmt_metric, fmt_probability, md_table, measurement_method, rel_path, verdict
 from .geometry import PROP_MARGIN, PROP_TIP_MARGIN
 from .tuning import DIRECTION_ZH, ff_dominated
 
@@ -238,7 +238,7 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
         ["飛控設定", f"{cmp.fc.name}（`{cmp.fc.id}`），所有版本相同"],
         ["蒙地卡羅", f"每個版本 {cmp.samples} 組成對樣本，隨機種子 {cmp.seed}"],
         ["飛行腳本", f"`{cmp.maneuver.name}`：{cmp.maneuver.title}" if cmp.maneuver else "未執行"],
-        ["程式版本", f"fpvsim {__version__}，git `{cmp.code_version or git_version(base.build.path.parent)}`"],
+        ["程式版本", code_version_text(cmp.code_version or None)],
         ["產生時間 (UTC)", _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M")],
     ]))
     add("")

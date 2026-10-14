@@ -30,7 +30,10 @@ filters
 driven by white noise and scaled so that each component's variance is
 sigma^2 (the Dryden spectra). The filters are discretised exactly (zero-
 order-hold noise integral, Van Loan's method) at the turbulence update
-rate; tau follows the current height and airspeed.
+rate; tau follows the current height and airspeed, and when it changes the
+filter state is carried over in normalised form (Dryden._rescale), so a
+change of airspeed changes the time scale of the gusts but not their
+variance.
 
 Assumptions: the same gust acts on the whole aircraft (it is small
 against the scale lengths, L_w >= 3 m), so the rotational gust components
@@ -162,15 +165,27 @@ class Dryden:
         self._started = False
 
     def _filter(self, tau: float):
-        key = int(round(math.log(tau) * 200.0))  # 0.5 % bins in tau
+        """(Phi, noise Cholesky factor, output row, binned tau) for a time constant, in 0.5 % bins of tau."""
+        key = int(round(math.log(tau) * 200.0))
         hit = self._cache.get(key)
         if hit is None:
             t = math.exp(key / 200.0)
             A, B, C = _second_order(t)
             phi, chol = _discretise(A, B, self.dt)
-            hit = (phi, chol, C)
+            hit = (phi, chol, C, t)
             self._cache[key] = hit
         return hit
+
+    @staticmethod
+    def _rescale(x: np.ndarray, tau_old: float, tau_new: float) -> np.ndarray:
+        """Carry a second-order filter state to a new time constant.
+
+        The state's stationary covariance is diag(tau^3 / 4, tau / 4), so the
+        normalised state (x1 / tau^1.5, x2 / tau^0.5) is what the frozen
+        spatial field fixes; keeping it (rather than x) when the airspeed
+        changes tau keeps the gust variance at sigma^2."""
+        r = tau_new / tau_old
+        return np.array([x[0] * r**1.5, x[1] * r**0.5])
 
     def step(self, height: float, airspeed: float) -> tuple[float, float, float]:
         if self.w20 <= 0.0 or not self.wind.turbulence:
@@ -178,17 +193,23 @@ class Dryden:
         L_u, L_v, L_w, s_u, s_v, s_w = dryden_scales(height, self.w20)
         V = max(airspeed, V_MIN)
         tau_u, tau_v, tau_w = L_u / V, L_v / V, L_w / V
+        phi_v, chol_v, C_v, t_v = self._filter(tau_v)
+        phi_w, chol_w, C_w, t_w = self._filter(tau_w)
         if not self._started:  # start in the stationary distribution
             self.x_u = float(self.rng.normal())
-            for name, tau in (("x_v", tau_v), ("x_w", tau_w)):
+            for name, tau in (("x_v", t_v), ("x_w", t_w)):
                 A, B, _ = _second_order(tau)
                 P = _stationary(A, B)
                 setattr(self, name, np.linalg.cholesky(P) @ self.rng.normal(size=2))
+            self.tau_v, self.tau_w = t_v, t_w
             self._started = True
+        if t_v != self.tau_v:
+            self.x_v, self.tau_v = self._rescale(self.x_v, self.tau_v, t_v), t_v
+        if t_w != self.tau_w:
+            self.x_w, self.tau_w = self._rescale(self.x_w, self.tau_w, t_w), t_w
+        # the first-order u state is already normalised (unit stationary variance for any tau)
         d = math.exp(-self.dt / tau_u)
         self.x_u = d * self.x_u + math.sqrt(1.0 - d * d) * float(self.rng.normal())
-        phi_v, chol_v, C_v = self._filter(tau_v)
-        phi_w, chol_w, C_w = self._filter(tau_w)
         self.x_v = phi_v @ self.x_v + chol_v @ self.rng.normal(size=2)
         self.x_w = phi_w @ self.x_w + chol_w @ self.rng.normal(size=2)
         u, v, w = s_u * self.x_u, s_v * float(C_v @ self.x_v), s_w * float(C_w @ self.x_w)

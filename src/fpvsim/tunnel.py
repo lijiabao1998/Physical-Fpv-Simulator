@@ -49,7 +49,7 @@ from scipy.optimize import fsolve
 from .design import Aircraft
 from .dynamics import Outputs, QuadModel
 from .flightcontroller import quad_mixer
-from .performance import hover_point
+from .performance import hover_point, source_resistance
 from .units import RADS_TO_RPM
 
 PROPS = ("off", "stopped", "rpm", "throttle")
@@ -154,11 +154,18 @@ class Tunnel:
         else:
             duties = [float(duty)] * n
 
-            def res(ww):
-                d = model.derivative(self._state(speed, alpha, beta, list(ww)), duties)
+            def res(log_w):  # solved in log(omega): the rotor speed stays positive
+                d = model.derivative(self._state(speed, alpha, beta, [math.exp(y) for y in log_w]), duties)
                 return [x / 1e3 for x in d[13:13 + n]]
 
-            omegas = list(fsolve(res, [self.hover.omega] * n, xtol=1e-12))
+            ac = self.ac
+            state = ac.initial_battery_state()
+            static = ac.powertrain.at_duty(float(duty), state.source_voltage(ac.battery), source_resistance(ac, state), self.rho)
+            w0 = static.omega if static is not None and static.omega > 1.0 else self.hover.omega
+            log_w, _, ier, _ = fsolve(res, [math.log(w0)] * n, xtol=1e-12, full_output=True)
+            if ier != 1:
+                raise ValueError(f"no equilibrium rotor speed at duty {duty:g} and {speed:g} m/s")
+            omegas = [math.exp(y) for y in log_w]
         s = self._state(speed, alpha, beta, omegas)
         _, force, moment, o = self._loads(model, s, duties)
         R = _rotation(s[6:10])
@@ -444,7 +451,10 @@ def balance_data(tunnel: Tunnel, seed: int = 1, noise: BalanceNoise = BalanceNoi
 
 def write_balance_csv(rows: list[dict], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    from .sysid import synthetic_marker
+
     with path.open("w", newline="") as f:
+        f.write(synthetic_marker("virtual wind-tunnel balance (fpvsim tunnel --synthetic)"))
         w = csv.writer(f)
         w.writerow([f"{name} [{unit}]" for name, unit in BALANCE_COLUMNS])
         for row in rows:

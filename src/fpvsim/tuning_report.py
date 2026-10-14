@@ -8,12 +8,12 @@ from pathlib import Path
 
 import numpy as np
 
-from . import __version__, plots
+from . import plots
 from . import flightanalysis as fa
 from .design import Build
 from .filters import chain_response, group_delay, make_lowpass
 from .flightcontroller import dump_fc_config
-from .report import git_version, md_table, rel_path
+from .report import code_version_text, md_table, rel_path
 from .tuning import (DIRECTION_ZH, NOISE_BAND, OVERSHOOT_LIMIT, TuningStudy, ff_dominated, filter_delay, robust_alternative,
                      rpm_filter_delay)
 
@@ -128,7 +128,7 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
         ["基準飛控設定", f"{cfg.name}（`{cfg.id}`）"],
         ["試飛次數", f"雜訊調查 {len(study.noise_runs)} 次，增益掃描 {len(study.candidates)} 次"
                      + ("，feedforward 對照 1 次" if study.ff_off else "")],
-        ["程式版本", f"fpvsim {__version__}，git `{git_version(build.path.parent)}`"],
+        ["程式版本", code_version_text()],
         ["輸入檔雜湊", f"`{build.input_hash()[:16]}`"],
         ["隨機種子", str(study.seed)],
         ["產生時間 (UTC)", _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M")],

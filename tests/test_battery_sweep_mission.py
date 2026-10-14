@@ -75,3 +75,29 @@ def test_short_mission_conserves_charge(reference_build):
     assert log["mah"][-1] == pytest.approx(used, rel=5e-3)
     laps = lap_table(result, reference_build.battery_series)
     assert laps and laps[0]["mah"] > 0
+
+
+def test_mission_altitude_stays_bounded(reference_build):
+    """Each punch-out climbs about 50 m; the mission pilot brings the aircraft back
+    down, so the altitude does not ratchet up lap after lap."""
+    cfg = load_fc_config(ROOT / "data" / "fc" / "acro-5in-baseline.toml")
+    cap = reference_build.params["battery.capacity"].value
+    result = fly_mission(reference_build, cfg, overrides={"battery.capacity": 0.11 * cap}, max_laps=3)
+    log = result.log
+    lap = MANEUVERS["freestyle"].duration
+    assert result.time > 1.5 * lap
+    first = log["alt"][log.time < lap].max()
+    second = log["alt"][(log.time >= lap) & (log.time < 2 * lap)].max()
+    assert second < first + 15.0  # the second lap's punch starts from about the same height
+    assert log["alt"].max() < 20.0 + 80.0
+
+
+@pytest.mark.parametrize("override, reason", [
+    ({"criteria.min_cell_voltage": 4.19}, "low_voltage"),  # hover sits at about 4.186 V per cell
+    ({"battery.max_temperature": 298.0}, "battery_temperature"),
+])
+def test_mission_stop_reasons(reference_build, override, reason):
+    cfg = load_fc_config(ROOT / "data" / "fc" / "acro-5in-baseline.toml")
+    result = fly_mission(reference_build, cfg, overrides=override, max_laps=1)
+    assert result.reason == reason
+    assert result.time < 5.0

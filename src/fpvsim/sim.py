@@ -29,6 +29,7 @@ from .performance import hover_point
 from .pilot import Maneuver, StickFile, TestPilot
 from .sensors import Gyro
 from .units import RADS_TO_RPM
+from .rotor_ff import tables_key
 from .wind import Dryden, WindSettings
 
 DEG = 180.0 / math.pi
@@ -161,6 +162,7 @@ def simulate(
             "w20_m_s": settings.wind.w20,
         },
         "ground_effect": settings.ground_effect,
+        "rotor_tables": tables_key(*build.prop_blade) if build.prop_blade else None,
     }
 
     steps = int(round(total * phys))

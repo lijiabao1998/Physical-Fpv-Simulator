@@ -61,5 +61,6 @@ def test_cli_hppc_and_fit_battery(tmp_path, capsys):
     assert main(["hppc", str(REFERENCE_BUILD), "--csv", str(csv), "--soc-step", "0.3", "--rate", "5"]) == 0
     assert main(["fit-battery", str(csv), "--build", str(REFERENCE_BUILD), "--out", str(tmp_path / "fit")]) == 0
     report = (tmp_path / "fit" / "report.md").read_text(encoding="utf-8")
-    assert "寫回零件檔" in report and 'source = "measured"' in report
+    # virtual test data is marked synthetic, so its fit must not pass as a measurement
+    assert "寫回零件檔" in report and 'source = "synthetic"' in report and 'source = "measured"' not in report
     assert (tmp_path / "fit" / "pulses.png").stat().st_size > 0

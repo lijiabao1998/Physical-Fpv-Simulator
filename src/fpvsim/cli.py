@@ -78,9 +78,9 @@ def cmd_report(args) -> int:
 
 
 def cmd_fit_prop(args) -> int:
-    from .sysid import fit_prop_static, read_csv
+    from .sysid import fit_prop_static, is_synthetic, read_csv_notes
 
-    data = read_csv(args.csv)
+    data, notes = read_csv_notes(args.csv)
     missing = {"rpm", "thrust", "torque"} - set(data)
     if missing:
         print(f"error: CSV needs columns {sorted(missing)} (with units, e.g. 'thrust [gf]')", file=sys.stderr)
@@ -93,7 +93,8 @@ def cmd_fit_prop(args) -> int:
         print(f"  {key} = {fit.values[key]:.5f} +/- {fit.stderr[key]:.5f} (1 sigma, HC3)   R^2 = {fit.r2:.5f}")
     print("\nFor a prop component file (static point only; add more J values from wind-tunnel data):")
     print("[coefficients]")
-    print('source = "measured"')
+    print('source = "synthetic"' if is_synthetic(notes) else 'source = "measured"')
+    print("# u: statistical (type A) only; add the instruments' type B uncertainty for a real measurement")
     print(f'ref = "{Path(args.csv).name}"')
     print("J = [0.0]")
     print(f"ct = [{fits['ct0'].values['ct0']:.5f}]")
@@ -120,7 +121,7 @@ def cmd_fit_battery(args) -> int:
     from .battery_fit import fit_arrhenius, fit_flight, fit_hppc
     from .battery_report import generate
     from .blackbox import FlightLog
-    from .sysid import read_csv
+    from .sysid import is_synthetic, read_csv_notes
 
     design = None
     battery = None
@@ -139,8 +140,10 @@ def cmd_fit_battery(args) -> int:
         print("error: give HPPC CSV files and/or --log", file=sys.stderr)
         return 2
     fits = []
+    synthetic = False
     for path in args.csv:
-        data = read_csv(path)
+        data, notes = read_csv_notes(path)
+        synthetic |= is_synthetic(notes)
         missing = {"time", "current", "voltage"} - set(data)
         if missing:
             print(f"error: {path} needs columns {sorted(missing)} (with units, e.g. 'voltage [V]')", file=sys.stderr)
@@ -155,11 +158,12 @@ def cmd_fit_battery(args) -> int:
             print("error: --log needs --build (for the OCV curve)", file=sys.stderr)
             return 2
         log = FlightLog.read_csv(Path(args.log))
+        synthetic |= "physics_rate_hz" in log.meta  # written by fpvsim fly
         flight = fit_flight(log.time, log["vbat"], log["current"], battery.ocv_soc, battery.ocv_cell * battery.series,
                             capacity)
     out = Path(args.out) if args.out else Path("out") / "battery-fit"
     sources = [str(Path(p)) for p in args.csv]
-    path = generate(out, sources, fits, arrhenius, flight, args.log, series, design)
+    path = generate(out, sources, fits, arrhenius, flight, args.log, series, design, synthetic=synthetic)
     print(f"wrote {path}")
     for src, f in zip(sources, fits):
         print(f"  {src}: r0_cell {1000 * f.r0_cell.value:.3f} +/- {1000 * f.r0_cell.u:.3f} mohm, "
@@ -244,14 +248,15 @@ def cmd_tunnel(args) -> int:
 
 
 def cmd_fit_tunnel(args) -> int:
-    from .sysid import read_csv
+    from .sysid import is_synthetic, read_csv_notes
     from .tunnel_fit import fit_tunnel
     from .tunnel_report import generate_fit
 
     build = load_build(args.build)
-    fit = fit_tunnel(read_csv(args.csv), build.realize())
+    data, notes = read_csv_notes(args.csv)
+    fit = fit_tunnel(data, build.realize())
     out = Path(args.out) if args.out else Path("out") / f"fit-tunnel-{Path(args.csv).stem}"
-    path = generate_fit(build, fit, Path(args.csv), out)
+    path = generate_fit(build, fit, Path(args.csv), out, synthetic=is_synthetic(notes))
     for ax, e in fit.cda.items():
         print(f"S_{ax} = {e.value * 1e4:.2f} +- {e.u * 1e4:.2f} cm^2")
     for c, e in fit.centre.items():

@@ -9,12 +9,12 @@ from pathlib import Path
 
 import numpy as np
 
-from . import __version__, plots
+from . import plots
 from . import flightanalysis as fa
 from .blackbox import FlightLog
 from .design import Build
 from .flightcontroller import FcConfig
-from .report import git_version, md_table, rel_path
+from .report import code_version_text, md_table, rel_path
 from .rotor_ff import CLASSICAL_LIMIT
 
 AXES = ("roll", "pitch", "yaw")
@@ -175,11 +175,13 @@ def generate(build: Build, cfg: FcConfig, log: FlightLog, title: str, out_dir: P
         ["機體", f"{build.name}（`{rel_path(build.path, Path.cwd())}`）"],
         ["飛控設定", f"{cfg.name}（`{cfg.id}`）"],
         ["輸入", f"`{log.meta.get('input')}`"],
-        ["程式版本", f"fpvsim {__version__}，git `{git_version(build.path.parent)}`"],
+        ["程式版本", code_version_text()],
         ["輸入檔雜湊", f"`{log.meta.get('input_hash')}`"],
         ["隨機種子", str(log.meta.get("seed"))],
         ["風", wind_text(log.meta)],
         ["地面效應", "計入（Cheeseman–Bennett）" if log.meta.get("ground_effect", True) else "關閉"],
+        ["槳的斜向氣流係數表", f"`{log.meta['rotor_tables']}`（rotor_ff.py，輸入與求解器的雜湊）" if log.meta.get("rotor_tables")
+         else "未使用（槳沒有葉片幾何，用軸向係數表）"],
         ["更新率", f"物理 {log.meta['physics_rate_hz']:g} Hz，陀螺儀 {log.meta['gyro_rate_hz']:g} Hz，PID {log.meta['pid_rate_hz']:g} Hz，記錄 {log.meta['log_rate_hz']:g} Hz"],
         ["產生時間 (UTC)", _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M")],
     ]))

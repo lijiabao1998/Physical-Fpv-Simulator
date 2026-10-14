@@ -8,10 +8,9 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import __version__
 from .battery_fit import ArrheniusFit, FlightFit, HppcFit
 from .plots import MUTED, SERIES, STYLE, _save
-from .report import git_version, md_table
+from .report import code_version_text, md_table
 
 
 def _mohm(x: float) -> str:
@@ -93,7 +92,7 @@ def _plot_flight(fit: FlightFit, series: int, path: Path) -> None:
 
 
 def generate(out_dir: Path, sources: list[str], fits: list[HppcFit], arrhenius: ArrheniusFit | None,
-             flight: FlightFit | None, flight_source: str | None, series: int, design: dict | None = None) -> Path:
+             flight: FlightFit | None, flight_source: str | None, series: int, design: dict | None = None, synthetic: bool = False) -> Path:
     """``design``: the build's current values for comparison (r0_cell, r1_cell, tau1, activation_energy,
     ocv_soc, ocv_cell, name)."""
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -105,7 +104,7 @@ def generate(out_dir: Path, sources: list[str], fits: list[HppcFit], arrhenius: 
     add(md_table(["項目", "內容"], [
         ["數據", "、".join(f"`{s}`" for s in sources + ([flight_source] if flight_source else []))],
         ["串聯數", str(series)],
-        ["程式版本", f"fpvsim {__version__}，git `{git_version(Path.cwd())}`"],
+        ["程式版本", code_version_text()],
         ["產生時間 (UTC)", _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M")],
     ]))
     add("")
@@ -171,21 +170,25 @@ def generate(out_dir: Path, sources: list[str], fits: list[HppcFit], arrhenius: 
     if fits:
         add(f"## {4 if flight else 3}. 寫回零件檔\n")
         ref = Path(sources[k_main]).name
-        add(f"取最接近設計參考溫度的測試（`{ref}`，{main.temperature - 273.15:.1f} °C）；`r_ref_temperature` 就是它的溫度。\n")
+        add(f"取最接近設計參考溫度的測試（`{ref}`，{main.temperature - 273.15:.1f} °C）；`r_ref_temperature` 就是它的溫度。"
+            "u 只含擬合的統計不確定度（A 類）；實測時還要依儀器規格加上 B 類不確定度（GUM），例如荷重元、電流計與溫度計的校正誤差。\n")
+        if synthetic:
+            add("**這些數據是模型產生的合成數據**（檔案第一行標記），所以來源標為 `synthetic`：它們只能驗證辨識流程能否找回已知值，不能當作實測值寫回零件檔。\n")
+        kind = "synthetic" if synthetic else "measured"
         lines = [
-            f'r0_cell = {{ value = {1000 * main.r0_cell.value:.3f}, unit = "mohm", source = "measured", '
+            f'r0_cell = {{ value = {1000 * main.r0_cell.value:.3f}, unit = "mohm", source = "{kind}", '
             f'u = {1000 * main.r0_cell.u:.3f}, ref = "{ref}", note = "HPPC，{main.temperature - 273.15:.0f} °C" }}',
-            f'r1_cell = {{ value = {1000 * main.r1_cell.value:.3f}, unit = "mohm", source = "measured", '
+            f'r1_cell = {{ value = {1000 * main.r1_cell.value:.3f}, unit = "mohm", source = "{kind}", '
             f'u = {1000 * main.r1_cell.u:.3f}, ref = "{ref}" }}',
-            f'tau1 = {{ value = {main.tau1.value:.2f}, unit = "s", source = "measured", u = {main.tau1.u:.2f}, ref = "{ref}" }}',
-            f'r_ref_temperature = {{ value = {main.temperature - 273.15:.1f}, unit = "degC", source = "measured", ref = "{ref}" }}',
+            f'tau1 = {{ value = {main.tau1.value:.2f}, unit = "s", source = "{kind}", u = {main.tau1.u:.2f}, ref = "{ref}" }}',
+            f'r_ref_temperature = {{ value = {main.temperature - 273.15:.1f}, unit = "degC", source = "{kind}", ref = "{ref}" }}',
         ]
         if arrhenius:
             lines.append(f'resistance_activation_energy = {{ value = {arrhenius.activation_energy.value / 1000:.2f}, unit = "kJ/mol", '
-                         f'source = "measured", u = {arrhenius.activation_energy.u / 1000:.2f}, ref = "{", ".join(Path(x).name for x in sources)}" }}')
+                         f'source = "{kind}", u = {arrhenius.activation_energy.u / 1000:.2f}, ref = "{", ".join(Path(x).name for x in sources)}" }}')
         add("```toml\n[params]\n" + "\n".join(lines) + "\n```\n")
         add("開路電壓的量測點（電量 0% 需要另做完整放電測試）：\n")
-        add("```toml\n[ocv]\nsource = \"measured\"\n"
+        add(f"```toml\n[ocv]\nsource = \"{kind}\"\n"
             f"soc = [{', '.join(f'{x:.3f}' for x in main.ocv_soc)}]\n"
             f"cell_voltage = [{', '.join(f'{x:.4f}' for x in main.ocv_cell)}]\n```\n")
         if design:

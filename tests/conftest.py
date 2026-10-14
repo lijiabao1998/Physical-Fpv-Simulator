@@ -1,3 +1,5 @@
+import os
+import tempfile
 from pathlib import Path
 
 import numpy as np
@@ -10,6 +12,10 @@ from fpvsim.prop import Prop, PropCurves
 from fpvsim.units import RPM_TO_RADS
 
 ROOT = Path(__file__).resolve().parents[1]
+
+# Run the oblique-flow table solver in every test session instead of reading a
+# table cached by an earlier version of the code (subprocess CLI tests inherit it).
+os.environ["FPVSIM_CACHE"] = tempfile.mkdtemp(prefix="fpvsim-test-cache-")
 REFERENCE_BUILD = ROOT / "data" / "builds" / "ref-5in-6s-freestyle.toml"
 
 

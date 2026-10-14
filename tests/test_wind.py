@@ -61,7 +61,7 @@ def test_turbulence_variance_and_spectrum():
     assert np.std(v) == pytest.approx(s_v, rel=0.15)
     assert np.std(w) == pytest.approx(s_w, rel=0.04)
     fs = wind.turbulence_rate
-    for x, sigma, L, kind in ((w, s_w, L_w, "vw"), (u, s_u, L_u, "u")):
+    for x, sigma, L, kind in ((w, s_w, L_w, "vw"), (v, s_v, L_v, "vw"), (u, s_u, L_u, "u")):
         f, p = welch(x, fs=fs, nperseg=8192)
         omega = 2 * np.pi * f
         tau = L / V
@@ -74,6 +74,27 @@ def test_turbulence_variance_and_spectrum():
         band = (f > 0.05) & (f < 5.0)
         ratio = p[band] / model_hz[band]
         assert np.median(ratio) == pytest.approx(1.0, rel=0.15), kind
+
+
+def test_turbulence_variance_survives_airspeed_changes():
+    """A punch-out or a chop changes the airspeed, and with it the filter time
+    constants; the gusts must keep their variance (ensemble over realisations)."""
+    wind = WindSettings(speed=6.0, turbulence_rate=200.0)
+    expected = np.array(dryden_scales(20.0, wind.w20)[3:])
+    to_n, to_e = wind.to_direction
+    for start, end in ((6.0, 47.0), (47.0, 6.0)):
+        final = []
+        for k in range(300):
+            gen = Dryden(wind, np.random.default_rng(k))
+            for _ in range(400):
+                gen.step(20.0, start)
+            for i in range(160):  # 0.8 s ramp
+                gen.step(20.0, start + (end - start) * i / 159)
+            n, e, d = gen.step(20.0, end)
+            final.append((n * to_n + e * to_e, -n * to_e + e * to_n, d))
+        std = np.array(final).std(axis=0)
+        # 300 realisations: about 4 % scatter (1 sigma) on each standard deviation
+        assert np.allclose(std, expected, rtol=0.15), (start, end, std, expected)
 
 
 def test_calm_air_has_no_turbulence():

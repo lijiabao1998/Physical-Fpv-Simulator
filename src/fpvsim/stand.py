@@ -87,7 +87,10 @@ def run_stand(ac: "Aircraft", voltage: float, duties: np.ndarray | None = None) 
 
 
 def write_csv(rows: list[StandRow], path: Path) -> None:
+    from .sysid import synthetic_marker
+
     with path.open("w", newline="") as f:
+        f.write(synthetic_marker("virtual thrust stand (fpvsim stand)"))
         writer = csv.writer(f)
         writer.writerow([name for name, _ in COLUMNS])
         for row in rows:

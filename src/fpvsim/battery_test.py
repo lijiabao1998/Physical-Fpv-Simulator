@@ -91,7 +91,10 @@ def run_hppc(battery: Battery, temperature: float, protocol: HppcProtocol = Hppc
 
 def write_csv(data: dict[str, np.ndarray], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    from .sysid import synthetic_marker
+
     with path.open("w", newline="") as f:
+        f.write(synthetic_marker("virtual HPPC bench (fpvsim hppc)"))
         w = csv.writer(f)
         w.writerow([f"{name} [{unit}]" for name, unit in COLUMNS])
         temp_c = data["temperature"] - 273.15

@@ -10,11 +10,12 @@ from pathlib import Path
 
 import numpy as np
 
-from . import __version__, plots
+from . import plots
 from .design import Build
-from .report import git_version, md_table, measurement_method, rel_path
+from .report import code_version_text, md_table, measurement_method, rel_path
 from .tunnel import (CruiseEndurance, PolarPoint, RotorPoint, TrimCurve, Tunnel, cruise_endurance, drag_polar,
                      rotor_sweep, trim_curve)
+from .rotor_ff import tables_key
 from .tunnel_fit import TunnelFit, frame_values
 from .uncertainty import MonteCarloResult, TornadoBar, monte_carlo, tornado
 
@@ -151,12 +152,13 @@ def generate(study: TunnelStudy, out_dir: Path) -> Path:
         "所以這裡的數字就是模擬飛行時的空氣動力。方法見 docs/tunnel.md。\n")
     add(md_table(["項目", "內容"], [
         ["機體", f"{b.name}（`{rel_path(b.path, Path.cwd())}`）"],
-        ["程式版本", f"fpvsim {__version__}，git `{git_version(b.path.parent)}`"],
+        ["程式版本", code_version_text()],
         ["輸入檔雜湊", f"`{b.input_hash()[:16]}`"],
         ["空氣", f"密度 {rho:.4f} kg/m³（{ac.env.altitude:g} m，{ac.env.temperature - 273.15:.1f} °C）"],
         ["全備重量", f"{ac.mass_props.mass * 1000:.0f} g"],
         ["電池狀態", f"SoC {study.soc:.0%}，起始 {ac.battery_start_temperature - 273.15:.0f} °C"],
-        ["槳的模型", "斜向氣流葉素模型（rotor_ff.py）" if tun.model.rotor is not None else "軸向係數表 + 動量理論槳盤阻力（沒有槳葉幾何）"],
+        ["槳的模型", f"斜向氣流葉素模型（rotor_ff.py），係數表 `{tables_key(*b.prop_blade)}`" if tun.model.rotor is not None
+         else "軸向係數表 + 動量理論槳盤阻力（沒有槳葉幾何）"],
         ["蒙地卡羅", f"{study.mc.n} 組，種子 {study.seed}" if study.mc else "未執行"],
         ["產生時間 (UTC)", _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M")],
     ]))
@@ -302,7 +304,7 @@ def _interp_cruise(cr: list[CruiseEndurance], speed: float) -> tuple[float, floa
 # ----------------------------------------------------------- fit-tunnel
 
 
-def generate_fit(build: Build, fit: TunnelFit, source: Path, out_dir: Path) -> Path:
+def generate_fit(build: Build, fit: TunnelFit, source: Path, out_dir: Path, synthetic: bool = False) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     ac = build.realize()
     panels = []
@@ -325,7 +327,7 @@ def generate_fit(build: Build, fit: TunnelFit, source: Path, out_dir: Path) -> P
     add(md_table(["項目", "內容"], [
         ["數據", f"`{source}`（拆槳 {fit.n_off} 筆、轉動 {fit.n_spin} 筆）"],
         ["機體", f"{build.name}（`{rel_path(build.path, Path.cwd())}`）"],
-        ["程式版本", f"fpvsim {__version__}，git `{git_version(build.path.parent)}`"],
+        ["程式版本", code_version_text()],
         ["產生時間 (UTC)", _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M")],
     ]))
     add("")
@@ -352,8 +354,11 @@ def generate_fit(build: Build, fit: TunnelFit, source: Path, out_dir: Path) -> P
         add("- **揮舞比例超出 0 到 1**：剛性與自由揮舞兩個極限都無法解釋量到的 H 力，斜向氣流模型本身需要檢討（例如翼型的失速模型），不要直接寫回。")
     add("\n![Fit](fit.png)\n")
     add("## 2. 寫回零件檔\n")
+    kind = "synthetic" if synthetic else "measured"
     add("機架的阻力面積 = 辨識的總和 − 各零件自己的阻力面積（取標稱值）；阻力中心換算成機架檔的座標（安裝原點）。"
-        "不確定度取辨識的標準誤差，分布為常態；`source = \"measured\"`。\n")
+        f"不確定度取辨識的標準誤差，分布為常態；`source = \"{kind}\"`。u 只含擬合的統計不確定度（A 類）；實測時還要依儀器規格加上 B 類不確定度（GUM），例如荷重元、電流計與溫度計的校正誤差。\n")
+    if synthetic:
+        add("**這些數據是模型產生的合成數據**（檔案第一行標記），所以來源標為 `synthetic`：它們只能驗證辨識流程能否找回已知值，不能當作實測值寫回零件檔。\n")
     add("```toml")
     add(f"# frame component file ({rel_path(build.component_files['frame'], Path.cwd())}), [params]")
     for ax in "xyz":
@@ -361,16 +366,16 @@ def generate_fit(build: Build, fit: TunnelFit, source: Path, out_dir: Path) -> P
         if key in fv:
             e = fv[key]
             unit = p_cda[ax].unit if p_cda[ax] is not None else "cm^2"
-            add(f'{key} = {{ value = {e.value * 1e4:.2f}, unit = "cm^2", source = "measured", u = {max(e.u * 1e4, 0.01):.2f}, '
-                f'note = "fpvsim fit-tunnel {source.name}" }}' + ("" if unit == "cm^2" else f"  # file uses {unit}"))
+            add(f'{key} = {{ value = {e.value * 1e4:.2f}, unit = "cm^2", source = "{kind}", u = {max(e.u * 1e4, 0.01):.2f}, '
+                f'ref = "{source.name}", note = "fpvsim fit-tunnel" }}' + ("" if unit == "cm^2" else f"  # file uses {unit}"))
     dc = fv["drag_center"]
     add("# top level of the frame file (before the first table)")
     add("drag_center = { value = [" + ", ".join(f"{_clean(x * 1e3):.1f}" for x in dc) + '], unit = "mm" }')
     if fit.flap_fraction is not None:
         e = fit.flap_fraction
         add(f"# prop component file ({rel_path(build.component_files['prop'], Path.cwd())}), [params]")
-        add(f'flap_fraction = {{ value = {e.value:.3f}, unit = "1", source = "measured", u = {max(e.u, 0.001):.3f}, '
-            f'note = "fpvsim fit-tunnel {source.name}" }}')
+        add(f'flap_fraction = {{ value = {e.value:.3f}, unit = "1", source = "{kind}", u = {max(e.u, 0.001):.3f}, '
+            f'ref = "{source.name}", note = "fpvsim fit-tunnel" }}')
     add("```\n")
     add("## 3. 方法\n")
     add("- 拆槳：各軸 F = −½ρ|v|·v_軸·S_軸，俯仰力矩 M_y = −½ρ|v|u·(S_x z_x) + ½ρ|v|w·(S_z x_z)，滾轉力矩同理；每條式子對未知數是線性的。")

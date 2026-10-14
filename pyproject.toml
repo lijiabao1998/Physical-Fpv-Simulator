@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]  # PEP 639 license string
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -12,7 +12,7 @@ requires-python = ">=3.11"
 dependencies = ["numpy>=1.26", "scipy>=1.11", "matplotlib>=3.8"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8"]
+dev = ["pytest>=8", "pyflakes>=3"]
 
 [project.scripts]
 fpvsim = "fpvsim.cli:main"

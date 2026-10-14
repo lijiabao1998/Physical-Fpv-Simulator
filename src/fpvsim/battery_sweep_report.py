@@ -5,10 +5,10 @@ from __future__ import annotations
 import datetime as _dt
 from pathlib import Path
 
-from . import __version__, plots
+from . import plots
 from .battery_sweep import SweepPoint, binding, recommend
 from .design import Build
-from .report import fmt_metric, git_version, md_table, rel_path
+from .report import code_version_text, fmt_metric, md_table, rel_path
 
 ROWS = ("auw", "thrust_to_weight", "endurance", "full_throttle_time", "full_throttle_cell_voltage", "prop_clearance")
 
@@ -55,7 +55,7 @@ def generate(build: Build, points: list[SweepPoint], out_dir: Path) -> Path:
         ["縮放參數", f"固定質量 {fam['battery_family.overhead_mass'].display_value:g} ± {fam['battery_family.overhead_mass'].display_u:g} g；"
                  f"內阻指數 {fam['battery_family.resistance_exponent'].value:g} ± {fam['battery_family.resistance_exponent'].u:g}"],
         ["蒙地卡羅", f"每個容量 {points[0].mc.n} 組，種子 {points[0].mc.seed}；各容量使用相同的樣本（成對比較）"],
-        ["程式版本", f"fpvsim {__version__}，git `{git_version(build.path.parent)}`"],
+        ["程式版本", code_version_text()],
         ["輸入檔雜湊", f"`{build.input_hash()[:16]}`"],
         ["產生時間 (UTC)", _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M")],
     ]))

@@ -7,12 +7,12 @@ from pathlib import Path
 
 import numpy as np
 
-from . import __version__, plots
+from . import plots
 from .design import Build
 from .flight_report import wind_text
 from .flightcontroller import FcConfig
 from .mission import MissionResult, lap_table
-from .report import git_version, md_table, rel_path
+from .report import code_version_text, md_table, rel_path
 
 
 def generate(build: Build, cfg: FcConfig, result: MissionResult, out_dir: Path) -> Path:
@@ -55,8 +55,10 @@ def generate(build: Build, cfg: FcConfig, result: MissionResult, out_dir: Path) 
         ["飛控設定", f"{cfg.name}（`{cfg.id}`）；陀螺儀與 PID 迴圈 {cfg.pid_rate:g} Hz"],
         ["每圈", f"`{log.meta.get('input')}`，{result.lap_duration:g} s"],
         ["風", wind_text(log.meta)],
+        ["槳的斜向氣流係數表", f"`{log.meta['rotor_tables']}`（rotor_ff.py，輸入與求解器的雜湊）" if log.meta.get("rotor_tables")
+         else "未使用（槳沒有葉片幾何，用軸向係數表）"],
         ["物理更新率", f"{result.physics_rate:g} Hz（RK4），記錄 {log.rate:g} Hz"],
-        ["程式版本", f"fpvsim {__version__}，git `{git_version(build.path.parent)}`"],
+        ["程式版本", code_version_text()],
         ["輸入檔雜湊", f"`{log.meta.get('input_hash')}`"],
         ["參數覆寫", ", ".join(f"`{k}` = {v:g}" for k, v in (log.meta.get("overrides") or {}).items()) or "無"],
         ["產生時間 (UTC)", _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M")],
@@ -83,13 +85,14 @@ def generate(build: Build, cfg: FcConfig, result: MissionResult, out_dir: Path) 
     add("")
     add("## 2. 驗證\n")
     soc_mah = (1.0 - log["soc"][-1]) * ac.battery.capacity / 3.6
-    add(f"- 電荷守恆：記錄的用電量（∫I dt）{log['mah'][-1]:.1f} mAh，電池模型的電量變化 {soc_mah:.1f} mAh，"
-        f"相差 {log['mah'][-1] / soc_mah - 1:+.2%}（記錄取樣的離散化）。")
+    add(f"- 電荷一致性：記錄的用電量（以記錄頻率積分電流）{log['mah'][-1]:.1f} mAh，電池模型以物理步長積分的電量變化 {soc_mah:.1f} mAh，"
+        f"相差 {log['mah'][-1] / soc_mah - 1:+.2%}。兩者積分的是同一個模擬電流，所以這只檢查記錄與積分是否一致，不能檢查物理模型本身。")
     add("")
     add("## 3. 方法與限制\n")
     add("- 結束條件：保留電量、單芯電壓的 1 秒平均值達到下限（相當於 OSD 低電壓警告；衝刺時的瞬間壓降不算）、電池溫度上限、墜機。")
     add("- 測試飛手每圈開始時依電池目前的狀態重新估計懸停油門，就像真人飛手會隨電壓下降加油門；它不代表真人的飛行風格。")
-    add("- 每圈的衝刺讓高度增加，之後就地懸停；模型的空氣密度固定在規格的高度（無風時高度不影響結果）。")
+    add(f"- 每圈的衝刺爬升約 50 m，之後測試飛手飛回起始高度（懸停時以 0.45 倍懸停誘導速度下降，前飛時以 1 倍）；"
+        f"這次任務的高度範圍 {log['alt'].min():.0f}–{log['alt'].max():.0f} m。空氣密度固定在規格的高度。")
     add("- 物理以 4 kHz 計算（陀螺儀與 PID 迴圈也是 4 kHz），以減少計算時間；調參與飛行測試報告用 8 kHz。")
     add("- 沒有馬達溫升（銅損使電阻上升、磁鐵升溫使 Kt 下降），長時間大電流飛行時會讓結果偏樂觀（見 docs/physics-roadmap.md）。")
     path = out_dir / "report.md"

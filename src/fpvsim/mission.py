@@ -14,7 +14,8 @@ full, rested pack until the first of
 
 The test pilot adapts as a pilot does: at the start of each lap its hover
 throttle estimate is recomputed from the battery's current state (otherwise
-the altitude hold drifts as the voltage falls).
+the altitude hold drifts as the voltage falls), and after every punch-out it
+descends back to the start altitude (MissionPilot).
 
 Cost: the physics runs at 4 kHz (gyro and PID loop at 4 kHz too, a common
 Betaflight setting) instead of 8 kHz, and the log at 50 Hz; a few minutes
@@ -23,6 +24,7 @@ of flight take a few minutes to compute.
 
 from __future__ import annotations
 
+import math
 from collections import deque
 from dataclasses import dataclass, replace
 from typing import Mapping
@@ -53,10 +55,24 @@ def repeated(maneuver: Maneuver, laps: int) -> Maneuver:
     return Maneuver(f"{maneuver.name}x{laps}", f"{maneuver.title}，重複 {laps} 圈", maneuver.duration * laps, segments)
 
 
-class MissionPilot:
-    """TestPilot over the repeated maneuver, re-estimating the hover throttle each lap."""
+DESCENT_HOVER = 0.45  # return descent / hover induced velocity when hovering: below the vortex-ring monitor's 0.5
+DESCENT_FORWARD = 1.0  # in forward flight faster than v_h the wake is blown away, no vortex ring
 
-    def __init__(self, inner: TestPilot, ac, lap: float, n: int):
+
+class MissionPilot:
+    """TestPilot over the repeated maneuver, re-estimating the hover throttle
+    each lap and bringing the aircraft back down to the start altitude.
+
+    A punch-out leaves the test pilot holding wherever it ended, about 50 m
+    higher; lap after lap that would climb to a kilometre. A pilot flies back
+    down. Here the altitude to hold is a target kept by MissionPilot: it
+    follows the aircraft up while a script overrides the throttle (punch,
+    chop, flips) and otherwise comes down to the start altitude at 0.45
+    times the hover induced velocity v_h, or at v_h while the aircraft flies
+    forward faster than v_h (a descent that stays out of the vortex-ring
+    region either way)."""
+
+    def __init__(self, inner: TestPilot, ac, lap: float, n: int, start_altitude: float):
         self.inner = inner
         self.ac = ac
         self.lap = lap
@@ -64,6 +80,10 @@ class MissionPilot:
         self.duration = inner.maneuver.duration
         self.name = inner.maneuver.name
         self.laps_started = 0
+        self.base = start_altitude
+        self.target = start_altitude
+        prop = ac.powertrain.prop
+        self.v_h = math.sqrt(ac.weight / (n * 2.0 * ac.env.rho * prop.disk_area))
 
     def sticks(self, t: float, s: list[float], dt: float):
         lap = int(t // self.lap)
@@ -73,7 +93,18 @@ class MissionPilot:
             if hp is not None:
                 self.inner.hover_duty = hp.duty
             self.laps_started = lap + 1
-        return self.inner.sticks(t, s, dt)
+        altitude = -s[2]
+        if any("throttle" in seg.sticks for seg in self.inner.maneuver.active(t)):
+            self.target = max(self.target, altitude)  # the script flies the throttle: follow it up
+        else:
+            forward = math.hypot(s[3], s[4]) > self.v_h
+            rate = (DESCENT_FORWARD if forward else DESCENT_HOVER) * self.v_h
+            self.target = max(self.base, self.target - rate * dt)
+        sticks = self.inner.sticks(t, s, dt)
+        hold = self.inner.hold
+        if hold is not None:
+            self.inner.hold = (hold[0], hold[1], -self.target)
+        return sticks
 
 
 @dataclass
@@ -103,7 +134,8 @@ def fly_mission(build: Build, cfg: FcConfig, maneuver: str = "freestyle", max_la
     if hp is None:
         raise ValueError("the aircraft cannot hover")
     n = ac.powertrain.n_rotors
-    pilot = MissionPilot(TestPilot(cfg, plan, ac.mass_props.mass, ac.env.g, hp.duty, ac.motor_idle), ac, base.duration, n)
+    pilot = MissionPilot(TestPilot(cfg, plan, ac.mass_props.mass, ac.env.g, hp.duty, ac.motor_idle), ac, base.duration, n,
+                         start_altitude)
     cells = ac.battery.series
     reserve, v_min, t_max = ac.criteria.reserve_soc, ac.criteria.min_cell_voltage, ac.battery.max_temperature
     window: deque[float] = deque(maxlen=max(1, int(round(log_rate))))  # 1 s of samples at the log rate

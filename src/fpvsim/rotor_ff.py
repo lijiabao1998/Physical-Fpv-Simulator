@@ -305,15 +305,35 @@ def _compute_rows(geom: BladeGeometry, foil: Airfoil, n_r: int, n_psi: int, mu_g
     )
 
 
+def _solver_fingerprint() -> str:
+    """Hash of the code and constants that produce the tables, so an edit to the
+    solver (or to the polar it uses) can never be served a stale cached table."""
+    import inspect
+
+    from . import bemt
+
+    parts = [inspect.getsource(f) for f in (axial_induced, vrs_extent, glauert, induced_velocity, compute_tables,
+                                            _compute_rows, bemt.polar)]
+    parts.append(repr((INFLOW_TOL, CLASSICAL_LIMIT, VRS_COEFFS, POST_STALL, FLAT_PLATE_CN,
+                       inspect.signature(compute_tables).parameters["n_r"].default,
+                       inspect.signature(compute_tables).parameters["n_psi"].default,
+                       inspect.signature(compute_tables).parameters["iterations"].default)))
+    return hashlib.sha256("\n".join(parts).encode()).hexdigest()[:16]
+
+
 def _cache_key(geom: BladeGeometry, foil: Airfoil) -> str:
     payload = {
         "R": geom.radius, "hub": geom.hub_radius, "r": list(map(float, geom.r_over_R)), "c": list(map(float, geom.chord)),
         "pitch": geom.pitch, "B": geom.blades, "foil": [foil.cl_alpha, foil.alpha0, foil.cl_max, foil.cl_min,
                                                          foil.cd_min, foil.cl_cd_min, foil.k_cd],
-        "post_stall": [*POST_STALL, FLAT_PLATE_CN],
-        "mu": list(map(float, MU_GRID)), "lam": list(map(float, LAMBDA_GRID)), "version": 7,
+        "mu": list(map(float, MU_GRID)), "lam": list(map(float, LAMBDA_GRID)), "solver": _solver_fingerprint(),
     }
     return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()[:20]
+
+
+def tables_key(geom: BladeGeometry, foil: Airfoil) -> str:
+    """Identity of the tables for a blade (inputs and solver), for report provenance."""
+    return _cache_key(geom, foil)
 
 
 _MEMORY: dict[str, RotorTables] = {}
