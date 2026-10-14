@@ -58,8 +58,10 @@ class ReynoldsCorrection:
         FM ~ (Re / Re_ref)^fm_exponent, so Cp = Cp(J) (Re / Re_ref)^(1.5 ct_exponent - fm_exponent)
 
     The curves Ct(J), Cp(J) hold at Re_ref; the same factor applies at every J.
-    Outside [re_min, re_max], the range of the data the exponents come from,
-    the factors are held at their boundary values."""
+    Each power law is held at its boundary value outside the range of the
+    data it comes from: [re_min, re_max] for Ct (thrust readings) and
+    [fm_re_min, fm_re_max] for FM (thrust and torque readings; the Ct range
+    when not given). The Cp factor is f_T^1.5 / f_FM."""
 
     chord75: float  # m, blade chord at 75 % radius (defines Re)
     re_ref: float
@@ -67,21 +69,30 @@ class ReynoldsCorrection:
     re_max: float
     ct_exponent: float
     fm_exponent: float
+    fm_re_min: float | None = None
+    fm_re_max: float | None = None
 
     def __post_init__(self) -> None:
-        if not 0.0 < self.re_min <= self.re_ref <= self.re_max:
-            raise ValueError("Reynolds correction needs 0 < re_min <= re_ref <= re_max")
+        if self.fm_re_min is None:
+            object.__setattr__(self, "fm_re_min", self.re_min)
+        if self.fm_re_max is None:
+            object.__setattr__(self, "fm_re_max", self.re_max)
+        for lo, hi in ((self.re_min, self.re_max), (self.fm_re_min, self.fm_re_max)):
+            if not 0.0 < lo <= self.re_ref <= hi:
+                raise ValueError("Reynolds correction needs 0 < re_min <= re_ref <= re_max (for Ct and for FM)")
         if self.chord75 <= 0.0:
             raise ValueError("Reynolds correction needs a positive chord")
 
     @property
     def cp_exponent(self) -> float:
+        """Cp exponent where both power laws apply."""
         return 1.5 * self.ct_exponent - self.fm_exponent
 
     def factors(self, re: float) -> tuple[float, float]:
         """(Ct factor, Cp factor) at Reynolds number ``re``."""
-        x = math.log(min(max(re, self.re_min), self.re_max) / self.re_ref)
-        return math.exp(self.ct_exponent * x), math.exp(self.cp_exponent * x)
+        x_t = math.log(min(max(re, self.re_min), self.re_max) / self.re_ref)
+        x_f = math.log(min(max(re, self.fm_re_min), self.fm_re_max) / self.re_ref)
+        return math.exp(self.ct_exponent * x_t), math.exp(1.5 * self.ct_exponent * x_t - self.fm_exponent * x_f)
 
 
 @dataclass(frozen=True)

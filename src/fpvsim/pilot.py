@@ -11,7 +11,8 @@ A maneuver is a list of segments. During a segment the listed sticks are
 overridden (a value, or a linear ramp (start, end)); the other axes stay under
 the pilot's control. A segment can also give a velocity to fly instead of
 holding position. When an override ends, the pilot holds wherever the
-aircraft is at that moment.
+aircraft is at that moment. A pilot program around the test pilot (the
+mission pilot) can also command a velocity directly (``command_velocity``).
 """
 
 from __future__ import annotations
@@ -202,6 +203,7 @@ class TestPilot:
         self.alt_integral = 0.0
         self.vel_integral = [0.0, 0.0]  # m/s^2, removes the steady speed error against drag
         self._was_overridden = False
+        self.command_velocity = None  # NED m/s set from outside; flown when no segment gives a velocity
 
     def _stick_for_rate(self, axis: int, rate_rad: float) -> float:
         rates, x = self.tables[axis]
@@ -209,11 +211,11 @@ class TestPilot:
 
     def sticks(self, t: float, s: list[float], dt: float) -> tuple[float, float, float, float]:
         active = self.maneuver.active(t)
-        overridden = any(seg.sticks or seg.velocity for seg in active)
+        overridden = any(seg.sticks or seg.velocity for seg in active) or self.command_velocity is not None
         if self.hold is None or (self._was_overridden and not overridden):
             self.hold = (s[0], s[1], s[2])  # hold wherever we are
         self._was_overridden = overridden
-        velocity = next((seg.velocity for seg in active if seg.velocity), None)
+        velocity = next((seg.velocity for seg in active if seg.velocity), self.command_velocity)
 
         px, py, pz, vx, vy, vz = s[0:6]
         q = tuple(s[6:10])

@@ -28,13 +28,21 @@ ROTOR_SPEEDS = np.arange(0.0, 30.0001, 2.0)
 METRICS = {  # key: (title, unit, scale, format)
     "v_best_endurance": ("續航最久的速度（最低功率）", "m/s", 1.0, "{:.1f}"),
     "v_best_range": ("航程最遠的速度（最低功率 ÷ 速度）", "m/s", 1.0, "{:.1f}"),
-    "v_max": ("最高平飛速度（滿電，全油門）", "m/s", 1.0, "{:.1f}"),
+    "v_max": ("最高平飛速度（{charge}，全油門）", "m/s", 1.0, "{:.1f}"),
     "tilt_10": ("10 m/s 配平傾角", "°", DEG, "{:.1f}"),
     "tilt_20": ("20 m/s 配平傾角", "°", DEG, "{:.1f}"),
     "power_hover": ("懸停功率", "W", 1.0, "{:.0f}"),
     "power_10": ("10 m/s 功率", "W", 1.0, "{:.0f}"),
     "power_20": ("20 m/s 功率", "W", 1.0, "{:.0f}"),
 }
+
+
+def _charge(soc: float) -> str:
+    return "滿電" if soc >= 0.999 else f"SoC {soc:.0%}"
+
+
+def metric_title(key: str, soc: float = 1.0) -> str:
+    return METRICS[key][0].format(charge=_charge(soc))
 
 
 def trim_metrics(ac, soc: float = 1.0) -> dict[str, float]:
@@ -178,7 +186,7 @@ def generate(study: TunnelStudy, out_dir: Path) -> Path:
                 interval += f"；{infeasible:.0%} 樣本無解"
         else:
             interval = "—"
-        rows.append([METRICS[key][0], _fmt(key, nominal), interval])
+        rows.append([metric_title(key, study.soc), _fmt(key, nominal), interval])
     add(md_table(["項目", "標稱值", "90% 區間（蒙地卡羅）"], rows))
     add("")
     add(f"- 以標稱值計，最省電的速度 {v_e:.1f} m/s 可飛約 {ce[0] / 60:.1f} 分鐘；航程最遠的速度 {v_r:.1f} m/s 約 {crr[1] / 1000:.1f} km"
@@ -186,7 +194,8 @@ def generate(study: TunnelStudy, out_dir: Path) -> Path:
     if curve.v_max_point is not None:
         vp = curve.v_max_point
         add(f"- 最高平飛速度 {curve.v_max:.1f} m/s（{curve.v_max * 3.6:.0f} km/h）時傾角 {vp.tilt * DEG:.0f}°、"
-            f"電池輸出 {vp.p_bus:.0f} W（{vp.i_bus:.0f} A）；這是滿電、靜止空氣中的值，電壓下降後會降低。")
+            f"電池輸出 {vp.p_bus:.0f} W（{vp.i_bus:.0f} A）；這是{_charge(study.soc)}、靜止空氣中的值"
+            + ("，電壓下降後會降低。" if study.soc >= 0.999 else "。"))
     add("")
 
     add("## 1. 試驗設定\n")
@@ -259,7 +268,7 @@ def generate(study: TunnelStudy, out_dir: Path) -> Path:
             continue
         rows.append([f"{c.speed:.0f}", f"{c.time / 60:.1f}", f"{c.distance / 1000:.2f}", c.reason_zh])
     add(md_table(["速度 m/s", "續航 min", "航程 km", "結束原因"], rows))
-    add(f"\n最低功率的速度 {v_e:.1f} m/s、最低「功率 ÷ 速度」的速度 {v_r:.1f} m/s 由滿電時的功率曲線求得（拋物線內插）；"
+    add(f"\n最低功率的速度 {v_e:.1f} m/s、最低「功率 ÷ 速度」的速度 {v_r:.1f} m/s 由{_charge(study.soc)}時的功率曲線求得（拋物線內插）；"
         "續航與航程曲線的最大值會因電池放電略有偏移。最高平飛速度在電壓下降後會降低，表中高速點可能因此提早結束（「電壓不足以維持此速度」）。\n")
     add("![Cruise](cruise.png)\n")
 
@@ -271,7 +280,7 @@ def generate(study: TunnelStudy, out_dir: Path) -> Path:
     for metric in ("tilt_20", "v_best_range", "power_10"):
         for bar in study.bars.get(metric, [])[:5]:
             lo, hi = sorted((bar.low, bar.high))
-            rows.append([METRICS[metric][0], f"`{bar.key}`", f"{_fmt(metric, lo)} – {_fmt(metric, hi)}", measurement_method(bar.key)])
+            rows.append([metric_title(metric, study.soc), f"`{bar.key}`", f"{_fmt(metric, lo)} – {_fmt(metric, hi)}", measurement_method(bar.key)])
     add(md_table(["結果", "參數", "−1σ 到 +1σ", "量測方法"], rows))
     add("")
 
@@ -285,7 +294,7 @@ def generate(study: TunnelStudy, out_dir: Path) -> Path:
     add("- 機身阻力為三軸獨立的阻力面積，作用在固定點（機架）與各零件位置；沒有機身升力與側力的交叉項。")
     add("- 槳的斜向氣流係數錨定在軸向曲線，揮舞比例 `flap_fraction` 沒有數據（0 到 1 的均勻分布），是傾角與槳盤阻力不確定度的主要來源之一。")
     add("- 槳與槳之間、槳與機身之間的干擾只以固定的推力比例表示；高速時機臂與機身對槳盤入流的影響沒有模擬。")
-    add("- 配平是靜態平衡，不含飛控動態；最高速度以滿電電壓計算。")
+    add(f"- 配平是靜態平衡，不含飛控動態；配平、功率曲線與最高速度以{_charge(study.soc)}時的電池電壓計算（定速續航除外，它從滿電飛起）。")
     path = out_dir / "report.md"
     path.write_text("\n".join(md) + "\n", encoding="utf-8")
     return path

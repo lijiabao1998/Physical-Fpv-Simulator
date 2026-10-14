@@ -28,6 +28,16 @@ def test_hppc_fit_recovers_the_pack(battery):
     assert np.allclose(fit.ocv_cell, expected, atol=0.003)
 
 
+def test_hppc_fit_of_a_parallel_pack(battery):
+    """A 6S2P pack: the pack resistance is S R_cell / P, so the cell values need the parallel count."""
+    from dataclasses import replace
+
+    pack = replace(battery, parallel=2, capacity=2 * battery.capacity)
+    fit = fit_hppc(run_hppc(pack, 298.15, QUICK, seed=4), pack.series, pack.capacity, parallel=2)
+    assert abs(fit.r0_cell.value - battery.r0_cell) < 3 * fit.r0_cell.u + 0.005 * battery.r0_cell
+    assert abs(fit.r1_cell.value - battery.r1_cell) < 3 * fit.r1_cell.u + 0.01 * battery.r1_cell
+
+
 def test_arrhenius_from_two_chamber_temperatures(battery):
     fits = [fit_hppc(run_hppc(battery, t, QUICK, seed=s), battery.series, battery.capacity)
             for t, s in ((298.15, 1), (273.15, 2))]

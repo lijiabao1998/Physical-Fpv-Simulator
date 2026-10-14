@@ -283,8 +283,7 @@ def group_trends(vset: ValidationSet, key: str) -> dict[str, Trend]:
     out = {}
     for group in dict.fromkeys(s.group for s in vset.series):
         trends = [series_trend(list(s.points), key, vset.re_ref) for s in vset.series
-                  if s.group == group and (key == "ct" or s.has_torque)]
-        trends = [t for t in trends if t.n >= 2]
+                  if s.group == group and sum(1 for p in s.points if getattr(p, key) is not None) >= 2]
         if not trends:
             continue
         out[group] = Trend(float(math.exp(np.mean([math.log(t.level) for t in trends]))),
@@ -304,8 +303,10 @@ def _predictive_sd(values) -> float:
 @dataclass(frozen=True)
 class ClassFit:
     re_ref: float
-    re_min: float  # range of the data behind the trends
+    re_min: float  # range of the data behind the Ct trend (thrust readings)
     re_max: float
+    fm_re_min: float  # range of the data behind the FM trend (thrust and torque readings)
+    fm_re_max: float
     ct_level: float
     ct_level_u_rel: float
     fm_level: float
@@ -323,14 +324,24 @@ class ClassFit:
         return self.ct_level**1.5 * math.sqrt(2.0 / math.pi) / self.fm_level
 
     def band(self, key: str, re: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-        """Nominal and +-1 sigma of the class value of ``key`` (ct or fm) at ``re``
-        (clipped to the data range): level and exponent errors combined; they
-        are nearly uncorrelated because Re_ref is at the centre of the data."""
-        level, u_level, e, u_e = {"ct": (self.ct_level, self.ct_level_u_rel, self.ct_exponent, self.ct_exponent_u),
-                                  "fm": (self.fm_level, self.fm_level_u_rel, self.fm_exponent, self.fm_exponent_u)}[key]
-        x = np.log(np.clip(re, self.re_min, self.re_max) / self.re_ref)
-        nominal = level * np.exp(e * x)
-        u = np.sqrt(u_level**2 + (u_e * x) ** 2)
+        """Nominal and +-1 sigma of the class value of ``key`` (ct, fm or cp) at
+        ``re`` (each power law clipped to its data range): level and exponent
+        errors combined in log space, taken as independent (they nearly are,
+        because Re_ref is at the centre of the data, and Ct and FM are sampled
+        independently); log Cp = 1.5 log Ct - log FM + const."""
+        x_t = np.log(np.clip(re, self.re_min, self.re_max) / self.re_ref)
+        x_f = np.log(np.clip(re, self.fm_re_min, self.fm_re_max) / self.re_ref)
+        var_t = self.ct_level_u_rel**2 + (self.ct_exponent_u * x_t) ** 2
+        var_f = self.fm_level_u_rel**2 + (self.fm_exponent_u * x_f) ** 2
+        if key == "ct":
+            nominal, u = self.ct_level * np.exp(self.ct_exponent * x_t), np.sqrt(var_t)
+        elif key == "fm":
+            nominal, u = self.fm_level * np.exp(self.fm_exponent * x_f), np.sqrt(var_f)
+        elif key == "cp":
+            nominal = self.cp_level * np.exp(1.5 * self.ct_exponent * x_t - self.fm_exponent * x_f)
+            u = np.sqrt(2.25 * var_t + var_f)
+        else:
+            raise KeyError(key)
         return nominal, nominal * np.exp(-u), nominal * np.exp(u)
 
 
@@ -343,10 +354,13 @@ def fit_class(vset: ValidationSet) -> ClassFit:
     fm_logs = [math.log(t.level) for t in level_fm.values()]
     rig = vset.rig_u_rel
     pts = vset.points
+    torque = [p for p in pts if p.torque is not None]
     return ClassFit(
         re_ref=vset.re_ref,
         re_min=min(p.re for p in pts),
         re_max=max(p.re for p in pts),
+        fm_re_min=min(p.re for p in torque),
+        fm_re_max=max(p.re for p in torque),
         ct_level=float(math.exp(np.mean(ct_logs))),
         ct_level_u_rel=math.hypot(_predictive_sd(ct_logs), rig),
         fm_level=float(math.exp(np.mean(fm_logs))),
@@ -478,12 +492,14 @@ def consistency(build, fit: ClassFit, vset: ValidationSet) -> list[Check]:
         Check("FM 不確定度", fit.fm_level_u_rel, params["prop.fm_scale"].u, 0.001, False),
     ]
     if build.prop_reynolds is not None:
-        chord, re_ref, re_min, re_max = build.prop_reynolds
+        chord, re_ref, re_min, re_max, fm_re_min, fm_re_max = build.prop_reynolds
         checks += [
             Check("Re 的弦長 c75", vset.chord75, chord, 1e-9, False),
             Check("Re_ref", vset.re_ref, re_ref, 1e-9, True),
-            Check("Re 下限", fit.re_min, re_min, 0.005, True),
-            Check("Re 上限", fit.re_max, re_max, 0.005, True),
+            Check("Ct 的 Re 下限", fit.re_min, re_min, 0.005, True),
+            Check("Ct 的 Re 上限", fit.re_max, re_max, 0.005, True),
+            Check("FM 的 Re 下限", fit.fm_re_min, fm_re_min, 0.005, True),
+            Check("FM 的 Re 上限", fit.fm_re_max, fm_re_max, 0.005, True),
             Check("Ct 指數", fit.ct_exponent, params["prop.re_ct_exponent"].value, 0.001, False),
             Check("Ct 指數不確定度", fit.ct_exponent_u, params["prop.re_ct_exponent"].u, 0.001, False),
             Check("FM 指數", fit.fm_exponent, params["prop.re_fm_exponent"].value, 0.001, False),

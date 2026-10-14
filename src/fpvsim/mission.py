@@ -14,8 +14,9 @@ full, rested pack until the first of
 
 The test pilot adapts as a pilot does: at the start of each lap its hover
 throttle estimate is recomputed from the battery's current state (otherwise
-the altitude hold drifts as the voltage falls), and after every punch-out it
-descends back to the start altitude (MissionPilot).
+the altitude hold drifts as the voltage falls), and after each lap's script
+it dives back down to the start altitude in forward flight before the next
+lap begins (MissionPilot), so every lap starts at the same height.
 
 Cost: the physics runs at 4 kHz (gyro and PID loop at 4 kHz too, a common
 Betaflight setting) instead of 8 kHz, and the log at 50 Hz; a few minutes
@@ -55,55 +56,98 @@ def repeated(maneuver: Maneuver, laps: int) -> Maneuver:
     return Maneuver(f"{maneuver.name}x{laps}", f"{maneuver.title}，重複 {laps} 圈", maneuver.duration * laps, segments)
 
 
-DESCENT_HOVER = 0.45  # return descent / hover induced velocity when hovering: below the vortex-ring monitor's 0.5
-DESCENT_FORWARD = 1.0  # in forward flight faster than v_h the wake is blown away, no vortex ring
+RETURN_SPEED = 2.0  # return-flight airspeed / hover induced velocity v_h: the wake is blown away
+RETURN_DESCENT = 1.0  # return descent rate / v_h at full return airspeed
+SLOW_DESCENT = 0.4  # descent rate / v_h below an airspeed of v_h: under the vortex-ring monitor's 0.5, with margin
+RETURN_GAIN = 0.4  # 1/s, descent rate per metre above the start altitude near the end of the return
+RETURN_SLOWDOWN = 8.0  # m above the start altitude below which the return airspeed is brought down with the height
+RETURN_TOLERANCE = 1.0  # m above the start altitude at which the next lap starts
 
 
 class MissionPilot:
-    """TestPilot over the repeated maneuver, re-estimating the hover throttle
-    each lap and bringing the aircraft back down to the start altitude.
+    """The test pilot over the maneuver, lap after lap, with a return flight in between.
 
-    A punch-out leaves the test pilot holding wherever it ended, about 50 m
-    higher; lap after lap that would climb to a kilometre. A pilot flies back
-    down. Here the altitude to hold is a target kept by MissionPilot: it
-    follows the aircraft up while a script overrides the throttle (punch,
-    chop, flips) and otherwise comes down to the start altitude at 0.45
-    times the hover induced velocity v_h, or at v_h while the aircraft flies
-    forward faster than v_h (a descent that stays out of the vortex-ring
-    region either way)."""
+    A punch-out leaves the aircraft about 50 m higher; repeated back to back,
+    the laps would climb without end. A pilot dives back down, and does it in
+    forward flight: a vertical descent at that rate would put the rotors in
+    their own wake (vortex ring). So after each lap's script the mission pilot
+    flies towards the start point at RETURN_SPEED v_h of airspeed (from the
+    true mean wind, which a test pilot can feel) and descends at up to
+    RETURN_DESCENT v_h once the airspeed is 1.5 v_h, SLOW_DESCENT v_h below an
+    airspeed of v_h (where the vortex-ring monitor looks), linear in between; over the last RETURN_SLOWDOWN metres it slows down in
+    both directions together (no hard braking, which would put air through the
+    disks from below); the next lap starts
+    within RETURN_TOLERANCE of the start altitude, with the hover throttle
+    re-estimated for the battery's state. The return direction is fixed when
+    the return starts. Lap length therefore varies with the climb to undo."""
 
-    def __init__(self, inner: TestPilot, ac, lap: float, n: int, start_altitude: float):
+    def __init__(self, inner: TestPilot, ac, n: int, start_altitude: float, max_laps: int,
+                 wind: WindSettings = WindSettings()):
         self.inner = inner
         self.ac = ac
-        self.lap = lap
         self.n = n
-        self.duration = inner.maneuver.duration
+        self.script = inner.maneuver.duration
         self.name = inner.maneuver.name
-        self.laps_started = 0
+        self.max_laps = max_laps
+        self.duration = max_laps * (self.script + 120.0)  # time limit; the mission ends on max_laps first
         self.base = start_altitude
-        self.target = start_altitude
+        self.wind = wind
         prop = ac.powertrain.prop
         self.v_h = math.sqrt(ac.weight / (n * 2.0 * ac.env.rho * prop.disk_area))
+        self.lap_starts: list[float] = []
+        self.returning = False
+        self._direction = (1.0, 0.0)
+        self._start_lap(0.0, None)
 
-    def sticks(self, t: float, s: list[float], dt: float):
-        lap = int(t // self.lap)
-        if lap >= self.laps_started:
+    @property
+    def laps_done(self) -> int:
+        """Laps whose script and return are both complete."""
+        return len(self.lap_starts) - 1
+
+    def _start_lap(self, t: float, s) -> None:
+        self.lap_starts.append(t)
+        self.returning = False
+        self.inner.command_velocity = None
+        self._set_base_hold = s is not None
+        if s is not None:
             n = self.n
             hp = hover_point(self.ac, BatteryState(s[13 + n], s[14 + n], s[15 + n]))
             if hp is not None:
                 self.inner.hover_duty = hp.duty
-            self.laps_started = lap + 1
+
+    def sticks(self, t: float, s: list[float], dt: float):
         altitude = -s[2]
-        if any("throttle" in seg.sticks for seg in self.inner.maneuver.active(t)):
-            self.target = max(self.target, altitude)  # the script flies the throttle: follow it up
-        else:
-            forward = math.hypot(s[3], s[4]) > self.v_h
-            rate = (DESCENT_FORWARD if forward else DESCENT_HOVER) * self.v_h
-            self.target = max(self.base, self.target - rate * dt)
-        sticks = self.inner.sticks(t, s, dt)
+        tau = t - self.lap_starts[-1]
+        if not self.returning and tau >= self.script:
+            self.returning = True
+            d = math.hypot(s[0], s[1])
+            self._direction = (-s[0] / d, -s[1] / d) if d > 5.0 else (-1.0, 0.0)  # towards the start point
+        if self.returning:
+            gap = altitude - self.base
+            if gap <= RETURN_TOLERANCE:
+                self._start_lap(t, s)
+                tau = 0.0
+            else:
+                wn, we, _ = self.wind.mean_ned(max(altitude, 0.0))
+                airspeed = math.hypot(s[3] - wn, s[4] - we)
+                fast = min(max((airspeed - self.v_h) / (0.5 * self.v_h), 0.0), 1.0)
+                allowed = (SLOW_DESCENT + (RETURN_DESCENT - SLOW_DESCENT) * fast) * self.v_h
+                v = RETURN_SPEED * self.v_h * min(1.0, gap / RETURN_SLOWDOWN)
+                self.inner.command_velocity = (wn + v * self._direction[0], we + v * self._direction[1],
+                                               min(allowed, RETURN_GAIN * gap))
+                sticks = self.inner.sticks(self.script, s, dt)  # past the script: no segment is active
+                hold = self.inner.hold
+                self.inner.hold = (hold[0], hold[1], s[2])  # vertical speed control only
+                return sticks
+        sticks = self.inner.sticks(tau, s, dt)
         hold = self.inner.hold
-        if hold is not None:
-            self.inner.hold = (hold[0], hold[1], -self.target)
+        if self._set_base_hold:  # a new lap: hold the start altitude (at most RETURN_TOLERANCE below)
+            self.inner.hold = (hold[0], hold[1], -self.base)
+            self._set_base_hold = False
+        elif s[5] < 0.0 and s[2] < hold[2] and not any(seg.sticks or seg.velocity for seg in self.inner.maneuver.active(tau)):
+            # still coasting up after a punch-out: hold the top of the climb, not the point where the script let go
+            # (pulling back down to it would be a fast vertical descent into the rotors' own wake)
+            self.inner.hold = (hold[0], hold[1], s[2])
         return sticks
 
 
@@ -113,7 +157,8 @@ class MissionResult:
     time: float  # s
     laps: float  # completed laps (fractional)
     reason: str
-    lap_duration: float
+    lap_duration: float  # s, the scripted part of a lap
+    lap_starts: list[float]  # s, start time of each lap (script, then the return flight)
     hover_endurance: float  # s, design-report figure for comparison
     physics_rate: float
 
@@ -127,15 +172,14 @@ def fly_mission(build: Build, cfg: FcConfig, maneuver: str = "freestyle", max_la
                 wind: WindSettings = WindSettings(), start_altitude: float = 20.0,
                 ground_effect: bool = True) -> MissionResult:
     base = MANEUVERS[maneuver]
-    plan = repeated(base, max_laps)
     cfg = replace(cfg, gyro_rate=min(cfg.gyro_rate, physics_rate), pid_rate=min(cfg.pid_rate, physics_rate))
     ac = build.realize(overrides)
     hp = hover_point(ac)
     if hp is None:
         raise ValueError("the aircraft cannot hover")
     n = ac.powertrain.n_rotors
-    pilot = MissionPilot(TestPilot(cfg, plan, ac.mass_props.mass, ac.env.g, hp.duty, ac.motor_idle), ac, base.duration, n,
-                         start_altitude)
+    pilot = MissionPilot(TestPilot(cfg, base, ac.mass_props.mass, ac.env.g, hp.duty, ac.motor_idle), ac, n,
+                         start_altitude, max_laps, wind)
     cells = ac.battery.series
     reserve, v_min, t_max = ac.criteria.reserve_soc, ac.criteria.min_cell_voltage, ac.battery.max_temperature
     window: deque[float] = deque(maxlen=max(1, int(round(log_rate))))  # 1 s of samples at the log rate
@@ -150,6 +194,8 @@ def fly_mission(build: Build, cfg: FcConfig, maneuver: str = "freestyle", max_la
             return "battery_temperature"
         if out.on_ground and out.max_contact_speed > 3.0:
             return "crash"
+        if pilot.laps_done >= max_laps:
+            return "max_laps"
         return None
 
     settings = SimSettings(physics_rate=physics_rate, log_rate=log_rate, seed=seed, start_altitude=start_altitude, wind=wind,
@@ -157,17 +203,19 @@ def fly_mission(build: Build, cfg: FcConfig, maneuver: str = "freestyle", max_la
     log = simulate(build, cfg, pilot, settings, overrides=overrides, stop=stop)
     time = float(log.time[-1]) if len(log.time) else 0.0
     reason = log.meta.get("stop") or ("crash" if log.meta.get("crashed") else "max_laps")
-    return MissionResult(log, time, time / base.duration, reason, base.duration, hover_endurance(ac).endurance, physics_rate)
+    starts = [t for t in pilot.lap_starts if t <= time]
+    laps = len(starts) - 1 + min(1.0, (time - starts[-1]) / base.duration)
+    return MissionResult(log, time, laps, reason, base.duration, starts, hover_endurance(ac).endurance, physics_rate)
 
 
 def lap_table(result: MissionResult, cells: int) -> list[dict]:
-    """Per lap: start time, charge used, average power, lowest 1 s average cell voltage, highest pack temperature."""
+    """Per lap (script and return flight): start time, length, charge used, average
+    power, lowest 1 s average cell voltage, highest pack temperature, start altitude."""
     log = result.log
     t = log.time
     rows = []
-    k = 0
-    while k * result.lap_duration < t[-1]:
-        t0, t1 = k * result.lap_duration, (k + 1) * result.lap_duration
+    ends = result.lap_starts[1:] + [float("inf")]
+    for k, (t0, t1) in enumerate(zip(result.lap_starts, ends)):
         sel = (t >= t0) & (t < t1)
         if sel.sum() < 2:
             break
@@ -175,8 +223,9 @@ def lap_table(result: MissionResult, cells: int) -> list[dict]:
         width = max(1, int(round(log.rate)))
         avg = np.convolve(v, np.ones(width) / width, mode="valid") if len(v) >= width else v
         p = log["vbat"][sel] * log["current"][sel]
-        rows.append({"lap": k + 1, "start": t0, "mah": float(log["mah"][sel][-1] - log["mah"][sel][0]),
-                     "power": float(p.mean()), "min_cell_avg": float(avg.min()), "max_temp": float(log["batt_temp"][sel].max()),
-                     "complete": bool(t[-1] >= t1 - 1.0 / log.rate)})
-        k += 1
+        complete = t1 != float("inf")
+        rows.append({"lap": k + 1, "start": t0, "length": float((t1 if complete else t[-1]) - t0),
+                     "mah": float(log["mah"][sel][-1] - log["mah"][sel][0]), "power": float(p.mean()),
+                     "min_cell_avg": float(avg.min()), "max_temp": float(log["batt_temp"][sel].max()),
+                     "start_alt": float(log["alt"][sel][0]), "max_alt": float(log["alt"][sel].max()), "complete": complete})
     return rows

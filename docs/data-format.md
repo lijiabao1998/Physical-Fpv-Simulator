@@ -76,8 +76,10 @@ cp_u_rel = 0.015
 source = "derived"
 ref = "fpvsim validate-prop：data/validation/props-5in-tri.toml"
 re_ref = 60000
-re_min = 24400
+re_min = 24400        # Ct 冪次律的數據範圍
 re_max = 100400
+fm_re_min = 24400     # FM 冪次律的數據範圍（選用，預設同 Ct）
+fm_re_max = 88500
 ct_exponent = { value = 0.095, unit = "1", source = "derived", u = 0.048 }
 fm_exponent = { value = 0.241, unit = "1", source = "derived", u = 0.058 }
 # chord75 = { value = 10, unit = "mm", source = "measured" }   只有沒有 [bemt.blade] 時才需要
@@ -159,7 +161,7 @@ rig_u_rel = 0.05                                     # 推力台之間的系統�
 
 [[series]]
 id = "tyto-wek"
-group = "hq5043@tyto"         # 同一款槳在同一台推力台上的數據先平均成一組
+group = "hq5043@tyto"         # 「產品@推力台」：同一款槳在同一台推力台上的數據先平均成一組
 level = true                  # 是否用於這一類的等級（false：只用於趨勢）
 tested = "受測物（品牌與型號只用來標示出處）"
 diameter = { value = 5.0, unit = "in" }

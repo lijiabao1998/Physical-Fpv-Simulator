@@ -27,8 +27,9 @@ v_hub = v + w x r_i in body axes:
       rotor drag  C_H q against the in-plane motion, side force C_Y q
       hub moment  C_Mx q R about the in-plane motion, C_My q R about its normal
       shaft torque C_Q q R
-  (anchored to the axial Ct(J), Cp(J) curves, so hover and axial climb are
-  as before). The table lookup is done once per RK4 step, at its first
+  (anchored to the axial Ct(J), Cp(J) curves over their whole range, so
+  hover and axial climb reproduce them; see rotor_ff.AnchoredRotor), times
+  the prop's Reynolds-number factors. The table lookup is done once per RK4 step, at its first
   stage; the coefficients are held over the other three stages while q
   still follows the rotor speed and air speed at every stage;
 * props without geometry (legacy): T_i = Ct(J_i) rho n_i^2 D^4 with
@@ -124,9 +125,9 @@ class QuadModel:
         rc = prop.reynolds
         if rc is not None:  # Reynolds factors as functions of rotor speed: f = exp(exponent * (ln clip(w) - ln w_ref))
             per_omega = 0.75 * prop.radius * rc.chord75 / self.nu
-            self.re_omega = (rc.re_min / per_omega, rc.re_max / per_omega)
+            self.re_omega = (rc.re_min / per_omega, rc.re_max / per_omega, rc.fm_re_min / per_omega, rc.fm_re_max / per_omega)
             self.re_ln_omega_ref = math.log(rc.re_ref / per_omega)
-            self.re_exponents = (rc.ct_exponent, rc.cp_exponent)
+            self.re_exponents = (rc.ct_exponent, rc.fm_exponent)
         else:
             self.re_omega = None
         if prop.blade is not None:  # oblique-flow tables
@@ -258,9 +259,11 @@ class QuadModel:
         """(Ct factor, Cp factor) of the prop's Reynolds correction at rotor speed w."""
         if self.re_omega is None:
             return 1.0, 1.0
-        lo, hi = self.re_omega
-        x = math.log(min(max(w, lo), hi)) - self.re_ln_omega_ref
-        return math.exp(self.re_exponents[0] * x), math.exp(self.re_exponents[1] * x)
+        lo, hi, lo_f, hi_f = self.re_omega
+        x_t = math.log(min(max(w, lo), hi)) - self.re_ln_omega_ref
+        x_f = math.log(min(max(w, lo_f), hi_f)) - self.re_ln_omega_ref
+        a_t, a_f = self.re_exponents
+        return math.exp(a_t * x_t), math.exp(1.5 * a_t * x_t - a_f * x_f)  # Cp factor = f_T^1.5 / f_FM
 
     # --------------------------------------------------------------- derivative
 

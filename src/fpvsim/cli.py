@@ -77,6 +77,16 @@ def cmd_report(args) -> int:
     return 0
 
 
+def _float_pair(text: str) -> tuple[float, float]:
+    try:
+        lo, hi = (float(x) for x in text.split(","))
+    except ValueError:
+        raise argparse.ArgumentTypeError(f"expected MIN,MAX, got {text!r}") from None
+    if not 0.0 < lo < hi:
+        raise argparse.ArgumentTypeError(f"need 0 < MIN < MAX, got {text!r}")
+    return lo, hi
+
+
 def cmd_fit_prop(args) -> int:
     from .sysid import fit_prop_static, is_synthetic, read_csv_notes
 
@@ -86,44 +96,60 @@ def cmd_fit_prop(args) -> int:
         print(f"error: CSV needs columns {sorted(missing)} (with units, e.g. 'thrust [gf]')", file=sys.stderr)
         return 2
     env = Environment(args.altitude, args.temperature)
-    fits = fit_prop_static(data["rpm"], data["thrust"], data["torque"], env.rho, args.diameter)
-    print(f"air density {env.rho:.4f} kg/m^3, {fits['ct0'].n} points")
-    for key in ("ct0", "cp0"):
-        fit = fits[key]
-        print(f"  {key} = {fit.values[key]:.5f} +/- {fit.stderr[key]:.5f} (1 sigma, HC3)   R^2 = {fit.r2:.5f}")
-    print("\nFor a prop component file (static point only; add more J values from wind-tunnel data):")
-    print("[coefficients]")
-    print('source = "synthetic"' if is_synthetic(notes) else 'source = "measured"')
-    print("# u: statistical (type A) only; add the instruments' type B uncertainty for a real measurement")
-    print(f'ref = "{Path(args.csv).name}"')
-    print("J = [0.0]")
-    print(f"ct = [{fits['ct0'].values['ct0']:.5f}]")
-    print(f"cp = [{fits['cp0'].values['cp0']:.5f}]")
-    print(f"ct_u_rel = {fits['ct0'].u_rel('ct0'):.4f}")
-    print(f"cp_u_rel = {fits['cp0'].u_rel('cp0'):.4f}")
+    src = "synthetic" if is_synthetic(notes) else "measured"
+    name = Path(args.csv).name
     if args.chord75 is None:
-        print("\n(give --chord75, the blade chord at 75 % radius, to also fit the Reynolds-number trend)")
+        fits = fit_prop_static(data["rpm"], data["thrust"], data["torque"], env.rho, args.diameter)
+        print(f"air density {env.rho:.4f} kg/m^3, {fits['ct0'].n} points; Ct and Cp taken as independent of rpm")
+        for key in ("ct0", "cp0"):
+            fit = fits[key]
+            print(f"  {key} = {fit.values[key]:.5f} +/- {fit.stderr[key]:.5f} (1 sigma, HC3)   R^2 = {fit.r2:.5f}")
+        print("\nFor a prop component file (static point only; add more J values from wind-tunnel data):")
+        print("[coefficients]")
+        print(f'source = "{src}"')
+        print("# u: statistical (type A) only; add the instruments' type B uncertainty for a real measurement")
+        print(f'ref = "{name}"')
+        print("J = [0.0]")
+        print(f"ct = [{fits['ct0'].values['ct0']:.5f}]")
+        print(f"cp = [{fits['cp0'].values['cp0']:.5f}]")
+        print(f"ct_u_rel = {fits['ct0'].u_rel('ct0'):.4f}")
+        print(f"cp_u_rel = {fits['cp0'].u_rel('cp0'):.4f}")
+        print("\n(give --chord75, the blade chord at 75 % radius, to fit the Reynolds-number trend instead: small props")
+        print(" gain 20-30 % in efficiency from hover to full throttle, which a single Ct and Cp average away)")
         return 0
     from .sysid import fit_prop_reynolds
 
     rey = fit_prop_reynolds(data["rpm"], data["thrust"], data["torque"], env.rho, env.kinematic_viscosity,
-                            args.diameter, args.chord75)
-    ct_fit, fm_fit = rey["fits"]["ct"], rey["fits"]["fm"]
-    print(f"\nReynolds trend (Re75 {rey['re_min']:.0f}-{rey['re_max']:.0f}, reference {rey['re_ref']:.0f}):")
-    print(f"  Ct = {rey['ct_ref']:.5f} (Re/Re_ref)^{ct_fit.values['exponent']:.4f} +/- {ct_fit.stderr['exponent']:.4f}")
-    print(f"  FM = {rey['fm_ref']:.4f} (Re/Re_ref)^{fm_fit.values['exponent']:.4f} +/- {fm_fit.stderr['exponent']:.4f}")
-    print("\nWith the trend, use these static values at Re_ref in [coefficients] (ct, cp at J = 0) and add:")
-    print(f"# [coefficients] ct = [{rey['ct_ref']:.5f}], cp = [{rey['cp_ref']:.5f}] at J = 0")
-    print("[reynolds]")
-    print('source = "synthetic"' if is_synthetic(notes) else 'source = "measured"')
-    print(f'ref = "{Path(args.csv).name}"')
+                            args.diameter, args.chord75, re_range=args.re_range)
+    ct_fit, fm_fit, cp_fit = rey["fits"]["ct"], rey["fits"]["fm"], rey["fits"]["cp"]
+    print(f"air density {env.rho:.4f} kg/m^3, kinematic viscosity {env.kinematic_viscosity * 1e6:.2f} mm^2/s, {rey['n']} points")
+    print(f"Reynolds trend (Re75 {rey['re_min']:.0f}-{rey['re_max']:.0f}, reference {rey['re_ref']:.0f}):")
+    print(f"  Ct = {rey['ct_ref']:.5f} (Re/Re_ref)^{ct_fit.values['exponent']:.4f} +/- {ct_fit.stderr['exponent']:.4f}"
+          f"   residual RMS {100 * ct_fit.residual_rms:.2f} %")
+    print(f"  FM = {rey['fm_ref']:.4f} (Re/Re_ref)^{fm_fit.values['exponent']:.4f} +/- {fm_fit.stderr['exponent']:.4f}"
+          f"   residual RMS {100 * fm_fit.residual_rms:.2f} %")
+    if rey["lack_of_fit"]:
+        print("WARNING: the residuals exceed 1 %: Ct or FM does not follow one power law over these points (it may level off"
+              " at the ends of the sweep). Narrow the fit with --re-range MIN,MAX to where it does.", file=sys.stderr)
+    print("\nFor a prop component file: the static values at Re_ref and the trend")
+    print("[coefficients]")
+    print(f'source = "{src}"')
+    print("# u: statistical (type A) only; add the instruments' type B uncertainty for a real measurement")
+    print(f'ref = "{name}"')
+    print("J = [0.0]")
+    print(f"ct = [{rey['ct_ref']:.5f}]")
+    print(f"cp = [{rey['cp_ref']:.5f}]")
+    print(f"ct_u_rel = {ct_fit.stderr['log_ref']:.4f}")
+    print(f"cp_u_rel = {cp_fit.stderr['log_ref']:.4f}")
+    print("\n[reynolds]")
+    print(f'source = "{src}"')
+    print(f'ref = "{name}"')
     print(f"re_ref = {rey['re_ref']:.0f}")
     print(f"re_min = {rey['re_min']:.0f}")
     print(f"re_max = {rey['re_max']:.0f}")
-    src = "synthetic" if is_synthetic(notes) else "measured"
     for key, fit in (("ct_exponent", ct_fit), ("fm_exponent", fm_fit)):
         print(f'{key} = {{ value = {fit.values["exponent"]:.4f}, unit = "1", source = "{src}", '
-              f'u = {fit.stderr["exponent"]:.4f}, ref = "{Path(args.csv).name}" }}')
+              f'u = {fit.stderr["exponent"]:.4f}, ref = "{name}" }}')
     print(f"# chord75 = {{ value = {args.chord75 * 1e3:g}, unit = \"mm\", source = \"measured\" }}  (only if the prop has no [bemt.blade])")
     return 0
 
@@ -171,6 +197,7 @@ def cmd_fit_battery(args) -> int:
                   "activation_energy": battery.activation_energy, "ocv_soc": battery.ocv_soc,
                   "ocv_cell": battery.ocv_cell, "name": build.name, "t_ref": battery.r_ref_temperature}
     series = args.series or (battery.series if battery else None)
+    parallel = args.parallel or (battery.parallel if battery else 1)
     capacity = args.capacity or (battery.capacity if battery else None)
     if series is None or capacity is None:
         print("error: give --build, or both --series and --capacity", file=sys.stderr)
@@ -179,30 +206,32 @@ def cmd_fit_battery(args) -> int:
         print("error: give HPPC CSV files and/or --log", file=sys.stderr)
         return 2
     fits = []
-    synthetic = False
+    synthetic = []
     for path in args.csv:
         data, notes = read_csv_notes(path)
-        synthetic |= is_synthetic(notes)
+        synthetic.append(is_synthetic(notes))
         missing = {"time", "current", "voltage"} - set(data)
         if missing:
             print(f"error: {path} needs columns {sorted(missing)} (with units, e.g. 'voltage [V]')", file=sys.stderr)
             return 2
-        fits.append(fit_hppc(data, series, capacity))
+        fits.append(fit_hppc(data, series, capacity, parallel))
     arrhenius = None
     if len({round(f.temperature, 1) for f in fits}) >= 2:
         arrhenius = fit_arrhenius(fits, t_ref=design["t_ref"] if design else 298.15)
     flight = None
+    flight_synthetic = False
     if args.log:
         if battery is None:
             print("error: --log needs --build (for the OCV curve)", file=sys.stderr)
             return 2
         log = FlightLog.read_csv(Path(args.log))
-        synthetic |= "physics_rate_hz" in log.meta  # written by fpvsim fly
+        flight_synthetic = "physics_rate_hz" in log.meta  # written by fpvsim fly
         flight = fit_flight(log.time, log["vbat"], log["current"], battery.ocv_soc, battery.ocv_cell * battery.series,
                             capacity)
     out = Path(args.out) if args.out else Path("out") / "battery-fit"
     sources = [str(Path(p)) for p in args.csv]
-    path = generate(out, sources, fits, arrhenius, flight, args.log, series, design, synthetic=synthetic)
+    path = generate(out, sources, fits, arrhenius, flight, args.log, series, design, synthetic=synthetic,
+                    flight_synthetic=flight_synthetic, parallel=parallel)
     print(f"wrote {path}")
     for src, f in zip(sources, fits):
         print(f"  {src}: r0_cell {1000 * f.r0_cell.value:.3f} +/- {1000 * f.r0_cell.u:.3f} mohm, "
@@ -408,7 +437,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--diameter", type=_quantity, required=True, help="prop diameter, e.g. 5.1in")
     p.add_argument("--temperature", type=_quantity, default=288.15, help="air temperature, e.g. 20degC")
     p.add_argument("--altitude", type=_quantity, default=0.0, help="pressure altitude, e.g. 150m")
-    p.add_argument("--chord75", type=_quantity, help="blade chord at 75%% radius, e.g. 10mm: also fit the Reynolds trend")
+    p.add_argument("--chord75", type=_quantity, help="blade chord at 75%% radius, e.g. 10mm: fit the Reynolds-number trend")
+    p.add_argument("--re-range", type=_float_pair, help="with --chord75: fit only Re75 within MIN,MAX, e.g. 25000,100000")
     p.set_defaults(func=cmd_fit_prop)
 
     p = sub.add_parser("validate-prop", help="fit a prop class to cited public test data and check the prop file")
@@ -432,6 +462,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--log", help="flight log CSV (time, vbat, current) for an in-flight check")
     p.add_argument("--build", help="build whose battery is tested (series, capacity, OCV curve, design values)")
     p.add_argument("--series", type=int, help="cells in series (default: from --build)")
+    p.add_argument("--parallel", type=int, help="cells in parallel (default: from --build, else 1)")
     p.add_argument("--capacity", type=_quantity, help="capacity for state of charge, e.g. 1300mAh (default: from --build)")
     p.add_argument("--out", help="output directory")
     p.set_defaults(func=cmd_fit_battery)

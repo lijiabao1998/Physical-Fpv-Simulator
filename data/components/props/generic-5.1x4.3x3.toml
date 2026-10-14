@@ -25,7 +25,7 @@ flap_fraction = { value = 0.5, unit = "1", source = "estimate", u = 0.2886, dist
 [coefficients]
 source = "derived"
 ref = "fpvsim validate-prop：data/validation/props-5in-tri.toml"
-note = "這一類槳在 Re75 = 6×10⁴ 的係數：靜態值為 5 組公開推力台數據（4 款槳、3 種推力台）的平均，Ct(J)、Cp(J) 的形狀取自 UIUC 兩款 5 吋三葉槳的風洞數據（以 J/(P/D) 對齊）；不確定度為新的一款槳相對於這一類平均的預測標準差，加上推力台之間的系統誤差"
+note = "這一類槳在 Re75 = 6×10⁴ 的係數：靜態 Ct 為 5 組公開推力台數據（4 款槳、3 種推力台）的平均，靜態 FM（因而 Cp）為其中 3 組有扭矩的數據（3 款槳，同一台推力台）的平均，Ct(J)、Cp(J) 的形狀取自 UIUC 兩款 5 吋三葉槳的風洞數據（以 J/(P/D) 對齊）；不確定度為新的一款槳相對於這一類平均的預測標準差，加上推力台之間的系統誤差"
 J = [0.00, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85]
 ct = [0.1714, 0.1698, 0.1681, 0.1624, 0.1564, 0.1496, 0.1424, 0.1328, 0.1228, 0.1124, 0.1014, 0.0892, 0.0762, 0.0629, 0.0487, 0.0331, 0.0177, 0.0022]
 cp = [0.0971, 0.0971, 0.0970, 0.0946, 0.0919, 0.0894, 0.0867, 0.0831, 0.0792, 0.0750, 0.0707, 0.0656, 0.0601, 0.0544, 0.0478, 0.0406, 0.0332, 0.0257]
@@ -37,8 +37,10 @@ source = "derived"
 ref = "fpvsim validate-prop：data/validation/props-5in-tri.toml"
 note = "Ct 與 FM 隨葉片雷諾數 Re75 = Ω (0.75 R) c75 / ν 的冪次律（c75 取槳葉幾何在 75% 半徑的弦長 10 mm）。指數為 6 組數據（Ct）與 4 組有扭矩的數據（FM）各自趨勢的平均，不確定度為一款新槳的預測標準差；在數據範圍外保持邊界值"
 re_ref = 60000
-re_min = 24400
+re_min = 24400  # Ct: range of the thrust readings
 re_max = 100400
+fm_re_min = 24400  # FM: range of the thrust-and-torque readings
+fm_re_max = 88500
 ct_exponent = { value = 0.095, unit = "1", source = "derived", u = 0.048, ref = "data/validation/props-5in-tri.toml", note = "Ct ∝ Re^n：低雷諾數時層流分離使葉片升力下降" }
 fm_exponent = { value = 0.241, unit = "1", source = "derived", u = 0.058, ref = "data/validation/props-5in-tri.toml", note = "FM ∝ Re^n：低雷諾數時型阻上升、升力下降，懸停效率比滿油門低約兩成" }
 

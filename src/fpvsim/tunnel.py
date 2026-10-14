@@ -40,6 +40,7 @@ from __future__ import annotations
 
 import csv
 import math
+import warnings
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
@@ -150,7 +151,20 @@ class Tunnel:
                 d = model.derivative(self._state(speed, alpha, beta, omegas), list(dd))
                 return d[13:13 + n]
 
-            duties = list(fsolve(res, [self.hover.duty] * n, xtol=1e-12))
+            # start from the static duty for this speed (the physical root; a far start can land on the
+            # unphysical one with duty >> 1 and a collapsed bus), then check the solution
+            ac = self.ac
+            state = ac.initial_battery_state()
+            prop = ac.powertrain.prop
+            static = ac.powertrain.for_thrust(prop.thrust_static(float(rpm), ac.env.rho, ac.env.kinematic_viscosity),
+                                              state.source_voltage(ac.battery), source_resistance(ac, state), ac.env)
+            d0 = static.duty if static is not None else 1.0
+            with warnings.catch_warnings():  # judged by its residual below: a start at the root reads as "no progress"
+                warnings.simplefilter("ignore", RuntimeWarning)
+                sol = fsolve(res, [d0] * n, xtol=1e-12)
+            duties = [float(d) for d in sol]
+            if max(abs(x) for x in res(duties)) > 1e-6 or not all(0.0 <= d <= 1.0 for d in duties):
+                raise ValueError(f"{float(rpm) * RADS_TO_RPM:.0f} rpm cannot be held at {speed:g} m/s within duty 0-1")
         else:
             duties = [float(duty)] * n
 
@@ -163,9 +177,14 @@ class Tunnel:
             static = ac.powertrain.at_duty(float(duty), state.source_voltage(ac.battery), source_resistance(ac, state), ac.env)
             w0 = static.omega if static is not None and static.omega > 1.0 else self.hover.omega
             log_w, _, ier, _ = fsolve(res, [math.log(w0)] * n, xtol=1e-12, full_output=True)
-            if ier != 1:
-                raise ValueError(f"no equilibrium rotor speed at duty {duty:g} and {speed:g} m/s")
-            omegas = [math.exp(y) for y in log_w]
+            if ier == 1:
+                omegas = [math.exp(y) for y in log_w]
+            else:
+                # no spinning equilibrium: if a nearly stopped rotor still decelerates, the rotors stop
+                slow = model.derivative(self._state(speed, alpha, beta, [1.0] * n), duties)[13:13 + n]
+                if not all(x <= 0.0 for x in slow):
+                    raise ValueError(f"no equilibrium rotor speed at duty {duty:g} and {speed:g} m/s")
+                omegas = [0.0] * n
         s = self._state(speed, alpha, beta, omegas)
         _, force, moment, o = self._loads(model, s, duties)
         R = _rotation(s[6:10])

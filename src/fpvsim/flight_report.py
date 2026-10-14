@@ -49,6 +49,9 @@ def envelope(log: FlightLog, j_max: float, oblique: bool = False) -> list[Excurs
         table = _excursion(t, log["rotor_off_design"] > 0.5,
                            f"槳在低轉速高速狀態（前進比 μ 或入流比 |λ| > {CLASSICAL_LIMIT:g}，以槳尖速度計）",
                            "葉片大部分失速或逆流，槳力來自平板失速模型，只能定性參考；常見於收油後的高速俯衝或爬升滑行")
+        beyond = _excursion(t, (log["max_advance_ratio"] >= j_max) & (log["rotor_off_design"] < 0.5),
+                            f"軸向前進比超出槳係數數據（J ≥ {j_max:g}），但未到低轉速高速狀態",
+                            "推力接近零或為負（風車狀態），沒有軸向數據，沿用斜向氣流表格的趨勢（入流平移與倍數保持在數據端點）")
     else:
         wake = _excursion(t, log["descent_ratio"] > DESCENT_LIMIT,
                           f"下降進入自身尾流（下降速度 > {DESCENT_LIMIT:g} 倍懸停誘導速度）",
@@ -58,6 +61,7 @@ def envelope(log: FlightLog, j_max: float, oblique: bool = False) -> list[Excurs
     return [
         wake,
         table,
+        *([beyond] if oblique else []),
         _excursion(t, log["tip_mach"] > MACH_LIMIT, f"槳尖馬赫數 > {MACH_LIMIT:g}", "未計入壓縮性，推力與扭矩偏樂觀"),
         _excursion(t, log["saturated"] > 0.5, "混控飽和", "馬達已到 0% 或 100%，姿態控制能力受限；不是模型問題，是飛行限制"),
         _excursion(t, log["on_ground"] > 0.5, "接觸地面", "接地模型為簡化的彈簧阻尼與庫侖摩擦"),

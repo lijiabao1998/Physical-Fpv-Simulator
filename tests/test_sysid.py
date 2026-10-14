@@ -75,10 +75,10 @@ def test_virtual_stand_csv_round_trip(reference_build, tmp_path):
     prop, nu = ac.powertrain.prop, ac.env.kinematic_viscosity
     rc = prop.reynolds
     path = tmp_path / "stand.csv"
-    write_csv(run_stand(ac, voltage=25.2, duties=np.linspace(0.2, 0.7, 12)), path)
+    write_csv(run_stand(ac, voltage=25.2, duties=np.linspace(0.2, 0.6, 12)), path)
     data = sysid.read_csv(path)
     re = [prop.reynolds_number(w, nu) for w in data["rpm"]]
-    assert rc.re_min < min(re) and max(re) < rc.re_max  # inside the range where the power law holds
+    assert max(rc.re_min, rc.fm_re_min) < min(re) and max(re) < min(rc.re_max, rc.fm_re_max)  # where both power laws hold
     fit = sysid.fit_prop_reynolds(data["rpm"], data["thrust"], data["torque"], ac.env.rho, nu, prop.diameter, rc.chord75)
     assert fit["fits"]["ct"].values["exponent"] == pytest.approx(rc.ct_exponent, abs=1e-4)
     assert fit["fits"]["fm"].values["exponent"] == pytest.approx(rc.fm_exponent, abs=1e-4)
@@ -87,6 +87,24 @@ def test_virtual_stand_csv_round_trip(reference_build, tmp_path):
     # the rpm-independent fit gives the average over the sweep, between the hover and full-throttle values
     static = sysid.fit_prop_static(data["rpm"], data["thrust"], data["torque"], ac.env.rho, prop.diameter)["ct0"].values["ct0"]
     assert prop.ct0 * rc.factors(min(re))[0] < static < prop.ct0 * rc.factors(max(re))[0]
+
+
+def test_reynolds_fit_flags_a_sweep_beyond_the_power_law(reference_build, tmp_path):
+    """A full 0-100 % sweep runs past the range where the coefficients follow the power law
+    (the model holds them constant there): the fit says so, and a Reynolds window recovers the trend."""
+    ac = reference_build.realize()
+    prop, nu = ac.powertrain.prop, ac.env.kinematic_viscosity
+    rc = prop.reynolds
+    path = tmp_path / "stand.csv"
+    write_csv(run_stand(ac, voltage=25.2), path)
+    data = sysid.read_csv(path)
+    args = (data["rpm"], data["thrust"], data["torque"], ac.env.rho, nu, prop.diameter, rc.chord75)
+    assert sysid.fit_prop_reynolds(*args)["lack_of_fit"]
+    window = (max(rc.re_min, rc.fm_re_min), min(rc.re_max, rc.fm_re_max))
+    fit = sysid.fit_prop_reynolds(*args, re_range=window)
+    assert not fit["lack_of_fit"]
+    assert fit["fits"]["ct"].values["exponent"] == pytest.approx(rc.ct_exponent, abs=1e-4)
+    assert fit["fits"]["fm"].values["exponent"] == pytest.approx(rc.fm_exponent, abs=1e-4)
 
 
 def test_csv_headers_must_carry_units(tmp_path):

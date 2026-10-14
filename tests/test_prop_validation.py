@@ -82,7 +82,7 @@ def test_class_fit(fit):
 
 def test_prop_file_carries_the_fit(reference_build, vset, fit):
     checks = consistency(reference_build, fit, vset)
-    assert len(checks) == 14
+    assert len(checks) == 16
     assert all(c.ok for c in checks), [(c.name, c.fitted, c.in_file) for c in checks if not c.ok]
 
 

@@ -67,7 +67,7 @@ METRICS: dict[str, Metric] = {
         Metric("disk_loading", "懸停槳盤負載", "Hover disk loading", "Pa", ".1f"),
         Metric("prop_clearance", "槳葉間隙餘量（最差的零件）", "Prop clearance margin", "mm", ".1f"),
         Metric("full_throttle_time", "全油門可持續時間（滿電）", "Full-throttle duration", "s", ".1f"),
-        Metric("hover_max_temperature", "懸停到結束時的電池溫度", "Battery temperature at end of hover", "degC", ".1f"),
+        Metric("hover_max_temperature", "懸停期間最高電池溫度", "Peak battery temperature in hover", "degC", ".1f"),
     )
 }
 

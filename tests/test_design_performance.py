@@ -139,7 +139,7 @@ def test_cli_fit_prop_round_trip(reference_build, tmp_path, capsys):
     ac = reference_build.realize()
     rc = ac.powertrain.prop.reynolds
     path = tmp_path / "stand.csv"
-    write_csv(run_stand(ac, 25.2, duties=np.linspace(0.2, 0.7, 12)), path)
+    write_csv(run_stand(ac, 25.2, duties=np.linspace(0.2, 0.6, 12)), path)
     assert main(["fit-prop", str(path), "--diameter", "5.1in", "--temperature", "15degC", "--chord75", "10mm"]) == 0
     out = capsys.readouterr().out
     assert "[coefficients]" in out and "[reynolds]" in out and 'source = "synthetic"' in out

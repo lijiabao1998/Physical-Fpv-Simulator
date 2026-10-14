@@ -114,14 +114,24 @@ def test_anchoring_reproduces_axial_curves(aircraft):
     rotor = rf.anchored_rotor(prop, 0.5)
     lam = rotor.tables.lam
     lam_rot = lam / np.sqrt(np.clip(1 - lam**2, 1e-12, None))
-    sel = (lam_rot >= 0.0) & (lam_rot <= rf.AXIAL_ANCHOR_MAX + 1e-9)
-    assert sel.sum() >= 8
-    J = np.pi * lam_rot[sel]
+    J_all = np.pi * lam_rot
+    static = prop.ct_scale * prop.curves.ct[0]
+    sel = (lam_rot >= 0.0) & (J_all <= prop.curves.J[-1] + 1e-9)
+    sel &= np.interp(J_all, prop.curves.J, prop.ct_scale * prop.curves.ct) > rf.ANCHOR_THRUST_MIN * static
+    assert sel.sum() >= 12 and J_all[sel].max() > 0.8  # the whole axial data down to 1 % of static thrust
+    J = J_all[sel]
     s2 = 1 - lam[sel] ** 2
     ct_axial = prop.ct_scale * np.interp(J, prop.curves.J, prop.curves.ct) * 4 / np.pi**3 * s2
     cp_axial = prop.cp_scale * np.interp(J, prop.curves.J, prop.curves.cp) * 4 / np.pi**4 * s2
     assert np.allclose(rotor.coefficients["ct"][0, sel], ct_axial, rtol=1e-12)
     assert np.allclose(rotor.coefficients["cq"][0, sel], cp_axial, rtol=1e-12)
+    # between grid points too (bilinear lookup), up to J = 0.8 of the axial data
+    for J_test in (0.1, 0.45, 0.65, 0.75, 0.8, 0.85):
+        omega, rho = 2500.0, 1.225
+        n = omega / (2 * np.pi)
+        loads = rotor.loads((0.0, 0.0, -J_test * n * prop.diameter), omega, 1.0, rho)
+        expected = prop.ct_scale * prop.curves.ct_at(J_test) * rho * n**2 * prop.diameter**4
+        assert loads["thrust"] == pytest.approx(expected, rel=0.03, abs=0.01 * static * rho * n**2 * prop.diameter**4)
     # in physical terms: axial climb at a grid point gives the axial curve's thrust and torque
     omega, rho = 2000.0, 1.2
     k = int(np.nonzero(sel)[0][4])

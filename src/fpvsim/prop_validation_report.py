@@ -41,9 +41,8 @@ def generate(vset: ValidationSet, build: Build, out_dir: Path) -> tuple[Path, bo
     # ------------------------------------------------------------ figure
     re = np.geomspace(0.8 * fit.re_min, 1.25 * fit.re_max, 120)
     ct_m, cp_m, fm_m = model_values(prop, re)
-    ct_band, fm_band = fit.band("ct", re), fit.band("fm", re)
-    cp_lo = ct_band[1] ** 1.5 * math.sqrt(2.0 / math.pi) / fm_band[2]  # Cp spans the low-Ct, high-FM corners
-    cp_hi = ct_band[2] ** 1.5 * math.sqrt(2.0 / math.pi) / fm_band[1]
+    ct_band, fm_band, cp_band = fit.band("ct", re), fit.band("fm", re), fit.band("cp", re)
+    cp_lo, cp_hi = cp_band[1], cp_band[2]
 
     def groups(key):
         out = []
@@ -103,10 +102,11 @@ def generate(vset: ValidationSet, build: Build, out_dir: Path) -> tuple[Path, bo
     add("## 摘要\n")
     add(f"- 這一類槳在 Re75 = {fit.re_ref:,.0f}：Ct = {fit.ct_level:.4f} ± {fit.ct_level_u_rel:.1%}、"
         f"FM = {fit.fm_level:.3f} ± {fit.fm_level_u_rel:.1%}（Cp = {fit.cp_level:.4f}），1σ，為一款新槳相對於這一類平均的預測不確定度。")
-    add(f"- 雷諾數趨勢：Ct ∝ Re^{fit.ct_exponent:.3f}（± {fit.ct_exponent_u:.3f}），FM ∝ Re^{fit.fm_exponent:.3f}（± {fit.fm_exponent_u:.3f}），"
-        f"數據範圍 Re75 = {fit.re_min:,.0f}–{fit.re_max:,.0f}。")
+    add(f"- 雷諾數趨勢：Ct ∝ Re^{fit.ct_exponent:.3f}（± {fit.ct_exponent_u:.3f}，推力數據 Re75 = {fit.re_min:,.0f}–{fit.re_max:,.0f}），"
+        f"FM ∝ Re^{fit.fm_exponent:.3f}（± {fit.fm_exponent_u:.3f}，扭矩數據 Re75 = {fit.fm_re_min:,.0f}–{fit.fm_re_max:,.0f}）。")
     for name, op, r in ops:
-        add(f"- {name}：{op.rpm:,.0f} rpm，Re75 = {r:,.0f}{'（在數據範圍外，係數保持在邊界值）' if not fit.re_min <= r <= fit.re_max else ''}，"
+        outside = not fit.re_min <= r <= fit.re_max or not fit.fm_re_min <= r <= fit.fm_re_max
+        add(f"- {name}：{op.rpm:,.0f} rpm，Re75 = {r:,.0f}{'（超出數據範圍的部分保持在邊界值）' if outside else ''}，"
             f"Ct = {prop.ct0 * prop.re_factors(op.omega, nu)[0]:.4f}，FM = {prop.figure_of_merit(op.omega, nu):.3f}。")
     add(f"- 零件檔與擬合{'一致' if agrees else '**不一致**'}（{sum(c.ok for c in checks)}/{len(checks)} 項在捨入誤差內，見第 2 節）。")
     add("")
@@ -150,6 +150,12 @@ def generate(vset: ValidationSet, build: Build, out_dir: Path) -> tuple[Path, bo
                  f"**{fit.fm_level:.3f}** ± {fit.fm_level_u_rel:.1%}", f"**{fit.fm_exponent:.3f}** ± {fit.fm_exponent_u:.3f}", ""])
     add(md_table(["組", "用於等級", "Ct(Re_ref)", "Ct 指數", "FM(Re_ref)", "FM 指數", "組內數據數"], rows))
     add("")
+    rig_of = {g: g.split("@")[-1] for g in group_names}  # groups are named product@rig
+    ct_rigs = {rig_of[g] for g in fit.level_groups}
+    fm_level = [g for g in fit.fm_groups if vset.group_level(g)]
+    fm_rigs = {rig_of[g] for g in fm_level}
+    add(f"等級的數據來源：Ct 來自 {len(fit.level_groups)} 組、{len(ct_rigs)} 種推力台；FM（因而 Cp）來自 {len(fm_level)} 組有扭矩的數據、"
+        f"{len(fm_rigs)} 種推力台" + ("，推力台之間的差異只由系統誤差項代表" if len(fm_rigs) < 2 else "") + "。\n")
     add("零件檔與擬合的比較（零件檔的數值是擬合結果捨入後的值）：\n")
     add(md_table(["項目", "擬合", "零件檔", "容許差", "一致"], [
         [c.name, f"{c.fitted:.5g}", f"{c.in_file:.5g}", f"{c.tolerance:.1%}" if c.relative else f"{c.tolerance:g}", "是" if c.ok else "**否**"]

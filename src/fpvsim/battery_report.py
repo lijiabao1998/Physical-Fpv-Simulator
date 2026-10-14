@@ -39,9 +39,11 @@ def _plot_soc(fit: HppcFit, reference: dict | None, path: Path) -> None:
     with plt.rc_context(STYLE):
         fig, axes = plt.subplots(1, 2, figsize=(8.0, 3.2))
         ax = axes[0]
-        ax.errorbar(soc, [1000 * p.r0 / fit.series for p in fit.pulses], yerr=[1000 * p.r0_se / fit.series for p in fit.pulses],
+        ax.errorbar(soc, [1000 * p.r0 / fit.resistance_scale for p in fit.pulses],
+                    yerr=[1000 * p.r0_se / fit.resistance_scale for p in fit.pulses],
                     fmt="o", color=SERIES[0], label="R0")
-        ax.errorbar(soc, [1000 * p.r1 / fit.series for p in fit.pulses], yerr=[1000 * p.r1_se / fit.series for p in fit.pulses],
+        ax.errorbar(soc, [1000 * p.r1 / fit.resistance_scale for p in fit.pulses],
+                    yerr=[1000 * p.r1_se / fit.resistance_scale for p in fit.pulses],
                     fmt="s", color=SERIES[1], label="R1")
         ax.set_xlabel("State of charge [%]")
         ax.set_ylabel("Cell resistance [mΩ]")
@@ -92,18 +94,28 @@ def _plot_flight(fit: FlightFit, series: int, path: Path) -> None:
 
 
 def generate(out_dir: Path, sources: list[str], fits: list[HppcFit], arrhenius: ArrheniusFit | None,
-             flight: FlightFit | None, flight_source: str | None, series: int, design: dict | None = None, synthetic: bool = False) -> Path:
+             flight: FlightFit | None, flight_source: str | None, series: int, design: dict | None = None,
+             synthetic: list[bool] | None = None, flight_synthetic: bool = False, parallel: int = 1) -> Path:
     """``design``: the build's current values for comparison (r0_cell, r1_cell, tau1, activation_energy,
-    ocv_soc, ocv_cell, name)."""
+    ocv_soc, ocv_cell, name). ``synthetic``: per HPPC source, whether its file carries the synthetic-data
+    marker; ``flight_synthetic``: whether the flight log was written by the simulator."""
+    synthetic = list(synthetic) if synthetic is not None else [False] * len(fits)
+    any_synthetic = any(synthetic) or (flight is not None and flight_synthetic)
     out_dir.mkdir(parents=True, exist_ok=True)
     md: list[str] = []
     add = md.append
     add("# 電池參數辨識報告\n")
     add("> 由 `fpvsim fit-battery` 自動產生。脈衝放電測試（HPPC）或飛行 log 的數據以 Thevenin 模型擬合，"
-        "結果附標準不確定度，可以直接取代零件檔中的估計值。\n")
+        "結果附標準不確定度；實測數據的結果可以直接取代零件檔中的估計值。\n")
+    if any_synthetic:
+        add("> **含模型產生的合成數據**（" + "、".join(
+            [f"`{Path(s).name}`" for s, syn in zip(sources, synthetic) if syn] + ([f"`{Path(flight_source).name}`（fpvsim 飛行模擬）"]
+                                                                                 if flight is not None and flight_synthetic else []))
+            + "）：合成數據的結果只驗證辨識流程能否找回已知值，不是實測。\n")
     add(md_table(["項目", "內容"], [
-        ["數據", "、".join(f"`{s}`" for s in sources + ([flight_source] if flight_source else []))],
-        ["串聯數", str(series)],
+        ["數據", "、".join(f"`{s}`" + ("（合成）" if syn else "") for s, syn in zip(sources, synthetic))
+         + (("、" if sources else "") + f"`{flight_source}`" + ("（合成）" if flight_synthetic else "") if flight_source else "")],
+        ["串聯 × 並聯", f"{series}S{parallel}P"],
         ["程式版本", code_version_text()],
         ["產生時間 (UTC)", _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M")],
     ]))
@@ -135,9 +147,10 @@ def generate(out_dir: Path, sources: list[str], fits: list[HppcFit], arrhenius: 
             "（低、中、高電量各一個脈衝）：\n")
         add("![Pulse fits](pulses.png)\n")
         add("![Resistance and OCV](soc.png)\n")
-        add(md_table(["電量", "開路電壓（單芯）", "R0 (mΩ)", "R1 (mΩ)", "τ1 (s)"], [
-            [f"{100 * p.soc:.0f}%", f"{p.ocv / series:.3f} V", f"{_mohm(p.r0 / series)} ± {_mohm(p.r0_se / series)}",
-             f"{_mohm(p.r1 / series)} ± {_mohm(p.r1_se / series)}", f"{p.tau:.2f} ± {p.tau_se:.2f}"]
+        add(md_table(["電量", "開路電壓（單芯）", "單芯 R0 (mΩ)", "單芯 R1 (mΩ)", "τ1 (s)"], [
+            [f"{100 * p.soc:.0f}%", f"{p.ocv / series:.3f} V",
+             f"{_mohm(p.r0 / main.resistance_scale)} ± {_mohm(p.r0_se / main.resistance_scale)}",
+             f"{_mohm(p.r1 / main.resistance_scale)} ± {_mohm(p.r1_se / main.resistance_scale)}", f"{p.tau:.2f} ± {p.tau_se:.2f}"]
             for p in main.pulses
         ]))
         add("")
@@ -156,6 +169,8 @@ def generate(out_dir: Path, sources: list[str], fits: list[HppcFit], arrhenius: 
         add(f"## {3 if fits else 1}. 飛行 log\n")
         add("整段飛行用同一個模型擬合，開路電壓取自設計的 OCV 曲線，電量由電流積分（假設起飛時滿電）。"
             "得到的電阻包含電池到 vbat 量測點之間的線路，而且是飛行中各種溫度與電量的平均，只能當作檢查，不能取代脈衝測試。\n")
+        if flight_synthetic:
+            add("**這份 log 是 fpvsim 飛行模擬產生的**，所以下面的結果只檢查辨識流程，不是實測。\n")
         _plot_flight(flight, series, out_dir / "flight.png")
         add(md_table(["參數", "數值"], [
             ["電池 + 線路電阻（整包）", f"{1000 * flight.r_total.value:.2f} ± {1000 * flight.r_total.u:.2f} mΩ"],
@@ -172,9 +187,10 @@ def generate(out_dir: Path, sources: list[str], fits: list[HppcFit], arrhenius: 
         ref = Path(sources[k_main]).name
         add(f"取最接近設計參考溫度的測試（`{ref}`，{main.temperature - 273.15:.1f} °C）；`r_ref_temperature` 就是它的溫度。"
             "u 只含擬合的統計不確定度（A 類）；實測時還要依儀器規格加上 B 類不確定度（GUM），例如荷重元、電流計與溫度計的校正誤差。\n")
-        if synthetic:
-            add("**這些數據是模型產生的合成數據**（檔案第一行標記），所以來源標為 `synthetic`：它們只能驗證辨識流程能否找回已知值，不能當作實測值寫回零件檔。\n")
-        kind = "synthetic" if synthetic else "measured"
+        main_synthetic = synthetic[k_main]
+        if main_synthetic:
+            add(f"**`{ref}` 是模型產生的合成數據**（檔案第一行標記），所以來源標為 `synthetic`：它只能驗證辨識流程能否找回已知值，不能當作實測值寫回零件檔。\n")
+        kind = "synthetic" if main_synthetic else "measured"
         lines = [
             f'r0_cell = {{ value = {1000 * main.r0_cell.value:.3f}, unit = "mohm", source = "{kind}", '
             f'u = {1000 * main.r0_cell.u:.3f}, ref = "{ref}", note = "HPPC，{main.temperature - 273.15:.0f} °C" }}',
@@ -184,8 +200,9 @@ def generate(out_dir: Path, sources: list[str], fits: list[HppcFit], arrhenius: 
             f'r_ref_temperature = {{ value = {main.temperature - 273.15:.1f}, unit = "degC", source = "{kind}", ref = "{ref}" }}',
         ]
         if arrhenius:
+            kind_e = "synthetic" if any(synthetic) else "measured"
             lines.append(f'resistance_activation_energy = {{ value = {arrhenius.activation_energy.value / 1000:.2f}, unit = "kJ/mol", '
-                         f'source = "{kind}", u = {arrhenius.activation_energy.u / 1000:.2f}, ref = "{", ".join(Path(x).name for x in sources)}" }}')
+                         f'source = "{kind_e}", u = {arrhenius.activation_energy.u / 1000:.2f}, ref = "{", ".join(Path(x).name for x in sources)}" }}')
         add("```toml\n[params]\n" + "\n".join(lines) + "\n```\n")
         add("開路電壓的量測點（電量 0% 需要另做完整放電測試）：\n")
         add(f"```toml\n[ocv]\nsource = \"{kind}\"\n"

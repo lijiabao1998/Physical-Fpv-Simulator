@@ -270,10 +270,14 @@ class Build:
     component_files: dict[str, Path]
     model_inputs: ParamSet = field(default_factory=ParamSet)  # inputs of derived models, not sampled
     prop_blade: tuple | None = None  # (BladeGeometry, Airfoil) for the oblique-flow rotor model, if the geometry is known
-    prop_reynolds: tuple | None = None  # (chord75, re_ref, re_min, re_max) of the Reynolds correction, if any
+    prop_reynolds: tuple | None = None  # (chord75, re_ref, re_min, re_max, fm_re_min, fm_re_max) of the Reynolds correction
     tables: list[DataTable] = field(default_factory=list)
     files: list[Path] = field(default_factory=list)
     lineage: list[dict] = field(default_factory=list)  # base first: id, name, change, path
+
+    def tables_names(self) -> set[str]:
+        """Short names of the array tables (e.g. "coefficients" for prop.coefficients)."""
+        return {t.name.split(".", 1)[-1] for t in self.tables}
 
     def input_hash(self) -> str:
         """SHA-256 over every input file, to tie a report to its exact inputs."""
@@ -293,9 +297,9 @@ class Build:
         fm0 = ct0**1.5 * math.sqrt(2.0 / math.pi) / cp0
         peak = 1.0  # highest FM / FM(Re_ref) over the Reynolds range
         if self.prop_reynolds is not None:
-            _, re_ref, re_min, re_max = self.prop_reynolds
+            _, re_ref, _, _, fm_re_min, fm_re_max = self.prop_reynolds
             e = v("prop.re_fm_exponent")
-            peak = max((re_min / re_ref) ** e, (re_max / re_ref) ** e)
+            peak = max((fm_re_min / re_ref) ** e, (fm_re_max / re_ref) ** e)
         # FM = fm_scale * FM0 whatever ct_scale is, since Cp scales with ct_scale^1.5
         fm = min(v("prop.fm_scale"), FM_MAX / (fm0 * peak))
         return v("prop.ct_scale") ** 1.5 / max(fm, 1e-6)
@@ -314,7 +318,8 @@ class Build:
             cp_scale=self._cp_scale(v),
             blade=self.prop_blade,
             reynolds=None if self.prop_reynolds is None else ReynoldsCorrection(
-                *self.prop_reynolds, ct_exponent=v("prop.re_ct_exponent"), fm_exponent=v("prop.re_fm_exponent")),
+                *self.prop_reynolds[:4], ct_exponent=v("prop.re_ct_exponent"), fm_exponent=v("prop.re_fm_exponent"),
+                fm_re_min=self.prop_reynolds[4], fm_re_max=self.prop_reynolds[5]),
         )
         motor = Motor(
             kv=v("motor.kv"),
@@ -814,7 +819,7 @@ def _prop_curves(
 
 
 def _prop_reynolds(path: Path, data: dict[str, Any], params: ParamSet, model_inputs: ParamSet,
-                   tables: list[DataTable], blade: tuple | None) -> tuple[float, float, float, float] | None:
+                   tables: list[DataTable], blade: tuple | None) -> tuple[float, ...] | None:
     """[reynolds]: static coefficients as power laws of the blade Reynolds number
     (prop.ReynoldsCorrection). The two exponents are uncertain parameters; the
     reference and the range belong to the fit they come from. The chord that
@@ -838,9 +843,10 @@ def _prop_reynolds(path: Path, data: dict[str, Any], params: ParamSet, model_inp
         chord75 = model_inputs.add(parse_param("prop.chord75", table["chord75"])).value
     else:
         raise DesignError(f"{path}: [reynolds] needs chord75 (the prop has no blade geometry)")
-    values = (float(chord75), float(table["re_ref"]), float(table["re_min"]), float(table["re_max"]))
+    values = (float(chord75), float(table["re_ref"]), float(table["re_min"]), float(table["re_max"]),
+              float(table.get("fm_re_min", table["re_min"])), float(table.get("fm_re_max", table["re_max"])))
     try:
-        ReynoldsCorrection(*values, ct_exponent=0.0, fm_exponent=0.0)
+        ReynoldsCorrection(*values[:4], ct_exponent=0.0, fm_exponent=0.0, fm_re_min=values[4], fm_re_max=values[5])
     except ValueError as e:
         raise DesignError(f"{path}: [reynolds] {e}") from None
     return values

@@ -111,10 +111,15 @@ def fit_tunnel(data: dict[str, np.ndarray], ac: Aircraft) -> TunnelFit:
     residuals["fx"] = (data["fx"][rows], model_fx)
 
     o = np.nonzero(off)[0]
-    fz = _ols((-k[o] * w[o])[:, None], data["fz"][o], ("S_z",))
-    fits["fz"] = fz
-    residuals["fz"] = (data["fz"][o], -k[o] * w[o] * fz.values["S_z"])
-    cda = {"x": Estimate(fx.values["S_x"], fx.stderr["S_x"]), "z": Estimate(fz.values["S_z"], fz.stderr["S_z"])}
+    cda = {"x": Estimate(fx.values["S_x"], fx.stderr["S_x"])}
+    # S_z needs flow along body z (an angle of attack), S_y flow along y (sideslip): a plain drag-versus-speed
+    # sweep at zero attitude identifies S_x only, and the others are left out instead of a singular fit
+    has_alpha = np.abs(w[o]).max() > 1e-3 * np.abs(uvw[o]).max()
+    if has_alpha:
+        fz = _ols((-k[o] * w[o])[:, None], data["fz"][o], ("S_z",))
+        fits["fz"] = fz
+        residuals["fz"] = (data["fz"][o], -k[o] * w[o] * fz.values["S_z"])
+        cda["z"] = Estimate(fz.values["S_z"], fz.stderr["S_z"])
     has_beta = np.abs(beta[o]).max() > 1e-6
     if has_beta:
         fy = _ols((-k[o] * v[o])[:, None], data["fy"][o], ("S_y",))
@@ -123,14 +128,17 @@ def fit_tunnel(data: dict[str, np.ndarray], ac: Aircraft) -> TunnelFit:
         cda["y"] = Estimate(fy.values["S_y"], fy.stderr["S_y"])
 
     # pitching moment: M_y = -k u A + k w B, A = S_x z_x, B = S_z x_z
-    my = _ols(np.column_stack([-k[o] * u[o], k[o] * w[o]]), data["my"][o], ("A", "B"))
+    if has_alpha:
+        my = _ols(np.column_stack([-k[o] * u[o], k[o] * w[o]]), data["my"][o], ("A", "B"))
+        residuals["my"] = (data["my"][o], -k[o] * u[o] * my.values["A"] + k[o] * w[o] * my.values["B"])
+    else:
+        my = _ols((-k[o] * u[o])[:, None], data["my"][o], ("A",))
+        residuals["my"] = (data["my"][o], -k[o] * u[o] * my.values["A"])
     fits["my"] = my
-    residuals["my"] = (data["my"][o], -k[o] * u[o] * my.values["A"] + k[o] * w[o] * my.values["B"])
-    centre = {
-        "z": _ratio(my.values["A"], my.stderr["A"], cda["x"].value, cda["x"].u),
-        "x": _ratio(my.values["B"], my.stderr["B"], cda["z"].value, cda["z"].u),
-    }
-    if has_beta:  # rolling moment: M_x = -k w C + k v D, C = S_z y_z, D = S_y z_y
+    centre = {"z": _ratio(my.values["A"], my.stderr["A"], cda["x"].value, cda["x"].u)}
+    if has_alpha:
+        centre["x"] = _ratio(my.values["B"], my.stderr["B"], cda["z"].value, cda["z"].u)
+    if has_beta and has_alpha:  # rolling moment: M_x = -k w C + k v D, C = S_z y_z, D = S_y z_y
         mx = _ols(np.column_stack([-k[o] * w[o], k[o] * v[o]]), data["mx"][o], ("C", "D"))
         fits["mx"] = mx
         residuals["mx"] = (data["mx"][o], -k[o] * w[o] * mx.values["C"] + k[o] * v[o] * mx.values["D"])

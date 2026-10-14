@@ -124,6 +124,17 @@ def verdict(p: float, mc: MonteCarloResult | None = None) -> str:
     return f"{label}（臨界）" if borderline else label
 
 
+def _prop_model_row(build) -> list[str]:
+    """The prop row of the model table, by where the axial coefficients come from."""
+    re_text = "；係數隨葉片雷諾數以冪次律變化（數據範圍外保持邊界值）" if build.prop_reynolds else "；係數與轉速無關（沒有雷諾數修正）"
+    if "coefficients" not in build.tables_names():
+        return ["槳靜態係數（BEMT）", "中低，尚未確認", "忽略旋流與壓縮性；翼型與弦長是估計值" + re_text]
+    if build.prop_curve_source is Source.MEASURED:
+        return ["槳係數（實測）", "中高", "推力台數據的擬合；前進比與斜向氣流的變化依係數表與 BEMT" + re_text]
+    return ["槳係數（同類槳的公開數據）", "中",
+            "同一類槳的平均，不是這一款產品；前進比形狀的數據雷諾數偏低；斜向氣流的變化來自估計葉片的 BEMT，錨定在係數表" + re_text]
+
+
 _MEASUREMENT_METHODS = (
     ("prop.ct_scale", "推力台量測靜態推力，以 `fpvsim fit-prop` 辨識 Ct"),
     ("prop.cp_scale", "推力台量測扭矩（或電流與轉速），以 `fpvsim fit-prop` 辨識 Cp"),
@@ -367,7 +378,8 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
         at = [(name, op) for name, op in (("懸停", hover), ("滿油門", full)) if op is not None]
         add(f"槳的靜態係數（葉片雷諾數 Re75 = {rc.re_ref:,.0f}）：Ct₀ = {prop.ct0:.4f}，Cp₀ = {prop.cp0:.4f}，"
             f"靜態效率因數 FM = {prop.figure_of_merit():.3f}。來源：{build.prop_curve_source.label_zh}（{ct_p.ref}），{u_text}。"
-            f"係數隨雷諾數變化：Ct ∝ Re^{rc.ct_exponent:.3f}、FM ∝ Re^{rc.fm_exponent:.3f}（Re75 = {rc.re_min:,.0f}–{rc.re_max:,.0f}，範圍外保持邊界值）"
+            f"係數隨雷諾數變化：Ct ∝ Re^{rc.ct_exponent:.3f}（Re75 = {rc.re_min:,.0f}–{rc.re_max:,.0f}）、FM ∝ Re^{rc.fm_exponent:.3f}"
+            f"（Re75 = {rc.fm_re_min:,.0f}–{rc.fm_re_max:,.0f}），各自在數據範圍外保持邊界值"
             + ("，" + "、".join(f"{name}（{op.rpm:,.0f} rpm，Re75 = {prop.reynolds_number(op.omega, nu):,.0f}）FM = "
                                f"{prop.figure_of_merit(op.omega, nu):.3f}" for name, op in at) if at else "") + "。\n")
 
@@ -469,13 +481,14 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
 
     add("## 9. 模型假設與適用範圍\n")
     add("完整說明見 `docs/models.md`。本報告用到的模型與它們的限制：\n")
+    prop_row = _prop_model_row(build)
     add(md_table(
         ["模型", "可信度", "主要假設與限制"],
         [
             ["質量、重心、慣性", "高（取決於零件數據）", "零件以均勻密度的幾何體近似；同型零件數值完全相關"],
             ["ISA 大氣", "高", "對流層；忽略濕度（< 1%）"],
             ["馬達與 ESC 平均模型", "中", "忽略繞組電感與開關損耗；空載損耗對轉速為仿射；未計溫升造成的電阻變化"],
-            ["槳靜態係數 (BEMT)", "中低，尚未確認", "忽略旋流、雷諾數與壓縮性；翼型與弦長是估計值"],
+            prop_row,
             ["機臂遮擋", "低", "以固定推力比例表示"],
             ["電池一階等效電路與熱模型", "中", "內阻隨溫度依 Arrhenius 變化，集總熱容與對流散熱；老化以循環次數線性近似；"
              "忽略低溫與放電倍率對容量的電化學影響、OCV 的溫度係數；OCV 曲線與熱參數是典型值"],
@@ -496,7 +509,10 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
     add(md_table(["參數", "數值", "不確定度", "來源", "說明"], rows))
     add("")
     if len(build.model_inputs):
-        add("BEMT 的輸入（只在載入時計算一次；它們的不確定度由上表的 `prop.ct_scale`、`prop.fm_scale` 代表）：\n")
+        if build.prop_curve_source is Source.DERIVED and "coefficients" not in build.tables_names():
+            add("BEMT 的輸入（只在載入時計算一次；它們的不確定度由上表的 `prop.ct_scale`、`prop.fm_scale` 代表）：\n")
+        else:
+            add("BEMT 的輸入（槳的係數來自係數表，這些輸入只用於斜向氣流模型相對於軸向的變化；只在載入時計算一次，不抽樣）：\n")
         add(md_table(["參數", "數值", "來源", "說明"],
                    [[f"`{p.key}`", fmt_param(p), p.source.label_zh, p.note] for p in build.model_inputs]))
         add("")

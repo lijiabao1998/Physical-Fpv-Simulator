@@ -73,6 +73,12 @@ class HppcFit:
     tau1: Estimate
     ocv_soc: np.ndarray
     ocv_cell: np.ndarray
+    parallel: int = 1
+
+    @property
+    def resistance_scale(self) -> float:
+        """Pack resistance / cell resistance: series / parallel."""
+        return self.series / self.parallel
 
 
 def _segments(t: np.ndarray, current: np.ndarray, threshold: float) -> list[tuple[int, int, int]]:
@@ -148,8 +154,9 @@ def fit_pulse(t: np.ndarray, current: np.ndarray, voltage: np.ndarray, pre_rest:
     return res.x, se, math.sqrt(float(resid @ resid) / len(resid)), _model(res.x, t, current, q), i_pulse
 
 
-def fit_hppc(data: dict[str, np.ndarray], series: int, capacity: float) -> HppcFit:
-    """Identify the pack from an HPPC record (SI arrays: time, current, voltage[, temperature])."""
+def fit_hppc(data: dict[str, np.ndarray], series: int, capacity: float, parallel: int = 1) -> HppcFit:
+    """Identify the pack from an HPPC record (SI arrays: time, current, voltage[, temperature]).
+    Cell values: R_cell = R_pack P / S (battery.Battery), OCV_cell = OCV_pack / S."""
     t, current, voltage = data["time"], data["current"], data["voltage"]
     temperature = float(np.mean(data["temperature"])) if "temperature" in data else 298.15
     q_total = np.concatenate([[0.0], np.cumsum(0.5 * (current[1:] + current[:-1]) * np.diff(t))])
@@ -172,12 +179,13 @@ def fit_hppc(data: dict[str, np.ndarray], series: int, capacity: float) -> HppcF
         u = math.sqrt(float(np.mean(errors**2)) + spread**2)
         return Estimate(mean, u, f"{len(values)} 個脈衝的平均；不確定度含脈衝之間（不同電量）的差異")
 
-    r0 = combine([p.r0 for p in pulses], [p.r0_se for p in pulses], series)
-    r1 = combine([p.r1 for p in pulses], [p.r1_se for p in pulses], series)
+    scale = series / parallel
+    r0 = combine([p.r0 for p in pulses], [p.r0_se for p in pulses], scale)
+    r1 = combine([p.r1 for p in pulses], [p.r1_se for p in pulses], scale)
     tau = combine([p.tau for p in pulses], [p.tau_se for p in pulses], 1.0)
     order = np.argsort([p.soc for p in pulses])
     return HppcFit(series, temperature, capacity, pulses, r0, r1, tau,
-                   np.array([pulses[i].soc for i in order]), np.array([pulses[i].ocv / series for i in order]))
+                   np.array([pulses[i].soc for i in order]), np.array([pulses[i].ocv / series for i in order]), parallel)
 
 
 @dataclass(frozen=True)

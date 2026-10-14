@@ -313,7 +313,7 @@ def _solver_fingerprint() -> str:
     from . import bemt
 
     parts = [inspect.getsource(f) for f in (axial_induced, vrs_extent, glauert, induced_velocity, compute_tables,
-                                            _compute_rows, bemt.polar)]
+                                            _compute_rows, bemt.polar, bemt.BladeGeometry, bemt._tip_loss)]
     parts.append(repr((INFLOW_TOL, CLASSICAL_LIMIT, VRS_COEFFS, POST_STALL, FLAT_PLATE_CN,
                        inspect.signature(compute_tables).parameters["n_r"].default,
                        inspect.signature(compute_tables).parameters["n_psi"].default,
@@ -368,32 +368,82 @@ def rotor_tables(geom: BladeGeometry, foil: Airfoil) -> RotorTables:
 
 # ----------------------------------------------------------------- run time
 
-AXIAL_ANCHOR_MAX = 0.2  # rotorcraft lambda (J / pi) up to which the tables are anchored to the axial curves
+ANCHOR_THRUST_MIN = 0.01  # fraction of static thrust below which the axial data no longer anchor the tables
+
+
+def _axial_targets(tables: RotorTables, J: np.ndarray, ct_axial: np.ndarray, cp_axial: np.ndarray):
+    """The axial curves on the tables' lambda grid: (lambda_rot, C_T, C_Q, data range mask)."""
+    lam = tables.lam
+    s2 = np.clip(1.0 - lam**2, 0.0, None)
+    lam_rot = np.where(s2 > 0.0, lam / np.sqrt(np.maximum(s2, 1e-12)), np.inf)
+    with np.errstate(invalid="ignore"):
+        target_t = np.interp(np.pi * lam_rot, J, ct_axial) * 4.0 / np.pi**3 * s2
+        target_q = np.interp(np.pi * lam_rot, J, cp_axial) * 4.0 / np.pi**4 * s2
+    in_data = (lam_rot >= -1e-9) & (lam_rot <= min(CLASSICAL_LIMIT, float(J[-1]) / np.pi) + 1e-9)
+    return lam_rot, target_t, target_q, in_data
+
+
+def inflow_map(tables: RotorTables, J: np.ndarray, ct_axial: np.ndarray) -> np.ndarray:
+    """The inflow ratio at which to read the tables for each grid lambda.
+
+    The tables come from blade elements on an estimated blade, whose thrust in
+    axial climb falls to zero at a different advance ratio than the axial data
+    (a different effective pitch). A factor cannot move a zero crossing; a shift
+    of the inflow can. So in climb each grid lambda is mapped to the lambda at
+    which the table's thrust, relative to its static value, equals the data's;
+    beyond the data the last shift is kept, and in descent (no axial data) the
+    map is the identity."""
+    lam = tables.lam
+    i0 = int(np.argmin(np.abs(lam)))
+    _, target_t, _, in_data = _axial_targets(tables, J, ct_axial, ct_axial)
+    f_dat = target_t / target_t[i0]
+    f_tab = tables.ct[0, i0:] / tables.ct[0, i0]
+    # the table's falling branch from static thrust down to its first minimum
+    n_dec = 1
+    while n_dec < len(f_tab) and f_tab[n_dec] < f_tab[n_dec - 1]:
+        n_dec += 1
+    lam_dec, f_dec = lam[i0:i0 + n_dec], f_tab[:n_dec]
+    m = lam.astype(float).copy()
+    last = i0
+    for j in range(i0 + 1, len(lam)):
+        if not in_data[j] or not f_dec[-1] <= f_dat[j] <= 1.0:
+            break
+        m[j] = float(np.interp(f_dat[j], f_dec[::-1], lam_dec[::-1]))
+        last = j
+    m[last + 1:] = lam[last + 1:] + (m[last] - lam[last])
+    return np.clip(m, lam[0], lam[-1])
+
+
+def remap(tables: RotorTables, m: np.ndarray) -> RotorTables:
+    """The tables read at lambda' = m(lambda) on the same grid (linear in lambda)."""
+    def at(field: np.ndarray) -> np.ndarray:
+        return np.array([np.interp(m, tables.lam, row) for row in field])
+
+    return RotorTables(mu=tables.mu, lam=tables.lam, ct=at(tables.ct), ch=at(tables.ch), cy=at(tables.cy), cq=at(tables.cq),
+                       cmx=at(tables.cmx), cmy=at(tables.cmy), chf=at(tables.chf), inflow=at(tables.inflow),
+                       converged=tables.converged)
 
 
 def anchor_factors(tables: RotorTables, J: np.ndarray, ct_axial: np.ndarray, cp_axial: np.ndarray
                    ) -> tuple[np.ndarray, np.ndarray]:
     """Per-lambda factors that make the tables reproduce the axial curves at mu = 0.
 
-    The axial curves (test stand or BEMT, with ct_scale and cp_scale applied)
-    stay the reference for thrust and torque; the oblique-flow model supplies
-    how they change with edgewise and off-design flow. In axial flow lambda =
-    V_c / sqrt((Omega R)^2 + V_c^2), so J = pi lambda / sqrt(1 - lambda^2),
-    C_T = Ct (4 / pi^3) (1 - lambda^2) and C_Q = Cp (4 / pi^4) (1 - lambda^2).
-    Matched for 0 <= J / pi <= min(0.2, J_max / pi) wherever the rotor still
-    produces at least 20 % of its static thrust; held constant outside
-    (descent has no axial data)."""
+    The axial curves (test stand, class data or BEMT, with ct_scale and the Cp
+    factor applied) stay the reference for thrust and torque; the oblique-flow
+    model supplies how they change with edgewise and off-design flow. In axial
+    flow lambda = V_c / sqrt((Omega R)^2 + V_c^2), so J = pi lambda / sqrt(1 -
+    lambda^2), C_T = Ct (4 / pi^3) (1 - lambda^2) and C_Q = Cp (4 / pi^4) (1 -
+    lambda^2). Matched over the axial data, 0 <= J <= J_max (and rotorcraft
+    lambda <= CLASSICAL_LIMIT), wherever the axial curve and the table still
+    give at least 1 % of their static thrust and positive torque; held
+    constant outside (descent has no axial data). Applied to tables already
+    re-read with inflow_map, the thrust factor is nearly constant."""
     lam = tables.lam
     i0 = int(np.argmin(np.abs(lam)))
     ct_ff, cq_ff = tables.ct[0], tables.cq[0]
-    s2 = np.clip(1.0 - lam**2, 0.0, None)
-    lam_rot = np.where(s2 > 0.0, lam / np.sqrt(np.maximum(s2, 1e-12)), np.inf)
-    J_here = np.pi * lam_rot
-    with np.errstate(invalid="ignore"):
-        target_t = np.interp(J_here, J, ct_axial) * 4.0 / np.pi**3 * s2
-        target_q = np.interp(J_here, J, cp_axial) * 4.0 / np.pi**4 * s2
-    usable = (lam_rot >= -1e-9) & (lam_rot <= min(AXIAL_ANCHOR_MAX, float(J[-1]) / np.pi) + 1e-9)
-    usable &= (ct_ff > 0.2 * ct_ff[i0]) & (target_t > 0.2 * target_t[i0]) & (cq_ff > 0.0) & (target_q > 0.0)
+    _, target_t, target_q, usable = _axial_targets(tables, J, ct_axial, cp_axial)
+    usable = usable & (ct_ff > ANCHOR_THRUST_MIN * ct_ff[i0]) & (target_t > ANCHOR_THRUST_MIN * target_t[i0])
+    usable &= (cq_ff > 0.0) & (target_q > 0.0)
     if not usable[i0]:
         raise ValueError("oblique-flow tables have no static thrust to anchor to")
     k_t = np.interp(lam, lam[usable], target_t[usable] / ct_ff[usable])
@@ -418,6 +468,8 @@ class AnchoredRotor:
         self.radius = radius
         self.reynolds = reynolds  # prop.ReynoldsCorrection or None
         self.flap_fraction = f = float(flap_fraction)
+        self.inflow_map = inflow_map(tables, J, ct_axial)
+        tables = remap(tables, self.inflow_map)
         k_t, k_q = anchor_factors(tables, J, ct_axial, cp_axial)
         self.k_t, self.k_q = k_t, k_q
         kt = k_t[None, :]

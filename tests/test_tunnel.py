@@ -102,6 +102,36 @@ def test_fit_recovers_known_values(tunnel, aircraft, tmp_path):
     assert abs(fit.flap_fraction.value - aircraft.extras.flap_fraction) < 3.0 * fit.flap_fraction.u
 
 
+def test_rpm_and_throttle_modes_stay_physical(tunnel, aircraft):
+    """Fixed rpm well above hover is held at a duty below 1 (not on the unphysical root with
+    a collapsed bus); fixed throttle 0 in a fast flow stops the props."""
+    for rpm in (15000.0, 22525.0):
+        r = tunnel.reading(10.0, 0.0, 0.0, "rpm", rpm=rpm * 2 * math.pi / 60)
+        assert all(0.0 < d < 1.0 for d in r.duty)
+        assert r.i_bus < 200.0
+        back = tunnel.reading(10.0, 0.0, 0.0, "throttle", duty=r.duty[0])
+        assert back.omega[0] == pytest.approx(rpm * 2 * math.pi / 60, rel=1e-6)
+    with pytest.raises(ValueError, match="cannot be held"):
+        tunnel.reading(10.0, 0.0, 0.0, "rpm", rpm=60000.0 * 2 * math.pi / 60)
+    assert tunnel.reading(15.0, 0.0, 0.0, "throttle", duty=0.0).omega == (0.0,) * 4
+
+
+def test_fit_of_a_zero_attitude_drag_sweep(tunnel, aircraft):
+    """A plain drag-versus-speed sweep (props removed, no angle of attack or sideslip)
+    identifies S_x and its height only; the other axes are left out, not a singular fit."""
+    rows = [tunnel.reading(v, 0.0, 0.0, "off") for v in (8.0, 12.0, 16.0, 20.0, 25.0)]
+    data = {"props": np.zeros(len(rows)), "rho": np.full(len(rows), aircraft.env.rho)}
+    for key in ("speed", "alpha", "beta"):
+        data[key] = np.array([getattr(r, key) for r in rows])
+    for k, key in enumerate(("fx", "fy", "fz")):
+        data[key] = np.array([r.force[k] for r in rows])
+    for k, key in enumerate(("mx", "my", "mz")):
+        data[key] = np.array([r.moment[k] for r in rows])
+    fit = fit_tunnel(data, aircraft)
+    assert set(fit.cda) == {"x"} and set(fit.centre) == {"z"}
+    assert fit.cda["x"].value == pytest.approx(drag_areas(aircraft)[0], rel=1e-6)
+
+
 def test_cli_round_trip(tmp_path):
     csv = tmp_path / "balance.csv"
     out = tmp_path / "fit"

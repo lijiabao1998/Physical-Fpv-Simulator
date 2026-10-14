@@ -5,7 +5,8 @@ import pytest
 
 from fpvsim.battery_sweep import family_params, recommend, run_sweep, scaled_battery, variant_build
 from fpvsim.flightcontroller import load_fc_config
-from fpvsim.mission import fly_mission, lap_table, repeated
+from fpvsim.mission import REASONS_ZH, fly_mission, lap_table, repeated
+from fpvsim.mission_report import generate as generate_mission_report
 from fpvsim.performance import evaluate
 from fpvsim.pilot import MANEUVERS
 
@@ -77,27 +78,38 @@ def test_short_mission_conserves_charge(reference_build):
     assert laps and laps[0]["mah"] > 0
 
 
-def test_mission_altitude_stays_bounded(reference_build):
-    """Each punch-out climbs about 50 m; the mission pilot brings the aircraft back
-    down, so the altitude does not ratchet up lap after lap."""
+def test_mission_returns_to_the_start_altitude_every_lap(reference_build):
+    """A punch-out climbs about 70 m; after each lap's script the mission pilot dives
+    back down in forward flight, so every lap starts at the start altitude (no
+    ratchet), and its own descents stay out of the vortex-ring region."""
     cfg = load_fc_config(ROOT / "data" / "fc" / "acro-5in-baseline.toml")
-    cap = reference_build.params["battery.capacity"].value
-    result = fly_mission(reference_build, cfg, overrides={"battery.capacity": 0.11 * cap}, max_laps=3)
+    result = fly_mission(reference_build, cfg, maneuver="punch", max_laps=2)
     log = result.log
-    lap = MANEUVERS["freestyle"].duration
-    assert result.time > 1.5 * lap
-    first = log["alt"][log.time < lap].max()
-    second = log["alt"][(log.time >= lap) & (log.time < 2 * lap)].max()
-    assert second < first + 15.0  # the second lap's punch starts from about the same height
-    assert log["alt"].max() < 20.0 + 80.0
+    assert result.reason == "max_laps"
+    laps = lap_table(result, reference_build.battery_series)
+    assert len(laps) == 2 and all(lap["complete"] for lap in laps)
+    for lap in laps:
+        assert 20.0 - 1.5 < lap["start_alt"] < 20.0 + 1.5
+        assert lap["max_alt"] > 60.0  # the punch-out did climb
+    assert result.laps == pytest.approx(2.0)
+    # vortex-ring region (descent > 0.5 v_h at low in-plane speed) outside the scripted throttle and its recovery
+    t = log.time
+    scripted = np.zeros(len(t), bool)
+    for t0 in result.lap_starts:
+        for seg in MANEUVERS["punch"].segments:
+            scripted |= (t >= t0 + seg.start) & (t < t0 + seg.end + 2.0)
+    assert ((log["descent_ratio"] > 0.5) & ~scripted).mean() < 0.03
 
 
 @pytest.mark.parametrize("override, reason", [
     ({"criteria.min_cell_voltage": 4.19}, "low_voltage"),  # hover sits at about 4.186 V per cell
     ({"battery.max_temperature": 298.0}, "battery_temperature"),
 ])
-def test_mission_stop_reasons(reference_build, override, reason):
+def test_mission_stop_reasons(reference_build, override, reason, tmp_path):
     cfg = load_fc_config(ROOT / "data" / "fc" / "acro-5in-baseline.toml")
     result = fly_mission(reference_build, cfg, overrides=override, max_laps=1)
     assert result.reason == reason
     assert result.time < 5.0
+    # a mission that ends in its first second still gets a report
+    text = generate_mission_report(reference_build, cfg, result, tmp_path).read_text(encoding="utf-8")
+    assert REASONS_ZH[reason] in text
