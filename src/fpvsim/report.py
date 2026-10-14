@@ -127,6 +127,9 @@ def verdict(p: float, mc: MonteCarloResult | None = None) -> str:
 _MEASUREMENT_METHODS = (
     ("prop.ct_scale", "推力台量測靜態推力，以 `fpvsim fit-prop` 辨識 Ct"),
     ("prop.cp_scale", "推力台量測扭矩（或電流與轉速），以 `fpvsim fit-prop` 辨識 Cp"),
+    ("prop.fm_scale", "推力台量測扭矩（或電流與轉速），以 `fpvsim fit-prop` 辨識 Cp，由 Ct 與 Cp 得到 FM"),
+    ("prop.re_ct_exponent", "推力台從懸停到滿油門逐階量測推力，以 `fpvsim fit-prop --chord75` 擬合雷諾數趨勢"),
+    ("prop.re_fm_exponent", "推力台從懸停到滿油門逐階量測推力與扭矩，以 `fpvsim fit-prop --chord75` 擬合雷諾數趨勢"),
     ("motor.rm", "四線法（Kelvin）量測線間電阻"),
     ("motor.i0", "無槳空載測試，至少兩個電壓"),
     ("motor.kv", "無槳空載測試：轉速對電壓"),
@@ -348,10 +351,25 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
           f"{r.drive_efficiency:.0%}", f"{r.tip_mach:.2f}"] for r in picks],
     ))
     add("")
-    ct_p, cp_p = build.params["prop.ct_scale"], build.params["prop.cp_scale"]
-    add(f"槳的靜態係數：Ct₀ = {prop.ct0:.4f}，Cp₀ = {prop.cp0:.4f}，靜態效率因數 FM = {prop.figure_of_merit():.3f}。"
-        f"來源：{build.prop_curve_source.label_zh}（{ct_p.ref}），模型不確定度 Ct ±{ct_p.u:.0%}、Cp ±{cp_p.u:.0%} (1σ)。"
-        "BEMT 未計入旋流與低雷諾數效應，已知會高估小槳的效率，所以 Cp 的不確定度設得較大。\n")
+    ct_p = build.params["prop.ct_scale"]
+    if "prop.fm_scale" in build.params:
+        fm_p = build.params["prop.fm_scale"]
+        u_text = (f"不確定度 Ct ±{ct_p.u:.1%}、FM ±{fm_p.u:.1%} (1σ)，Cp 由兩者導出（推力與功率的誤差相關："
+                  "葉片較早失速時兩者一起下降）")
+    else:
+        u_text = f"不確定度 Ct ±{ct_p.u:.0%}、Cp ±{build.params['prop.cp_scale'].u:.0%} (1σ)"
+    rc = prop.reynolds
+    if rc is None:
+        add(f"槳的靜態係數：Ct₀ = {prop.ct0:.4f}，Cp₀ = {prop.cp0:.4f}，靜態效率因數 FM = {prop.figure_of_merit():.3f}，與轉速無關。"
+            f"來源：{build.prop_curve_source.label_zh}（{ct_p.ref}），{u_text}。\n")
+    else:
+        nu = ac.env.kinematic_viscosity
+        at = [(name, op) for name, op in (("懸停", hover), ("滿油門", full)) if op is not None]
+        add(f"槳的靜態係數（葉片雷諾數 Re75 = {rc.re_ref:,.0f}）：Ct₀ = {prop.ct0:.4f}，Cp₀ = {prop.cp0:.4f}，"
+            f"靜態效率因數 FM = {prop.figure_of_merit():.3f}。來源：{build.prop_curve_source.label_zh}（{ct_p.ref}），{u_text}。"
+            f"係數隨雷諾數變化：Ct ∝ Re^{rc.ct_exponent:.3f}、FM ∝ Re^{rc.fm_exponent:.3f}（Re75 = {rc.re_min:,.0f}–{rc.re_max:,.0f}，範圍外保持邊界值）"
+            + ("，" + "、".join(f"{name}（{op.rpm:,.0f} rpm，Re75 = {prop.reynolds_number(op.omega, nu):,.0f}）FM = "
+                               f"{prop.figure_of_merit(op.omega, nu):.3f}" for name, op in at) if at else "") + "。\n")
 
     add("## 5. 懸停與續航\n")
     if hover:
@@ -478,7 +496,7 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
     add(md_table(["參數", "數值", "不確定度", "來源", "說明"], rows))
     add("")
     if len(build.model_inputs):
-        add("BEMT 的輸入（只在載入時計算一次；它們的不確定度由上表的 `prop.ct_scale`、`prop.cp_scale` 代表）：\n")
+        add("BEMT 的輸入（只在載入時計算一次；它們的不確定度由上表的 `prop.ct_scale`、`prop.fm_scale` 代表）：\n")
         add(md_table(["參數", "數值", "來源", "說明"],
                    [[f"`{p.key}`", fmt_param(p), p.source.label_zh, p.note] for p in build.model_inputs]))
         add("")

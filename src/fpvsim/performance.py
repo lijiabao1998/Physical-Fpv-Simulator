@@ -81,12 +81,12 @@ def source_resistance(ac: "Aircraft", state: BatteryState | None = None) -> floa
 def hover_point(ac: "Aircraft", state: BatteryState | None = None) -> OperatingPoint | None:
     state = ac.initial_battery_state() if state is None else state
     thrust = ac.weight / (ac.powertrain.n_rotors * ac.thrust_interference)
-    return ac.powertrain.for_thrust(thrust, state.source_voltage(ac.battery), source_resistance(ac, state), ac.env.rho)
+    return ac.powertrain.for_thrust(thrust, state.source_voltage(ac.battery), source_resistance(ac, state), ac.env)
 
 
 def full_throttle_point(ac: "Aircraft", state: BatteryState | None = None) -> OperatingPoint | None:
     state = ac.initial_battery_state() if state is None else state
-    return ac.powertrain.at_duty(1.0, state.source_voltage(ac.battery), source_resistance(ac, state), ac.env.rho)
+    return ac.powertrain.at_duty(1.0, state.source_voltage(ac.battery), source_resistance(ac, state), ac.env)
 
 
 @dataclass(frozen=True)

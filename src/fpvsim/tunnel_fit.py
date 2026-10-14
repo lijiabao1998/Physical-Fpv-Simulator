@@ -32,6 +32,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from .atmosphere import viscosity
 from .design import Aircraft
 from .rotor_ff import anchored_rotor
 from .sysid import Fit, _ols
@@ -88,12 +89,14 @@ def fit_tunnel(data: dict[str, np.ndarray], ac: Aircraft) -> TunnelFit:
     X2 = np.zeros(len(rows))
     offset = np.zeros(len(rows))
     spins = [1.0 if r.spin == "cw" else -1.0 for r in ac.rotors]
+    mu_air = viscosity(ac.env.temperature)  # the balance log records density; viscosity at the tunnel's air temperature
     for j, i in enumerate(rows):
         if props[i] == 2:
             omega = data["rpm"][i]
             hub = (u[i], v[i], w[i])
-            h_rigid = sum(rotor[0].loads(hub, omega, s, rho[i])["force"][0] for s in spins)
-            h_free = sum(rotor[1].loads(hub, omega, s, rho[i])["force"][0] for s in spins)
+            nu = mu_air / rho[i]
+            h_rigid = sum(rotor[0].loads(hub, omega, s, rho[i], nu)["force"][0] for s in spins)
+            h_free = sum(rotor[1].loads(hub, omega, s, rho[i], nu)["force"][0] for s in spins)
             offset[j] = h_rigid
             X2[j] = h_free - h_rigid
     y = data["fx"][rows] - offset

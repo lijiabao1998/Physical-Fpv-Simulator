@@ -1,0 +1,402 @@
+# 5 吋三葉槳的公開靜態推力台數據點：通用 5.1×4.3×3 槳的校正與驗證資料。
+#
+# 方法學 §7：規格書與公開測試的數值是事實資訊，可以個別引用，但每一點都要附出處，
+# 而且不轉錄整份資料表。這裡每個測試只取 3–4 個轉速點（原始表有 4–20 點），
+# 每一點都標明來源網址與它在原始資料中的位置；品牌與型號只用來標示受測物，
+# 零件庫裡沒有任何品牌零件。
+#
+# 數值照原始資料的單位與有效位數記錄；Ct、Cp、FM、雷諾數由 fpvsim.prop_validation 計算，
+# 用法見 `fpvsim validate-prop` 與 docs/models.md。
+schema = "fpvsim.validation/1"
+
+[meta]
+id = "props-5in-tri"
+name = "5 吋三葉槳靜態推力台公開數據"
+description = "5.0–5.1 吋、螺距 4.3 吋（P/D 0.84–0.86）的三葉槳，加上一組學術推力台數據（只用於雷諾數趨勢）"
+retrieved = "2026-10-14"
+re_ref = 60000  # 參考雷諾數：數據在對數尺度上的中心，讓等級與趨勢的擬合誤差幾乎不相關
+chord75 = { value = 10, unit = "mm", note = "以通用槳估計弦長（75% 半徑處）定義 Re75 = Ω (0.75 R) c75 / ν；同一類槳都用這個值，所以 Re 實際上是換算後的轉速" }
+rig_u_rel = 0.05  # 推力台之間的系統誤差 (1σ)，見下方 rig_note
+rig_note = "同一款槳在兩台獨立推力台上：HQ 5x4.3x3 的 Ct 在 Tyto（Rob Hessler）比 MiniQuadTestBench 高約 3.5%；唯一的學術扭矩數據（NeuroBEM）的 FM 比資料庫的平均低約 6%（槳不同）。Tyto 資料庫另有一台（Julien Lariviere-Chartier）量同一款 5.1×5 槳，Ct 低 28%、FM 低 30%，與另外兩個來源都不符，判定為該台異常（不屬本類，未收錄）。據此取 5%。"
+
+# ------------------------------------------------------------------ Tyto Robotics 資料庫（有扭矩）
+# 同一位上傳者、同一台 RCbenchmark Series 1585、同一顆 Flycolor XCross BLHeli32 50A ESC（50 Hz PWM），
+# 2019 年 3 月的系列測試。油門由高往低逐階下降，每階約 5 秒。
+
+[[series]]
+id = "tyto-wek"
+group = "hq5043@tyto"
+level = true
+tested = "HQ Prop 5043（5×4.3 吋，PC，三葉）；馬達 DYS Samguk Shu 2306 2500KV"
+diameter = { value = 5.0, unit = "in" }
+pitch = { value = 4.3, unit = "in" }
+blades = 3
+rig = "RCbenchmark Series 1585 推力台（推力、扭矩、轉速、電壓、電流）"
+density = { value = 1.225, unit = "kg/m^3", note = "未公布，假設 ISA 海平面" }
+temperature = { value = 15, unit = "degC", note = "未公布，假設" }
+source = "Tyto Robotics 公開測試資料庫，測試 wek（上傳者 Rob Hessler，2019-03-13）"
+url = "https://database.tytorobotics.com/tests/wek/dys-samguk-shu-hq-5043"
+locator = "頁面 Plots 區塊：Thrust (kgf) 與 Torque (N⋅m) 對 Rotation speed (rpm) 的曲線數據（頁面原始碼的陣列；第 0 點為停轉）"
+speed_unit = "rpm"
+thrust_unit = "kgf"
+torque_unit = "N*m"
+torque_min_speed = 15000  # 扭矩只用這個轉速以上的點，原因見 torque_note
+torque_note = "降序掃描的後段（低轉速）由扭矩換算的馬達加 ESC 效率持續上升，最後一階超過 100%（6583 rpm：111%），顯示扭矩讀數有隨時間累積的漂移；只用前段的扭矩。推力沒有這個現象（低轉速的 Ct 與趨勢一致）"
+points = [
+  { speed = 25845, thrust = 1.08065, torque = 0.110713, at = "曲線陣列第 1 點" },
+  { speed = 22615, thrust = 0.833336, torque = 0.088479, at = "曲線陣列第 5 點" },
+  { speed = 18907, thrust = 0.577021, torque = 0.0652488, at = "曲線陣列第 9 點" },
+  { speed = 12875, thrust = 0.260584, torque = 0.0366499, at = "曲線陣列第 15 點" },
+]
+
+[[series]]
+id = "tyto-79e"
+group = "hq5043@tyto"
+level = true
+tested = "HQ Prop 5043（同上）；馬達 DYS Samguk Wei 2207 2600KV"
+diameter = { value = 5.0, unit = "in" }
+pitch = { value = 4.3, unit = "in" }
+blades = 3
+rig = "RCbenchmark Series 1585（同上）"
+density = { value = 1.225, unit = "kg/m^3", note = "未公布，假設 ISA 海平面" }
+temperature = { value = 15, unit = "degC", note = "未公布，假設" }
+source = "Tyto Robotics 公開測試資料庫，測試 79e（上傳者 Rob Hessler，2019-03-20）"
+url = "https://database.tytorobotics.com/tests/79e/dys-samguk-wei-hq-5043"
+locator = "頁面 Plots 區塊的曲線數據（同上）"
+speed_unit = "rpm"
+thrust_unit = "kgf"
+torque_unit = "N*m"
+torque_min_speed = 15000
+torque_note = "同 tyto-wek"
+points = [
+  { speed = 25532, thrust = 1.07436, torque = 0.109775, at = "曲線陣列第 1 點" },
+  { speed = 22184, thrust = 0.820628, torque = 0.0864687, at = "曲線陣列第 5 點" },
+  { speed = 18593, thrust = 0.568389, torque = 0.0638659, at = "曲線陣列第 9 點" },
+  { speed = 12449, thrust = 0.249216, torque = 0.0343276, at = "曲線陣列第 15 點" },
+]
+
+[[series]]
+id = "tyto-ne4"
+group = "tm5143ul@tyto"
+level = true
+tested = "T-Motor 5143 Ultra-Light（5.1×4.3 吋，PC，三葉）；馬達 DYS Samguk Shu 2306 2500KV"
+diameter = { value = 5.1, unit = "in" }
+pitch = { value = 4.3, unit = "in" }
+blades = 3
+rig = "RCbenchmark Series 1585（同上）"
+density = { value = 1.225, unit = "kg/m^3", note = "未公布，假設 ISA 海平面" }
+temperature = { value = 15, unit = "degC", note = "未公布，假設" }
+source = "Tyto Robotics 公開測試資料庫，測試 ne4（上傳者 Rob Hessler，2019-03-13）"
+url = "https://database.tytorobotics.com/tests/ne4/dys-samguk-shu-t-motor-5143-ultralight"
+locator = "頁面 Plots 區塊的曲線數據（同上）"
+speed_unit = "rpm"
+thrust_unit = "kgf"
+torque_unit = "N*m"
+torque_min_speed = 15000
+torque_note = "同 tyto-wek"
+points = [
+  { speed = 25426, thrust = 1.04542, torque = 0.113416, at = "曲線陣列第 1 點" },
+  { speed = 22482, thrust = 0.806526, torque = 0.0888935, at = "曲線陣列第 5 點" },
+  { speed = 18889, thrust = 0.55117, torque = 0.0619358, at = "曲線陣列第 9 點" },
+  { speed = 12902, thrust = 0.24637, torque = 0.033618, at = "曲線陣列第 15 點" },
+]
+
+[[series]]
+id = "tyto-77e"
+group = "wd5043@tyto"
+level = true
+tested = "Gemfan 5043 WinDancer（5×4.3 吋，PC，三葉）；馬達 DYS Samguk Shu 2306 2500KV"
+diameter = { value = 5.0, unit = "in" }
+pitch = { value = 4.3, unit = "in" }
+blades = 3
+rig = "RCbenchmark Series 1585（同上）"
+density = { value = 1.225, unit = "kg/m^3", note = "未公布，假設 ISA 海平面" }
+temperature = { value = 15, unit = "degC", note = "未公布，假設" }
+source = "Tyto Robotics 公開測試資料庫，測試 77e（上傳者 Rob Hessler，2019-03-13）"
+url = "https://database.tytorobotics.com/tests/77e/dys-samguk-shu-gemfan-5043-windancer"
+locator = "頁面 Plots 區塊的曲線數據（同上）"
+speed_unit = "rpm"
+thrust_unit = "kgf"
+torque_unit = "N*m"
+torque_min_speed = 15000
+torque_note = "同 tyto-wek"
+points = [
+  { speed = 24470, thrust = 1.08034, torque = 0.116618, at = "曲線陣列第 1 點" },
+  { speed = 21659, thrust = 0.833142, torque = 0.0932198, at = "曲線陣列第 5 點" },
+  { speed = 18329, thrust = 0.582281, torque = 0.0660019, at = "曲線陣列第 9 點" },
+  { speed = 12519, thrust = 0.270974, torque = 0.0347897, at = "曲線陣列第 15 點" },
+]
+
+# ------------------------------------------------------------------ MiniQuadTestBench（只有推力與轉速）
+# 同一款槳在五顆馬達的測試頁上，各取 25%、50%、75% 油門三列（不取怠速列：讀數 40–60 g，
+# 1 g 的解析度就是 2%；不取 100% 列：轉速取自另一次高轉速測試）。
+# 網站自己說明絕對值不如相對比較可靠（New Measurement Capabilities，2018-10-26），所以有推台系統誤差項。
+
+[[series]]
+id = "mqtb-282"
+group = "hq5043@mqtb"
+level = true
+tested = "HQ v1s 5x4.3x3PC；馬達 Hypetrain Cricket 2306.6 2550KV"
+diameter = { value = 5.0, unit = "in" }
+pitch = { value = 4.3, unit = "in" }
+blades = 3
+rig = "MiniQuadTestBench 自製推力台（HX711 荷重元、EagleTree eRPM 感測器），XRotor 40A ESC，4S"
+density = { value = 1.172, unit = "kg/m^3", note = "網站公布的典型大氣：29–30 inHg、70–74 °F、濕度 50–60%，取中點計算的濕空氣密度" }
+temperature = { value = 22, unit = "degC", note = "70–74 °F 的中點" }
+source = "MiniQuadTestBench 馬達數據頁 uid=282"
+url = "https://www.miniquadtestbench.com/assets/components/motordata/motorinfo.php?uid=282"
+locator = "25%、50%、75% 油門表中 'HQ v1s 5x4.3x3PC' 列的 Thrust (g) 與 RPMs 欄"
+speed_unit = "rpm"
+thrust_unit = "gf"
+points = [
+  { speed = 11004, thrust = 170, at = "25% 表" },
+  { speed = 18326, thrust = 494, at = "50% 表" },
+  { speed = 24588, thrust = 893, at = "75% 表" },
+]
+
+[[series]]
+id = "mqtb-256"
+group = "hq5043@mqtb"
+level = true
+tested = "HQ v1s 5x4.3x3PC；馬達 T-Motor F60 Pro II 2500KV"
+diameter = { value = 5.0, unit = "in" }
+pitch = { value = 4.3, unit = "in" }
+blades = 3
+rig = "MiniQuadTestBench（同上）"
+density = { value = 1.172, unit = "kg/m^3", note = "同 mqtb-282" }
+temperature = { value = 22, unit = "degC", note = "同 mqtb-282" }
+source = "MiniQuadTestBench 馬達數據頁 uid=256"
+url = "https://www.miniquadtestbench.com/assets/components/motordata/motorinfo.php?uid=256"
+locator = "25%、50%、75% 油門表中 'HQ v1s 5x4.3x3PC' 列的 Thrust (g) 與 RPMs 欄"
+speed_unit = "rpm"
+thrust_unit = "gf"
+points = [
+  { speed = 10896, thrust = 176, at = "25% 表" },
+  { speed = 18600, thrust = 536, at = "50% 表" },
+  { speed = 25602, thrust = 1012, at = "75% 表" },
+]
+
+[[series]]
+id = "mqtb-214"
+group = "hq5043@mqtb"
+level = true
+tested = "HQ v1s 5x4.3x3PC；馬達 Emax RSII 2306 2400KV"
+diameter = { value = 5.0, unit = "in" }
+pitch = { value = 4.3, unit = "in" }
+blades = 3
+rig = "MiniQuadTestBench（同上）"
+density = { value = 1.172, unit = "kg/m^3", note = "同 mqtb-282" }
+temperature = { value = 22, unit = "degC", note = "同 mqtb-282" }
+source = "MiniQuadTestBench 馬達數據頁 uid=214"
+url = "https://www.miniquadtestbench.com/assets/components/motordata/motorinfo.php?uid=214"
+locator = "25%、50%、75% 油門表中 'HQ v1s 5x4.3x3PC' 列的 Thrust (g) 與 RPMs 欄"
+speed_unit = "rpm"
+thrust_unit = "gf"
+points = [
+  { speed = 10382, thrust = 150, at = "25% 表" },
+  { speed = 17464, thrust = 447, at = "50% 表" },
+  { speed = 23949, thrust = 848, at = "75% 表" },
+]
+
+[[series]]
+id = "mqtb-250"
+group = "hq5043@mqtb"
+level = true
+tested = "HQ v1s 5x4.3x3PC；馬達 iFlight Xing 2306 2450KV"
+diameter = { value = 5.0, unit = "in" }
+pitch = { value = 4.3, unit = "in" }
+blades = 3
+rig = "MiniQuadTestBench（同上）"
+density = { value = 1.172, unit = "kg/m^3", note = "同 mqtb-282" }
+temperature = { value = 22, unit = "degC", note = "同 mqtb-282" }
+source = "MiniQuadTestBench 馬達數據頁 uid=250"
+url = "https://www.miniquadtestbench.com/assets/components/motordata/motorinfo.php?uid=250"
+locator = "25%、50%、75% 油門表中 'HQ v1s 5x4.3x3PC' 列的 Thrust (g) 與 RPMs 欄"
+speed_unit = "rpm"
+thrust_unit = "gf"
+points = [
+  { speed = 10558, thrust = 159, at = "25% 表" },
+  { speed = 17808, thrust = 476, at = "50% 表" },
+  { speed = 24771, thrust = 920, at = "75% 表" },
+]
+
+[[series]]
+id = "mqtb-208"
+group = "hq5043@mqtb"
+level = true
+tested = "HQ v1s 5x4.3x3PC；馬達 DYS Samguk Shu 2306 2800KV"
+diameter = { value = 5.0, unit = "in" }
+pitch = { value = 4.3, unit = "in" }
+blades = 3
+rig = "MiniQuadTestBench（同上）"
+density = { value = 1.172, unit = "kg/m^3", note = "同 mqtb-282" }
+temperature = { value = 22, unit = "degC", note = "同 mqtb-282" }
+source = "MiniQuadTestBench 馬達數據頁 uid=208"
+url = "https://www.miniquadtestbench.com/assets/components/motordata/motorinfo.php?uid=208"
+locator = "25%、50%、75% 油門表中 'HQ v1s 5x4.3x3PC' 列的 Thrust (g) 與 RPMs 欄"
+speed_unit = "rpm"
+thrust_unit = "gf"
+points = [
+  { speed = 12167, thrust = 220, at = "25% 表" },
+  { speed = 19747, thrust = 601, at = "50% 表" },
+  { speed = 26658, thrust = 1086, at = "75% 表" },
+]
+
+# ------------------------------------------------------------------ 馬達廠商測試表（只有推力與轉速）
+# 頁面註明：「數據僅供參考，不建議與其他型號比較」。
+
+[[series]]
+id = "lig-v2306v2-2400"
+group = "t5143s@lig"
+level = true
+tested = "T-Motor T5143S（5.1×4.3 吋，三葉）；馬達 T-Motor V2306 V2 2400KV，4S"
+diameter = { value = 5.1, unit = "in" }
+pitch = { value = 4.3, unit = "in" }
+blades = 3
+rig = "馬達廠商推力台（型式未公布）"
+density = { value = 1.208, unit = "kg/m^3", note = "由公布的環境溫度 19 °C 與假設的海平面氣壓 101.325 kPa 計算" }
+temperature = { value = 19, unit = "degC", note = "表中公布的環境溫度" }
+source = "T-Motor V2306 V2 馬達產品頁（ligpower.com）的測試數據表"
+url = "https://www.ligpower.com/product/v2306-v2-fpv-motor.html"
+locator = "Test Data 表，V2306 V2 KV2400 區塊、槳 T5143S，油門 50%、75%、100% 列的 Thrust (g) 與 RPM 欄"
+speed_unit = "rpm"
+thrust_unit = "gf"
+points = [
+  { speed = 16363, thrust = 390.06, at = "油門 50%" },
+  { speed = 21963, thrust = 739.42, at = "油門 75%" },
+  { speed = 26144, thrust = 1083.73, at = "油門 100%" },
+]
+
+[[series]]
+id = "lig-v2306v2-1950"
+group = "t5143s@lig"
+level = true
+tested = "T-Motor T5143S（同上）；馬達 T-Motor V2306 V2 1950KV，6S"
+diameter = { value = 5.1, unit = "in" }
+pitch = { value = 4.3, unit = "in" }
+blades = 3
+rig = "馬達廠商推力台（同上）"
+density = { value = 1.184, unit = "kg/m^3", note = "由公布的環境溫度 25 °C 與假設的海平面氣壓 101.325 kPa 計算" }
+temperature = { value = 25, unit = "degC", note = "表中公布的環境溫度" }
+source = "T-Motor V2306 V2 馬達產品頁（ligpower.com）的測試數據表"
+url = "https://www.ligpower.com/product/v2306-v2-fpv-motor.html"
+locator = "Test Data 表，V2306 V2 KV1950 區塊、槳 T5143S，油門 50%、75%、100% 列的 Thrust (g) 與 RPM 欄"
+speed_unit = "rpm"
+thrust_unit = "gf"
+points = [
+  { speed = 18791, thrust = 533.88, at = "油門 50%" },
+  { speed = 25583, thrust = 1021.85, at = "油門 75%" },
+  { speed = 30624, thrust = 1485.74, at = "油門 100%" },
+]
+
+# ------------------------------------------------------------------ 學術推力台（有扭矩，只用於趨勢）
+
+[[series]]
+id = "neurobem-stand"
+group = "neurobem"
+level = false  # 槳的螺距沒有寫在數據裡，不用於本類（螺距 4.3 吋）的等級，只用於雷諾數趨勢
+tested = "5.1 吋三葉槳（NeuroBEM 程式的 BEM 參數：半徑 64.77 mm、3 葉；同一研究的飛行器用 5.1×4.8 吋槳，未說明推力台用的是否同一款）"
+diameter = { value = 5.1, unit = "in" }
+blades = 3
+rig = "單槳六軸力與力矩推力台，階梯油門（每階至少 2 秒）"
+density = { value = 1.204, unit = "kg/m^3", note = "未記錄；採用 NeuroBEM 程式本身的設定值 air_density = 1.204（bem_parameters.yaml）" }
+temperature = { value = 20, unit = "degC", note = "未記錄，假設" }
+source = "Bauersfeld, Kaufmann, Loquercio, Scaramuzza, \"NeuroBEM: Hybrid Aerodynamic Quadrotor Model\", RSS 2021；隨附程式的範例數據"
+url = "https://download.ifi.uzh.ch/rpg/NeuroBEM/code.tar.xz"
+locator = "壓縮檔內 code/ExampleData/BEM/Ex_AllMeasurements.csv（各階平均值：omega [rad/s]、fz [N]、mz [N m]），第 3–10 列（第 1 列為第一個數據列）"
+speed_unit = "rad/s"
+thrust_unit = "N"
+torque_unit = "N*m"
+note = "檔中各階平均值在零點修正之前計算（SegmentMeasurement.m 先求平均再修正原始數據），原始記錄開頭停轉時 fz = −0.012 N、mz = +0.0001 N m，結尾冷卻段 fz = −0.20 N，所以推力可能偏低幾個百分比；這是不用於等級的另一個原因。最低兩階（< 5000 rpm）推力不到 0.31 N，不收錄"
+points = [
+  { speed = 757.146, thrust = 0.766629, torque = 0.0111415, at = "第 3 列" },
+  { speed = 990.641, thrust = 1.36763, torque = 0.0190333, at = "第 4 列" },
+  { speed = 1201.94, thrust = 2.01169, torque = 0.0275587, at = "第 5 列" },
+  { speed = 1383.22, thrust = 2.71389, torque = 0.0363290, at = "第 6 列" },
+  { speed = 1589.33, thrust = 3.68166, torque = 0.0480665, at = "第 7 列" },
+  { speed = 1721.15, thrust = 4.44330, torque = 0.0569667, at = "第 8 列" },
+  { speed = 1908.97, thrust = 5.52422, torque = 0.0698109, at = "第 9 列" },
+  { speed = 2021.07, thrust = 6.25029, torque = 0.0781734, at = "第 10 列" },
+]
+
+# ------------------------------------------------------------------ 前進比的形狀（有風速的推力台）
+# 上面的數據都是靜態（J = 0）。Ct、Cp 隨前進比 J 的變化取自 UIUC 兩款 5 吋三葉槳的風洞數據：
+# 各以同轉速的靜態值正規化，橫軸用 x = J / (P/D)（螺距不同的同類槳，形狀以 J/(P/D) 對齊）。
+# 每個檔案只取隔列的數據點（約一半），靜態值由靜態檔中夾住該轉速的兩列內插。
+# UIUC 的轉速只有約 6000 rpm（Re75 約 2 萬），所以只用它的「形狀」，等級仍來自上面的靜態數據。
+
+[[shape]]
+id = "uiuc-mit5x4-3b"
+tested = "UIUC 第 2 冊的 5×4 三葉碳纖薄翼槳（實測直徑 4.9 吋）"
+diameter = { value = 4.9, unit = "in" }
+pitch = { value = 4.0, unit = "in", note = "標稱螺距" }
+source = "UIUC Propeller Data Site, Volume 2（Brandt, Deters, Ananda, Dantsker & Selig, University of Illinois）"
+url = "https://m-selig.ae.illinois.edu/props/volume-2/data/mit_5x4_0366rd_6057.txt"
+locator = "J、CT、CP 欄的第 1、3、5…17 列（隔列）；6057 rpm"
+static_url = "https://m-selig.ae.illinois.edu/props/volume-2/data/mit_5x4_static_0362rd.txt"
+static_locator = "RPM 5873.333 與 6395.555 兩列，內插到 6057 rpm"
+rpm = 6057
+static = [
+  { rpm = 5873.333, ct = 0.180320, cp = 0.117700 },
+  { rpm = 6395.555, ct = 0.183602, cp = 0.121119 },
+]
+points = [
+  { J = 0.094195, ct = 0.182487, cp = 0.119316 },
+  { J = 0.189860, ct = 0.170449, cp = 0.112403 },
+  { J = 0.283653, ct = 0.156382, cp = 0.105763 },
+  { J = 0.372487, ct = 0.135173, cp = 0.095562 },
+  { J = 0.468874, ct = 0.110169, cp = 0.083869 },
+  { J = 0.564162, ct = 0.079933, cp = 0.070013 },
+  { J = 0.666998, ct = 0.046658, cp = 0.055317 },
+  { J = 0.762080, ct = 0.009114, cp = 0.037926 },
+  { J = 0.859509, ct = -0.029257, cp = 0.019666 },
+]
+
+[[shape]]
+id = "uiuc-da4022-3b"
+tested = "UIUC 第 2 冊的 DA4022 三葉槳（3D 列印，矩形葉片 c/R 0.23，SDA1075 翼型，直徑 5 吋）"
+diameter = { value = 5.0, unit = "in" }
+pitch = { value = 3.75, unit = "in", note = "設計螺距" }
+source = "UIUC Propeller Data Site, Volume 2（同上）；槳的設計見 Deters, Ananda & Selig, AIAA 2014-2151"
+url = "https://m-selig.ae.illinois.edu/props/volume-2/data/da4022_5x3.75_3b_0694md_6034.txt"
+locator = "J、CT、CP 欄的第 1、3、5…17 列（隔列）；6034 rpm"
+static_url = "https://m-selig.ae.illinois.edu/props/volume-2/data/da4022_5x3.75_3b_static_0690md.txt"
+static_locator = "RPM 5880.000 與 6153.334 兩列，內插到 6034 rpm"
+rpm = 6034
+static = [
+  { rpm = 5880.000, ct = 0.205220, cp = 0.129750 },
+  { rpm = 6153.334, ct = 0.209425, cp = 0.132220 },
+]
+points = [
+  { J = 0.096136, ct = 0.198274, cp = 0.130726 },
+  { J = 0.189136, ct = 0.182593, cp = 0.123958 },
+  { J = 0.283843, ct = 0.164674, cp = 0.117446 },
+  { J = 0.376009, ct = 0.142410, cp = 0.108568 },
+  { J = 0.474113, ct = 0.117941, cp = 0.097597 },
+  { J = 0.569971, ct = 0.087999, cp = 0.081769 },
+  { J = 0.670576, ct = 0.052438, cp = 0.059981 },
+  { J = 0.764695, ct = 0.019425, cp = 0.038071 },
+  { J = 0.854119, ct = -0.013567, cp = 0.013577 },
+]
+
+# ------------------------------------------------------------------ 看過但沒有收錄的數據
+
+[[excluded]]
+what = "Tyto 資料庫，上傳者 Sean Kovacs（2022，RCbenchmark Series 1520）：Gemfan W 5043x3 與 T5143x3 搭配多顆馬達"
+url = "https://database.tytorobotics.com/tests/rz3z/emax-fs2208-2500kv-with-gemfan-w-5043x3"
+reason = "Ct 0.084–0.087，約為其他所有來源的一半（同一款槳在 Tyto 另一台推力台為 0.19–0.20），很可能是轉速設定錯誤"
+
+[[excluded]]
+what = "Tyto 資料庫，T-Motor LF40 2305 搭配 T-5143（測試 mny）與 LF40 搭配 T5143（測試 zny）"
+url = "https://database.tytorobotics.com/tests/mny/t-motor-lf40-2305-t-5143-prop"
+reason = "mny 的 Ct 約 0.10、zny 約 0.98，與其他來源（0.15–0.17）不符，應是轉速的極對數設定錯誤"
+
+[[excluded]]
+what = "Tyto 資料庫，Gemfan Hurricane 51499 的兩組上傳（Rob Hessler 與 Julien Lariviere-Chartier）"
+url = "https://database.tytorobotics.com/tests/d9g/emax-rsii-2207-2300kv-with-hurricane-51499"
+reason = "5.1×5 吋（P/D 0.98），不屬本類；兩台推力台的差異（Ct 28%、FM 30%）列入推力台系統誤差的說明"
+
+[[excluded]]
+what = "UIUC Propeller Data Site 第 2 冊的 5 吋三葉槳（DA4022、DA4052、NR640、5x4 碳纖槳）"
+url = "https://m-selig.ae.illinois.edu/props/volume-2/propDB-volume-2.html"
+reason = "靜態數據不用於等級與趨勢：轉速只到 6,000–10,000 rpm（Re75 約 2–3.5 萬），低於本類的懸停到滿油門範圍，槳型（3D 列印寬弦長、碳纖薄葉）也不同。定性上一致：FM 隨轉速上升。其中兩款的風洞數據用於前進比的形狀（[[shape]]）"

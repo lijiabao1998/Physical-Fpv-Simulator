@@ -101,6 +101,45 @@ def cmd_fit_prop(args) -> int:
     print(f"cp = [{fits['cp0'].values['cp0']:.5f}]")
     print(f"ct_u_rel = {fits['ct0'].u_rel('ct0'):.4f}")
     print(f"cp_u_rel = {fits['cp0'].u_rel('cp0'):.4f}")
+    if args.chord75 is None:
+        print("\n(give --chord75, the blade chord at 75 % radius, to also fit the Reynolds-number trend)")
+        return 0
+    from .sysid import fit_prop_reynolds
+
+    rey = fit_prop_reynolds(data["rpm"], data["thrust"], data["torque"], env.rho, env.kinematic_viscosity,
+                            args.diameter, args.chord75)
+    ct_fit, fm_fit = rey["fits"]["ct"], rey["fits"]["fm"]
+    print(f"\nReynolds trend (Re75 {rey['re_min']:.0f}-{rey['re_max']:.0f}, reference {rey['re_ref']:.0f}):")
+    print(f"  Ct = {rey['ct_ref']:.5f} (Re/Re_ref)^{ct_fit.values['exponent']:.4f} +/- {ct_fit.stderr['exponent']:.4f}")
+    print(f"  FM = {rey['fm_ref']:.4f} (Re/Re_ref)^{fm_fit.values['exponent']:.4f} +/- {fm_fit.stderr['exponent']:.4f}")
+    print("\nWith the trend, use these static values at Re_ref in [coefficients] (ct, cp at J = 0) and add:")
+    print(f"# [coefficients] ct = [{rey['ct_ref']:.5f}], cp = [{rey['cp_ref']:.5f}] at J = 0")
+    print("[reynolds]")
+    print('source = "synthetic"' if is_synthetic(notes) else 'source = "measured"')
+    print(f'ref = "{Path(args.csv).name}"')
+    print(f"re_ref = {rey['re_ref']:.0f}")
+    print(f"re_min = {rey['re_min']:.0f}")
+    print(f"re_max = {rey['re_max']:.0f}")
+    src = "synthetic" if is_synthetic(notes) else "measured"
+    for key, fit in (("ct_exponent", ct_fit), ("fm_exponent", fm_fit)):
+        print(f'{key} = {{ value = {fit.values["exponent"]:.4f}, unit = "1", source = "{src}", '
+              f'u = {fit.stderr["exponent"]:.4f}, ref = "{Path(args.csv).name}" }}')
+    print(f"# chord75 = {{ value = {args.chord75 * 1e3:g}, unit = \"mm\", source = \"measured\" }}  (only if the prop has no [bemt.blade])")
+    return 0
+
+
+def cmd_validate_prop(args) -> int:
+    from .prop_validation import load_validation
+    from .prop_validation_report import generate
+
+    build = load_build(args.build)
+    vset = load_validation(args.data)
+    out = Path(args.out) if args.out else Path("out") / f"prop-validation-{vset.id}"
+    path, agrees = generate(vset, build, out)
+    print(f"wrote {path}")
+    if not agrees:
+        print("the prop file does not match the fit to the validation data (see section 2 of the report)", file=sys.stderr)
+        return 1
     return 0
 
 
@@ -369,7 +408,14 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--diameter", type=_quantity, required=True, help="prop diameter, e.g. 5.1in")
     p.add_argument("--temperature", type=_quantity, default=288.15, help="air temperature, e.g. 20degC")
     p.add_argument("--altitude", type=_quantity, default=0.0, help="pressure altitude, e.g. 150m")
+    p.add_argument("--chord75", type=_quantity, help="blade chord at 75%% radius, e.g. 10mm: also fit the Reynolds trend")
     p.set_defaults(func=cmd_fit_prop)
+
+    p = sub.add_parser("validate-prop", help="fit a prop class to cited public test data and check the prop file")
+    p.add_argument("build", help="a build that uses the prop (for its operating points)")
+    p.add_argument("--data", required=True, help="validation data, e.g. data/validation/props-5in-tri.toml")
+    p.add_argument("--out", help="output directory (default: out/prop-validation-<id>)")
+    p.set_defaults(func=cmd_validate_prop)
 
     p = sub.add_parser("hppc", help="virtual battery bench: hybrid pulse test in a thermal chamber")
     p.add_argument("build")

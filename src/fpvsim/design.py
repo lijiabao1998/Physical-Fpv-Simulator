@@ -39,7 +39,7 @@ from .mass import BoxShape, CylinderShape, MassItem, MassProperties, PointShape,
 from .motor import ESC, Motor
 from .params import Param, ParamError, ParamSet, Source, Values, component_stream, parse_param, parse_vector
 from .powertrain import Powertrain
-from .prop import Prop, PropCurves
+from .prop import Prop, PropCurves, ReynoldsCorrection
 
 COMPONENT_SCHEMA = "fpvsim.component/1"
 BUILD_SCHEMA = "fpvsim.build/1"
@@ -68,6 +68,7 @@ _REQUIRED = {
     ),
 }
 _POWERTRAIN_ROLES = ("frame", "motor", "prop", "esc", "battery")
+FM_MAX = 0.8  # static figure of merit no rotor exceeds (the best full-scale rotors reach about 0.75-0.8)
 
 
 class DesignError(ValueError):
@@ -269,6 +270,7 @@ class Build:
     component_files: dict[str, Path]
     model_inputs: ParamSet = field(default_factory=ParamSet)  # inputs of derived models, not sampled
     prop_blade: tuple | None = None  # (BladeGeometry, Airfoil) for the oblique-flow rotor model, if the geometry is known
+    prop_reynolds: tuple | None = None  # (chord75, re_ref, re_min, re_max) of the Reynolds correction, if any
     tables: list[DataTable] = field(default_factory=list)
     files: list[Path] = field(default_factory=list)
     lineage: list[dict] = field(default_factory=list)  # base first: id, name, change, path
@@ -281,6 +283,23 @@ class Build:
             h.update(path.read_bytes())
         return h.hexdigest()
 
+    def _cp_scale(self, v) -> float:
+        """Power-coefficient factor: measured tables carry their own; for BEMT it follows
+        from the thrust and figure-of-merit factors, with the figure of merit held
+        below FM_MAX (no rotor is more efficient than that)."""
+        if "prop.cp_scale" in self.params:
+            return v("prop.cp_scale")
+        ct0, cp0 = float(self.prop_curves.ct[0]), float(self.prop_curves.cp[0])
+        fm0 = ct0**1.5 * math.sqrt(2.0 / math.pi) / cp0
+        peak = 1.0  # highest FM / FM(Re_ref) over the Reynolds range
+        if self.prop_reynolds is not None:
+            _, re_ref, re_min, re_max = self.prop_reynolds
+            e = v("prop.re_fm_exponent")
+            peak = max((re_min / re_ref) ** e, (re_max / re_ref) ** e)
+        # FM = fm_scale * FM0 whatever ct_scale is, since Cp scales with ct_scale^1.5
+        fm = min(v("prop.fm_scale"), FM_MAX / (fm0 * peak))
+        return v("prop.ct_scale") ** 1.5 / max(fm, 1e-6)
+
     def realize(self, overrides: Mapping[str, float] | None = None) -> Aircraft:
         v = Values(self.params, overrides)
 
@@ -292,8 +311,10 @@ class Build:
             spin_inertia=v("prop.spin_inertia"),
             curves=self.prop_curves,
             ct_scale=v("prop.ct_scale"),
-            cp_scale=v("prop.cp_scale"),
+            cp_scale=self._cp_scale(v),
             blade=self.prop_blade,
+            reynolds=None if self.prop_reynolds is None else ReynoldsCorrection(
+                *self.prop_reynolds, ct_exponent=v("prop.re_ct_exponent"), fm_exponent=v("prop.re_fm_exponent")),
         )
         motor = Motor(
             kv=v("motor.kv"),
@@ -605,6 +626,7 @@ def load_build(path: str | Path) -> Build:
     tables: list[DataTable] = []
     prop_curves, prop_curve_source, prop_blade = _prop_curves(component_files["prop"], comp["prop"], params, model_inputs,
                                                               tables)
+    prop_reynolds = _prop_reynolds(component_files["prop"], comp["prop"], params, model_inputs, tables, prop_blade)
     # rotor drag: from the blade geometry (flap fraction) or, without one, the legacy momentum estimate
     prop_params = comp["prop"].get("params", {})
     needed, unused = ("flap_fraction", "rotor_drag_factor") if prop_blade else ("rotor_drag_factor", "flap_fraction")
@@ -663,6 +685,7 @@ def load_build(path: str | Path) -> Build:
         prop_curves=prop_curves,
         prop_curve_source=prop_curve_source,
         prop_blade=prop_blade,
+        prop_reynolds=prop_reynolds,
         component_files=component_files,
         model_inputs=model_inputs,
         tables=tables,
@@ -737,10 +760,10 @@ def _table(path: Path, name: str, table: Mapping[str, Any]) -> DataTable:
 def _prop_curves(
     path: Path, data: dict[str, Any], params: ParamSet, model_inputs: ParamSet, tables: list[DataTable]
 ) -> tuple[PropCurves, Source, tuple | None]:
-    """Measured coefficient tables take precedence; otherwise run BEMT. The
-    blade geometry, when given, is also returned (geometry, airfoil) for the
-    oblique-flow rotor model, which is anchored to whichever axial curves
-    are used."""
+    """Coefficient tables ([coefficients]: measured, or derived from test data of
+    the prop's class) take precedence; otherwise run BEMT. The blade geometry,
+    when given, is also returned (geometry, airfoil) for the oblique-flow rotor
+    model, which is anchored to whichever axial curves are used."""
     blade_model = None
     if "coefficients" in data:
         table = data["coefficients"]
@@ -750,21 +773,29 @@ def _prop_curves(
             np.asarray(table["J"], dtype=float), np.asarray(table["ct"], dtype=float), np.asarray(table["cp"], dtype=float)
         )
         ref = str(table.get("ref", ""))
-        u_ct, u_cp = float(table.get("ct_u_rel", 0.0)), float(table.get("cp_u_rel", 0.0))
+        if "fm_u_rel" in table and "cp_u_rel" in table:
+            raise DesignError(f"{path}: [coefficients] takes cp_u_rel or fm_u_rel, not both")
+        u_ct = float(table.get("ct_u_rel", 0.0))
+        second, u_second = ("fm_scale", float(table["fm_u_rel"])) if "fm_u_rel" in table else \
+            ("cp_scale", float(table.get("cp_u_rel", 0.0)))
         if "bemt" in data:  # geometry for the oblique-flow model only
             blades = _int(str(path), data.get("config", {}), "blades")
-            _, *blade_model = _run_bemt(path, data["bemt"], blades, params, model_inputs, tables)
+            _, *blade_model = _run_bemt(path, data["bemt"], blades, params, model_inputs, tables, for_curves=False)
     elif "bemt" in data:
         bemt = data["bemt"]
         blades = _int(str(path), data.get("config", {}), "blades")
-        curves, *blade_model = _run_bemt(path, bemt, blades, params, model_inputs, tables)
+        curves, *blade_model = _run_bemt(path, bemt, blades, params, model_inputs, tables, for_curves=True)
         source = Source.DERIVED
         ref = "BEMT（fpvsim.bemt，由槳葉幾何計算）"
-        u_ct, u_cp = float(bemt["ct_model_u_rel"]), float(bemt["cp_model_u_rel"])
+        u_ct = float(bemt["ct_model_u_rel"])
+        second, u_second = "fm_scale", float(bemt["fm_model_u_rel"])
     else:
         raise DesignError(f"{path}: a prop needs [coefficients] (measured) or [bemt] (geometry)")
 
-    for name, u_rel in (("ct_scale", u_ct), ("cp_scale", u_cp)):
+    # A model or a class average errs in thrust and power together (a blade that stalls earlier loses both),
+    # so its uncertainty is a thrust factor and an efficiency (figure of merit) factor, with Cp following from
+    # the two (fm_scale). A measurement of the prop itself carries the fit's own Ct and Cp errors (cp_scale).
+    for name, u_rel in (("ct_scale", u_ct), (second, u_second)):
         params.add(
             Param(
                 key=f"prop.{name}",
@@ -773,21 +804,61 @@ def _prop_curves(
                 source=source,
                 u=u_rel,
                 ref=ref,
-                note="係數曲線的模型不確定度乘數",
+                note={"ct_scale": "推力係數曲線的模型不確定度乘數",
+                      "cp_scale": "功率係數曲線的不確定度乘數",
+                      "fm_scale": "靜態效率因數（FM）的模型不確定度乘數；Cp 乘數 = ct_scale^1.5 / fm_scale"}[name],
                 stream=component_stream(_component_id(path, data), name),
             )
         )
     return curves, source, tuple(blade_model) if blade_model else None
 
 
+def _prop_reynolds(path: Path, data: dict[str, Any], params: ParamSet, model_inputs: ParamSet,
+                   tables: list[DataTable], blade: tuple | None) -> tuple[float, float, float, float] | None:
+    """[reynolds]: static coefficients as power laws of the blade Reynolds number
+    (prop.ReynoldsCorrection). The two exponents are uncertain parameters; the
+    reference and the range belong to the fit they come from. The chord that
+    defines Re is the blade geometry's at 75 % radius, or chord75 without one."""
+    table = data.get("reynolds")
+    if table is None:
+        return None
+    tables.append(_table(path, "prop.reynolds", table))
+    for key in ("re_ref", "re_min", "re_max", "ct_exponent", "fm_exponent"):
+        if key not in table:
+            raise DesignError(f"{path}: [reynolds] needs {key}")
+    cid = _component_id(path, data)
+    for name in ("ct_exponent", "fm_exponent"):
+        params.add(parse_param(f"prop.re_{name}", table[name], component_stream(cid, f"re_{name}")))
+    if blade is not None:
+        if "chord75" in table:
+            raise DesignError(f"{path}: [reynolds] chord75 comes from the [bemt.blade] geometry, remove it")
+        geom = blade[0]
+        chord75 = geom.chord_at(0.75 * geom.radius)
+    elif "chord75" in table:
+        chord75 = model_inputs.add(parse_param("prop.chord75", table["chord75"])).value
+    else:
+        raise DesignError(f"{path}: [reynolds] needs chord75 (the prop has no blade geometry)")
+    values = (float(chord75), float(table["re_ref"]), float(table["re_min"]), float(table["re_max"]))
+    try:
+        ReynoldsCorrection(*values, ct_exponent=0.0, fm_exponent=0.0)
+    except ValueError as e:
+        raise DesignError(f"{path}: [reynolds] {e}") from None
+    return values
+
+
 def _run_bemt(
-    path: Path, bemt: Mapping[str, Any], blades: int, params: ParamSet, model_inputs: ParamSet, tables: list[DataTable]
+    path: Path, bemt: Mapping[str, Any], blades: int, params: ParamSet, model_inputs: ParamSet, tables: list[DataTable],
+    for_curves: bool,
 ) -> tuple[PropCurves, BladeGeometry, Airfoil]:
     """Run BEMT once at nominal inputs. Its inputs are recorded for provenance
-    but not sampled: their uncertainty is carried by ct_scale and cp_scale."""
-    for key in ("ct_model_u_rel", "cp_model_u_rel"):
-        if key not in bemt:
+    but not sampled: when BEMT gives the axial curves, their uncertainty is
+    carried by ct_scale and fm_scale; otherwise BEMT only feeds the
+    oblique-flow model, which is anchored to the [coefficients] curves."""
+    for key in ("ct_model_u_rel", "fm_model_u_rel"):
+        if for_curves and key not in bemt:
             raise DesignError(f"{path}: [bemt] needs {key}")
+        if not for_curves and key in bemt:
+            raise DesignError(f"{path}: [bemt] {key} is not used ([coefficients] gives the curves and their uncertainty)")
     foil_table = bemt.get("airfoil", {})
     foil_values = {}
     for key in ("cl_alpha", "alpha0", "cl_max", "cl_min", "cd_min", "cl_cd_min", "k_cd"):

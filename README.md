@@ -17,7 +17,7 @@ Physics-first FPV simulator built from real physical properties.
 | 階段 | 真實研發在做什麼 | 模擬器裡的對應 | 狀態 |
 |---|---|---|---|
 | 1. 需求規格 | 定義用途、重量、推重比、續航目標 | 規格檔 `data/specs/` | ✅ |
-| 2. 動力匹配 | 推力台測試馬達、槳、電壓組合 | 虛擬推力台、BEMT、系統識別 | ✅ |
+| 2. 動力匹配 | 推力台測試馬達、槳、電壓組合 | 虛擬推力台、系統識別（含雷諾數趨勢）、以公開推力台數據校正的通用槳 | ✅ |
 | 3. 重量與重心 | 秤重、做重量表、算重心與慣性 | 質量預算 | ✅ |
 | 4. 電氣 | 壓降、峰值電流、電池溫升、低溫與老化 | 電池等效電路與熱模型、全油門可持續時間、設計點（最差工況）、HPPC 測試與辨識、電池選型、任務續航 | ✅ |
 | 5. 調參 | 看陀螺儀頻譜設濾波、看步階響應調 PID | 雜訊調查、濾波延遲、步階響應量測、增益掃描 | ✅ |
@@ -27,6 +27,7 @@ Physics-first FPV simulator built from real physical properties.
 範例輸出：
 
 - [參考機設計報告](reports/ref-5in-6s-freestyle/report.md)（第 1–4 階段）
+- [槳的校正與驗證](reports/prop-validation/report.md)：通用 5.1×4.3×3 槳對 45 個公開推力台數據點
 - [調參報告](reports/tune-acro-5in-baseline/report.md)（第 5 階段）
 - [飛行測試報告：綜合飛行](reports/flight-freestyle/report.md)（第 6 階段）
 - [設計迭代：加掛運動相機的三個版本](reports/compare-actioncam/report.md)（第 7 階段）
@@ -54,10 +55,16 @@ python -m venv .venv
 有實測推力台數據時（CSV 欄位需含單位，例如 `rpm [rpm]`、`thrust [gf]`、`torque [N*m]`）：
 
 ```bash
-.venv/bin/fpvsim fit-prop my_stand.csv --diameter 5.1in --temperature 22degC --altitude 30m
+.venv/bin/fpvsim fit-prop my_stand.csv --diameter 5.1in --temperature 22degC --altitude 30m --chord75 10mm
 ```
 
-它會輸出辨識出的 Ct、Cp 與不確定度，可以直接貼進槳的零件檔取代 BEMT 估計值。
+它會輸出辨識出的 Ct、Cp、雷諾數趨勢（給了 `--chord75` 時）與不確定度，可以直接貼進槳的零件檔取代同類平均。
+
+通用槳的係數是同類槳公開數據的平均；校正與驗證報告由下面的命令產生（說明見 [docs/models.md](docs/models.md)）：
+
+```bash
+.venv/bin/fpvsim validate-prop data/builds/ref-5in-6s-freestyle.toml --data data/validation/props-5in-tri.toml --out reports/prop-validation
+```
 
 飛行模擬與調參（說明見 [docs/flight-sim.md](docs/flight-sim.md)）：
 

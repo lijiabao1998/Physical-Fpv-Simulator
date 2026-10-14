@@ -174,7 +174,8 @@ def test_rotor_drag_opposes_motion(aircraft):
 
 
 def test_legacy_rotor_drag_without_blade_geometry(aircraft):
-    """A prop without blade geometry uses momentum drag k omega v and the axial curves."""
+    """A prop without blade geometry uses momentum drag k omega v sqrt(f_T) and the axial curves
+    (f_T: the Reynolds factor of thrust, since the induced velocity goes as sqrt(thrust))."""
     prop = replace(aircraft.powertrain.prop, blade=None)
     ac = replace(aircraft, powertrain=replace(aircraft.powertrain, prop=prop))
     m = QuadModel(ac, replace(ac.extras, cda=(0.0, 0.0, 0.0), rotor_drag_factor=0.5, flap_fraction=None))
@@ -183,9 +184,10 @@ def test_legacy_rotor_drag_without_blade_geometry(aircraft):
     s = m.initial_state(position=(0, 0, -50.0), omega=hp.omega)
     s[3] = 2.0
     d = m.derivative(s, [hp.duty] * 4)
-    expected = -m.k_rotor_drag * 4 * hp.omega * 2.0 / ac.mass_props.mass
+    k = m.k_rotor_drag * math.sqrt(m.re_factors(hp.omega)[0])
+    expected = -k * 4 * hp.omega * 2.0 / ac.mass_props.mass
     assert d[3] == pytest.approx(expected, rel=0.02)
-    assert m.rotor_drag(2.0, hp.omega) == pytest.approx(m.k_rotor_drag * 4 * hp.omega * 2.0)
+    assert m.rotor_drag(2.0, hp.omega) == pytest.approx(k * 4 * hp.omega * 2.0)
 
 
 def test_bus_power_balance(aircraft):

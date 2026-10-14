@@ -12,7 +12,9 @@ demand exceeds V_s^2 / (4 R_s) the bus voltage collapses and no operating
 point exists.
 
 Only static thrust (zero axial inflow) is used at this stage, so
-T = kT omega^2 and Q = kQ omega^2.
+T = kT omega^2 and Q = kQ omega^2, each times the prop's Reynolds-number
+factor when it has one (prop.ReynoldsCorrection). The air is passed as an
+``atmosphere.Environment`` (density and viscosity).
 """
 
 from __future__ import annotations
@@ -22,6 +24,7 @@ from dataclasses import dataclass
 
 from scipy.optimize import brentq
 
+from .atmosphere import Environment
 from .motor import ESC, Motor, solve_omega
 from .prop import Prop
 from .units import RADS_TO_RPM
@@ -77,20 +80,29 @@ class Powertrain:
     def r_circuit(self) -> float:
         return self.motor.rm + self.esc.r_on
 
-    def _rotor(self, v_motor: float, rho: float) -> tuple[float, float]:
-        omega = solve_omega(self.motor, self.r_circuit, v_motor, self.prop.k_torque(rho))
+    def _rotor(self, v_motor: float, rho: float, nu: float) -> tuple[float, float]:
+        k_q = self.prop.k_torque(rho)
+        omega = solve_omega(self.motor, self.r_circuit, v_motor, k_q)
+        if self.prop.reynolds is not None:
+            # the load is k_q f(omega) omega^2 with a weak power-law f: fixed-point iteration on the
+            # quadratic solution converges quickly (contraction about |cp_exponent| / 2)
+            for _ in range(60):
+                previous = omega
+                omega = solve_omega(self.motor, self.r_circuit, v_motor, k_q * self.prop.re_factors(omega, nu)[1])
+                if abs(omega - previous) <= 1e-10 * max(omega, 1.0):
+                    break
         i_motor = (v_motor - self.motor.ke * omega) / self.r_circuit
         return omega, i_motor
 
-    def _point(self, duty: float, v_bus: float, rho: float) -> OperatingPoint:
+    def _point(self, duty: float, v_bus: float, rho: float, nu: float) -> OperatingPoint:
         v_motor = duty * v_bus
-        omega, i_motor = self._rotor(v_motor, rho)
+        omega, i_motor = self._rotor(v_motor, rho, nu)
         p_total = self.n_rotors * v_motor * i_motor + self.p_aux
         return OperatingPoint(
             duty=duty,
             omega=omega,
-            thrust=self.prop.k_thrust(rho) * omega**2,
-            torque=self.prop.k_torque(rho) * omega**2,
+            thrust=self.prop.thrust_static(omega, rho, nu),
+            torque=self.prop.torque_static(omega, rho, nu),
             i_motor=i_motor,
             v_motor=v_motor,
             v_bus=v_bus,
@@ -99,28 +111,30 @@ class Powertrain:
             p_aux=self.p_aux,
         )
 
-    def at_duty(self, duty: float, v_source: float, r_source: float, rho: float) -> OperatingPoint | None:
+    def at_duty(self, duty: float, v_source: float, r_source: float, air: Environment) -> OperatingPoint | None:
         """Operating point for a commanded duty. None if the bus voltage collapses."""
         if not 0.0 <= duty <= 1.0:
             raise ValueError("duty must be within [0, 1]")
+        rho, nu = air.rho, air.kinematic_viscosity
         if r_source == 0.0:
-            return self._point(duty, v_source, rho)
+            return self._point(duty, v_source, rho, nu)
 
         def surplus(v_bus: float) -> float:
-            p = self._point(duty, v_bus, rho)
+            p = self._point(duty, v_bus, rho, nu)
             return v_bus * (v_source - v_bus) / r_source - (p.n_rotors * p.v_motor * p.i_motor + self.p_aux)
 
         lo = 0.5 * v_source  # maximum-power-transfer point; stable branch lies above it
         if surplus(lo) < 0.0:
             return None
         v_bus = brentq(surplus, lo, v_source, xtol=1e-9, rtol=1e-12)
-        return self._point(duty, v_bus, rho)
+        return self._point(duty, v_bus, rho, nu)
 
-    def for_thrust(self, thrust: float, v_source: float, r_source: float, rho: float) -> OperatingPoint | None:
+    def for_thrust(self, thrust: float, v_source: float, r_source: float, air: Environment) -> OperatingPoint | None:
         """Operating point giving ``thrust`` per rotor, solved in closed form.
         None if it needs more than full duty or the bus voltage would collapse."""
-        omega = math.sqrt(thrust / self.prop.k_thrust(rho))
-        torque = self.prop.k_torque(rho) * omega**2
+        rho, nu = air.rho, air.kinematic_viscosity
+        omega = self.prop.omega_for_thrust(thrust, rho, nu)
+        torque = self.prop.torque_static(omega, rho, nu)
         i_motor = self.motor.i0(omega) + torque / self.motor.kt
         v_motor = self.motor.ke * omega + i_motor * self.r_circuit
         p_total = self.n_rotors * v_motor * i_motor + self.p_aux

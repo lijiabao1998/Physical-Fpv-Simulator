@@ -2,12 +2,16 @@
 import numpy as np
 import pytest
 
+from collections import namedtuple
+
+from fpvsim.atmosphere import Environment
 from fpvsim.battery import Battery, BatteryState
 from fpvsim.motor import solve_omega
 
 from conftest import make_powertrain
 
-RHO = 1.225
+AIR = Environment.isa(0.0)  # rho = 1.225
+Air = namedtuple("Air", "rho kinematic_viscosity")  # any air with these two properties
 
 
 def test_no_load_speed(powertrain):
@@ -33,14 +37,14 @@ def test_torque_balance_and_energy_conservation(powertrain, v, kq):
 
 
 def test_closed_form_hover_matches_numeric_duty_solve(powertrain):
-    op = powertrain.for_thrust(1.4, v_source=25.0, r_source=0.04, rho=RHO)
-    check = powertrain.at_duty(op.duty, 25.0, 0.04, RHO)
+    op = powertrain.for_thrust(1.4, v_source=25.0, r_source=0.04, air=AIR)
+    check = powertrain.at_duty(op.duty, 25.0, 0.04, AIR)
     assert check.thrust == pytest.approx(1.4, rel=1e-8)
     assert check.v_bus == pytest.approx(op.v_bus, rel=1e-9)
 
 
 def test_bus_power_and_source_balance(powertrain):
-    op = powertrain.at_duty(0.7, 25.0, 0.04, RHO)
+    op = powertrain.at_duty(0.7, 25.0, 0.04, AIR)
     assert op.p_bus == pytest.approx(op.p_motor_in + powertrain.p_aux, rel=1e-9)
     assert op.v_bus == pytest.approx(25.0 - 0.04 * op.i_bus, rel=1e-9)
     assert op.i_motor * op.duty * op.n_rotors < op.i_bus  # aux load adds bus current
@@ -48,29 +52,29 @@ def test_bus_power_and_source_balance(powertrain):
 
 def test_hover_scaling_with_mass(powertrain):
     """T = kT w^2 and P = kQ w^3: +10 % thrust -> +4.88 % speed, +15.37 % shaft power."""
-    a = powertrain.for_thrust(1.4, 25.0, 0.0, RHO)
-    b = powertrain.for_thrust(1.4 * 1.1, 25.0, 0.0, RHO)
+    a = powertrain.for_thrust(1.4, 25.0, 0.0, AIR)
+    b = powertrain.for_thrust(1.4 * 1.1, 25.0, 0.0, AIR)
     assert b.omega / a.omega == pytest.approx(1.1**0.5, rel=1e-12)
     assert b.p_shaft / a.p_shaft == pytest.approx(1.1**1.5, rel=1e-12)
 
 
 def test_hover_scaling_with_air_density(powertrain):
     """Thinner air: w ~ rho^-1/2 and hover power ~ rho^-1/2."""
-    a = powertrain.for_thrust(1.4, 25.0, 0.0, RHO)
-    b = powertrain.for_thrust(1.4, 25.0, 0.0, 0.9 * RHO)
+    a = powertrain.for_thrust(1.4, 25.0, 0.0, AIR)
+    b = powertrain.for_thrust(1.4, 25.0, 0.0, Air(0.9 * AIR.rho, AIR.kinematic_viscosity / 0.9))
     assert b.omega / a.omega == pytest.approx(0.9**-0.5, rel=1e-12)
     assert b.p_shaft / a.p_shaft == pytest.approx(0.9**-0.5, rel=1e-12)
 
 
 def test_thrust_increases_with_duty(powertrain):
-    thrusts = [powertrain.at_duty(d, 25.0, 0.04, RHO).thrust for d in np.linspace(0.05, 1.0, 20)]
+    thrusts = [powertrain.at_duty(d, 25.0, 0.04, AIR).thrust for d in np.linspace(0.05, 1.0, 20)]
     assert all(np.diff(thrusts) > 0)
 
 
 def test_infeasible_points_return_none(powertrain):
-    assert powertrain.for_thrust(50.0, 25.0, 0.0, RHO) is None  # needs duty > 1
-    assert powertrain.at_duty(1.0, 25.0, 5.0, RHO) is None  # source cannot deliver the power
-    assert powertrain.for_thrust(1.4, 25.0, 50.0, RHO) is None
+    assert powertrain.for_thrust(50.0, 25.0, 0.0, AIR) is None  # needs duty > 1
+    assert powertrain.at_duty(1.0, 25.0, 5.0, AIR) is None  # source cannot deliver the power
+    assert powertrain.for_thrust(1.4, 25.0, 50.0, AIR) is None
 
 
 def make_battery(**kw):

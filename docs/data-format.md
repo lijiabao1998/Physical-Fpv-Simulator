@@ -67,7 +67,23 @@ ct_u_rel = 0.012
 cp_u_rel = 0.015
 ```
 
-`fpvsim fit-prop` 會直接輸出這段內容。
+`fpvsim fit-prop` 會直接輸出這段內容。係數表也可以是同類槳的平均（`source = "derived"`，例如通用槳），這時以 `fm_u_rel`（靜態效率因數）取代 `cp_u_rel`，因為推力與功率的誤差相關，Cp 的不確定度由兩者導出。
+
+雷諾數修正（選用）：係數表是 `re_ref` 時的值，Ct 與 FM 隨葉片雷諾數 Re75 = Ω (0.75 R) c75 / ν 以冪次律變化，範圍外保持邊界值（見 [models.md](models.md)）：
+
+```toml
+[reynolds]
+source = "derived"
+ref = "fpvsim validate-prop：data/validation/props-5in-tri.toml"
+re_ref = 60000
+re_min = 24400
+re_max = 100400
+ct_exponent = { value = 0.095, unit = "1", source = "derived", u = 0.048 }
+fm_exponent = { value = 0.241, unit = "1", source = "derived", u = 0.058 }
+# chord75 = { value = 10, unit = "mm", source = "measured" }   只有沒有 [bemt.blade] 時才需要
+```
+
+`fpvsim fit-prop ... --chord75 10mm` 會從推力台數據擬合並輸出這一段。有係數表時，`[bemt]` 的槳葉幾何只用於斜向氣流模型，不再需要 `ct_model_u_rel`、`fm_model_u_rel`。
 
 ## 組裝檔（`schema = "fpvsim.build/1"`）
 
@@ -129,6 +145,42 @@ rationale = "..."
 ```
 
 設計點只寫了 `temperature` 而沒寫 `battery_temperature` 時，視為電池已經放到和氣溫相同。
+
+## 確認數據（`schema = "fpvsim.validation/1"`）
+
+`data/validation/` 收錄個別引用的公開測試數據點，`fpvsim validate-prop` 用它們擬合同類槳並檢查零件檔。每組數據（`[[series]]`）是一款槳在一台推力台上的一次測試：
+
+```toml
+[meta]
+id = "props-5in-tri"
+re_ref = 60000                                      # 擬合的參考雷諾數
+chord75 = { value = 10, unit = "mm" }                # 定義 Re75，整類槳相同
+rig_u_rel = 0.05                                     # 推力台之間的系統誤差
+
+[[series]]
+id = "tyto-wek"
+group = "hq5043@tyto"         # 同一款槳在同一台推力台上的數據先平均成一組
+level = true                  # 是否用於這一類的等級（false：只用於趨勢）
+tested = "受測物（品牌與型號只用來標示出處）"
+diameter = { value = 5.0, unit = "in" }
+pitch = { value = 4.3, unit = "in" }
+blades = 3
+rig = "推力台型式"
+density = { value = 1.225, unit = "kg/m^3", note = "來源或假設" }
+temperature = { value = 15, unit = "degC" }
+source = "引用"
+url = "https://..."
+locator = "數據在原始資料中的位置"
+speed_unit = "rpm"
+thrust_unit = "kgf"
+torque_unit = "N*m"
+torque_min_speed = 15000      # 選用：低於這個轉速的扭矩不使用（原因寫在 torque_note）
+points = [
+  { speed = 25845, thrust = 1.08065, torque = 0.110713, at = "第 1 點" },
+]
+```
+
+`[[shape]]` 是有風速的數據，提供 Ct、Cp 隨前進比的形狀（`J`、`ct`、`cp` 各點，加上同轉速的靜態列 `static` 用來正規化）；`[[excluded]]` 記錄看過但沒有收錄的數據與原因。
 
 ## 測試數據 CSV
 

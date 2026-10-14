@@ -137,11 +137,14 @@ def test_cli_fit_prop_round_trip(reference_build, tmp_path, capsys):
     from fpvsim.stand import run_stand, write_csv
 
     ac = reference_build.realize()
+    rc = ac.powertrain.prop.reynolds
     path = tmp_path / "stand.csv"
-    write_csv(run_stand(ac, 25.2), path)
-    assert main(["fit-prop", str(path), "--diameter", "5.1in", "--temperature", "15degC"]) == 0
+    write_csv(run_stand(ac, 25.2, duties=np.linspace(0.2, 0.7, 12)), path)
+    assert main(["fit-prop", str(path), "--diameter", "5.1in", "--temperature", "15degC", "--chord75", "10mm"]) == 0
     out = capsys.readouterr().out
-    assert f"ct0 = {ac.powertrain.prop.ct0:.5f}" in out
+    assert "[coefficients]" in out and "[reynolds]" in out and 'source = "synthetic"' in out
+    assert f"ct_exponent = {{ value = {rc.ct_exponent:.4f}" in out
+    assert f"fm_exponent = {{ value = {rc.fm_exponent:.4f}" in out
 
 
 def test_battery_must_be_placed_exactly_once(tmp_path):

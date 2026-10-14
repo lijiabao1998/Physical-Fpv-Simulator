@@ -119,6 +119,31 @@ def fit_prop_static(omega: np.ndarray, thrust: np.ndarray, torque: np.ndarray, r
     return out
 
 
+def fit_prop_reynolds(omega: np.ndarray, thrust: np.ndarray, torque: np.ndarray, rho: float, nu: float,
+                      diameter: float, chord75: float) -> dict:
+    """Static Ct and figure of merit as power laws of the blade Reynolds number
+    Re75 = omega (0.75 R) c75 / nu (prop.ReynoldsCorrection), by least squares
+    in log-log: log Ct = log Ct_ref + n_T log(Re / Re_ref), the same for FM.
+    Re_ref is the geometric mean of the data's Re, so the levels and exponents
+    are nearly uncorrelated. Points with zero speed, thrust or torque are left out."""
+    mask = (omega > 0) & (thrust > 0) & (torque > 0)
+    w, t, q = omega[mask], thrust[mask], torque[mask]
+    n = w / (2.0 * math.pi)
+    ct = t / (rho * n**2 * diameter**4)
+    cp = 2.0 * math.pi * q / (rho * n**2 * diameter**5)
+    fm = ct**1.5 * math.sqrt(2.0 / math.pi) / cp
+    re = w * 0.75 * 0.5 * diameter * chord75 / nu
+    re_ref = float(math.exp(np.mean(np.log(re))))
+    A = np.column_stack([np.ones_like(re), np.log(re / re_ref)])
+    fits = {"ct": _ols(A, np.log(ct), ("log_ref", "exponent")), "fm": _ols(A, np.log(fm), ("log_ref", "exponent"))}
+    ct_ref, fm_ref = math.exp(fits["ct"].values["log_ref"]), math.exp(fits["fm"].values["log_ref"])
+    return {
+        "re_ref": re_ref, "re_min": float(re.min()), "re_max": float(re.max()),
+        "ct_ref": ct_ref, "fm_ref": fm_ref, "cp_ref": ct_ref**1.5 * math.sqrt(2.0 / math.pi) / fm_ref,
+        "fits": fits,
+    }
+
+
 def fit_motor_no_load(voltage: np.ndarray, current: np.ndarray, omega: np.ndarray, rm: float) -> dict[str, Fit]:
     """Kv and the affine no-load current model from a no-load (no prop) sweep.
 

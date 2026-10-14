@@ -560,3 +560,43 @@ def xy_panels(panels: list[dict], path: Path, ncols: int = 2, panel_size: tuple[
             ax.set_visible(False)
         fig.tight_layout()
         _save(fig, path)
+
+
+_MARKERS = ("o", "s", "^", "D", "v", "P", "X")
+
+
+def band_panels(panels: list[dict], path: Path, ncols: int = 2, panel_size: tuple[float, float] = (4.2, 3.0)) -> None:
+    """Model against data. Each panel: title, xlabel, ylabel, optional logx, band (x, lo, hi, label)
+    shaded, lines [(label, x, y)], groups [(label, x, y)] drawn as markers, one shape and colour
+    per group (measurement sources), vrefs [(x, label)]."""
+    n = len(panels)
+    rows = (n + ncols - 1) // ncols
+    with plt.rc_context(STYLE):
+        fig, axes = plt.subplots(rows, ncols, figsize=(panel_size[0] * ncols, panel_size[1] * rows), squeeze=False)
+        for ax, panel in zip(axes.ravel(), panels):
+            if "band" in panel:
+                x, lo, hi, label = panel["band"]
+                ax.fill_between(x, lo, hi, color=SERIES[0], alpha=0.15, linewidth=0, label=label)
+            for i, (label, x, y) in enumerate(panel.get("lines", [])):
+                ax.plot(x, y, color=(SERIES[0], INK_2, SERIES[1])[i % 3], label=label,
+                        linestyle=("-", "--", ":")[i % 3])
+            colors = (*SERIES, INK_2, MUTED)
+            for i, (label, x, y) in enumerate(panel.get("groups", [])):
+                ax.plot(x, y, _MARKERS[i % len(_MARKERS)], color=colors[i % len(colors)], markersize=4,
+                        markerfacecolor="none", markeredgewidth=1.0, label=label)
+            for value, label in panel.get("vrefs", []):
+                ax.axvline(value, color=INK_2, linewidth=0.9)
+                ax.annotate(label, (value, 1), xycoords=("data", "axes fraction"), xytext=(3, -10),
+                            textcoords="offset points", color=INK_2, fontsize=8)
+            if panel.get("logx"):
+                ax.set_xscale("log")
+            ax.set_title(panel["title"])
+            ax.set_xlabel(panel.get("xlabel", ""))
+            ax.set_ylabel(panel.get("ylabel", ""))
+            if "ylim" in panel:
+                ax.set_ylim(*panel["ylim"])
+            ax.legend(loc=panel.get("legend", "best"), fontsize=7)
+        for ax in axes.ravel()[n:]:
+            ax.set_visible(False)
+        fig.tight_layout()
+        _save(fig, path)

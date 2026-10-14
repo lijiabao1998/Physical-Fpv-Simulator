@@ -71,3 +71,10 @@ def test_compare_without_flights(tmp_path):
     assert main(["compare", BUILD, variant, "--fc", FC, "--samples", "10", "--no-fly", "--no-tune",
                  "--out", str(tmp_path / "compare")]) == 0
     _report(tmp_path / "compare")
+
+
+def test_validate_prop(tmp_path):
+    data = str(ROOT / "data" / "validation" / "props-5in-tri.toml")
+    assert main(["validate-prop", BUILD, "--data", data, "--out", str(tmp_path / "pv")]) == 0
+    text = _report(tmp_path / "pv")
+    assert "零件檔與擬合一致" in text and (tmp_path / "pv" / "validation.png").exists()

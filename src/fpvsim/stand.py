@@ -69,7 +69,7 @@ def run_stand(ac: "Aircraft", voltage: float, duties: np.ndarray | None = None) 
     env: Environment = ac.env
     rows = []
     for duty in duties:
-        op = single.at_duty(float(duty), voltage, 0.0, env.rho)
+        op = single.at_duty(float(duty), voltage, 0.0, env)
         rows.append(
             StandRow(
                 duty=op.duty,

@@ -413,9 +413,10 @@ class AnchoredRotor:
     spin directions and cancels across a quad)."""
 
     def __init__(self, tables: RotorTables, radius: float, J: np.ndarray, ct_axial: np.ndarray,
-                 cp_axial: np.ndarray, flap_fraction: float):
+                 cp_axial: np.ndarray, flap_fraction: float, reynolds=None):
         self.tables = tables
         self.radius = radius
+        self.reynolds = reynolds  # prop.ReynoldsCorrection or None
         self.flap_fraction = f = float(flap_fraction)
         k_t, k_q = anchor_factors(tables, J, ct_axial, cp_axial)
         self.k_t, self.k_q = k_t, k_q
@@ -466,10 +467,14 @@ class AnchoredRotor:
         w00, w01, w10, w11 = (1 - tm) * (1 - tl), (1 - tm) * tl, tm * (1 - tl), tm * tl
         return tuple(w00 * p + w01 * q + w10 * r + w11 * s for p, q, r, s in zip(a, b, c, d))
 
-    def loads(self, v_hub: tuple[float, float, float], omega: float, spin: float, rho: float) -> dict:
+    def loads(self, v_hub: tuple[float, float, float], omega: float, spin: float, rho: float,
+              nu: float | None = None) -> dict:
         """Loads of one rotor in body axes (FRD, thrust along -z) for the hub's
         air-relative velocity ``v_hub`` (body axes, m/s), rotor speed ``omega``
-        (rad/s) and spin sign (+1 CW seen from above, as in QuadModel)."""
+        (rad/s) and spin sign (+1 CW seen from above, as in QuadModel). With the
+        air's kinematic viscosity ``nu`` the prop's Reynolds correction is applied
+        (forces and hub moments with the thrust factor, torque with the power
+        factor, as in QuadModel); without it, the loads at the reference Reynolds number."""
         vhx, vhy, vhz = v_hub
         omega_r = omega * self.radius
         v_e = math.hypot(vhx, vhy)
@@ -479,6 +484,9 @@ class AnchoredRotor:
         mu, lam = (v_e / v_ref, v_c / v_ref) if v_ref > 1e-9 else (0.0, 0.0)
         ct, ch, cy, cq, cmx, cmy = self.lookup(self.cells[0 if spin < 0 else 1], mu, lam)
         q = rho * math.pi * self.radius**2 * v_ref2
+        if nu is not None and self.reynolds is not None:
+            f_t, f_p = self.reynolds.factors(abs(omega) * 0.75 * self.radius * self.reynolds.chord75 / nu)
+            ct, ch, cy, cmx, cmy, cq = ct * f_t, ch * f_t, cy * f_t, cmx * f_t, cmy * f_t, cq * f_p
         e1 = (vhx / v_e, vhy / v_e) if v_e > 1e-9 else (1.0, 0.0)
         e2 = (e1[1], -e1[0])
         return {
@@ -499,4 +507,4 @@ def anchored_rotor(prop, flap_fraction: float) -> AnchoredRotor:
     tables = rotor_tables(geom, foil)
     return AnchoredRotor(tables, prop.radius, np.asarray(prop.curves.J, dtype=float),
                          prop.ct_scale * np.asarray(prop.curves.ct, dtype=float),
-                         prop.cp_scale * np.asarray(prop.curves.cp, dtype=float), flap_fraction)
+                         prop.cp_scale * np.asarray(prop.curves.cp, dtype=float), flap_fraction, prop.reynolds)

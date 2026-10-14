@@ -281,7 +281,7 @@ def test_delta_sensitivity_scopes(builds):
     assert by_key["motor.mass"].span == pytest.approx(0.0, abs=1e-12)
     assert by_key["action_camera.mass"].span == pytest.approx(2 * a.params["action_camera.mass"].u, rel=1e-9)
     # endurance difference also depends on shared powertrain parameters
-    assert {bar.key for bar in bars["endurance"][:6]} & {"prop.cp_scale", "prop.ct_scale", "motor.i0_speed_fraction"}
+    assert {bar.key for bar in bars["endurance"][:6]} & {"prop.fm_scale", "prop.ct_scale", "motor.i0_speed_fraction"}
 
 
 def test_compare_report_signs_a_lighter_version(tmp_path):

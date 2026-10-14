@@ -70,14 +70,23 @@ def test_motor_fits_on_noiseless_data():
 
 
 def test_virtual_stand_csv_round_trip(reference_build, tmp_path):
-    """Virtual stand -> CSV -> identification recovers the model's coefficients."""
+    """Virtual stand -> CSV -> identification recovers the model's coefficients and their Reynolds trend."""
     ac = reference_build.realize()
+    prop, nu = ac.powertrain.prop, ac.env.kinematic_viscosity
+    rc = prop.reynolds
     path = tmp_path / "stand.csv"
-    write_csv(run_stand(ac, voltage=25.2), path)
+    write_csv(run_stand(ac, voltage=25.2, duties=np.linspace(0.2, 0.7, 12)), path)
     data = sysid.read_csv(path)
-    fits = sysid.fit_prop_static(data["rpm"], data["thrust"], data["torque"], ac.env.rho, ac.powertrain.prop.diameter)
-    assert fits["ct0"].values["ct0"] == pytest.approx(ac.powertrain.prop.ct0, rel=1e-4)
-    assert fits["cp0"].values["cp0"] == pytest.approx(ac.powertrain.prop.cp0, rel=1e-4)
+    re = [prop.reynolds_number(w, nu) for w in data["rpm"]]
+    assert rc.re_min < min(re) and max(re) < rc.re_max  # inside the range where the power law holds
+    fit = sysid.fit_prop_reynolds(data["rpm"], data["thrust"], data["torque"], ac.env.rho, nu, prop.diameter, rc.chord75)
+    assert fit["fits"]["ct"].values["exponent"] == pytest.approx(rc.ct_exponent, abs=1e-4)
+    assert fit["fits"]["fm"].values["exponent"] == pytest.approx(rc.fm_exponent, abs=1e-4)
+    assert fit["ct_ref"] * (rc.re_ref / fit["re_ref"]) ** rc.ct_exponent == pytest.approx(prop.ct0, rel=1e-4)
+    assert fit["cp_ref"] * (rc.re_ref / fit["re_ref"]) ** rc.cp_exponent == pytest.approx(prop.cp0, rel=1e-4)
+    # the rpm-independent fit gives the average over the sweep, between the hover and full-throttle values
+    static = sysid.fit_prop_static(data["rpm"], data["thrust"], data["torque"], ac.env.rho, prop.diameter)["ct0"].values["ct0"]
+    assert prop.ct0 * rc.factors(min(re))[0] < static < prop.ct0 * rc.factors(max(re))[0]
 
 
 def test_csv_headers_must_carry_units(tmp_path):

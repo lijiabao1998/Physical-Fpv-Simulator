@@ -120,6 +120,15 @@ class QuadModel:
         self.k_thrust_static = prop.k_thrust(rho)
         self.radius = prop.radius
         self.rho_area = rho * prop.disk_area
+        self.nu = ac.env.kinematic_viscosity
+        rc = prop.reynolds
+        if rc is not None:  # Reynolds factors as functions of rotor speed: f = exp(exponent * (ln clip(w) - ln w_ref))
+            per_omega = 0.75 * prop.radius * rc.chord75 / self.nu
+            self.re_omega = (rc.re_min / per_omega, rc.re_max / per_omega)
+            self.re_ln_omega_ref = math.log(rc.re_ref / per_omega)
+            self.re_exponents = (rc.ct_exponent, rc.cp_exponent)
+        else:
+            self.re_omega = None
         if prop.blade is not None:  # oblique-flow tables
             self.rotor = anchored_rotor(prop, extras.flap_fraction)
             self.rotor_cells = [self.rotor.cells[0 if sp < 0 else 1] for sp in self.spin]
@@ -241,9 +250,17 @@ class QuadModel:
         """Total in-plane rotor drag (N) of all rotors at ``omega`` in level edgewise
         flow at ``speed``, for a first-order drag budget."""
         if self.rotor is None:
-            return self.n * self.k_rotor_drag * omega * speed
+            return self.n * self.k_rotor_drag * omega * speed * math.sqrt(self.re_factors(omega)[0])
         rho = self.rho_area / (math.pi * self.radius**2)
-        return sum(self.rotor.loads((speed, 0.0, 0.0), omega, sp, rho)["h_force"] for sp in self.spin)
+        return sum(self.rotor.loads((speed, 0.0, 0.0), omega, sp, rho, self.nu)["h_force"] for sp in self.spin)
+
+    def re_factors(self, w: float) -> tuple[float, float]:
+        """(Ct factor, Cp factor) of the prop's Reynolds correction at rotor speed w."""
+        if self.re_omega is None:
+            return 1.0, 1.0
+        lo, hi = self.re_omega
+        x = math.log(min(max(w, lo), hi)) - self.re_ln_omega_ref
+        return math.exp(self.re_exponents[0] * x), math.exp(self.re_exponents[1] * x)
 
     # --------------------------------------------------------------- derivative
 
@@ -309,6 +326,7 @@ class QuadModel:
                 worst_descent = max(worst_descent, -v_axial)
             J = v_axial / (n_rev * D) if n_rev > 1.0 else 0.0
             hmx = hmy = 0.0
+            f_t, f_p = self.re_factors(w)
             if rotor is not None:
                 omega_r = w * R
                 v_ref2 = omega_r * omega_r + v_e2 + v_axial * v_axial
@@ -326,8 +344,9 @@ class QuadModel:
                     worst_mu = max(worst_mu, min(math.sqrt(v_e2) / omega_r, 10.0) if omega_r > 1e-6 else 10.0)
                 ct_r, ch_r, cy_r, cq_r, cmx_r, cmy_r = self._frozen[i]
                 qd = self.rho_area * v_ref2
+                q_aero = cq_r * qd * R * f_p
+                qd *= f_t  # forces and hub moments come from blade lift: they follow the thrust factor
                 thrust = ct_r * qd
-                q_aero = cq_r * qd * R
                 if v_e2 > 1e-18:
                     v_e = math.sqrt(v_e2)
                     e1x, e1y = vhx / v_e, vhy / v_e
@@ -340,9 +359,9 @@ class QuadModel:
                 hmy = (cmx_r * e1y - cmy_r * e1x) * qd * R
             else:
                 ct, cp = self._coeffs(J)
-                thrust = ct * rho * n_rev * n_rev * D**4
-                q_aero = cp * rho * n_rev * n_rev * D**5 / (2.0 * math.pi)
-                k = self.k_rotor_drag * w
+                thrust = ct * f_t * rho * n_rev * n_rev * D**4
+                q_aero = cp * f_p * rho * n_rev * n_rev * D**5 / (2.0 * math.pi)
+                k = self.k_rotor_drag * w * math.sqrt(f_t)  # momentum drag rho A v_i V, v_i ~ sqrt(thrust)
                 frx, fry = -k * vhx, -k * vhy
             if self.ground_effect and r22 > 0.1:  # rotor axis pointing at the ground
                 z_axis = -(s[2] + r20 * hx + r21 * hy + r22 * hz) / r22

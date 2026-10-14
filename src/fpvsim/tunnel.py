@@ -160,7 +160,7 @@ class Tunnel:
 
             ac = self.ac
             state = ac.initial_battery_state()
-            static = ac.powertrain.at_duty(float(duty), state.source_voltage(ac.battery), source_resistance(ac, state), self.rho)
+            static = ac.powertrain.at_duty(float(duty), state.source_voltage(ac.battery), source_resistance(ac, state), ac.env)
             w0 = static.omega if static is not None and static.omega > 1.0 else self.hover.omega
             log_w, _, ier, _ = fsolve(res, [math.log(w0)] * n, xtol=1e-12, full_output=True)
             if ier != 1:
@@ -211,9 +211,9 @@ class Tunnel:
             v_hat = v_body / speed
             for i, w in enumerate(x[3:]):
                 if model.rotor is not None:
-                    fx, fy, _ = model.rotor.loads(tuple(v_body), float(w), model.spin[i], self.rho)["force"]
+                    fx, fy, _ = model.rotor.loads(tuple(v_body), float(w), model.spin[i], self.rho, model.nu)["force"]
                 else:
-                    k = model.k_rotor_drag * float(w)
+                    k = model.k_rotor_drag * float(w) * math.sqrt(model.re_factors(float(w))[0])
                     fx, fy = -k * v_body[0], -k * v_body[1]
                 rotor_drag -= fx * v_hat[0] + fy * v_hat[1]
         return TrimPoint(speed=speed, tilt=float(x[0]), collective=float(x[1]), pitch_diff=float(x[2]),
@@ -403,7 +403,7 @@ def rotor_sweep(tunnel: Tunnel, omega: float, speeds, disk_alphas) -> list[Rotor
     for a in disk_alphas:
         for v in speeds:
             v_hub = (v * math.cos(a), 0.0, -v * math.sin(a))  # body FRD: edgewise along x, climb along -z
-            loads = rotor.loads(v_hub, omega, 1.0, tunnel.rho)
+            loads = rotor.loads(v_hub, omega, 1.0, tunnel.rho, tunnel.model.nu)
             out.append(RotorPoint(float(v), float(a), omega, loads["thrust"], loads["h_force"], loads["torque"],
                                   v * math.cos(a) / (omega * R), v * math.sin(a) / (omega * R)))
     return out

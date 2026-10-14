@@ -198,7 +198,7 @@ def test_quad_in_forward_flight_sums_rotor_loads(aircraft):
     d = m.derivative(s, [hp.duty] * 4)
     total = np.zeros(3)
     for sp in m.spin:
-        f = np.array(m.rotor.loads((12.0, 0.0, 1.5), hp.omega, sp, aircraft.env.rho)["force"])
+        f = np.array(m.rotor.loads((12.0, 0.0, 1.5), hp.omega, sp, aircraft.env.rho, m.nu)["force"])  # with the Reynolds factor
         f[2] *= m.interference
         total += f
     accel = total / m.mass + np.array([0.0, 0.0, aircraft.env.g])
