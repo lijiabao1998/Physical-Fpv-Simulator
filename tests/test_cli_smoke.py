@@ -78,3 +78,27 @@ def test_validate_prop(tmp_path):
     assert main(["validate-prop", BUILD, "--data", data, "--out", str(tmp_path / "pv")]) == 0
     text = _report(tmp_path / "pv")
     assert "零件檔與擬合一致" in text and (tmp_path / "pv" / "validation.png").exists()
+
+
+def test_code_version_ignores_rewritten_reports(tmp_path):
+    """A report run rewrites tracked report files; only edits to the code mark the commit as modified."""
+    import shutil
+    import subprocess
+
+    from fpvsim.report import git_version
+
+    if shutil.which("git") is None:
+        pytest.skip("git not installed")
+    run = lambda *a: subprocess.run(["git", *a], cwd=tmp_path, check=True, capture_output=True)  # noqa: E731
+    (tmp_path / "pkg").mkdir()
+    (tmp_path / "reports").mkdir()
+    (tmp_path / "pkg" / "code.py").write_text("x = 1\n")
+    (tmp_path / "reports" / "report.md").write_text("old\n")
+    run("init", "-q")
+    run("add", ".")
+    run("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "init")
+    clean = git_version(tmp_path / "pkg")
+    (tmp_path / "reports" / "report.md").write_text("new\n")
+    assert git_version(tmp_path / "pkg") == clean and "未提交" not in clean
+    (tmp_path / "pkg" / "code.py").write_text("x = 2\n")
+    assert "未提交" in git_version(tmp_path / "pkg")

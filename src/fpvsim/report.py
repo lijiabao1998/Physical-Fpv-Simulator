@@ -75,14 +75,20 @@ def md_table(header: list[str], rows: list[list[str]]) -> str:
 
 
 def git_version(cwd: Path | None = None) -> str:
-    """Commit of the code that is running (the fpvsim package's own repository by default)."""
+    """Commit of the code that is running (the fpvsim package's own repository by default).
+
+    "Modified" looks at the code under ``cwd`` only (the package itself by
+    default): the input files are identified by their own hash, and the
+    report files a run rewrites are its output, not part of the code.
+    """
     cwd = Path(__file__).resolve().parent if cwd is None else cwd
     try:
         commit = subprocess.run(
             ["git", "rev-parse", "--short=12", "HEAD"], cwd=cwd, capture_output=True, text=True, check=True
         ).stdout.strip()
         dirty = subprocess.run(
-            ["git", "status", "--porcelain", "--untracked-files=no"], cwd=cwd, capture_output=True, text=True, check=True
+            ["git", "status", "--porcelain", "--untracked-files=no", "--", "."], cwd=cwd, capture_output=True, text=True,
+            check=True,
         ).stdout.strip()
         return commit + ("（工作區有未提交的修改）" if dirty else "")
     except (OSError, subprocess.CalledProcessError):
