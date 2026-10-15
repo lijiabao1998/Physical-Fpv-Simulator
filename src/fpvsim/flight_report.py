@@ -177,8 +177,9 @@ def generate(build: Build, cfg: FcConfig, log: FlightLog, title: str, out_dir: P
     add("> 由 `fpvsim fly` 自動產生。原始 log 在 `flight_log.csv`（欄位格式見 docs/flight-sim.md）。\n")
     add(md_table(["項目", "內容"], [
         ["機體", f"{build.name}（`{rel_path(build.path, Path.cwd())}`）"],
-        ["飛控設定", f"{cfg.name}（`{cfg.id}`）"],
-        ["輸入", f"`{log.meta.get('input')}`"],
+        ["飛控設定", f"{cfg.name}（`{cfg.id}`，設定雜湊 `{log.meta.get('fc_hash') or cfg.digest()}`）"],
+        ["輸入", f"`{log.meta.get('input')}`" + (f"（檔案雜湊 `{log.meta['input_file_hash']}`）"
+                                                if log.meta.get("input_file_hash") else "")],
         ["程式版本", code_version_text()],
         ["輸入檔雜湊", f"`{log.meta.get('input_hash')}`"],
         ["隨機種子", str(log.meta.get("seed"))],

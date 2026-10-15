@@ -235,7 +235,7 @@ def generate(cmp: Comparison, out_dir: Path) -> Path:
     add("")
     add(md_table(["項目", "內容"], [
         ["規格", f"{base.build.spec.name}（`{base.build.spec.id}`），所有版本相同"],
-        ["飛控設定", f"{cmp.fc.name}（`{cmp.fc.id}`），所有版本相同"],
+        ["飛控設定", f"{cmp.fc.name}（`{cmp.fc.id}`，設定雜湊 `{cmp.fc.digest()}`），所有版本相同"],
         ["蒙地卡羅", f"每個版本 {cmp.samples} 組成對樣本，隨機種子 {cmp.seed}"],
         ["飛行腳本", f"`{cmp.maneuver.name}`：{cmp.maneuver.title}" if cmp.maneuver else "未執行"],
         ["程式版本", code_version_text(cmp.code_version or None)],

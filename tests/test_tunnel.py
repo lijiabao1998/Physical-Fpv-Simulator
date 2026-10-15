@@ -116,6 +116,20 @@ def test_rpm_and_throttle_modes_stay_physical(tunnel, aircraft):
     assert tunnel.reading(15.0, 0.0, 0.0, "throttle", duty=0.0).omega == (0.0,) * 4
 
 
+def test_throttle_mode_finds_the_windmill_equilibrium(tunnel):
+    """Motor off (or nearly) in a fast axial stream, the prop windmills: the reading is a true
+    equilibrium (no acceleration) and a stable one (accelerating below, decelerating above)."""
+    n = 4
+    for speed, duty in ((30.0, 0.0), (30.0, 0.002), (40.0, 0.002)):
+        r = tunnel.reading(speed, math.radians(90.0), 0.0, "throttle", duty=duty)
+        w = r.omega[0]
+        assert 20.0 < w < 300.0  # a few hundred rpm to a thousand
+        state = lambda omega: tunnel._state(speed, math.radians(90.0), 0.0, [omega] * n)  # noqa: E731
+        assert max(abs(x) for x in tunnel.model.derivative(state(w), list(r.duty))[13:13 + n]) < 1e-2
+        assert tunnel.model.derivative(state(0.9 * w), list(r.duty))[13] > 0.0
+        assert tunnel.model.derivative(state(1.1 * w), list(r.duty))[13] < 0.0
+
+
 def test_fit_of_a_zero_attitude_drag_sweep(tunnel, aircraft):
     """A plain drag-versus-speed sweep (props removed, no angle of attack or sideslip)
     identifies S_x and its height only; the other axes are left out, not a singular fit."""

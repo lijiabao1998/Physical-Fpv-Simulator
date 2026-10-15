@@ -34,6 +34,7 @@ not guaranteed to transfer one to one.
 from __future__ import annotations
 
 import math
+import hashlib
 import tomllib
 from dataclasses import dataclass, field, replace
 from pathlib import Path
@@ -103,6 +104,11 @@ class FcConfig:
     pidsum_limit_yaw: float = 400.0
     iterm_limit: float = 400.0
     path: Path | None = field(default=None, compare=False)
+
+    def digest(self) -> str:
+        """SHA-256 (first 16 hex digits) of the settings actually flown (every field but the file path): an
+        edited config file, a tuning sweep's gain factors or a mission's loop rate all give a different digest."""
+        return hashlib.sha256(repr(replace(self, path=None)).encode()).hexdigest()[:16]
 
     def with_gains(self, pd: float = 1.0, i: float = 1.0, f: float = 1.0, d: float = 1.0) -> "FcConfig":
         """Copy with gains multiplied, as in a tuning sweep (d multiplies D on top of pd)."""

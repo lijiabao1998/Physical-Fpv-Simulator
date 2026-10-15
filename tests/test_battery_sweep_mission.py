@@ -5,10 +5,11 @@ import pytest
 
 from fpvsim.battery_sweep import family_params, recommend, run_sweep, scaled_battery, variant_build
 from fpvsim.flightcontroller import load_fc_config
-from fpvsim.mission import REASONS_ZH, fly_mission, lap_table, repeated
+from fpvsim.mission import REASONS_ZH, fly_mission, lap_table, repeated, wake_sources
 from fpvsim.mission_report import generate as generate_mission_report
 from fpvsim.performance import evaluate
 from fpvsim.pilot import MANEUVERS
+from fpvsim.wind import WindSettings
 
 from conftest import ROOT
 
@@ -76,12 +77,15 @@ def test_short_mission_conserves_charge(reference_build):
     assert log["mah"][-1] == pytest.approx(used, rel=5e-3)
     laps = lap_table(result, reference_build.battery_series)
     assert laps and laps[0]["mah"] > 0
+    # the lap count agrees with the lap table: an unfinished lap is never counted as a whole one
+    assert result.laps_complete == sum(lap["complete"] for lap in laps)
+    assert result.laps_complete <= result.laps < result.laps_complete + 1
 
 
 def test_mission_returns_to_the_start_altitude_every_lap(reference_build):
     """A punch-out climbs about 70 m; after each lap's script the mission pilot dives
     back down in forward flight, so every lap starts at the start altitude (no
-    ratchet), and its own descents stay out of the vortex-ring region."""
+    ratchet), and its own return flight stays out of the vortex-ring region."""
     cfg = load_fc_config(ROOT / "data" / "fc" / "acro-5in-baseline.toml")
     result = fly_mission(reference_build, cfg, maneuver="punch", max_laps=2)
     log = result.log
@@ -92,13 +96,20 @@ def test_mission_returns_to_the_start_altitude_every_lap(reference_build):
         assert 20.0 - 1.5 < lap["start_alt"] < 20.0 + 1.5
         assert lap["max_alt"] > 60.0  # the punch-out did climb
     assert result.laps == pytest.approx(2.0)
-    # vortex-ring region (descent > 0.5 v_h at low in-plane speed) outside the scripted throttle and its recovery
-    t = log.time
-    scripted = np.zeros(len(t), bool)
-    for t0 in result.lap_starts:
-        for seg in MANEUVERS["punch"].segments:
-            scripted |= (t >= t0 + seg.start) & (t < t0 + seg.end + 2.0)
-    assert ((log["descent_ratio"] > 0.5) & ~scripted).mean() < 0.03
+    sources = dict(wake_sources(result, MANEUVERS["punch"], log["descent_ratio"] > 0.5))
+    assert sources["return"] == 0.0
+    assert sum(sources.values()) == pytest.approx(np.count_nonzero(log["descent_ratio"] > 0.5) / log.rate)
+
+
+def test_mission_return_downwind_turns_instead_of_braking(reference_build):
+    """In a 6 m/s north wind the return heads south, downwind: the air velocity has to
+    reverse. Braking through zero airspeed would tilt the disks against the oncoming air
+    (vortex ring); the pilot turns instead, and the return stays out of the region."""
+    cfg = load_fc_config(ROOT / "data" / "fc" / "acro-5in-baseline.toml")
+    result = fly_mission(reference_build, cfg, maneuver="punch", max_laps=1, wind=WindSettings(speed=6.0))
+    assert result.reason == "max_laps"
+    sources = dict(wake_sources(result, MANEUVERS["punch"], result.log["descent_ratio"] > 0.5))
+    assert sources["return"] == 0.0
 
 
 @pytest.mark.parametrize("override, reason", [

@@ -17,6 +17,7 @@ mission pilot) can also command a velocity directly (``command_velocity``).
 
 from __future__ import annotations
 
+import hashlib
 import math
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -250,7 +251,9 @@ class TestPilot:
 
         # throttle: thrust for the vertical acceleration, tilt-compensated
         az_target = max(-0.8 * self.g, min(1.5 * self.g, az_target))
-        self.alt_integral += (self.hold[2] - pz) * dt if velocity is None else 0.0
+        # integrate only while the altitude loop flies the throttle (not through a scripted punch or chop: windup)
+        throttle_free = velocity is None and not any("throttle" in seg.sticks for seg in active)
+        self.alt_integral += (self.hold[2] - pz) * dt if throttle_free else 0.0
         self.alt_integral = max(-2.0, min(2.0, self.alt_integral))
         tilt = 1.0 - 2.0 * (q[1] ** 2 + q[2] ** 2)  # cos of tilt = R22
         thrust_ratio = (self.g - az_target - 0.8 * self.alt_integral) / self.g / max(tilt, 0.3)
@@ -285,6 +288,7 @@ class StickFile:
         self.t = data["time"]
         self.values = np.column_stack([data[a] for a in AXES])
         self.duration = float(self.t[-1])
+        self.digest = hashlib.sha256(Path(path).read_bytes()).hexdigest()[:16]
 
     def sticks(self, t: float, s: list[float], dt: float) -> tuple[float, float, float, float]:
         k = max(0, int(np.searchsorted(self.t, t, side="right")) - 1)

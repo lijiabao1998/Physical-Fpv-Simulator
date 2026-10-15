@@ -45,7 +45,7 @@ from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 import numpy as np
-from scipy.optimize import fsolve
+from scipy.optimize import brentq, fsolve
 
 from .design import Aircraft
 from .dynamics import Outputs, QuadModel
@@ -176,15 +176,35 @@ class Tunnel:
             state = ac.initial_battery_state()
             static = ac.powertrain.at_duty(float(duty), state.source_voltage(ac.battery), source_resistance(ac, state), ac.env)
             w0 = static.omega if static is not None and static.omega > 1.0 else self.hover.omega
-            log_w, _, ier, _ = fsolve(res, [math.log(w0)] * n, xtol=1e-12, full_output=True)
-            if ier == 1:
-                omegas = [math.exp(y) for y in log_w]
-            else:
-                # no spinning equilibrium: if a nearly stopped rotor still decelerates, the rotors stop
-                slow = model.derivative(self._state(speed, alpha, beta, [1.0] * n), duties)[13:13 + n]
-                if not all(x <= 0.0 for x in slow):
-                    raise ValueError(f"no equilibrium rotor speed at duty {duty:g} and {speed:g} m/s")
-                omegas = [0.0] * n
+
+            def solved(start):
+                with warnings.catch_warnings():  # judged by its residual: MINPACK can report success on a stall
+                    warnings.simplefilter("ignore", RuntimeWarning)
+                    log_w, _, ier, _ = fsolve(res, [math.log(start)] * n, xtol=1e-12, full_output=True)
+                ok = ier == 1 and max(abs(x) for x in res(log_w)) < 1e-6  # domega/dt below 1e-3 rad/s^2
+                return [math.exp(y) for y in log_w] if ok else None
+
+            omegas = solved(w0)
+            if omegas is None:
+                # bracket: the rotors see the same stream, so scan one common speed for a stable root
+                # (accelerating below, decelerating above), from a nearly stopped rotor up
+                def accel(w):
+                    return float(np.mean(model.derivative(self._state(speed, alpha, beta, [w] * n), duties)[13:13 + n]))
+
+                grid = np.geomspace(1.0, 6.0 * self.hover.omega, 240)
+                values = [accel(w) for w in grid]
+                if values[0] <= 0.0:
+                    omegas = [0.0] * n  # a nearly stopped rotor still decelerates: the rotors stop
+                else:
+                    k = next((k for k in range(len(grid) - 1) if values[k] > 0.0 >= values[k + 1]), None)
+                    if k is None:
+                        raise ValueError(f"no equilibrium rotor speed at duty {duty:g} and {speed:g} m/s")
+                    root = brentq(accel, grid[k], grid[k + 1], xtol=1e-9)
+                    omegas = solved(root)
+                    if omegas is None and max(abs(x) for x in res([math.log(root)] * n)) < 1e-6:
+                        omegas = [root] * n
+                    if omegas is None:
+                        raise ValueError(f"no equilibrium rotor speed at duty {duty:g} and {speed:g} m/s")
         s = self._state(speed, alpha, beta, omegas)
         _, force, moment, o = self._loads(model, s, duties)
         R = _rotation(s[6:10])

@@ -78,8 +78,10 @@ def git_version(cwd: Path | None = None) -> str:
     """Commit of the code that is running (the fpvsim package's own repository by default).
 
     "Modified" looks at the code under ``cwd`` only (the package itself by
-    default): the input files are identified by their own hash, and the
-    report files a run rewrites are its output, not part of the code.
+    default): the inputs are identified by their own hashes (the build's
+    files by Build.input_hash, the flight-controller settings flown by
+    FcConfig.digest, a stick file by its own hash), and the report files a
+    run rewrites are its output, not part of the code.
     """
     cwd = Path(__file__).resolve().parent if cwd is None else cwd
     try:
@@ -131,14 +133,24 @@ def verdict(p: float, mc: MonteCarloResult | None = None) -> str:
 
 
 def _prop_model_row(build) -> list[str]:
-    """The prop row of the model table, by where the axial coefficients come from."""
+    """The prop row of the model table, by where the axial coefficients come from and
+    whether the prop has blade geometry (which feeds the oblique-flow model)."""
     re_text = "；係數隨葉片雷諾數以冪次律變化（數據範圍外保持邊界值）" if build.prop_reynolds else "；係數與轉速無關（沒有雷諾數修正）"
     if "coefficients" not in build.tables_names():
         return ["槳靜態係數（BEMT）", "中低，尚未確認", "忽略旋流與壓縮性；翼型與弦長是估計值" + re_text]
-    if build.prop_curve_source is Source.MEASURED:
-        return ["槳係數（實測）", "中高", "推力台數據的擬合；前進比與斜向氣流的變化依係數表與 BEMT" + re_text]
-    return ["槳係數（同類槳的公開數據）", "中",
-            "同一類槳的平均，不是這一款產品；前進比形狀的數據雷諾數偏低；斜向氣流的變化來自估計葉片的 BEMT，錨定在係數表" + re_text]
+    oblique = ("；斜向氣流的變化來自估計葉片的 BEMT，錨定在係數表" if build.prop_blade is not None else
+               "；沒有葉片幾何：前進比的變化依係數表，槳盤的側向力只用動量理論的阻力乘上 rotor_drag_factor")
+    src = build.prop_curve_source
+    if src is Source.MEASURED:
+        return ["槳係數（實測）", "中高", "推力台數據的擬合" + oblique + re_text]
+    if src is Source.SYNTHETIC:
+        return ["槳係數（合成數據）", "不適用（只用於驗證流程）", "虛擬推力台產生的數據，不是任何實物的量測" + oblique + re_text]
+    if src in (Source.DATASHEET, Source.LITERATURE):
+        return [f"槳係數（{src.label_zh}）", "中", "這一款槳的公開數據，未經獨立量測" + oblique + re_text]
+    if src is Source.DERIVED:
+        return ["槳係數（同類槳的公開數據）", "中",
+                "同一類槳的平均，不是這一款產品；前進比形狀的數據雷諾數偏低" + oblique + re_text]
+    return [f"槳係數（{src.label_zh}）", "中低，尚未確認", "係數表的數值" + oblique + re_text]
 
 
 _MEASUREMENT_METHODS = (
@@ -515,10 +527,14 @@ def generate(build: Build, out_dir: Path, n_samples: int = 1000, seed: int = 1) 
     add(md_table(["參數", "數值", "不確定度", "來源", "說明"], rows))
     add("")
     if len(build.model_inputs):
-        if build.prop_curve_source is Source.DERIVED and "coefficients" not in build.tables_names():
-            add("BEMT 的輸入（只在載入時計算一次；它們的不確定度由上表的 `prop.ct_scale`、`prop.fm_scale` 代表）：\n")
+        re75 = "；葉片在 75% 半徑的弦長另外定義雷諾數修正用的 Re75" if build.prop_reynolds else ""
+        if build.prop_blade is None:
+            add("其他模型輸入（不抽樣）：`prop.chord75` 是定義葉片雷諾數 Re75 的弦長，決定懸停與滿油門的 Ct、FM 雷諾數修正：\n")
+        elif "coefficients" not in build.tables_names():
+            add(f"BEMT 的輸入（只在載入時計算一次；它們的不確定度由上表的 `prop.ct_scale`、`prop.fm_scale` 代表{re75}）：\n")
         else:
-            add("BEMT 的輸入（槳的係數來自係數表，這些輸入只用於斜向氣流模型相對於軸向的變化；只在載入時計算一次，不抽樣）：\n")
+            add("BEMT 的輸入（槳的係數來自係數表，這些輸入只用於斜向氣流模型相對於軸向的變化；只在載入時計算一次，不抽樣"
+                f"{re75}）：\n")
         add(md_table(["參數", "數值", "來源", "說明"],
                    [[f"`{p.key}`", fmt_param(p), p.source.label_zh, p.note] for p in build.model_inputs]))
         add("")

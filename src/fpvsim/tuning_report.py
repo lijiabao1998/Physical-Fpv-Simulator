@@ -125,7 +125,7 @@ def generate(build: Build, study: TuningStudy, out_dir: Path) -> Path:
     add("> 由 `fpvsim tune` 自動產生。每次試飛使用相同的隨機種子與飛行腳本，所以候選設定之間的差異只來自設定本身。\n")
     add(md_table(["項目", "內容"], [
         ["機體", f"`{rel_path(build.path, Path.cwd())}`"],
-        ["基準飛控設定", f"{cfg.name}（`{cfg.id}`）"],
+        ["基準飛控設定", f"{cfg.name}（`{cfg.id}`，設定雜湊 `{cfg.digest()}`）"],
         ["試飛次數", f"雜訊調查 {len(study.noise_runs)} 次，增益掃描 {len(study.candidates)} 次"
                      + ("，feedforward 對照 1 次" if study.ff_off else "")],
         ["程式版本", code_version_text()],

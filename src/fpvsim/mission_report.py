@@ -9,10 +9,16 @@ import numpy as np
 
 from . import plots
 from .design import Build
-from .flight_report import envelope, wind_text
+from .flight_report import DESCENT_LIMIT, envelope, wind_text
 from .flightcontroller import FcConfig
-from .mission import MissionResult, lap_table
+from .mission import (ARRIVAL_SPEED, RETURN_ACCEL, RETURN_BRAKE, RETURN_DESCENT, RETURN_SLOWDOWN, RETURN_SPEED, RETURN_TOLERANCE,
+                      RETURN_TURN, SLOW_DESCENT, MissionResult, lap_table, wake_sources)
+from .pilot import MANEUVERS
 from .report import code_version_text, md_table, rel_path
+
+
+TAG_ZH = {"": "每圈開始的懸停", "forward": "前飛與煞停", "flip": "滾轉翻", "backflip": "後空翻", "yaw_spin": "原地自轉",
+          "punch": "衝刺", "chop": "收油下墜與改出", "script": "腳本動作（未標記）", "return": "飛回起始高度"}
 
 
 def generate(build: Build, cfg: FcConfig, result: MissionResult, out_dir: Path) -> Path:
@@ -56,7 +62,8 @@ def generate(build: Build, cfg: FcConfig, result: MissionResult, out_dir: Path) 
         "`mission_log.csv` 是 10 Hz 的精簡 log（電池、油門、轉速與飛行路徑）。\n")
     add(md_table(["項目", "內容"], [
         ["機體", f"{build.name}（`{rel_path(build.path, Path.cwd())}`）"],
-        ["飛控設定", f"{cfg.name}（`{cfg.id}`）；陀螺儀與 PID 迴圈 {cfg.pid_rate:g} Hz"],
+        ["飛控設定", f"{cfg.name}（`{cfg.id}`）；陀螺儀與 PID 迴圈 {log.meta.get('pid_rate_hz', cfg.pid_rate):g} Hz；"
+                     f"實際飛的設定雜湊 `{log.meta.get('fc_hash')}`"],
         ["每圈", f"`{log.meta.get('input')}` 腳本 {result.lap_duration:g} s，之後前飛下降回到起始高度再開始下一圈"],
         ["風", wind_text(log.meta)],
         ["槳的斜向氣流係數表", f"`{log.meta['rotor_tables']}`（rotor_ff.py，輸入與求解器的雜湊）" if log.meta.get("rotor_tables")
@@ -70,7 +77,7 @@ def generate(build: Build, cfg: FcConfig, result: MissionResult, out_dir: Path) 
     add("")
     add("## 摘要\n")
     add(md_table(["項目", "數值"], [
-        ["任務時間", f"{result.time:.0f} s（{result.time / 60:.1f} min），{result.laps:.1f} 圈"],
+        ["任務時間", f"{result.time:.0f} s（{result.time / 60:.1f} min），{result.laps_text()}"],
         ["結束原因", result.reason_zh],
         ["懸停續航（設計報告）", f"{result.hover_endurance:.0f} s" + (f"；任務時間為其 {result.time / result.hover_endurance:.0%}"
                                                                     if result.hover_endurance > 0 else "（同樣的限制在起飛時就已達到）")],
@@ -96,8 +103,14 @@ def generate(build: Build, cfg: FcConfig, result: MissionResult, out_dir: Path) 
             for e in envelope(log, j_max, oblique=ac.powertrain.prop.blade is not None)]
     add(md_table(["狀態", "時間比例", "第一次出現", "影響"], rows))
     add("")
-    add("渦環狀態區的時間主要來自腳本的收油下墜與其後的改出（腳本刻意測試這一段）；飛回起始高度的下降以前飛進行，"
-        "低空速時下降率限制在 0.4 倍懸停誘導速度。\n")
+    maneuver = MANEUVERS.get(str(log.meta.get("input")))
+    flagged = log["descent_ratio"] > DESCENT_LIMIT
+    if maneuver is not None and flagged.any():
+        total = float(np.count_nonzero(flagged)) / log.rate
+        sources = sorted(((s, v) for s, v in wake_sources(result, maneuver, flagged) if v > 0.0), key=lambda x: -x[1])
+        add(f"{rows[0][0].split('（')[0]}的時間（共 {total:.1f} s）依飛行階段分配（每個腳本動作從它開始到下一個動作開始，含改出）：\n")
+        add(md_table(["飛行階段", "時間", "佔這段時間"], [[TAG_ZH.get(s, s), f"{v:.2f} s", f"{v / total:.0%}"] for s, v in sources]))
+        add("")
     add("## 3. 驗證\n")
     soc_mah = (1.0 - log["soc"][-1]) * ac.battery.capacity / 3.6
     diff = f"相差 {log['mah'][-1] / soc_mah - 1:+.2%}" if soc_mah > 1e-9 else "（任務太短，沒有可比較的用電）"
@@ -109,8 +122,11 @@ def generate(build: Build, cfg: FcConfig, result: MissionResult, out_dir: Path) 
     add("- 測試飛手每圈開始時依電池目前的狀態重新估計懸停油門，就像真人飛手會隨電壓下降加油門；它不代表真人的飛行風格。")
     starts = [r["start_alt"] for r in laps[1:]]
     climb = f"每圈最高比開始高約 {np.median([r['max_alt'] - r['start_alt'] for r in laps]):.0f} m" if laps else "衝刺會爬升數十公尺"
-    add(f"- {climb}；腳本結束後測試飛手以 2 倍懸停誘導速度的空速飛向起點、以最多 1 倍懸停誘導速度下降"
-        f"（空速低於懸停誘導速度時降到 0.4 倍），回到起始高度 {log['alt'][0]:.0f} m 以上 1 m 內才開始下一圈"
+    add(f"- {climb}；腳本結束後測試飛手轉向起點的方向（以轉彎代替急煞，側向加速度 {RETURN_TURN:g} g），"
+        f"空速以 {RETURN_ACCEL:g} g 增加到 {RETURN_SPEED:g} 倍懸停誘導速度（由平均風算出），下降率最多 {RETURN_DESCENT:g} 倍懸停誘導速度"
+        f"（空速低於懸停誘導速度時為 {SLOW_DESCENT:g} 倍）；離起始高度 {log['alt'][0]:.0f} m 還有 {RETURN_SLOWDOWN:g} m 時"
+        f"開始以 {RETURN_BRAKE:g} g 減速，下降率再扣掉減速時從下方穿過傾斜槳盤的氣流（{RETURN_BRAKE:g} 倍空速），"
+        f"在起始高度 ±{RETURN_TOLERANCE:g} m 內、空速降到 {ARRIVAL_SPEED:g} 倍懸停誘導速度時開始下一圈"
         + (f"（各圈開始高度 {min(starts):.1f}–{max(starts):.1f} m）" if starts else "")
         + f"。這次任務的高度範圍 {log['alt'].min():.0f}–{log['alt'].max():.0f} m。空氣密度固定在規格的高度。")
     add("- 物理以 4 kHz 計算（陀螺儀與 PID 迴圈也是 4 kHz），以減少計算時間；調參與飛行測試報告用 8 kHz。")

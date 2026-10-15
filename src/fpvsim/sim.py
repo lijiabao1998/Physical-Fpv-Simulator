@@ -147,7 +147,9 @@ def simulate(
     log.meta = {
         "build": build.id,
         "fc": cfg.id,
+        "fc_hash": cfg.digest(),
         "input": getattr(pilot_input, "name", "stick file"),
+        "input_file_hash": getattr(pilot_input, "digest", None),
         "seed": settings.seed,
         "physics_rate_hz": phys,
         "gyro_rate_hz": cfg.gyro_rate,

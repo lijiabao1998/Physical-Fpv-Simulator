@@ -70,6 +70,8 @@ def cmd_stand(args) -> int:
 def cmd_report(args) -> int:
     from .report import generate
 
+    if args.samples < 20:
+        raise SystemExit("error: the design report needs --samples >= 20 (compliance probabilities and intervals come from them)")
     build = load_build(args.build)
     out = Path(args.out) if args.out else Path("out") / build.id
     result = generate(build, out, n_samples=args.samples, seed=args.seed)
@@ -360,7 +362,7 @@ def cmd_mission(args) -> int:
                          ground_effect=not args.no_ground_effect)
     out = Path(args.out) if args.out else Path("out") / f"mission-{build.id}"
     path = generate(build, cfg, result, out)
-    print(f"{result.time:.0f} s, {result.laps:.1f} laps, {result.reason}; wrote {path}")
+    print(f"{result.time:.0f} s, {result.laps_complete} laps + {result.partial:.0f} s, {result.reason}; wrote {path}")
     return 0
 
 
