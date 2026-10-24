@@ -1,0 +1,56 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> physical-fpv-player@0.1.0 test
+> vitest run tests/g07-reliability.test.ts
+
+
+ RUN  v5.0.5 /workspace/shared/own-cloud-migration-20261024/FPV-g07-reliability/web
+
+ ❯ tests/g07-reliability.test.ts (4 tests | 4 failed) 16ms
+   ❯ G07 API simulation, hardware untested (4)
+     × Xbox Wireless Controller: 60 seconds unchanged timestamp is not disconnect 9ms
+     × Xbox Wireless Controller: held ARM on connection and reconnection requires release 3ms
+     × DualSense Wireless Controller: 60 seconds unchanged timestamp is not disconnect 2ms
+     × DualSense Wireless Controller: held ARM on connection and reconnection requires release 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/g07-reliability.test.ts > G07 API simulation, hardware untested > Xbox Wireless Controller: 60 seconds unchanged timestamp is not disconnect
+ FAIL  tests/g07-reliability.test.ts > G07 API simulation, hardware untested > DualSense Wireless Controller: 60 seconds unchanged timestamp is not disconnect
+AssertionError: expected +0 to be 0.45 // Object.is equality
+
+- Expected
++ Received
+
+- 0.45
++ 0
+
+ ❯ tests/g07-reliability.test.ts:11:97
+      9|       const errors:string[]=[],m=new InputManager(cloneSettings(),r=>e…
+     10|       m.sample([p],1/60,0);errors.length=0;p.buttons[7].value=.45;p.ax…
+     11|       for(let n=1;n<=3600;n++){const f=m.sample([p],1/60,n*1000/60);ex…
+       |                                                                                                 ^
+     12|       expect(errors).toEqual([]);
+     13|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/g07-reliability.test.ts > G07 API simulation, hardware untested > Xbox Wireless Controller: held ARM on connection and reconnection requires release
+ FAIL  tests/g07-reliability.test.ts > G07 API simulation, hardware untested > DualSense Wireless Controller: held ARM on connection and reconnection requires release
+AssertionError: expected [ 'arm' ] to not include 'arm'
+ ❯ tests/g07-reliability.test.ts:16:69
+     14|     it(`${id}: held ARM on connection and reconnection requires releas…
+     15|       const m=new InputManager(cloneSettings(),()=>{}),p=pad(id);p.but…
+     16|       m.sample([p],.01,0);expect(m.sample([p],.01,700).actions).not.to…
+       |                                                                     ^
+     17|       p.buttons[0]={value:0,pressed:false};m.sample([p],.01,710);
+     18|       p.buttons[0]={value:1,pressed:true};m.sample([p],.01,720);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  21:10:05
+   Duration  244ms (transform 59%, tests 20%, import 15%, worker 7%)
+
