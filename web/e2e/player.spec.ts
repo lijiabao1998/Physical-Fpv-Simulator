@@ -239,3 +239,15 @@ for(const width of [1440,360,412])test(`G07 optional measured diagnostics at ${w
  await page.screenshot({path:info.outputPath(`g07-diagnostics-${width}.png`)});
  await page.locator('#performance-toggle').uncheck();await expect(page.getByTestId('performance-stats')).toHaveText('Diagnostics off');
 });
+
+test('G07 review regression: Auto and Low recalculate pixel ratio without resize',async({page},info)=>{
+ await page.setViewportSize({width:1440,height:900});
+ await page.goto('http://127.0.0.1:4174/Physical-Fpv-Simulator/');await expect(page.locator('#loading')).toHaveCount(0);
+ await page.getByTestId('start').click();await page.getByTestId('settings').click();
+ const canvas=page.locator('#field');
+ await page.locator('#quality').selectOption('low');
+ await expect.poll(()=>canvas.evaluate(c=>(c as HTMLCanvasElement).width)).toBe(1440);
+ await page.locator('#quality').selectOption('auto');
+ await expect.poll(()=>canvas.evaluate(c=>(c as HTMLCanvasElement).width*(c as HTMLCanvasElement).height)).toBeLessThanOrEqual(480000);
+ await page.screenshot({path:info.outputPath('g07-quality-transition.png')});
+});
