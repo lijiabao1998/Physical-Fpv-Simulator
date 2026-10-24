@@ -65,3 +65,47 @@ it('disarm cuts current but retains physical rotor energy; pause freezes it',()=
  const s=new GameSession();s.start();s.arm(0);for(let i=0;i<30;i++)s.step({...ZERO,throttle:.6});const before=(s.power as TransientPowertrain).rotorOmega;
  s.pause();expect(s.power.last.current).toBe(0);expect(s.power.last.omega).toEqual(before);const snap=JSON.stringify(s.snapshot());s.step(ZERO);expect(JSON.stringify(s.snapshot())).toBe(snap);s.world.dispose();
 });
+it('checks signed startup reaction, coasting friction, and rotor gyroscopic cross-product',()=>{
+ const p=new TransientPowertrain(),load=p.step([.6,0,0,0],1/240);
+ expect(load.reactionTorque[0]).toBeGreaterThan(load.torque[0]);
+ expect(load.rotorAngularMomentum).toBeLessThan(0);
+ const z=[0,0,0,0],results=[];
+ for(const sign of [-1,1]){
+  const w=new FlightWorld(DEFAULT_MODEL,false);w.setInitial([0,0,20],[0,0,0],[1,0,0,0],[0,0,0]);
+  w.step({thrust:z,torque:z,reactionTorque:sign===1?[.01,0,0,0]:[0,.01,0,0]},1/240,false);
+  expect(Math.sign(w.rates[2])).toBe(sign);results.push({kind:'reaction',sign,rates:w.rates});w.dispose();
+  const g=new FlightWorld(DEFAULT_MODEL,false);g.setInitial([0,0,20],[0,0,0],[1,0,0,0],[1,0,0]);
+  g.step({thrust:z,torque:z,rotorAngularMomentum:sign*.001},1/240,false);
+  expect(Math.sign(g.rates[1])).toBe(sign);results.push({kind:'gyro',sign,rates:g.rates});g.dispose();
+ }
+ const coast=p.step(z,1/240);expect(coast.reactionTorque[0]).toBeLessThan(0);
+ report.signedMoments={startup:load,coast,results};save();
+});
+it('keeps a sixty-second synthetic powertrain run inside energy, temperature, and speed bounds',()=>{
+ const p=new TransientPowertrain();let maxW=0,maxEnergyError=0;
+ for(let i=0;i<3000;i++){p.step([.45,.45,.45,.45],.02,2);maxW=Math.max(maxW,...p.last.omega);maxEnergyError=Math.max(maxEnergyError,Math.abs(p.audit().energyError));}
+ expect(maxEnergyError).toBeLessThan(1e-6);expect(p.temperature).toBeLessThan(333.15);expect(p.soc).toBeGreaterThan(.05);
+ report.longRun={durationSeconds:60,dt:.02,audit:p.audit(),maxW,maxEnergyError,temperature:p.temperature,soc:p.soc};save();
+});
+it('isolates G07 and G08 best times without overwriting legacy storage',async()=>{
+ const {loadBest,saveBest,BEST_KEY}=await import('../src/game/session');
+ const map=new Map<string,string>([[BEST_KEY,'12']]),storage={getItem:(k:string)=>map.get(k)??null,setItem:(k:string,v:string)=>{map.set(k,v);}};
+ expect(loadBest(storage,G08_MODEL)).toBeNull();saveBest(storage,9,G08_MODEL);expect(loadBest(storage,G08_MODEL)).toBe(9);expect(loadBest(storage,G07_MODEL)).toBe(12);expect(map.get(BEST_KEY)).toBe('12');
+});
+it('defines sustained locked-rotor bench separately from unsupported aerodynamic stall',async()=>{
+ const {lockedRotorBench}=await import('../src/physics/transient');
+ const cases=[0,.1,.5,1].map(duty=>({duty,result:lockedRotorBench(Array(4).fill(duty))}));
+ for(const c of cases){expect(c.result.omega).toEqual([0,0,0,0]);expect(Math.max(...c.result.motorCurrent)).toBeLessThanOrEqual(60);expect(Math.abs(c.result.powerError)).toBeLessThan(1e-8);}
+ expect(cases[3].result.motorCurrent).toEqual([60,60,60,60]);
+ report.stallComparison={definition:'externally clamped stationary rotor circuit, zero mechanical work',G07:'UNSUPPORTED: algebraic solver cannot represent a locked rotor; unchanged',G08:cases,aerodynamicBladeStall:'NOT IMPLEMENTED',hardware:'NOT VALIDATED'};save();
+});
+it('all sixteen synthetic assemblies preserve transient finite-state and energy bounds',async()=>{
+ const {assemblyModel}=await import('../src/physics/config');
+ const rows=[];
+ for(const frame of ['trainer','light'] as const)for(const battery of ['standard','endurance'] as const)for(const motor of ['balanced','torque'] as const)for(const propeller of ['5inch','4inch'] as const){
+  const assembly={frame,battery,motor,propeller},p=new TransientPowertrain(assemblyModel(assembly));
+  for(let i=0;i<120;i++)p.step(i<60?[1,1,1,1]:[0,0,0,0],1/240);
+  expect(Math.abs(p.audit().energyError)).toBeLessThan(1e-6);expect(p.last.omega.every(x=>x>=0&&x<5000)).toBe(true);rows.push({assembly,omega:p.last.omega,energy:p.audit()});
+ }
+ report.assemblies=rows;save();
+});

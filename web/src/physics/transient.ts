@@ -73,3 +73,16 @@ export class TransientPowertrain extends Powertrain {
   }
   override audit(){const a=super.audit();return {...a,physicsModel:G08_MODEL,syntheticParameters:true,rotorKineticJ:this.rotorStorageJ,energyError:a.energyError-this.rotorStorageJ};}
 }
+/** Explicit stationary, externally clamped four-rotor bench fixture.
+ * Not a flight/contact-jam mode. Clamp angular work is zero; all input becomes heat.
+ * This is synthetic circuit analysis, not measured stall current or blade stall. */
+export function lockedRotorBench(d:number[],soc=.9,model:Model=DEFAULT_MODEL){
+ if(d.length!==4)throw Error('Exactly four duties required');d.forEach(x=>finiteRange(x,0,1,'ESC duty'));finiteRange(soc,.05,1,'synthetic SOC');
+ const p=new Powertrain(model),ocv=4*(3.1+1.1*soc),r=TRANSIENT.rm+TRANSIENT.re;
+ const loads=(v:number)=>{const motorCurrent=d.map(x=>Math.min(TRANSIENT.currentLimit,x*v/r));const duty=motorCurrent.map((x,i)=>x===0?0:Math.min(d[i],r*x/v));return {motorCurrent,current:motorCurrent.reduce((s,x,i)=>s+x*duty[i],0)};};
+ let lo=0,hi=ocv,v=ocv;
+ for(let i=0;i<48;i++){v=(lo+hi)/2;if(v+p.resistance*loads(v).current>ocv)hi=v;else lo=v;}
+ const l=loads(v),sq=l.motorCurrent.reduce((s,x)=>s+x*x,0);
+ const chemicalPower=ocv*l.current,packHeat=p.resistance*l.current*l.current,copperHeat=TRANSIENT.rm*sq,escHeat=TRANSIENT.re*sq;
+ return {fixture:'externally-clamped-stationary-rotors',synthetic:true,voltage:v,current:l.current,motorCurrent:l.motorCurrent,omega:[0,0,0,0],clampTorque:l.motorCurrent.map(x=>model.motorK*x),mechanicalPower:0,chemicalPower,packHeat,copperHeat,escHeat,powerError:chemicalPower-packHeat-copperHeat-escHeat};
+}
