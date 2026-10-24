@@ -95,3 +95,19 @@ A normal fast-forward git push failed before updating the ref because the local
 HTTPS git transport had no username/credential. The connected GitHub application's
 existing authorization is the normal submission path; no credential is replaced
 and the original rules API 403 is preserved. Main/research refs are out of scope.
+
+## First real Chromium acceptance (head c1512e3)
+
+Run 40092906142 produced real product PNGs and traces: 4 passed / 8 failed.
+Production Pages-base rendering including 1440/360/412 images, synthetic Standard
+Gamepad handling and both mobile-pointer cases passed. Flight/Acro ARM, gates,
+replay, frame sampling, calibration duration and assembly timing failed.
+Artifact: https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/40092906142/artifacts/12559951016
+The desktop trace shows frames over 250 ms, causing the correct fail-safe to pause
+before ARM or scenario steps; calibration operations took ~0.5–2.5 s each. The
+original auto quality waited five accumulated, clamped render seconds before
+turning off expensive shadows, which amplified cold-start cost on software GPUs.
+Repair starts Auto in existing low tier and only tries High after >55 measured
+FPS and ten render seconds. Explicit High remains available. The 250 ms guard,
+fixed steps, tests and all acceptance thresholds are unchanged. Browser recheck
+is necessary; this diagnosis does not count as a pass or playable release.

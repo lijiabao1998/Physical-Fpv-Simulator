@@ -14,7 +14,7 @@ export class FlightScene {
   readonly gateMeshes:THREE.Mesh[][]=[];
   private sun:THREE.DirectionalLight;
   private smoothed=new THREE.Vector3(-1.7,-.05,.8);
-  private lastCamera='chase';private low=false;
+  private lastCamera='chase';private low=false;private autoHighAttempted=false;
   private highlight:THREE.Mesh;
   private clock=0;
   private materials=new Map<string,THREE.MeshStandardMaterial>();
@@ -34,7 +34,9 @@ export class FlightScene {
     this.sun.shadow.normalBias=.02;this.sun.shadow.bias=-.0001;this.scene.add(this.sun,this.sun.target);
     this.environment();this.batchEnvironment();this.aircraft();
     this.highlight=this.box([.035,3.6,.025],'#ffc48b',[10,0,.025]);
-    this.setQuality(settings.quality==='low');this.resize();
+    // Auto starts conservatively: shader/shadow warm-up must not stall input or physics.
+    // High remains available explicitly; auto promotes only after measured headroom.
+    this.setQuality(settings.quality!=='high');this.resize();
   }
   private material(color:string,roughness=.9) {const key=`${color}:${roughness}`;let material=this.materials.get(key);if(!material){material=new THREE.MeshStandardMaterial({color,roughness,metalness:0});this.materials.set(key,material);}return material;}
   private mesh(geo:THREE.BufferGeometry,mat:THREE.Material,pos:number[],parent:THREE.Object3D=this.scene) {
@@ -195,6 +197,10 @@ export class FlightScene {
     if(this.settings.quality==='low'&&!this.low)this.setQuality(true);
     if(this.settings.quality==='high'&&this.low)this.setQuality(false);
   }
-  autoQuality(fps:number) {this.fps=fps;if(this.settings.quality==='auto'&&fps<35&&!this.low&&this.clock>5)this.setQuality(true);}
+  autoQuality(fps:number) {
+    this.fps=fps;if(this.settings.quality!=='auto'||!Number.isFinite(fps))return;
+    if(fps<35&&!this.low){this.setQuality(true);this.autoHighAttempted=true;}
+    else if(fps>55&&this.low&&!this.autoHighAttempted&&this.clock>10){this.autoHighAttempted=true;this.setQuality(false);}
+  }
   get qualityLabel(){return this.low?'Low':'High';}
 }
