@@ -46,6 +46,9 @@ test('production Pages-base bundle renders with provenance and no development ho
     await page.setViewportSize({width,height:844});
     await expect(page.getByTestId('arm')).toBeInViewport();
     await expect(page.getByTestId('camera')).toBeInViewport();
+    await expect(page.getByTestId('pause')).toBeInViewport({ratio:1});
+    const modeLabel=await page.locator('#mode-label').boundingBox();
+    expect(modeLabel!.x+modeLabel!.width).toBeLessThanOrEqual(width);
     await page.screenshot({path:info.outputPath(`production-mobile-${width}.png`)});
   }
   expect(errors).toEqual([]);expect(failures).toEqual([]);
@@ -138,10 +141,16 @@ test('assembly UI changes actual model mass and resets disarmed',async({page})=>
   await page.goto(base);await expect(page.locator('#loading')).toHaveCount(0);await page.getByTestId('start').click();
   const before=await page.evaluate(()=>(window as unknown as {__FPV_TEST__:{snapshot():{mass:number}}}).__FPV_TEST__.snapshot().mass);
   await page.getByRole('button',{name:'Aircraft',exact:true}).click();await page.locator('#part-battery').selectOption('endurance');
+  // Capture the state in the same native click event, after the product handler.
+  // Later protocol reads include legitimate elapsed simulation time on slow CI.
+  await page.locator('#apply-aircraft').evaluate(button=>button.addEventListener('click',()=>{
+    const w=window as unknown as {__FPV_TEST__:{snapshot():unknown};__ASSEMBLY_RESULT__:unknown};
+    w.__ASSEMBLY_RESULT__=w.__FPV_TEST__.snapshot();
+  },{once:true}));
   await page.locator('#apply-aircraft').click();
-  const after=await page.evaluate(()=>(window as unknown as {__FPV_TEST__:{snapshot():{mass:number;armed:boolean}}}).__FPV_TEST__.snapshot());
+  const after=await page.evaluate(()=>(window as unknown as {__ASSEMBLY_RESULT__:{mass:number;armed:boolean;time:number}}).__ASSEMBLY_RESULT__);
   expect(after.mass-before).toBeCloseTo(.11,8);expect(after.armed).toBe(false);
-  expect((await snapshot(page)).time).toBeLessThan(.5);
+  expect(after.time).toBeLessThan(.5);expect(after.time).toBe(0);
 });
 test('replay file export/import, malformed input rejection and same-build playback',async({page},info)=>{
   await page.goto(base);await expect(page.locator('#loading')).toHaveCount(0);await page.getByTestId('start').click();

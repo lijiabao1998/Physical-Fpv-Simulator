@@ -111,3 +111,15 @@ Repair starts Auto in existing low tier and only tries High after >55 measured
 FPS and ten render seconds. Explicit High remains available. The 250 ms guard,
 fixed steps, tests and all acceptance thresholds are unchanged. Browser recheck
 is necessary; this diagnosis does not count as a pass or playable release.
+
+## Follow-up Chromium run (head c04201c)
+
+Run 40093666254 improved to 11/12 passing without retries. Flight, gates, replay,
+Acro, calibration and timing now execute; the 250 ms fail-safe is unchanged.
+The remaining assembly assertion sampled wall-clock simulation time after two
+protocol round trips (0.7125 s). Capture the actual product reset at the native
+click event's end instead, preserving <0.5 s and strengthening it to exactly 0.
+This changes the observation time, not reset behavior or an acceptance threshold.
+Visual inspection also found clipped 360 px navigation and HUD labels missed by
+the original limited assertions. Reflow mobile navigation/HUD and assert full
+Pause-button visibility plus the mode label's right edge. Original PNGs retained.
