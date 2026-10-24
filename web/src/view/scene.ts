@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {renderPixelRatio} from './resolution';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import {FIELD_BOXES,GATES,TREES} from '../game/field';
 import type {GameSession} from '../game/session';
@@ -164,7 +165,7 @@ export class FlightScene {
     this.cylinder(.002,.002,.08,'#303932',[-.065,0,.07],this.drone,6);
     const tip=this.mesh(new THREE.SphereGeometry(.008,8,6),this.material('#e1bb6b'),[-.065,0,.11],this.drone);tip.castShadow=false;
   }
-  resize() {const w=Math.max(1,this.canvas.clientWidth),h=Math.max(1,this.canvas.clientHeight);this.renderer.setSize(w,h,false);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();}
+  resize() {const w=Math.max(1,this.canvas.clientWidth),h=Math.max(1,this.canvas.clientHeight);this.renderer.setPixelRatio(renderPixelRatio(w,h,devicePixelRatio,this.low&&this.settings.quality==='auto',this.low));this.renderer.setSize(w,h,false);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();}
   setQuality(low:boolean) {
     this.low=low;this.renderer.setPixelRatio(Math.min(devicePixelRatio,low?1:1.5));this.renderer.shadowMap.enabled=!low;this.resize();
   }
@@ -202,5 +203,5 @@ export class FlightScene {
     if(fps<35&&!this.low){this.setQuality(true);this.autoHighAttempted=true;}
     else if(fps>55&&this.low&&!this.autoHighAttempted&&this.clock>10){this.autoHighAttempted=true;this.setQuality(false);}
   }
-  get qualityLabel(){return this.low?'Low':'High';}
+  get qualityLabel(){return `${this.low?'Low':'High'} · render scale ${this.renderer.getPixelRatio().toFixed(2)}`;}
 }

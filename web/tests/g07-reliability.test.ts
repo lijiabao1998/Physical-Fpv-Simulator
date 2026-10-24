@@ -57,3 +57,10 @@ it('diagnostics are optional, bounded and separate render/physics costs',()=>{
  d.record(NaN,1,1,1);expect(d.snapshot().samples).toBe(240);
  d.lastStop='Page hidden';d.setEnabled(false);expect(d.snapshot()).toMatchObject({samples:0,enabled:false,lastStop:'Page hidden'});
 });
+import {renderPixelRatio} from '../src/view/resolution';
+it('Auto caps pixel workload, not geometry/physics; manual high and mobile remain available',()=>{
+ const r=renderPixelRatio(1440,900,1,true,true);expect(1440*900*r*r).toBeCloseTo(480000);
+ expect(renderPixelRatio(360,844,1,true,true)).toBe(1);
+ expect(renderPixelRatio(1440,900,2,false,false)).toBe(1.5);
+ expect(renderPixelRatio(1440,900,2,false,true)).toBe(1);
+});
