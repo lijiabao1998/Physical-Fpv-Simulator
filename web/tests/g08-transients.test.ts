@@ -109,3 +109,21 @@ it('all sixteen synthetic assemblies preserve transient finite-state and energy 
  }
  report.assemblies=rows;save();
 });
+it('separates steady hover after natural spin-up from initial transient altitude loss',()=>{
+ const rows=[];
+ for(const version of [G07_MODEL,G08_MODEL]){
+  const p=version===G08_MODEL?new TransientPowertrain():new Powertrain(),w=new FlightWorld(DEFAULT_MODEL,false);
+  const duty=p.hover();
+  // Spin up electrically for two seconds on the test bench, without assigning rotor speed.
+  for(let i=0;i<480;i++)p.step(Array(4).fill(duty),1/240);
+  const equilibrium=p.evaluate(Array(4).fill(duty));
+  const speedRelativeError=Math.abs(p.last.omega[0]-equilibrium.omega[0])/equilibrium.omega[0];
+  expect(speedRelativeError).toBeLessThan(.002);
+  const flightDuty=p.hover();w.setInitial([0,0,20]);
+  let maxRelativeThrustError=0;
+  for(let i=0;i<240;i++){const load=p.step(Array(4).fill(flightDuty),1/240);w.step(load,1/240);maxRelativeThrustError=Math.max(maxRelativeThrustError,Math.abs(load.thrust.reduce((s,x)=>s+x,0)/(DEFAULT_MODEL.mass*9.80665)-1));}
+  expect(Math.abs(w.position[2]-20)).toBeLessThan(.02);expect(maxRelativeThrustError).toBeLessThan(.01);
+  rows.push({version,spinUpSeconds:2,flightSeconds:1,flightDuty,speedRelativeError,maxRelativeThrustError,altitudeError:w.position[2]-20,energy:p.audit()});w.dispose();
+ }
+ report.steadyHover=rows;save();
+});

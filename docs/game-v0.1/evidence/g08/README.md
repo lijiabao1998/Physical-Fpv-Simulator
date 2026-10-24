@@ -21,7 +21,7 @@ Physics menu offers explicit G07 rollback, restarting the flight; best times use
    This did not execute browser tests. Official existing Player workflow will run actual Chromium.
 
 ## Verified locally
-69 tests in six files after regenerating the five original Python fixture tests (52 baseline tests before fixture generation, 57 afterward), strict TypeScript/build and original five Python trajectories.
+70 tests in six files after regenerating the five original Python fixture tests (52 baseline tests before fixture generation, 57 afterward), strict TypeScript/build and original five Python trajectories.
 New tests include 10 s variable duty energy/charge/thermal ledger, startup/current ceiling/coast,
 atomic rejected steps, independent fine RK4 motor ODE convergence, 120/240/480 Hz flight comparisons,
 deterministic same-runtime replay, legacy routing and pause/disarm semantics.
@@ -45,3 +45,26 @@ The raw numerical table is checked in losslessly compressed as local-numerical.j
 
 All sixteen assembly combinations also pass startup-to-coast finite-state and energy checks.
 Browser requestAnimationFrame intervals describe browser scheduling, not GPU completion or physical display latency.
+
+## Official first Chromium run and repair
+https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/40135593800
+Head 3fabd2dd47bc19a4ebdb64a25d764dcdd226bf5d, PR merge-test SHA addf889a26c7bff23aa7ee5e62c5921f983a18e3.
+20/21 passed, including all three G08 actual browser A/B cases.
+One RED: the inherited course-best test expected the old G07 storage key while the default changed to G08.
+Do NOT write G08 times into the G07 key. The old test now explicitly selects G07 before loading, retaining every original assertion.
+Added G08 five-gate/reload, invalid stored model fallback, version-switch reset, old-best preservation and unrelated-storage negative controls.
+The selected model is now persisted. Switching always resets the complete session, disarms and initializes zero rotor speed; it never carries momentum across models.
+Default for a fresh install is explicitly G08; an existing valid G07 choice remains G07.
+The test-only same-condition simulation CPU measurements are separate from native flight requestAnimationFrame intervals, which are not identical view trajectories or GPU completion timings.
+First-run Chromium 156.0.8078.4: G07 step p95 about 0.2 ms versus G08 0.3 ms in all three viewports.
+Native flight frame medians were 50–66.6 ms; neither model proves desktop 60 FPS or physical-phone 30 FPS.
+No quality limits or old assertions were relaxed.
+All first-failure logs, screenshot and trace are preserved in the official artifact:
+https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/40135593800/artifacts/12577010046
+
+## Steady hover, separately from startup
+After natural electrical spin-up for 2 s and 1 s flight, G08 equilibrium speed relative error 7.62e-6,
+maximum thrust/weight deviation 0.000988 and altitude error -0.000542 m; G07 altitude error -0.000334 m.
+This is a numerical synthetic benchmark, not empirical hovering validation.
+60 A is an explicit synthetic ESC current limit. In the full-command locked bench actual effective duty is 0.3227298657,
+battery current 77.4552 A, not 240 A. Bus current and losses use actual effective duty.

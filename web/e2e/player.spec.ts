@@ -98,6 +98,8 @@ test('record actual browser frame intervals without claiming physical-device per
   expect(Number.isFinite(result.meanFps)).toBe(true);
 });
 test('synthetic scenario setup: all five ordered gates finish and best persists',async({page})=>{
+  // G08 versioned migration: this immutable-key regression explicitly exercises G07. Assertions below remain unchanged.
+  await page.addInitScript(()=>localStorage.setItem('physical-fpv-physics-model-v1','g07-quasistatic-v1'));
   await page.goto(base);await expect(page.locator('#loading')).toHaveCount(0);
   // Run the deterministic fixture immediately after the native start handler,
   // before a slow renderer can legitimately trigger the 250 ms safety pause.

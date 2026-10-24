@@ -1,0 +1,169 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "browser": "156.0.8078.4",
+  "hardwareControllerTested": false,
+  "physicalPhoneTested": false,
+  "measurements": [
+    {
+      "model": "g07-quasistatic-v1",
+      "physicsStepCpuMs": {
+        "median": 0.09999999999126885,
+        "p95": 0.19999999999708962,
+        "p99": 0.8000000000029104
+      },
+      "snapshot": {
+        "physicsModel": "g07-quasistatic-v1",
+        "state": "flying",
+        "armed": true,
+        "mode": "angle",
+        "time": 0.9999999999999977,
+        "airtime": 0.9999999999999977,
+        "position": [
+          0,
+          0,
+          3.7272756099700928
+        ],
+        "velocity": [
+          0,
+          0,
+          6.955811500549316
+        ],
+        "quaternion": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "rates": [
+          0,
+          0,
+          0
+        ],
+        "voltage": 15.195494701394253,
+        "current": 24.05624029240335,
+        "soc": 0.897771417143094,
+        "thrust": [
+          3.120336928162656,
+          3.120336928162656,
+          3.120336928162656,
+          3.120336928162656
+        ],
+        "rpm": [
+          17901.118479392775,
+          17901.118479392775,
+          17901.118479392775,
+          17901.118479392775
+        ],
+        "contacts": 0,
+        "gate": 0,
+        "courseTime": 0,
+        "reason": "Armed. Raise throttle gently.",
+        "energy": {
+          "chemicalJ": 393.6458418432309,
+          "stateJ": 393.64584184337167,
+          "busJ": 365.83933990410594,
+          "packHeatJ": 27.806501939124853,
+          "copperJ": 24.137588488823667,
+          "escJ": 3.218345131843153,
+          "frictionJ": 14.06394368807306,
+          "rotorJ": 324.4194625953661,
+          "energyError": 1.4085799193708226e-10,
+          "sourceError": 1.4074430509936064e-10,
+          "chargeError": 8.601119816376013e-12,
+          "thermalError": 4.7410554648852354e-11
+        },
+        "mass": 0.72
+      },
+      "frameIntervalMs": {
+        "median": 66.59999999999854,
+        "p95": 83.30000000000109,
+        "p99": 83.39999999999964
+      },
+      "fpsMedian": 15.015015015015344
+    },
+    {
+      "model": "g08-transient-v1",
+      "physicsStepCpuMs": {
+        "median": 0.10000000000582077,
+        "p95": 0.3000000000029104,
+        "p99": 0.40000000000873115
+      },
+      "snapshot": {
+        "physicsModel": "g08-transient-v1",
+        "state": "flying",
+        "armed": true,
+        "mode": "angle",
+        "time": 0.9999999999999977,
+        "airtime": 0.9999999999999977,
+        "position": [
+          0,
+          0,
+          2.718385934829712
+        ],
+        "velocity": [
+          0,
+          0,
+          6.035297870635986
+        ],
+        "quaternion": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "rates": [
+          0,
+          0,
+          0
+        ],
+        "voltage": 15.193520014609694,
+        "current": 24.0469156334283,
+        "soc": 0.8972203213045524,
+        "thrust": [
+          3.1196619113256197,
+          3.1196619113256197,
+          3.1196619113256197,
+          3.1196619113256197
+        ],
+        "rpm": [
+          17899.1624143275,
+          17899.1624143275,
+          17899.1624143275,
+          17899.1624143275
+        ],
+        "contacts": 0,
+        "gate": 0,
+        "courseTime": 0,
+        "reason": "Armed. Raise throttle gently.",
+        "energy": {
+          "chemicalJ": 490.9522850009499,
+          "stateJ": 490.9522850009226,
+          "busJ": 430.99806612422736,
+          "packHeatJ": 59.95421887672076,
+          "copperJ": 56.140714753668625,
+          "escJ": 7.48542863382249,
+          "frictionJ": 13.141861960050024,
+          "rotorJ": 298.5755104465915,
+          "energyError": -4.190070512777311e-11,
+          "sourceError": -2.7341684472048655e-11,
+          "chargeError": -1.637801005927031e-12,
+          "thermalError": -7.030934168206215e-11,
+          "physicsModel": "g08-transient-v1",
+          "syntheticParameters": true,
+          "rotorKineticJ": 55.65455033011103
+        },
+        "mass": 0.72
+      },
+      "frameIntervalMs": {
+        "median": 50,
+        "p95": 83.39999999999782,
+        "p99": 83.39999999999782
+      },
+      "fpsMedian": 20
+    }
+  ],
+  "consoleErrors": []
+}

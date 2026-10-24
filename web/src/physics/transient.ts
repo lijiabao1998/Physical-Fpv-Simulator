@@ -6,7 +6,7 @@ export const G07_MODEL='g07-quasistatic-v1' as const;
 export type PhysicsModel=typeof G08_MODEL|typeof G07_MODEL;
 /** Synthetic one-quadrant drive; no inductance, regenerative braking or calibrated ESC. */
 export const TRANSIENT={motorInertia:1.2e-6,currentLimit:60,maxElectricalStep:1/1920,rm:.060,re:.008,friction:1e-6} as const;
-export interface TransientOutput extends PowerOutput {reactionTorque:number[];rotorAngularMomentum:number;rotorEnergy:number;rotorStoragePower:number}
+export interface TransientOutput extends PowerOutput {effectiveDuty:number[];reactionTorque:number[];rotorAngularMomentum:number;rotorEnergy:number;rotorStoragePower:number}
 const root=(a:number,b:number,c:number)=>2*c/(b+Math.sqrt(b*b+4*a*c));
 export class TransientPowertrain extends Powertrain {
   readonly physicsModel=G08_MODEL;
@@ -22,7 +22,7 @@ export class TransientPowertrain extends Powertrain {
     const torque=w.map(x=>q*x*x),frictionPower=TRANSIENT.friction*w.reduce((s,x)=>s+x*x,0);
     const rotorPower=torque.reduce((s,x,i)=>s+x*w[i],0);
     return {voltage:4*(3.1+1.1*this.soc),current:0,rpm:w.map(x=>x*60/(2*Math.PI)),omega:[...w],thrust:w.map(x=>tf*x*x),torque,motorCurrent:[0,0,0,0],chemicalPower:0,busPower:0,packHeat:0,copperHeat:0,escHeat:0,frictionPower,rotorPower,residual:0,powerError:0,
-      reactionTorque:w.map(x=>-TRANSIENT.friction*x),rotorAngularMomentum:(this.rotorInertia??0)*(-w[0]+w[1]-w[2]+w[3]),rotorEnergy:.5*(this.rotorInertia??0)*w.reduce((s,x)=>s+x*x,0),rotorStoragePower:-frictionPower-rotorPower};
+      effectiveDuty:[0,0,0,0],reactionTorque:w.map(x=>-TRANSIENT.friction*x),rotorAngularMomentum:(this.rotorInertia??0)*(-w[0]+w[1]-w[2]+w[3]),rotorEnergy:.5*(this.rotorInertia??0)*w.reduce((s,x)=>s+x*x,0),rotorStoragePower:-frictionPower-rotorPower};
   }
   override step(d:number[],dt:number,airspeed=0):TransientOutput {
     if(d.length!==4)throw Error('Exactly four duties required');d.forEach(x=>finiteRange(x,0,1,'ESC duty'));
@@ -64,7 +64,7 @@ export class TransientPowertrain extends Powertrain {
       const hc=.12+.02*airspeed,cellHeat=(l.current/2)**2*.020;
       const nextT=temp+h*(cellHeat-hc*(temp-298.15))/(45+.5*h*hc);finiteRange(nextT,273.15,333.15,'synthetic cell temperature');
       accum.chemical+=h*chemicalPower;accum.bus+=h*v*l.current;accum.pack+=h*packHeat;accum.copper+=h*copperHeat;accum.esc+=h*escHeat;accum.friction+=h*frictionPower;accum.aero+=h*rotorPower;accum.charge+=h*l.current;accum.cell+=h*8*cellHeat;accum.cooling+=h*8*hc*((temp+nextT)/2-298.15);
-      out={voltage:v,current:l.current,rpm:nextW.map(x=>x*60/(2*Math.PI)),omega:nextW,thrust:average.thrust,torque:average.torque,motorCurrent:l.im,chemicalPower,busPower:v*l.current,packHeat,copperHeat,escHeat,frictionPower,rotorPower,residual:v+this.resistance*l.current-ocv,powerError:chemicalPower-packHeat-copperHeat-escHeat-frictionPower-rotorPower-storage,reactionTorque:average.reactionTorque,rotorAngularMomentum:average.momentum,rotorEnergy:.5*J*nextW.reduce((sum,x)=>sum+x*x,0),rotorStoragePower:storage};
+      out={voltage:v,current:l.current,rpm:nextW.map(x=>x*60/(2*Math.PI)),omega:nextW,thrust:average.thrust,torque:average.torque,motorCurrent:l.im,chemicalPower,busPower:v*l.current,packHeat,copperHeat,escHeat,frictionPower,rotorPower,residual:v+this.resistance*l.current-ocv,powerError:chemicalPower-packHeat-copperHeat-escHeat-frictionPower-rotorPower-storage,effectiveDuty:l.eff,reactionTorque:average.reactionTorque,rotorAngularMomentum:average.momentum,rotorEnergy:.5*J*nextW.reduce((sum,x)=>sum+x*x,0),rotorStoragePower:storage};
       w=nextW;soc=nextSoc;temp=nextT;
     }
     this.rotorOmega=w;this.soc=soc;this.temperature=temp;
@@ -79,10 +79,10 @@ export class TransientPowertrain extends Powertrain {
 export function lockedRotorBench(d:number[],soc=.9,model:Model=DEFAULT_MODEL){
  if(d.length!==4)throw Error('Exactly four duties required');d.forEach(x=>finiteRange(x,0,1,'ESC duty'));finiteRange(soc,.05,1,'synthetic SOC');
  const p=new Powertrain(model),ocv=4*(3.1+1.1*soc),r=TRANSIENT.rm+TRANSIENT.re;
- const loads=(v:number)=>{const motorCurrent=d.map(x=>Math.min(TRANSIENT.currentLimit,x*v/r));const duty=motorCurrent.map((x,i)=>x===0?0:Math.min(d[i],r*x/v));return {motorCurrent,current:motorCurrent.reduce((s,x,i)=>s+x*duty[i],0)};};
+ const loads=(v:number)=>{const motorCurrent=d.map(x=>Math.min(TRANSIENT.currentLimit,x*v/r));const duty=motorCurrent.map((x,i)=>x===0?0:Math.min(d[i],r*x/v));return {motorCurrent,effectiveDuty:duty,current:motorCurrent.reduce((s,x,i)=>s+x*duty[i],0)};};
  let lo=0,hi=ocv,v=ocv;
  for(let i=0;i<48;i++){v=(lo+hi)/2;if(v+p.resistance*loads(v).current>ocv)hi=v;else lo=v;}
  const l=loads(v),sq=l.motorCurrent.reduce((s,x)=>s+x*x,0);
  const chemicalPower=ocv*l.current,packHeat=p.resistance*l.current*l.current,copperHeat=TRANSIENT.rm*sq,escHeat=TRANSIENT.re*sq;
- return {fixture:'externally-clamped-stationary-rotors',synthetic:true,voltage:v,current:l.current,motorCurrent:l.motorCurrent,omega:[0,0,0,0],clampTorque:l.motorCurrent.map(x=>model.motorK*x),mechanicalPower:0,chemicalPower,packHeat,copperHeat,escHeat,powerError:chemicalPower-packHeat-copperHeat-escHeat};
+ return {fixture:'externally-clamped-stationary-rotors',synthetic:true,voltage:v,current:l.current,motorCurrent:l.motorCurrent,effectiveDuty:l.effectiveDuty,omega:[0,0,0,0],clampTorque:l.motorCurrent.map(x=>model.motorK*x),mechanicalPower:0,chemicalPower,packHeat,copperHeat,escHeat,powerError:chemicalPower-packHeat-copperHeat-escHeat};
 }
