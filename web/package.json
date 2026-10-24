@@ -1,0 +1,15 @@
+{
+  "name": "physical-fpv-player",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build && node scripts/check-build.mjs",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "reference": "python3 ../reference/generate.py",
+    "verify": "npm run reference && npm test && npm run build && npm run test:e2e"
+  }
+}
