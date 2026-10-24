@@ -5,7 +5,7 @@ import {DEFAULT_MODEL,GRAVITY,assemblyModel,DEFAULT_ASSEMBLY} from '../src/physi
 import {motorDuties,ZERO} from '../src/physics/controller';
 import {euler,norm} from '../src/physics/math';
 import type {V3,Q4} from '../src/physics/math';
-import fixtures from '../../reference/fixtures.json';
+import fixtures from './reference-fixtures';
 
 beforeAll(async()=>{await initPhysics();});
 const zero={thrust:[0,0,0,0],torque:[0,0,0,0]};

@@ -6,7 +6,7 @@ import {FlightWorld,initPhysics} from '../src/physics/world';
 import {Powertrain} from '../src/physics/powertrain';
 import {DEFAULT_MODEL,GRAVITY} from '../src/physics/config';
 import {norm,type V3} from '../src/physics/math';
-import fixtures from '../../reference/fixtures.json';
+import fixtures from './reference-fixtures';
 
 beforeAll(initPhysics);
 const zero={thrust:[0,0,0,0],torque:[0,0,0,0]};
@@ -72,6 +72,6 @@ it('writes numerical comparison, refinement and passive-energy evidence with exp
     limitsAt240Hz:limits,bodyRates:'Reported for diagnosis; no pre-established rate tolerance. Position/velocity/quaternion gates remain binding.',
     refinementNotes:'Three step sizes for all five trajectories against the pinned 240 Hz Python reference. Analytical zero-drag freefall requires decreasing position error. Non-hover position and differential attitude errors must shrink by a factor below 0.7 per halving of dt toward that fixed reference. This is not proof of convergence to exact real-world dynamics.',
     trajectories,analyticalFreefall:freefall,electricalTenSecondAudit:electrical,passiveContacts:contacts};
-  const directory=fileURLToPath(new URL('../../docs/game-v0.1/evidence/',import.meta.url));mkdirSync(directory,{recursive:true});
+  const directory=fileURLToPath(new URL('../numerical-results/',import.meta.url));mkdirSync(directory,{recursive:true});
   writeFileSync(directory+'numerical-report.json',JSON.stringify(report,null,2)+'\n');
 });

@@ -49,5 +49,7 @@ for name, duration, duties, direct, velocity in [
 
 out={'schema':'fpv-python-reference-v1','source_sha':manifest['source_commit'],
      'numpy_version':np.__version__,'synthetic':True,'hardware_validated':False,'cases':cases}
-(ROOT/'fixtures.json').write_text(json.dumps(out,indent=2)+'\n')
+destination=ROOT.parent/'web'/'numerical-results'
+destination.mkdir(parents=True,exist_ok=True)
+(destination/'python-fixtures.json').write_text(json.dumps(out,indent=2)+'\n')
 print(f'Wrote {len(cases)} pinned Python trajectories; source hashes verified, no hardware claim.')
