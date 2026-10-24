@@ -1,0 +1,11 @@
+Original CI: https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/40092703353
+Head 430c9828a8afea158157ff991516ac212f3e768d; PR merge checkout 114db7781a6102b1ed5565279e0ac3a4bb59c6da.
+2026-10-24T12:08:51: 44 tests passed; Python regeneration passed.
+2026-10-24T12:08:52: AssertionError [ERR_ASSERTION]: CI release must use a clean source tree. true !== false.
+Chromium install and e2e skipped; no browser pass.
+Full original log remains in the linked run and artifact 12559174680.
+Repair: generators no longer overwrite tracked frozen reference/evidence files.
+Fresh Python trajectories and numerical report live under web/numerical-results,
+separately uploaded as artifacts. Both frozen and fresh reference trajectories
+are subjected to identical physics and refinement gates. No tolerance or source
+cleanliness gate was changed. Prior evidence is retained unchanged.

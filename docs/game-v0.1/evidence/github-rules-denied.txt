@@ -1,0 +1,9 @@
+2026-10-24 UTC
+Action: read repository rules for main
+Target: https://api.github.com/repos/lijiabao1998/Physical-Fpv-Simulator/rules/branches/main
+Command: gh api repos/lijiabao1998/Physical-Fpv-Simulator/rules/branches/main
+Exit code: 1
+Exact stderr:
+Get "https://api.github.com/repos/lijiabao1998/Physical-Fpv-Simulator/rules/branches/main": Forbidden
+State: denied, not executed successfully. No retry through another route.
+Independent git fetch and GitHub connector repository/PR reads succeeded.

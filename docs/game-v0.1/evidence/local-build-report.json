@@ -1,0 +1,42 @@
+{
+  "stage": "local production build",
+  "status": "PASS",
+  "checks": [
+    "TypeScript strict noEmit",
+    "Vite production compilation",
+    "GitHub Pages base asset existence",
+    "Version metadata shape"
+  ],
+  "provenance": {
+    "version": "0.1.0",
+    "commit": "6816b68b77bca9950b4bfad8e5b7396cb214519f",
+    "dirty": true,
+    "base": "/Physical-Fpv-Simulator/",
+    "builtAt": "2026-10-24T09:57:24.793Z"
+  },
+  "artifacts": {
+    "index.html": {
+      "bytes": 616,
+      "sha256": "6a829de8dfca711f5e6446d7a5b9a35dd72fa0b78d32e2c627a3d41d70e81038"
+    },
+    "version.json": {
+      "bytes": 176,
+      "sha256": "16087b8989ae798008da59bb64ac28d6eaf7df0d171ab183542a0e032a2c25a6"
+    },
+    "THIRD_PARTY_LICENSES.txt": {
+      "bytes": 12490,
+      "sha256": "8d80a3aca07d34728abce424589895b0b28d2d008b7ff5a94ccfb96f9c035776"
+    },
+    "assets/index-O9KH_lTA.css": {
+      "bytes": 6048,
+      "sha256": "acababf9cf37f9965231267d13f5d2252bb7a9733de5e276a0b6a75d58dc6197"
+    },
+    "assets/index-DjSvE0iw.js": {
+      "bytes": 4918330,
+      "sha256": "bb0d434339cc13c13ba1e4638db11e9a4b9059606fc801b061015a6308b9ce29"
+    }
+  },
+  "browserExecution": "NOT RUN: pre-existing Chromium environment restriction",
+  "productionDeployment": "NOT RUN",
+  "warning": "Large bundle: approximately 4.918 MB uncompressed / 1.822 MB gzip; no measured loading-performance claim"
+}

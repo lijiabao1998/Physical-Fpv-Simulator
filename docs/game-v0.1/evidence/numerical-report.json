@@ -1,0 +1,3068 @@
+{
+  "schema": "physical-fpv-numerical-evidence-v1",
+  "referenceCommit": "839f775fd4c32563d3ee9fc2ed8967b2d9dbf9cc",
+  "syntheticParameters": true,
+  "hardwareValidated": false,
+  "browserRenderingTest": false,
+  "method": "Python RK4 reference vs Rapier Float32 rigid body. Same initial state and fixed inputs; sampled every 0.05 s. Powertrain midpoint SOC. No bitwise-equality claim.",
+  "limitsAt240Hz": {
+    "positionM": 0.03,
+    "velocityMps": 0.02,
+    "attitudeRad": 0.012,
+    "voltageV": 2e-9,
+    "thrustN": 2e-9,
+    "soc": 2e-12
+  },
+  "bodyRates": "Reported for diagnosis; no pre-established rate tolerance. Position/velocity/quaternion gates remain binding.",
+  "refinementNotes": "Three step sizes for all five trajectories against the pinned 240 Hz Python reference. Analytical zero-drag freefall requires decreasing position error. Non-hover position and differential attitude errors must shrink by a factor below 0.7 per halving of dt toward that fixed reference. This is not proof of convergence to exact real-world dynamics.",
+  "trajectories": [
+    {
+      "name": "freefall",
+      "durationS": 1,
+      "initialPositionM": [
+        0,
+        0,
+        20
+      ],
+      "initialVelocityMps": [
+        0,
+        0,
+        0
+      ],
+      "duties": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "directThrustN": null,
+      "refinements": [
+        {
+          "hz": 120,
+          "max": {
+            "positionM": 0.008238387665191027,
+            "velocityMps": 0.00942293204757405,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "rms": {
+            "positionM": 0.004337830819040722,
+            "velocityMps": 0.004926056270922278,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "samples": [
+            {
+              "time": 0.05,
+              "positionM": 0.00025750590938855566,
+              "velocityMps": 0.00003225153861730057,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.1,
+              "positionM": 0.0005125814998230283,
+              "velocityMps": 0.00013232374403560065,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.15,
+              "positionM": 0.000778697566186537,
+              "velocityMps": 0.0002980212885577149,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.2,
+              "positionM": 0.001054329988917857,
+              "velocityMps": 0.0005289929614924471,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.25,
+              "positionM": 0.0013413626780227617,
+              "velocityMps": 0.0008220320648071322,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.3,
+              "positionM": 0.0016403473005119906,
+              "velocityMps": 0.0011722618854839162,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.35,
+              "positionM": 0.0019569648707822296,
+              "velocityMps": 0.0015773813106081391,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.4,
+              "positionM": 0.0022910949105039435,
+              "velocityMps": 0.0020376089563574062,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.45,
+              "positionM": 0.0026485651979868408,
+              "velocityMps": 0.0025365950449725005,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.5,
+              "positionM": 0.0030241047327486115,
+              "velocityMps": 0.003080829343232949,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.55,
+              "positionM": 0.0034241873815830104,
+              "velocityMps": 0.0036560764505919607,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.6,
+              "positionM": 0.003842052473476798,
+              "velocityMps": 0.004262032207674515,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.65,
+              "positionM": 0.004297461108674128,
+              "velocityMps": 0.004887646572218962,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.7,
+              "positionM": 0.004775274446210176,
+              "velocityMps": 0.0055324971432400005,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.75,
+              "positionM": 0.00528413193251609,
+              "velocityMps": 0.0061905223869764825,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.8,
+              "positionM": 0.005819724080655675,
+              "velocityMps": 0.006845691137348453,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.85,
+              "positionM": 0.0063852717779830925,
+              "velocityMps": 0.007502474504464729,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.9,
+              "positionM": 0.0069776822052638465,
+              "velocityMps": 0.008156201031999544,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.95,
+              "positionM": 0.0075947157273166255,
+              "velocityMps": 0.008803396959523369,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 1,
+              "positionM": 0.008238387665191027,
+              "velocityMps": 0.00942293204757405,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            }
+          ]
+        },
+        {
+          "hz": 240,
+          "max": {
+            "positionM": 0.004129958710112902,
+            "velocityMps": 0.004709873575894363,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "rms": {
+            "positionM": 0.0021742496451453625,
+            "velocityMps": 0.0024649727408083883,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "samples": [
+            {
+              "time": 0.05,
+              "positionM": 0.00012589885372449316,
+              "velocityMps": 0.00001660531936376053,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.1,
+              "positionM": 0.00025699678302615325,
+              "velocityMps": 0.00006723547194087409,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.15,
+              "positionM": 0.00038959844509278696,
+              "velocityMps": 0.00015079781596250008,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.2,
+              "positionM": 0.0005259944176287945,
+              "velocityMps": 0.00026637489661207603,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.25,
+              "positionM": 0.0006699759592727617,
+              "velocityMps": 0.0004171973174926791,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.3,
+              "positionM": 0.0008201873884026156,
+              "velocityMps": 0.0005957657612163381,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.35,
+              "positionM": 0.0009765876735166046,
+              "velocityMps": 0.0007967988826296235,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.4,
+              "positionM": 0.001144778382183631,
+              "velocityMps": 0.0010243299951757656,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.45,
+              "positionM": 0.0013248652468149658,
+              "velocityMps": 0.0012782217844744537,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.5,
+              "positionM": 0.001511577266928299,
+              "velocityMps": 0.0015439831823442773,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.55,
+              "positionM": 0.001713295657950198,
+              "velocityMps": 0.0018331279947814139,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.6,
+              "positionM": 0.0019289817947658605,
+              "velocityMps": 0.0021377226678795935,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.65,
+              "positionM": 0.0021536012453928777,
+              "velocityMps": 0.0024543465539084153,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.7,
+              "positionM": 0.002394903352460176,
+              "velocityMps": 0.0027749478573513287,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.75,
+              "positionM": 0.002650083470602027,
+              "velocityMps": 0.0030972797417128106,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.8,
+              "positionM": 0.002920554158780675,
+              "velocityMps": 0.003420569829975406,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.85,
+              "positionM": 0.0031999995611862175,
+              "velocityMps": 0.003749289232247932,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.9,
+              "positionM": 0.0034986782990138465,
+              "velocityMps": 0.004076382306413606,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.95,
+              "positionM": 0.0038067213425510005,
+              "velocityMps": 0.004403143663624931,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 1,
+              "positionM": 0.004129958710112902,
+              "velocityMps": 0.004709873575894363,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            }
+          ]
+        },
+        {
+          "hz": 480,
+          "max": {
+            "positionM": 0.002028060516753527,
+            "velocityMps": 0.0023838619181795195,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "rms": {
+            "positionM": 0.0010589546488831958,
+            "velocityMps": 0.0012461706246661066,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "samples": [
+            {
+              "time": 0.05,
+              "positionM": 0.00006295634884168066,
+              "velocityMps": 0.000008767308575796662,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.1,
+              "positionM": 0.00012538972736209075,
+              "velocityMps": 0.00003355884764277839,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.15,
+              "positionM": 0.00019123418728028696,
+              "velocityMps": 0.00007366940562314461,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.2,
+              "positionM": 0.000260872957667857,
+              "velocityMps": 0.0001310723529719393,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.25,
+              "positionM": 0.00032856055399932416,
+              "velocityMps": 0.00020762738646240564,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.3,
+              "positionM": 0.0004043853864494906,
+              "velocityMps": 0.0002965504444438771,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.35,
+              "positionM": 0.0004825843776181671,
+              "velocityMps": 0.00040030878558372507,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.4,
+              "positionM": 0.000534426819683631,
+              "velocityMps": 0.0005114916315283047,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.45,
+              "positionM": 0.0006248682985727783,
+              "velocityMps": 0.0006440283640642974,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.5,
+              "positionM": 0.0007200275843111115,
+              "velocityMps": 0.0007762753576372461,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.55,
+              "positionM": 0.0008206564977939479,
+              "velocityMps": 0.0009204616739806326,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.6,
+              "positionM": 0.0009295311111721105,
+              "velocityMps": 0.0010762831537194373,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.65,
+              "positionM": 0.0010435243410960027,
+              "velocityMps": 0.001232689754592009,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.7,
+              "positionM": 0.001158941438397676,
+              "velocityMps": 0.0013968884701442974,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.75,
+              "positionM": 0.001288236546773902,
+              "velocityMps": 0.0015666324638807794,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.8,
+              "positionM": 0.00142137813339005,
+              "velocityMps": 0.00173351996425275,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.85,
+              "positionM": 0.0015634944342330925,
+              "velocityMps": 0.0019020220813690258,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.9,
+              "positionM": 0.0017095852814357215,
+              "velocityMps": 0.0020631758244800125,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.95,
+              "positionM": 0.0018640867600314692,
+              "velocityMps": 0.0022297198965350873,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 1,
+              "positionM": 0.002028060516753527,
+              "velocityMps": 0.0023838619181795195,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hover",
+      "durationS": 1,
+      "initialPositionM": [
+        0,
+        0,
+        20
+      ],
+      "initialVelocityMps": [
+        0,
+        0,
+        0
+      ],
+      "duties": null,
+      "directThrustN": [
+        1.765197,
+        1.765197,
+        1.765197,
+        1.765197
+      ],
+      "refinements": [
+        {
+          "hz": 120,
+          "max": {
+            "positionM": 0,
+            "velocityMps": 6.622726687055547e-7,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "rms": {
+            "positionM": 0,
+            "velocityMps": 3.966746472496564e-7,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "samples": [
+            {
+              "time": 0.05,
+              "positionM": 0,
+              "velocityMps": 3.311371443714961e-8,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.1,
+              "positionM": 0,
+              "velocityMps": 6.62274146634445e-8,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.15,
+              "positionM": 0,
+              "velocityMps": 9.934097988661961e-8,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.2,
+              "positionM": 0,
+              "velocityMps": 1.324545451097947e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.25,
+              "positionM": 0,
+              "velocityMps": 1.655681103329698e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.3,
+              "positionM": 0,
+              "velocityMps": 1.986816755561449e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.35,
+              "positionM": 0,
+              "velocityMps": 2.3179524077932e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.4,
+              "positionM": 0,
+              "velocityMps": 2.649093460149743e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.45,
+              "positionM": 0,
+              "velocityMps": 2.980235933591757e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.5,
+              "positionM": 0,
+              "velocityMps": 3.3113784070337715e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.55,
+              "positionM": 0,
+              "velocityMps": 3.642520880475786e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.6,
+              "positionM": 0,
+              "velocityMps": 3.9736633539178e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.65,
+              "positionM": 0,
+              "velocityMps": 4.3048058273598144e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.7,
+              "positionM": 0,
+              "velocityMps": 4.635948300801829e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.75,
+              "positionM": 0,
+              "velocityMps": 4.967082531948108e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.8,
+              "positionM": 0,
+              "velocityMps": 5.298211362969596e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.85,
+              "positionM": 0,
+              "velocityMps": 5.629340193991084e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.9,
+              "positionM": 0,
+              "velocityMps": 5.960469025012571e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.95,
+              "positionM": 0,
+              "velocityMps": 6.291597856034059e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 1,
+              "positionM": 0,
+              "velocityMps": 6.622726687055547e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            }
+          ]
+        },
+        {
+          "hz": 240,
+          "max": {
+            "positionM": 0,
+            "velocityMps": 6.62265165374265e-7,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "rms": {
+            "positionM": 0,
+            "velocityMps": 3.966703937471627e-7,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "samples": [
+            {
+              "time": 0.05,
+              "positionM": 0,
+              "velocityMps": 3.311370733172225e-8,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.1,
+              "positionM": 0,
+              "velocityMps": 6.622727255489735e-8,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.15,
+              "positionM": 0,
+              "velocityMps": 9.934083777807245e-8,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.2,
+              "positionM": 0,
+              "velocityMps": 1.3245467300748714e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.25,
+              "positionM": 0,
+              "velocityMps": 1.6556892035168858e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.3,
+              "positionM": 0,
+              "velocityMps": 1.9868316769589e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.35,
+              "positionM": 0,
+              "velocityMps": 2.3179741504009144e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.4,
+              "positionM": 0,
+              "velocityMps": 2.649105681484798e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.45,
+              "positionM": 0,
+              "velocityMps": 2.9802345125062857e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.5,
+              "positionM": 0,
+              "velocityMps": 3.3113633435277734e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.55,
+              "positionM": 0,
+              "velocityMps": 3.642492174549261e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.6,
+              "positionM": 0,
+              "velocityMps": 3.973621005570749e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.65,
+              "positionM": 0,
+              "velocityMps": 4.3047498365922365e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.7,
+              "positionM": 0,
+              "velocityMps": 4.635878667613724e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.75,
+              "positionM": 0,
+              "velocityMps": 4.967007498635212e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.8,
+              "positionM": 0,
+              "velocityMps": 5.2981363296567e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.85,
+              "positionM": 0,
+              "velocityMps": 5.629265160678187e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.9,
+              "positionM": 0,
+              "velocityMps": 5.960393991699675e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.95,
+              "positionM": 0,
+              "velocityMps": 6.291522822721163e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 1,
+              "positionM": 0,
+              "velocityMps": 6.62265165374265e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            }
+          ]
+        },
+        {
+          "hz": 480,
+          "max": {
+            "positionM": 0,
+            "velocityMps": 6.622614137086202e-7,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "rms": {
+            "positionM": 0,
+            "velocityMps": 3.966673930899749e-7,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "samples": [
+            {
+              "time": 0.05,
+              "positionM": 0,
+              "velocityMps": 3.311363627744868e-8,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.1,
+              "positionM": 0,
+              "velocityMps": 6.622733650374357e-8,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.15,
+              "positionM": 0,
+              "velocityMps": 9.9341583847945e-8,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.2,
+              "positionM": 0,
+              "velocityMps": 1.324552840742399e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.25,
+              "positionM": 0,
+              "velocityMps": 1.6556816717638867e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.3,
+              "positionM": 0,
+              "velocityMps": 1.9868105027853744e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.35,
+              "positionM": 0,
+              "velocityMps": 2.317939333806862e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.4,
+              "positionM": 0,
+              "velocityMps": 2.64906816482835e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.45,
+              "positionM": 0,
+              "velocityMps": 2.9801969958498375e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.5,
+              "positionM": 0,
+              "velocityMps": 3.311325826871325e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.55,
+              "positionM": 0,
+              "velocityMps": 3.642454657892813e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.6,
+              "positionM": 0,
+              "velocityMps": 3.9735834889143007e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.65,
+              "positionM": 0,
+              "velocityMps": 4.3047123199357884e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.7,
+              "positionM": 0,
+              "velocityMps": 4.635841150957276e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.75,
+              "positionM": 0,
+              "velocityMps": 4.966969981978764e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.8,
+              "positionM": 0,
+              "velocityMps": 5.298098813000252e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.85,
+              "positionM": 0,
+              "velocityMps": 5.629227644021739e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.9,
+              "positionM": 0,
+              "velocityMps": 5.960356475043227e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.95,
+              "positionM": 0,
+              "velocityMps": 6.291485306064715e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 1,
+              "positionM": 0,
+              "velocityMps": 6.622614137086202e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "underpowered",
+      "durationS": 1,
+      "initialPositionM": [
+        0,
+        0,
+        20
+      ],
+      "initialVelocityMps": [
+        0,
+        0,
+        0
+      ],
+      "duties": null,
+      "directThrustN": [
+        0.8,
+        0.8,
+        0.8,
+        0.8
+      ],
+      "refinements": [
+        {
+          "hz": 120,
+          "max": {
+            "positionM": 0.0038474382066908674,
+            "velocityMps": 0.003312750678786003,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "rms": {
+            "positionM": 0.0020978636704312957,
+            "velocityMps": 0.001658169422236817,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "samples": [
+            {
+              "time": 0.05,
+              "positionM": 0.00013750477893736957,
+              "velocityMps": 0.000009643476901410875,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.1,
+              "positionM": 0.00028147225270913623,
+              "velocityMps": 0.00003943358450197998,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.15,
+              "positionM": 0.0004235112883357317,
+              "velocityMps": 0.00009002998526874695,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.2,
+              "positionM": 0.0005654571672160102,
+              "velocityMps": 0.00016043779662711088,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.25,
+              "positionM": 0.0007078169907543952,
+              "velocityMps": 0.00024844913426491644,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.3,
+              "positionM": 0.0008801337480264237,
+              "velocityMps": 0.00035801908267041327,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.35,
+              "positionM": 0.0010492382375701936,
+              "velocityMps": 0.00048413774415823063,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.4,
+              "positionM": 0.0012143808050026905,
+              "velocityMps": 0.0006275372435990967,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.45,
+              "positionM": 0.0013802541910656885,
+              "velocityMps": 0.0007906018775991619,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.5,
+              "positionM": 0.0015585900720722634,
+              "velocityMps": 0.0009665266396807759,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.55,
+              "positionM": 0.0017449258125203926,
+              "velocityMps": 0.0011558225299821423,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.6,
+              "positionM": 0.0019373011266203832,
+              "velocityMps": 0.0013587934099517085,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.65,
+              "positionM": 0.002139666866799672,
+              "velocityMps": 0.001574982159112004,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.7,
+              "positionM": 0.0023538234649223,
+              "velocityMps": 0.001798859993201507,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.75,
+              "positionM": 0.0025751507618068104,
+              "velocityMps": 0.002032741814887551,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.8,
+              "positionM": 0.0028092983946095273,
+              "velocityMps": 0.002274967302389186,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.85,
+              "positionM": 0.0030526193673239277,
+              "velocityMps": 0.002525310129017022,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.9,
+              "positionM": 0.0033069218084023078,
+              "velocityMps": 0.0027828198708190754,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.95,
+              "positionM": 0.0035694142014079944,
+              "velocityMps": 0.0030456328288401835,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 1,
+              "positionM": 0.0038474382066908674,
+              "velocityMps": 0.003312750678786003,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            }
+          ]
+        },
+        {
+          "hz": 240,
+          "max": {
+            "positionM": 0.001915294041651805,
+            "velocityMps": 0.001650496345289909,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "rms": {
+            "positionM": 0.0010402604368579924,
+            "velocityMps": 0.0008292521826475239,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "samples": [
+            {
+              "time": 0.05,
+              "positionM": 0.00007074757678893207,
+              "velocityMps": 0.0000049645122865427105,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.1,
+              "positionM": 0.00013842110524819873,
+              "velocityMps": 0.000020181284239528807,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.15,
+              "positionM": 0.0002098882414607317,
+              "velocityMps": 0.000044074804146920776,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.2,
+              "positionM": 0.00028126222092694775,
+              "velocityMps": 0.00007901785186392729,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.25,
+              "positionM": 0.0003549574936840827,
+              "velocityMps": 0.00012506751957985784,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.3,
+              "positionM": 0.00042999947068267375,
+              "velocityMps": 0.0001803972412397492,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.35,
+              "positionM": 0.0005075512258514436,
+              "velocityMps": 0.00024357339784475407,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.4,
+              "positionM": 0.000586863104807378,
+              "velocityMps": 0.0003159241607133545,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.45,
+              "positionM": 0.0006745351969250635,
+              "velocityMps": 0.0003950654548696697,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.5,
+              "positionM": 0.0007632256921894509,
+              "velocityMps": 0.0004794374825762837,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.55,
+              "positionM": 0.0008580086982625801,
+              "velocityMps": 0.0005733659412370251,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.6,
+              "positionM": 0.0009550165807219457,
+              "velocityMps": 0.0006733399950347163,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.65,
+              "positionM": 0.0010582001919949846,
+              "velocityMps": 0.0007827172207575117,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.7,
+              "positionM": 0.0011655452666801125,
+              "velocityMps": 0.0008978761827767023,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.75,
+              "positionM": 0.0012762463428614979,
+              "velocityMps": 0.0010154097378611837,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.8,
+              "positionM": 0.0013940457090626523,
+              "velocityMps": 0.0011429558888149671,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.85,
+              "positionM": 0.0015210184151754902,
+              "velocityMps": 0.0012674137056771784,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.9,
+              "positionM": 0.0016437138005898078,
+              "velocityMps": 0.0013952237404479817,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.95,
+              "positionM": 0.0017784138351970569,
+              "velocityMps": 0.0015283369914378397,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 1,
+              "positionM": 0.001915294041651805,
+              "velocityMps": 0.001650496345289909,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            }
+          ]
+        },
+        {
+          "hz": 480,
+          "max": {
+            "positionM": 0.00095780502797993,
+            "velocityMps": 0.0008284290845477216,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "rms": {
+            "positionM": 0.0005251188123419853,
+            "velocityMps": 0.00041424921851598547,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 0,
+            "thrustN": 0,
+            "soc": 0
+          },
+          "samples": [
+            {
+              "time": 0.05,
+              "positionM": 0.000032600604132682065,
+              "velocityMps": 0.0000026995357850778667,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.1,
+              "positionM": 0.00007357125173257373,
+              "velocityMps": 0.000010048494627712401,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.15,
+              "positionM": 0.0001087987639216692,
+              "velocityMps": 0.000023928434212838745,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.2,
+              "positionM": 0.00014774781663007275,
+              "velocityMps": 0.00004087087920767729,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.25,
+              "positionM": 0.0001832961167309577,
+              "velocityMps": 0.0000611713403806391,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.3,
+              "positionM": 0.00022209846970611125,
+              "velocityMps": 0.0000869371582319367,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.35,
+              "positionM": 0.00026531794948425613,
+              "velocityMps": 0.00011959573671194157,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.4,
+              "positionM": 0.000304575507151128,
+              "velocityMps": 0.00015737580561081543,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.45,
+              "positionM": 0.000344563883448501,
+              "velocityMps": 0.00019837012711088065,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.5,
+              "positionM": 0.0003912927087910134,
+              "velocityMps": 0.00023887313626280715,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.55,
+              "positionM": 0.0004383919990438301,
+              "velocityMps": 0.00028511787910323605,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.6,
+              "positionM": 0.0004896235143156957,
+              "velocityMps": 0.00033740821708061475,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.65,
+              "positionM": 0.0005394013638699846,
+              "velocityMps": 0.00039147233245184765,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.7,
+              "positionM": 0.00059143332820355,
+              "velocityMps": 0.0004475034868538508,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.75,
+              "positionM": 0.0006468212940333729,
+              "velocityMps": 0.0005040018856883322,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.8,
+              "positionM": 0.0007016781553517148,
+              "velocityMps": 0.0005726586476040296,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.85,
+              "positionM": 0.0007638010079489277,
+              "velocityMps": 0.0006322666109506159,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.9,
+              "positionM": 0.0008254612371132453,
+              "velocityMps": 0.0006952267922057942,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.95,
+              "positionM": 0.0008895893723064319,
+              "velocityMps": 0.0007634901896800272,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 1,
+              "positionM": 0.00095780502797993,
+              "velocityMps": 0.0008284290845477216,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "powered-drag",
+      "durationS": 1,
+      "initialPositionM": [
+        0,
+        0,
+        20
+      ],
+      "initialVelocityMps": [
+        1.2,
+        -0.4,
+        0
+      ],
+      "duties": [
+        0.44,
+        0.44,
+        0.44,
+        0.44
+      ],
+      "directThrustN": null,
+      "refinements": [
+        {
+          "hz": 120,
+          "max": {
+            "positionM": 0.00034257469258543714,
+            "velocityMps": 0.000047305764296591966,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 3.552713678800501e-15,
+            "thrustN": 1.5543122344752192e-15,
+            "soc": 6.661338147750939e-16
+          },
+          "rms": {
+            "positionM": 0.00020120630265246168,
+            "velocityMps": 0.00002175391000441184,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 2.383232787117382e-15,
+            "thrustN": 6.933340566559918e-16,
+            "soc": 4.220308060520364e-16
+          },
+          "samples": [
+            {
+              "time": 0.05,
+              "positionM": 0.000012247304992834944,
+              "velocityMps": 7.551226319317474e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.1,
+              "positionM": 0.000026569930578982314,
+              "velocityMps": 7.270674505689701e-7,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.15,
+              "positionM": 0.00004389038625273542,
+              "velocityMps": 0.0000010682271082467003,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 2.220446049250313e-16
+            },
+            {
+              "time": 0.2,
+              "positionM": 0.00006150619793866305,
+              "velocityMps": 0.00000151860537640359,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 3.3306690738754696e-16
+            },
+            {
+              "time": 0.25,
+              "positionM": 0.0000768978234561594,
+              "velocityMps": 0.0000016803133646157822,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 8.881784197001252e-16,
+              "soc": 4.440892098500626e-16
+            },
+            {
+              "time": 0.3,
+              "positionM": 0.00009534343785067771,
+              "velocityMps": 0.0000024544492703106256,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 1.5543122344752192e-15,
+              "soc": 3.3306690738754696e-16
+            },
+            {
+              "time": 0.35,
+              "positionM": 0.00011278948227490784,
+              "velocityMps": 0.0000034735784554446097,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 4.440892098500626e-16
+            },
+            {
+              "time": 0.4,
+              "positionM": 0.00012916388632045798,
+              "velocityMps": 0.000005431400561987979,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 6.661338147750939e-16,
+              "soc": 6.661338147750939e-16
+            },
+            {
+              "time": 0.45,
+              "positionM": 0.0001464798882755116,
+              "velocityMps": 0.000007656121457992975,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 1.3322676295501878e-15,
+              "soc": 6.661338147750939e-16
+            },
+            {
+              "time": 0.5,
+              "positionM": 0.00016313048036485102,
+              "velocityMps": 0.000009881753082776804,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 5.551115123125783e-16
+            },
+            {
+              "time": 0.55,
+              "positionM": 0.0001814857391870606,
+              "velocityMps": 0.000012323429250005034,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 1.3322676295501878e-15,
+              "soc": 5.551115123125783e-16
+            },
+            {
+              "time": 0.6,
+              "positionM": 0.00019838480273777696,
+              "velocityMps": 0.000015207164603009163,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 6.661338147750939e-16,
+              "soc": 3.3306690738754696e-16
+            },
+            {
+              "time": 0.65,
+              "positionM": 0.0002146533240749671,
+              "velocityMps": 0.00001835396473764896,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 2.220446049250313e-16
+            },
+            {
+              "time": 0.7,
+              "positionM": 0.0002332013392179604,
+              "velocityMps": 0.00002188908749386048,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 2.220446049250313e-16
+            },
+            {
+              "time": 0.75,
+              "positionM": 0.0002532938598115454,
+              "velocityMps": 0.000025708809447025678,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 1.1102230246251565e-16
+            },
+            {
+              "time": 0.8,
+              "positionM": 0.00027057159907377545,
+              "velocityMps": 0.000028881640861611656,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 3.3306690738754696e-16
+            },
+            {
+              "time": 0.85,
+              "positionM": 0.00028845505428034,
+              "velocityMps": 0.0000331734831695404,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 8.881784197001252e-16,
+              "soc": 6.661338147750939e-16
+            },
+            {
+              "time": 0.9,
+              "positionM": 0.0003067374511952658,
+              "velocityMps": 0.00003762123314101598,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 8.881784197001252e-16,
+              "soc": 3.3306690738754696e-16
+            },
+            {
+              "time": 0.95,
+              "positionM": 0.00032537203989948724,
+              "velocityMps": 0.00004249161710880616,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 4.440892098500626e-16,
+              "soc": 4.440892098500626e-16
+            },
+            {
+              "time": 1,
+              "positionM": 0.00034257469258543714,
+              "velocityMps": 0.000047305764296591966,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 5.551115123125783e-16
+            }
+          ]
+        },
+        {
+          "hz": 240,
+          "max": {
+            "positionM": 0.0001783931849838743,
+            "velocityMps": 0.00003033514753920041,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 3.552713678800501e-15,
+            "thrustN": 1.5543122344752192e-15,
+            "soc": 0
+          },
+          "rms": {
+            "positionM": 0.00010459563465751796,
+            "velocityMps": 0.000015127719777089582,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 1.3759600911837627e-15,
+            "thrustN": 5.087681048627601e-16,
+            "soc": 0
+          },
+          "samples": [
+            {
+              "time": 0.05,
+              "positionM": 0.000006517687431348115,
+              "velocityMps": 0.0000034517343435299666,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.1,
+              "positionM": 0.000015107359949171472,
+              "velocityMps": 0.000002408876946309117,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.15,
+              "positionM": 0.00002288306258387433,
+              "velocityMps": 0.000003436650802502273,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.2,
+              "positionM": 0.00003286505417784755,
+              "velocityMps": 0.0000057753864761284274,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 0
+            },
+            {
+              "time": 0.25,
+              "positionM": 0.000040620436780606984,
+              "velocityMps": 0.0000051557859727519655,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 0
+            },
+            {
+              "time": 0.3,
+              "positionM": 0.00004762178061643524,
+              "velocityMps": 0.000006067869567209162,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 1.5543122344752192e-15,
+              "soc": 0
+            },
+            {
+              "time": 0.35,
+              "positionM": 0.000057433596934480894,
+              "velocityMps": 0.000007661855812720885,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 0
+            },
+            {
+              "time": 0.4,
+              "positionM": 0.00006616695085505563,
+              "velocityMps": 0.00000753725124602776,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 6.661338147750939e-16,
+              "soc": 0
+            },
+            {
+              "time": 0.45,
+              "positionM": 0.00007394081186269919,
+              "velocityMps": 0.000008438912445368602,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.5,
+              "positionM": 0.00008295116526355463,
+              "velocityMps": 0.000010617634471593884,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 1.3322676295501878e-15,
+              "soc": 0
+            },
+            {
+              "time": 0.55,
+              "positionM": 0.00009176733902306886,
+              "velocityMps": 0.000010642198284099093,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.6,
+              "positionM": 0.00010293270892310639,
+              "velocityMps": 0.000011932797324653961,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 0
+            },
+            {
+              "time": 0.65,
+              "positionM": 0.0001134711321185077,
+              "velocityMps": 0.00001417334666460588,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.7,
+              "positionM": 0.00012437961901789674,
+              "velocityMps": 0.000014905256087967139,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.75,
+              "positionM": 0.00013302349885259206,
+              "velocityMps": 0.00001658663853738962,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 0.8,
+              "positionM": 0.0001407569548158522,
+              "velocityMps": 0.00002006927158440463,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 0
+            },
+            {
+              "time": 0.85,
+              "positionM": 0.00014908865301805206,
+              "velocityMps": 0.00002208096969692776,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 0
+            },
+            {
+              "time": 0.9,
+              "positionM": 0.00015784107697267724,
+              "velocityMps": 0.000024571338176749762,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 0
+            },
+            {
+              "time": 0.95,
+              "positionM": 0.00017074042722622608,
+              "velocityMps": 0.000027983544836407384,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 0
+            },
+            {
+              "time": 1,
+              "positionM": 0.0001783931849838743,
+              "velocityMps": 0.00003033514753920041,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 4.440892098500626e-16,
+              "soc": 0
+            }
+          ]
+        },
+        {
+          "hz": 480,
+          "max": {
+            "positionM": 0.00008563401575845503,
+            "velocityMps": 0.000022332081941507916,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 3.552713678800501e-15,
+            "thrustN": 1.5543122344752192e-15,
+            "soc": 4.440892098500626e-16
+          },
+          "rms": {
+            "positionM": 0.000045512879626979634,
+            "velocityMps": 0.000015362313230536123,
+            "attitudeRad": 0,
+            "bodyRateRadps": 0,
+            "voltageV": 2.1018137570293106e-15,
+            "thrustN": 5.916561726981507e-16,
+            "soc": 2.1499376424746292e-16
+          },
+          "samples": [
+            {
+              "time": 0.05,
+              "positionM": 0.000006857654300230187,
+              "velocityMps": 0.0000044617873910979084,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 6.661338147750939e-16,
+              "soc": 1.1102230246251565e-16
+            },
+            {
+              "time": 0.1,
+              "positionM": 0.000007502768341812861,
+              "velocityMps": 0.000012717965611493127,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 6.661338147750939e-16,
+              "soc": 1.1102230246251565e-16
+            },
+            {
+              "time": 0.15,
+              "positionM": 0.0000025912291030882906,
+              "velocityMps": 0.000011256342214893876,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 1.1102230246251565e-16
+            },
+            {
+              "time": 0.2,
+              "positionM": 0.000015828210555463935,
+              "velocityMps": 0.000007928214764028519,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 1.1102230246251565e-16
+            },
+            {
+              "time": 0.25,
+              "positionM": 0.000012262038040873784,
+              "velocityMps": 0.000009601208366465443,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 0
+            },
+            {
+              "time": 0.3,
+              "positionM": 0.000024863195843626237,
+              "velocityMps": 0.000011950145813653731,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 1.5543122344752192e-15,
+              "soc": 0
+            },
+            {
+              "time": 0.35,
+              "positionM": 0.00002143597918623246,
+              "velocityMps": 0.000015236834506906338,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 1.1102230246251565e-16
+            },
+            {
+              "time": 0.4,
+              "positionM": 0.000028315493154625635,
+              "velocityMps": 0.00002156029385752272,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 6.661338147750939e-16,
+              "soc": 1.1102230246251565e-16
+            },
+            {
+              "time": 0.45,
+              "positionM": 0.000028690401009720362,
+              "velocityMps": 0.000022332081941507916,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 1.1102230246251565e-16
+            },
+            {
+              "time": 0.5,
+              "positionM": 0.00003398709371531444,
+              "velocityMps": 0.000018905115222936796,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 1.3322676295501878e-15,
+              "soc": 1.1102230246251565e-16
+            },
+            {
+              "time": 0.55,
+              "positionM": 0.000039020421671138906,
+              "velocityMps": 0.000016493611356727832,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 2.220446049250313e-16
+            },
+            {
+              "time": 0.6,
+              "positionM": 0.00004261653154087172,
+              "velocityMps": 0.00001473616751376407,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 1.1102230246251565e-16
+            },
+            {
+              "time": 0.65,
+              "positionM": 0.000049353705617706876,
+              "velocityMps": 0.000014190527837556242,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 1.1102230246251565e-16
+            },
+            {
+              "time": 0.7,
+              "positionM": 0.000047028805528092496,
+              "velocityMps": 0.00001777871821521522,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 4.440892098500626e-16
+            },
+            {
+              "time": 0.75,
+              "positionM": 0.000059467244127482164,
+              "velocityMps": 0.000017189273568996267,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 0,
+              "soc": 2.220446049250313e-16
+            },
+            {
+              "time": 0.8,
+              "positionM": 0.00005777563518815947,
+              "velocityMps": 0.000012927661966889038,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 4.440892098500626e-16
+            },
+            {
+              "time": 0.85,
+              "positionM": 0.00006792049519289213,
+              "velocityMps": 0.000013293090035969289,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 8.881784197001252e-16,
+              "soc": 4.440892098500626e-16
+            },
+            {
+              "time": 0.9,
+              "positionM": 0.00007272035200748929,
+              "velocityMps": 0.000014321318814116475,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 0,
+              "thrustN": 2.220446049250313e-16,
+              "soc": 2.220446049250313e-16
+            },
+            {
+              "time": 0.95,
+              "positionM": 0.00007045955248556324,
+              "velocityMps": 0.000016591513555909652,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 4.440892098500626e-16,
+              "soc": 2.220446049250313e-16
+            },
+            {
+              "time": 1,
+              "positionM": 0.00008563401575845503,
+              "velocityMps": 0.000020841003419875303,
+              "attitudeRad": 0,
+              "bodyRateRadps": 0,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 4.440892098500626e-16,
+              "soc": 1.1102230246251565e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "differential",
+      "durationS": 0.2,
+      "initialPositionM": [
+        0,
+        0,
+        20
+      ],
+      "initialVelocityMps": [
+        0,
+        0,
+        0
+      ],
+      "duties": [
+        0.47,
+        0.45,
+        0.43,
+        0.46
+      ],
+      "directThrustN": null,
+      "refinements": [
+        {
+          "hz": 120,
+          "max": {
+            "positionM": 0.0003726910257610739,
+            "velocityMps": 0.0062712860628694415,
+            "attitudeRad": 0.000962552798134445,
+            "bodyRateRadps": 0.0013152103965619938,
+            "voltageV": 3.552713678800501e-15,
+            "thrustN": 1.3322676295501878e-15,
+            "soc": 2.220446049250313e-16
+          },
+          "rms": {
+            "positionM": 0.00020825694596635305,
+            "velocityMps": 0.003692124017564607,
+            "attitudeRad": 0.0006461679426644571,
+            "bodyRateRadps": 0.0009048709664307167,
+            "voltageV": 1.7763568394002505e-15,
+            "thrustN": 7.691850745534255e-16,
+            "soc": 1.7554167342883506e-16
+          },
+          "samples": [
+            {
+              "time": 0.05,
+              "positionM": 0.00003098033414316133,
+              "velocityMps": 0.0003889431740799659,
+              "attitudeRad": 0.00021900375266743,
+              "bodyRateRadps": 0.0003365164664875713,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 1.3322676295501878e-15,
+              "soc": 1.1102230246251565e-16
+            },
+            {
+              "time": 0.1,
+              "positionM": 0.00006999431206034236,
+              "velocityMps": 0.0015764489669537962,
+              "attitudeRad": 0.00045262028084612586,
+              "bodyRateRadps": 0.000667636696100908,
+              "voltageV": 0,
+              "thrustN": 4.440892098500626e-16,
+              "soc": 2.220446049250313e-16
+            },
+            {
+              "time": 0.15,
+              "positionM": 0.00016948816084218387,
+              "velocityMps": 0.0035442378622062144,
+              "attitudeRad": 0.000700568618335689,
+              "bodyRateRadps": 0.0009931794330001315,
+              "voltageV": 0,
+              "thrustN": 4.440892098500626e-16,
+              "soc": 2.220446049250313e-16
+            },
+            {
+              "time": 0.2,
+              "positionM": 0.0003726910257610739,
+              "velocityMps": 0.0062712860628694415,
+              "attitudeRad": 0.000962552798134445,
+              "bodyRateRadps": 0.0013152103965619938,
+              "voltageV": 0,
+              "thrustN": 4.440892098500626e-16,
+              "soc": 1.1102230246251565e-16
+            }
+          ]
+        },
+        {
+          "hz": 240,
+          "max": {
+            "positionM": 0.000194799737546906,
+            "velocityMps": 0.0031487849528279792,
+            "attitudeRad": 0.00048319278626580926,
+            "bodyRateRadps": 0.0006791020978495593,
+            "voltageV": 3.552713678800501e-15,
+            "thrustN": 1.3322676295501878e-15,
+            "soc": 0
+          },
+          "rms": {
+            "positionM": 0.00011043673597586365,
+            "velocityMps": 0.0018550963260885885,
+            "attitudeRad": 0.0003241166052794027,
+            "bodyRateRadps": 0.00046527067093567735,
+            "voltageV": 1.7763568394002505e-15,
+            "thrustN": 7.691850745534255e-16,
+            "soc": 0
+          },
+          "samples": [
+            {
+              "time": 0.05,
+              "positionM": 0.00001742566666722646,
+              "velocityMps": 0.0001983879746172975,
+              "attitudeRad": 0.00010959897558515742,
+              "bodyRateRadps": 0.0001697569899832728,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 1.3322676295501878e-15,
+              "soc": 0
+            },
+            {
+              "time": 0.1,
+              "positionM": 0.000042490461899753744,
+              "velocityMps": 0.0007957310676217049,
+              "attitudeRad": 0.00022668787390222082,
+              "bodyRateRadps": 0.0003406887586694382,
+              "voltageV": 0,
+              "thrustN": 4.440892098500626e-16,
+              "soc": 0
+            },
+            {
+              "time": 0.15,
+              "positionM": 0.00009342943675531437,
+              "velocityMps": 0.001782733046942947,
+              "attitudeRad": 0.0003511861314864748,
+              "bodyRateRadps": 0.0005097462738423551,
+              "voltageV": 0,
+              "thrustN": 4.440892098500626e-16,
+              "soc": 0
+            },
+            {
+              "time": 0.2,
+              "positionM": 0.000194799737546906,
+              "velocityMps": 0.0031487849528279792,
+              "attitudeRad": 0.00048319278626580926,
+              "bodyRateRadps": 0.0006791020978495593,
+              "voltageV": 0,
+              "thrustN": 4.440892098500626e-16,
+              "soc": 0
+            }
+          ]
+        },
+        {
+          "hz": 480,
+          "max": {
+            "positionM": 0.00009494978546744199,
+            "velocityMps": 0.0015762443162417753,
+            "attitudeRad": 0.0002446407714961922,
+            "bodyRateRadps": 0.0003868815242617962,
+            "voltageV": 3.552713678800501e-15,
+            "thrustN": 1.3322676295501878e-15,
+            "soc": 3.3306690738754696e-16
+          },
+          "rms": {
+            "positionM": 0.00005340431018128023,
+            "velocityMps": 0.0009290881681620031,
+            "attitudeRad": 0.00016364862151284704,
+            "bodyRateRadps": 0.00025941823354317116,
+            "voltageV": 2.5121479338940403e-15,
+            "thrustN": 9.930136612989092e-16,
+            "soc": 1.8410966031475738e-16
+          },
+          "samples": [
+            {
+              "time": 0.05,
+              "positionM": 0.000007804859187355589,
+              "velocityMps": 0.00010016714047932837,
+              "attitudeRad": 0.00005487021142533507,
+              "bodyRateRadps": 0.00008826705072424657,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 1.3322676295501878e-15,
+              "soc": 0
+            },
+            {
+              "time": 0.1,
+              "positionM": 0.00001897389960707137,
+              "velocityMps": 0.00039965635706974814,
+              "attitudeRad": 0.00011378011888835757,
+              "bodyRateRadps": 0.00018195691378929886,
+              "voltageV": 3.552713678800501e-15,
+              "thrustN": 1.3322676295501878e-15,
+              "soc": 1.1102230246251565e-16
+            },
+            {
+              "time": 0.15,
+              "positionM": 0.00004440377157637215,
+              "velocityMps": 0.000893596381266138,
+              "attitudeRad": 0.00017696814023393696,
+              "bodyRateRadps": 0.00028038290790314473,
+              "voltageV": 0,
+              "thrustN": 4.440892098500626e-16,
+              "soc": 3.3306690738754696e-16
+            },
+            {
+              "time": 0.2,
+              "positionM": 0.00009494978546744199,
+              "velocityMps": 0.0015762443162417753,
+              "attitudeRad": 0.0002446407714961922,
+              "bodyRateRadps": 0.0003868815242617962,
+              "voltageV": 0,
+              "thrustN": 4.440892098500626e-16,
+              "soc": 1.1102230246251565e-16
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "analyticalFreefall": [
+    {
+      "hz": 120,
+      "positionErrorM": 0.005117497253419145,
+      "velocityErrorMps": 0.00006468811035098554,
+      "energyErrorJ": -0.036590310723852326
+    },
+    {
+      "hz": 240,
+      "positionErrorM": 0.002484402465821489,
+      "velocityErrorMps": 0.00008185424804629804,
+      "energyErrorJ": -0.018119792198149298
+    },
+    {
+      "hz": 480,
+      "positionErrorM": 0.001300892639161333,
+      "velocityErrorMps": 0.00019852600097713946,
+      "energyErrorJ": -0.007783562941938271
+    }
+  ],
+  "electricalTenSecondAudit": {
+    "chemicalJ": 2946.897700054118,
+    "stateJ": 2946.897700054069,
+    "busJ": 2784.995991213758,
+    "packHeatJ": 161.90170884035612,
+    "copperJ": 182.2472383969713,
+    "escJ": 24.299631786262857,
+    "frictionJ": 112.04920900440588,
+    "rotorJ": 2466.399912026127,
+    "energyError": -5.411493475548923e-11,
+    "sourceError": -4.9112713895738125e-11,
+    "chargeError": -3.0127011996228248e-12,
+    "thermalError": -1.981699249142821e-10
+  },
+  "passiveContacts": [
+    {
+      "position": [
+        0,
+        0,
+        0.3
+      ],
+      "velocity": [
+        1,
+        0,
+        -3
+      ],
+      "initialKineticJ": 3.5999999999999996,
+      "peakKineticJ": 3.5999999999999996,
+      "finalKineticJ": 0.011326537097822187,
+      "contacts": 1
+    },
+    {
+      "position": [
+        9,
+        2.1,
+        2
+      ],
+      "velocity": [
+        5,
+        0,
+        0
+      ],
+      "initialKineticJ": 9,
+      "peakKineticJ": 9,
+      "finalKineticJ": 0.005161732557688848,
+      "contacts": 1
+    }
+  ]
+}
