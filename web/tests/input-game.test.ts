@@ -49,10 +49,11 @@ describe('C: controller API, calibration and fail-safe (no physical hardware)',(
     expect(i.sample([], .02,40).controls).toEqual(ZERO);expect(reasons.at(-1)).toContain('disconnected');
     p.axes=[NaN,0,0,0];expect(i.sample([p],.02,50).controls).toEqual(ZERO);
   });
-  it('frozen nonzero timestamps disarm while changing timestamps continue',()=>{
+  it('fixed timestamp remains valid until an actual disconnect',()=>{
     const reasons:string[]=[];const i=new InputManager(cloneSettings(),r=>reasons.push(r)),p=pad();p.timestamp=1;
     for(let n=0;n<25;n++)i.sample([p],.1,n*100);
-    expect(reasons.at(-1)).toContain('stale');
+    expect(reasons.filter(r=>r.includes('stale'))).toEqual([]);
+    i.sample([], .1,2600);expect(reasons.at(-1)).toContain('disconnected');
   });
 });
 describe('game flow, course and reproducible replay',()=>{
@@ -101,7 +102,10 @@ describe('input audit regressions',()=>{
     const replacement=input.sample([ps5],.01,650);
     expect(reasons.some(r=>r.includes('replaced'))).toBe(true);
     expect(replacement.actions).not.toContain('arm');
-    expect(input.sample([ps5],.01,1251).actions).toContain('arm');
+    expect(input.sample([ps5],.01,1251).actions).not.toContain('arm');
+    ps5.buttons[0]={value:0,pressed:false};input.sample([ps5],.01,1260);
+    ps5.buttons[0]={value:1,pressed:true};input.sample([ps5],.01,1270);
+    expect(input.sample([ps5],.01,1870).actions).toContain('arm');
   });
   it('hostile calibration ranges stay bounded and invalid live settings fail closed',()=>{
     for(const center of [-.5,0,.5]){

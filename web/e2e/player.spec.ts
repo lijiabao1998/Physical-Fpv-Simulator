@@ -214,3 +214,28 @@ test('production keyboard takeoff uses native input without development hooks',a
   await page.keyboard.press('KeyX');await expect(page.getByTestId('arm')).toHaveText('Hold ARM · 0.6s');
   expect(await page.evaluate(()=> '__FPV_TEST__' in window)).toBe(false);
 });
+
+// G07 additions preserve the thirteen published acceptance cases above.
+test('G07 fixed-timestamp API controls remain present and reconnect cannot auto-arm',async({page})=>{
+ await page.addInitScript(()=>{
+  const state={pad:{id:'Xbox / DualSense API fixture, hardware untested',index:2,connected:true,mapping:'standard',timestamp:1,axes:[0,0,0,0],buttons:Array.from({length:17},()=>({value:0,pressed:false}))}};
+  Object.assign(window,{__G07_PAD__:state});Object.defineProperty(navigator,'getGamepads',{value:()=>[null,null,state.pad]});
+ });
+ await page.goto(base);await expect(page.locator('#loading')).toHaveCount(0);await page.getByTestId('start').click();
+ await page.waitForTimeout(3500);
+ await expect(page.getByTestId('input-status')).toContainText('CONTROLLER');
+ await expect(page.getByTestId('game-status')).not.toContainText('stale');
+ await page.evaluate(()=>{const s=(window as unknown as {__G07_PAD__:{pad:{connected:boolean;buttons:{value:number;pressed:boolean}[]}}}).__G07_PAD__;s.pad.connected=false;});
+ await expect.poll(async()=>(await snapshot(page)).armed).toBe(false);
+ await page.evaluate(()=>{const s=(window as unknown as {__G07_PAD__:{pad:{connected:boolean;buttons:{value:number;pressed:boolean}[]}}}).__G07_PAD__;s.pad.connected=true;s.pad.buttons[0]={value:1,pressed:true};});
+ await page.waitForTimeout(900);expect((await snapshot(page)).armed).toBe(false);
+});
+for(const width of [1440,360,412])test(`G07 optional measured diagnostics at ${width}`,async({page},info)=>{
+ await page.setViewportSize({width,height:900});await page.goto(base);await expect(page.locator('#loading')).toHaveCount(0);
+ await page.getByTestId('start').click();await page.getByRole('button',{name:'Physics',exact:true}).click();
+ await expect(page.getByTestId('performance-stats')).toHaveText('Diagnostics off');
+ await page.locator('#performance-toggle').check();await expect(page.getByTestId('performance-stats')).toContainText('physicsStepMs');
+ await expect(page.getByTestId('performance-stats')).toContainText('lastStop');
+ await page.screenshot({path:info.outputPath(`g07-diagnostics-${width}.png`)});
+ await page.locator('#performance-toggle').uncheck();await expect(page.getByTestId('performance-stats')).toHaveText('Diagnostics off');
+});
