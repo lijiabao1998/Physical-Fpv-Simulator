@@ -1,6 +1,7 @@
 import { DEFAULT_ASSEMBLY,FIXED_DT,assemblyModel,type Assembly } from '../physics/config';
 import { FlightWorld } from '../physics/world';
 import { Powertrain } from '../physics/powertrain';
+import {TransientPowertrain,G07_MODEL,G08_MODEL,type PhysicsModel} from '../physics/transient';
 import { ZERO,motorDuties,validateControls,type Controls,type FlightMode } from '../physics/controller';
 import { norm,type V3 } from '../physics/math';
 import { Course } from './course';
@@ -8,7 +9,7 @@ import { Course } from './course';
 export type SessionState='ready'|'flying'|'paused'|'crashed'|'finished'|'replay';
 export interface ReplayEvent { c:Controls; a:boolean; m:FlightMode; r:number }
 export interface ReplayBundle {
-  schema:'physical-fpv-replay-v1';version:'0.1.0';build:string;dt:number;assembly:Assembly;practice:boolean;events:ReplayEvent[];
+  schema:'physical-fpv-replay-v1';physicsModel?:PhysicsModel;version:'0.1.0';build:string;dt:number;assembly:Assembly;practice:boolean;events:ReplayEvent[];
 }
 const MAX_EVENTS=144000;
 export class GameSession {
@@ -17,8 +18,8 @@ export class GameSession {
   rotorPhases=[0,0,0,0];
   reason='Throttle to zero. Hold ARM to confirm.';lastControls:Controls={...ZERO};
   events:ReplayEvent[]=[];private replayEvents:ReplayEvent[]|null=null;private replayIndex=0;
-  constructor(public assembly:Assembly={...DEFAULT_ASSEMBLY},public practice=true) {
-    const model=assemblyModel(assembly);this.world=new FlightWorld(model);this.power=new Powertrain(model);this.course=new Course(practice);
+  constructor(public assembly:Assembly={...DEFAULT_ASSEMBLY},public practice=true,public physicsModel:PhysicsModel=G08_MODEL) {
+    const model=assemblyModel(assembly);this.world=new FlightWorld(model);this.power=this.physicsModel===G08_MODEL?new TransientPowertrain(model):new Powertrain(model);this.course=new Course(practice);
   }
   start() {if(this.state==='ready'){this.state='flying';this.reason='Ready. Zero throttle, then hold ARM.';}}
   arm(throttle:number) {
@@ -28,7 +29,7 @@ export class GameSession {
     this.armed=true;this.reason='Armed. Raise throttle gently.';return true;
   }
   disarm(reason='Disarmed') {
-    this.armed=false;this.lastControls={...ZERO};this.power.last=this.power.evaluate([0,0,0,0]);this.reason=reason;
+    this.armed=false;this.lastControls={...ZERO};this.power.last=this.power instanceof TransientPowertrain?this.power.coastOutput():this.power.evaluate([0,0,0,0]);this.reason=reason;
     this.world.body.resetForces(true);this.world.body.resetTorques(true);
   }
   fail(reason:string) {this.disarm(reason);if(['flying','replay'].includes(this.state))this.state='paused';}
@@ -38,7 +39,7 @@ export class GameSession {
   }
   reset(assembly=this.assembly,practice=this.practice) {
     this.world.dispose();this.assembly={...assembly};this.practice=practice;
-    const model=assemblyModel(assembly);this.world=new FlightWorld(model);this.power=new Powertrain(model);this.course=new Course(practice);
+    const model=assemblyModel(assembly);this.world=new FlightWorld(model);this.power=this.physicsModel===G08_MODEL?new TransientPowertrain(model):new Powertrain(model);this.course=new Course(practice);
     this.armed=false;this.time=0;this.airtime=0;this.rotorPhases=[0,0,0,0];this.state='flying';this.events=[];this.lastControls={...ZERO};this.replayEvents=null;this.replayIndex=0;
     this.reason='Fresh pack. Zero throttle, then hold ARM.';
   }
@@ -72,18 +73,19 @@ export class GameSession {
     } catch(error) {this.fail(`Physics guard: ${(error as Error).message}. Retry.`);}
   }
   exportReplay(build:string):ReplayBundle {
-    return {schema:'physical-fpv-replay-v1',version:'0.1.0',build,dt:FIXED_DT,assembly:{...this.assembly},practice:this.practice,events:structuredClone(this.events)};
+    return {schema:'physical-fpv-replay-v1',physicsModel:this.physicsModel,version:'0.1.0',build,dt:FIXED_DT,assembly:{...this.assembly},practice:this.practice,events:structuredClone(this.events)};
   }
   replay(bundle:unknown) {
     const b=bundle as ReplayBundle;
     if(!b||b.schema!=='physical-fpv-replay-v1'||b.version!=='0.1.0'||b.dt!==FIXED_DT||!Array.isArray(b.events)||!b.events.length||b.events.length>MAX_EVENTS||typeof b.practice!=='boolean')throw Error('Unsupported or oversized replay');
+    if(b.physicsModel!==undefined&&b.physicsModel!==G07_MODEL&&b.physicsModel!==G08_MODEL)throw Error('Unknown physics model');
     assemblyModel(b.assembly);
     for(const e of b.events){validateControls(e.c);if(typeof e.a!=='boolean'||!['angle','acro'].includes(e.m)||!Number.isFinite(e.r)||e.r<1||e.r>10)throw Error('Invalid replay event');}
     const events=structuredClone(b.events);
-    this.reset(b.assembly,b.practice);this.replayEvents=events;this.replayIndex=0;this.state='replay';this.reason='Input replay — same build/runtime only; no hardware claim.';
+    this.physicsModel=b.physicsModel??G07_MODEL;this.reset(b.assembly,b.practice);this.replayEvents=events;this.replayIndex=0;this.state='replay';this.reason='Input replay — same build/runtime only; no hardware claim.';
   }
   snapshot() {
-    return {state:this.state,armed:this.armed,mode:this.mode,time:this.time,airtime:this.airtime,
+    return {physicsModel:this.physicsModel,state:this.state,armed:this.armed,mode:this.mode,time:this.time,airtime:this.airtime,
       position:this.world.position,velocity:this.world.velocity,quaternion:this.world.quaternion,rates:this.world.rates,
       voltage:this.power.last.voltage,current:this.power.last.current,soc:this.power.soc,
       thrust:[...this.power.last.thrust],rpm:[...this.power.last.rpm],contacts:this.world.contacts,
@@ -91,13 +93,13 @@ export class GameSession {
   }
 }
 export const BEST_KEY='physical-fpv-course-best-v1';
-export function loadBest(storage: Pick<Storage,'getItem'>): number|null {
-  try{const raw=storage.getItem(BEST_KEY);if(!raw)return null;const n=Number(raw);return Number.isFinite(n)&&n>0?n:null;}catch{return null;}
+export function loadBest(storage: Pick<Storage,'getItem'>,model:PhysicsModel=G07_MODEL): number|null {
+  try{const raw=storage.getItem(model===G07_MODEL?BEST_KEY:BEST_KEY+'-'+model);if(!raw)return null;const n=Number(raw);return Number.isFinite(n)&&n>0?n:null;}catch{return null;}
 }
-export function saveBest(storage:Pick<Storage,'getItem'|'setItem'>,time:number) {
+export function saveBest(storage:Pick<Storage,'getItem'|'setItem'>,time:number,model:PhysicsModel=G07_MODEL) {
   if(!Number.isFinite(time)||time<=0)return null;
-  const current=loadBest(storage),best=current===null?time:Math.min(time,current);
-  try{storage.setItem(BEST_KEY,String(best));return best;}catch{return null;}
+  const current=loadBest(storage,model),best=current===null?time:Math.min(time,current);
+  try{storage.setItem(model===G07_MODEL?BEST_KEY:BEST_KEY+'-'+model,String(best));return best;}catch{return null;}
 }
 /** Contact/crash is an explicit game rule; collision impulses are still Rapier's. */
 export const ZERO_POSITION: V3=[0,0,.105];

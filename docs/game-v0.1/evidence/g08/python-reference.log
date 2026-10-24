@@ -1,0 +1,6 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> physical-fpv-player@0.1.0 reference
+> python3 ../reference/generate.py
+
+Wrote 5 pinned Python trajectories; source hashes verified, no hardware claim.

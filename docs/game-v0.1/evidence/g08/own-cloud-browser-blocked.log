@@ -1,0 +1,35 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> physical-fpv-player@0.1.0 test:e2e
+> playwright test
+
+[WebServer] (node:31) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+[WebServer] (node:44) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] node:internal/errors:542
+[WebServer]       throw error;
+[WebServer]       ^
+[WebServer] 
+[WebServer] SystemError [ERR_SYSTEM_ERROR]: A system error occurred: uv_interface_addresses returned Unknown system error 1 (Unknown system error 1)
+[WebServer]     at Object.networkInterfaces (node:os:218:16)
+[WebServer]     at resolveServerUrls (file:///workspace/shared/own-cloud-migration-20261024/FPV-g07-quality-followup/web/node_modules/vite/dist/node/chunks/node.js:2670:27)
+[WebServer]     at Server.<anonymous> (file:///workspace/shared/own-cloud-migration-20261024/FPV-g07-quality-followup/web/node_modules/vite/dist/node/chunks/node.js:24931:27)
+[WebServer]     at Server.emit (node:events:521:24)
+[WebServer]     at emitListeningNT (node:net:2210:10)
+[WebServer]     at process.processTicksAndRejections (node:internal/process/task_queues:89:21) {
+[WebServer]   code: 'ERR_SYSTEM_ERROR',
+[WebServer]   info: {
+[WebServer]     errno: 1,
+[WebServer]     code: 'Unknown system error 1',
+[WebServer]     message: 'Unknown system error 1',
+[WebServer]     syscall: 'uv_interface_addresses'
+[WebServer]   },
+[WebServer]   errno: [Getter/Setter],
+[WebServer]   syscall: [Getter/Setter]
+[WebServer] }
+[WebServer] 
+[WebServer] Node.js v24.19.0
+Error: Process from config.webServer was not able to start. Exit code: 1
+
