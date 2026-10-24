@@ -20,7 +20,13 @@ test('actual Chromium: start, confirmed ARM, takeoff, mode, fail-safe, retry and
   await page.evaluate(()=>window.dispatchEvent(new Event('blur')));
   await expect.poll(async()=>(await snapshot(page)).armed).toBe(false);
   expect((await snapshot(page)).state).toBe('paused');
-  await page.getByTestId('retry').click();expect((await snapshot(page)).time).toBeLessThan(.5);
+  await page.getByTestId('retry').evaluate(button=>button.addEventListener('click',()=>{
+    const w=window as unknown as {__FPV_TEST__:Harness;__RETRY_RESULT__:Snapshot};
+    w.__RETRY_RESULT__=w.__FPV_TEST__.snapshot();
+  },{once:true}));
+  await page.getByTestId('retry').click();
+  const reset=await page.evaluate(()=>(window as unknown as {__RETRY_RESULT__:Snapshot}).__RETRY_RESULT__);
+  expect(reset.time).toBeLessThan(.5);expect(reset.time).toBe(0);
   expect((await snapshot(page)).armed).toBe(false);
   expect(errors).toEqual([]);expect(failed).toEqual([]);
 });
@@ -92,14 +98,19 @@ test('record actual browser frame intervals without claiming physical-device per
   expect(Number.isFinite(result.meanFps)).toBe(true);
 });
 test('synthetic scenario setup: all five ordered gates finish and best persists',async({page})=>{
-  await page.goto(base);await expect(page.locator('#loading')).toHaveCount(0);await page.getByTestId('start').click();
-  const end=await page.evaluate(()=>{
-    const h=(window as unknown as {__FPV_TEST__:Harness}).__FPV_TEST__;
+  await page.goto(base);await expect(page.locator('#loading')).toHaveCount(0);
+  // Run the deterministic fixture immediately after the native start handler,
+  // before a slow renderer can legitimately trigger the 250 ms safety pause.
+  await page.getByTestId('start').evaluate(button=>button.addEventListener('click',()=>{
+    const w=window as unknown as {__FPV_TEST__:Harness;__COURSE_RESULT__:unknown};
+    const h=w.__FPV_TEST__;
     for(const [x,y,z] of [[10,0,2.1],[23,-4,2.6],[36,1,3.1],[50,6,2.6],[65,0,2.1]]) {
       h.place([x-.05,y,z],[8,0,0]);h.tick(4);
     }
-    return {snapshot:h.snapshot(),best:localStorage.getItem('physical-fpv-course-best-v1')};
-  });
+    w.__COURSE_RESULT__={snapshot:h.snapshot(),best:localStorage.getItem('physical-fpv-course-best-v1')};
+  },{once:true}));
+  await page.getByTestId('start').click();
+  const end=await page.evaluate(()=>(window as unknown as {__COURSE_RESULT__:{snapshot:Snapshot;best:string|null}}).__COURSE_RESULT__);
   expect(end.snapshot.gate).toBe(5);expect(end.snapshot.state).toBe('finished');expect(end.snapshot.armed).toBe(false);
   expect(Number(end.best)).toBeGreaterThan(0);
   await page.reload();await expect(page.locator('#loading')).toHaveCount(0);
@@ -190,4 +201,16 @@ for (const width of [360,412]) test(`mobile ${width}: touch input, fail-safe and
     await page.screenshot({path:info.outputPath(`mobile-controls-${width}.png`)});
     expect(errors).toEqual([]);
   } finally {await context.close();}
+});
+
+test('production keyboard takeoff uses native input without development hooks',async({page},info)=>{
+  await page.goto('http://127.0.0.1:4174/Physical-Fpv-Simulator/');
+  await expect(page.locator('#loading')).toHaveCount(0);await page.getByTestId('start').click();
+  await page.keyboard.down('Space');await page.waitForTimeout(750);await page.keyboard.up('Space');
+  await expect(page.getByTestId('arm')).toHaveText('ARMED');
+  await page.keyboard.down('ArrowUp');await page.waitForTimeout(1700);await page.keyboard.up('ArrowUp');
+  await expect.poll(async()=>Number(await page.getByTestId('hud-altitude').innerText())).toBeGreaterThan(.3);
+  await page.screenshot({path:info.outputPath('production-keyboard-flight.png')});
+  await page.keyboard.press('KeyX');await expect(page.getByTestId('arm')).toHaveText('Hold ARM · 0.6s');
+  expect(await page.evaluate(()=> '__FPV_TEST__' in window)).toBe(false);
 });

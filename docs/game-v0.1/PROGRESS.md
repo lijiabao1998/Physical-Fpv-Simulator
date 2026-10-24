@@ -123,3 +123,9 @@ This changes the observation time, not reset behavior or an acceptance threshold
 Visual inspection also found clipped 360 px navigation and HUD labels missed by
 the original limited assertions. Reflow mobile navigation/HUD and assert full
 Pause-button visibility plus the mode label's right edge. Original PNGs retained.
+
+### 2026-10-24 Chromium verification follow-up
+- Run 40094040278 (7a63ec90): 49 unit tests, Python comparison, typecheck and build pass; 10/12 Chromium cases pass. Native assembly reset and 360/412 control bounds pass.
+- Retained two further failures: retry sampled at 0.6 s after a correct reset, and deterministic five-gate fixture started after a render-stall safety pause. Observe reset and deterministic fixture in the native click event after the product handler, retaining exact zero and all five ordered gates; the 250 ms guard is unchanged.
+- Added a separate production-bundle keyboard takeoff test without development hooks. Its result is pending, not claimed passed.
+- Normal GitHub repository metadata reports `has_pages=false`. Public deployment is not configured or verified. Original branch-rule administration denial remains preserved; no credential replacement or protection bypass.
