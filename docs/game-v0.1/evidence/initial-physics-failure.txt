@@ -1,0 +1,10 @@
+2026-10-24, first 20-test physics run: 19 pass / 1 fail.
+Test: freefall follows gravity and total energy converges without thrust
+Observed vz = -9.806568145751953 m/s at t=1 s.
+Analytical vz = -9.80665 m/s.
+Difference = 0.00008185424804629804 m/s.
+Original toBeCloseTo(...,4) demanded <0.00005 m/s.
+Cause: repeated Float32 velocity accumulation in Rapier, while Python uses Float64.
+Repair: explicit 0.0002 m/s one-second analytical velocity tolerance (0.0021%).
+Position, energy, 120/240/480 Hz convergence and Python-trajectory checks retained.
+No empirical or research acceptance criterion changed. This is software evidence.

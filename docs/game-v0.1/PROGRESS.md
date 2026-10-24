@@ -76,3 +76,22 @@ failures remain in their original branches. No research gate is redefined.
   real-browser acceptance path and save reproducible screenshots.
 
 Progress, test failures/fixes and final evidence are appended as work is verified.
+
+## 2026-10-24 12:06 UTC: resumed existing player implementation
+
+Fresh fetch found PR 4 still at efe60981, main unchanged. Existing local commits
+6816b68 and 39d5ca8 were preserved, not rebuilt. The implementation described in
+CONSTRUCTION.md now includes G01–G05 code and G06 workflow/tests; those cards are
+not release-complete because browser/CI/public acceptance remains outstanding.
+
+Re-ran 44 unit/API/numerical tests: all pass. Regenerated five Python trajectories
+with source hashes verified, TypeScript/build/static Pages-path checks pass.
+Expanded browser suite to 12 cases including 360/412 responsive production images
+and coarse-pointer input controls; cases are discovered, NOT yet executed.
+Official Chrome installation did not resolve this workspace's socket restriction.
+No screenshots, measured FPS, real controller acceptance or release is claimed.
+
+A normal fast-forward git push failed before updating the ref because the local
+HTTPS git transport had no username/credential. The connected GitHub application's
+existing authorization is the normal submission path; no credential is replaced
+and the original rules API 403 is preserved. Main/research refs are out of scope.
