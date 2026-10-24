@@ -16,6 +16,7 @@ export class FlightScene {
   private sun:THREE.DirectionalLight;
   private smoothed=new THREE.Vector3(-1.7,-.05,.8);
   private lastCamera='chase';private low=false;private autoHighAttempted=false;
+  private appliedQuality:Settings['quality']|null=null;
   private highlight:THREE.Mesh;
   private clock=0;
   private materials=new Map<string,THREE.MeshStandardMaterial>();
@@ -167,10 +168,13 @@ export class FlightScene {
   }
   resize() {const w=Math.max(1,this.canvas.clientWidth),h=Math.max(1,this.canvas.clientHeight);this.renderer.setPixelRatio(renderPixelRatio(w,h,devicePixelRatio,this.low&&this.settings.quality==='auto',this.low));this.renderer.setSize(w,h,false);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();}
   setQuality(low:boolean) {
-    this.low=low;this.renderer.setPixelRatio(Math.min(devicePixelRatio,low?1:1.5));this.renderer.shadowMap.enabled=!low;this.resize();
+    this.appliedQuality=this.settings.quality;this.low=low;this.renderer.setPixelRatio(Math.min(devicePixelRatio,low?1:1.5));this.renderer.shadowMap.enabled=!low;this.resize();
   }
   resetCamera() {this.lastCamera='';}
   render(g:GameSession,realDt:number) {
+    // Auto-low and manual Low share shadows but have different raster budgets.
+    // Apply the explicit mode request even when the low boolean is unchanged.
+    if(this.appliedQuality!==this.settings.quality)this.setQuality(this.settings.quality!=='high');
     this.clock+=realDt;
     const p=g.world.position,q=g.world.quaternion;
     this.drone.position.set(...p);this.drone.quaternion.set(q[1],q[2],q[3],q[0]);

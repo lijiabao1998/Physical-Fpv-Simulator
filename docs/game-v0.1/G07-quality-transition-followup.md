@@ -10,3 +10,12 @@ immediately uses native1x pixels; selecting Auto again immediately restores cap,
 without resizing. Keep all17 Chromium cases,57 numerical/unit checks, physicsdt,
 250ms safety, models and research untouched. No security or dependency changes.
 Capture first-red actual Chromium before changing product code; retain failure.
+
+## Actual first RED and minimal repair
+Run40100964234/job120892835519: original17 browser tests passed; new18th failed
+exactly as reported, expected manual Low width1440 but actual876 after selection,
+withoutresize. Artifact12562981820, ZIP SHA256
+f2065c693ffe672d39f7e24272e47be29ff9419b829b9bf7f94cc9e24a08fdb9.
+Fix tracks last applied quality mode separately from shadow/low boolean and
+applies mode change before rendering. Auto starts conservatively; subsequent
+measured auto promotion remains unchanged. All original thresholds unchanged.
