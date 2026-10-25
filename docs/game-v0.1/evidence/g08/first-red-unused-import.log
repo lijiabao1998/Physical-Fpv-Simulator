@@ -1,0 +1,6 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> physical-fpv-player@0.1.0 build
+> tsc --noEmit && vite build && node scripts/check-build.mjs
+
+src/physics/transient.ts(2,23): error TS6133: 'INITIAL_SOC' is declared but its value is never read.

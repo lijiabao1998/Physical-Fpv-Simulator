@@ -39,16 +39,20 @@ export class FlightWorld {
     this.body.setRotation({w,x,y,z},true);this.body.setAngvel(vec(rotate([w,x,y,z],rates)),true);
     this.body.resetForces(true);this.body.resetTorques(true);
   }
-  step(power: Pick<PowerOutput,'thrust'|'torque'>,dt: number,drag=true) {
+  step(power: Pick<PowerOutput,'thrust'|'torque'> & {reactionTorque?:number[];rotorAngularMomentum?:number},dt: number,drag=true) {
     validateDt(dt);
     if(power.thrust.length!==4||power.torque.length!==4||power.thrust.some(t=>!Number.isFinite(t)||t<0||t>100)||power.torque.some(t=>!Number.isFinite(t)||t<0||t>5)) throw Error('Invalid rotor loads');
+    if(power.reactionTorque && (power.reactionTorque.length!==4||power.reactionTorque.some(t=>!Number.isFinite(t)||Math.abs(t)>5)))throw Error('Invalid rotor reaction');
+    if(power.rotorAngularMomentum!==undefined&&(!Number.isFinite(power.rotorAngularMomentum)||Math.abs(power.rotorAngularMomentum)>1))throw Error('Invalid rotor momentum');
     const q=this.quaternion,rates=this.rates,v=this.velocity;
     const bodyV=inverseRotate(q,v);
     const dragBody: V3=bodyV.map((x,i)=>drag?-.5*RHO*[.025,.025,.04][i]*x*Math.abs(x):0) as V3;
     const thrust=power.thrust.reduce((s,t)=>s+t,0);
     const force=rotate(q,add(dragBody,[0,0,thrust]));
-    const a=this.model.arm/Math.sqrt(2),t=power.thrust,r=power.torque;
+    const a=this.model.arm/Math.sqrt(2),t=power.thrust,r=power.reactionTorque??power.torque;
     const moment: V3=[a*(t[0]+t[1]-t[2]-t[3]),a*(-t[0]+t[1]+t[2]-t[3]),r[0]-r[1]+r[2]-r[3]];
+    // Rotor relative angular momentum: -omega_body cross H_rotor.
+    const H=power.rotorAngularMomentum??0;moment[0]-=rates[1]*H;moment[1]+=rates[0]*H;
     // Rapier handles rigid-body inertia/gyroscopic integration; add only applied moments.
     const torque=rotate(q,add(moment,scale(rates,drag?-.001:0)));
     this.body.resetForces(true);this.body.resetTorques(true);
