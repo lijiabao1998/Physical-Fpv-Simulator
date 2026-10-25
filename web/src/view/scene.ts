@@ -4,6 +4,7 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import {FIELD_BOXES,GATES,TREES} from '../game/field';
 import {getCourse,type CourseId} from '../game/courses';
 import {rotate} from '../physics/math';
+import type {GhostPose} from '../game/ghost';
 import type {GameSession} from '../game/session';
 import type {Settings} from '../input/settings';
 
@@ -13,6 +14,7 @@ export class FlightScene {
   readonly scene=new THREE.Scene();
   readonly camera=new THREE.PerspectiveCamera(100,1,.025,650);
   readonly drone=new THREE.Group();
+  private ghost:THREE.Mesh|null=null;
   readonly rotors:THREE.Group[]=[];
   readonly gateMeshes:THREE.Mesh[][]=[];
   private sun:THREE.DirectionalLight;
@@ -176,12 +178,23 @@ export class FlightScene {
     this.cylinder(.002,.002,.08,'#303932',[-.065,0,.07],this.drone,6);
     const tip=this.mesh(new THREE.SphereGeometry(.008,8,6),this.material('#e1bb6b'),[-.065,0,.11],this.drone);tip.castShadow=false;
   }
+  /** One merged unlit wire mesh, no collision, body, texture, shadow or controls. */
+  private createGhost(){
+    const parts:THREE.BufferGeometry[]=[];
+    parts.push(new THREE.BoxGeometry(.15,.10,.06));
+    for(const a of [-Math.PI/4,Math.PI/4])parts.push(new THREE.BoxGeometry(.28,.022,.016).rotateZ(a));
+    for(const x of [-1,1])for(const y of [-1,1])parts.push(new THREE.CylinderGeometry(.064,.064,.008,8).rotateX(Math.PI/2).translate(x*.085,y*.085,.025));
+    const geometry=mergeGeometries(parts,false)!;parts.forEach(p=>p.dispose());
+    const material=new THREE.MeshBasicMaterial({color:'#45f4ff',wireframe:true,transparent:true,opacity:.72,depthWrite:false});
+    this.ghost=new THREE.Mesh(geometry,material);this.ghost.name='PB Ghost — visual only';this.ghost.frustumCulled=false;this.scene.add(this.ghost);
+  }
+  ghostReceipt(){return {visible:this.ghost?.visible??false,position:this.ghost?.position.toArray()??null,body:false,collider:false,drawCalls:this.ghost?.visible?1:0};}
   resize() {const w=Math.max(1,this.canvas.clientWidth),h=Math.max(1,this.canvas.clientHeight);this.renderer.setPixelRatio(renderPixelRatio(w,h,devicePixelRatio,this.low&&this.settings.quality==='auto',this.low));this.renderer.setSize(w,h,false);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();}
   setQuality(low:boolean) {
     this.appliedQuality=this.settings.quality;this.low=low;this.renderer.setPixelRatio(Math.min(devicePixelRatio,low?1:1.5));this.renderer.shadowMap.enabled=!low;this.resize();
   }
   resetCamera() {this.lastCamera='';}
-  render(g:GameSession,realDt:number) {
+  render(g:GameSession,realDt:number,pose:GhostPose|null=null) {
     // Auto-low and manual Low share shadows but have different raster budgets.
     // Apply the explicit mode request even when the low boolean is unchanged.
     if(this.appliedQuality!==this.settings.quality)this.setQuality(this.settings.quality!=='high');
@@ -202,6 +215,14 @@ export class FlightScene {
       if(this.lastCamera!=='chase')this.smoothed.copy(target);else this.smoothed.lerp(target,1-Math.exp(-realDt*7));
       this.camera.position.copy(this.smoothed);this.camera.up.copy(Z);this.camera.lookAt(p[0]+2*Math.cos(heading),p[1]+2*Math.sin(heading),p[2]+.3);
     }
+    if(pose){
+      if(!this.ghost)this.createGhost();
+      this.ghost!.position.set(...pose.position);const q=pose.quaternion;this.ghost!.quaternion.set(q[1],q[2],q[3],q[0]);
+      const separation=this.ghost!.position.distanceTo(this.camera.position);
+      // FPV overlap fades away; never draws an opaque shape over a gate.
+      (this.ghost!.material as THREE.MeshBasicMaterial).opacity=this.cameraMode==='fpv'?Math.min(.72,Math.max(0,(separation-.25)*.8)):.72;
+      this.ghost!.visible=true;
+    }else if(this.ghost)this.ghost.visible=false;
     this.lastCamera=this.cameraMode;
     this.camera.fov=this.cameraMode==='fpv'?this.settings.fov:72;this.camera.updateProjectionMatrix();
     this.gateMeshes.forEach((meshes,i)=>meshes.forEach(m=>(m.material as THREE.MeshStandardMaterial).color.set(i<g.course.next?'#78b997':i===g.course.next?'#f8833c':'#d9ad76')));

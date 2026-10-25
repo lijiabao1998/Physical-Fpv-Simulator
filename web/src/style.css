@@ -8,3 +8,13 @@
 
 /* G10 real Chromium review: separate the course selector from the eyebrow. */
 .course>label{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:11px}.course>label select{max-width:100%;min-width:0;background:#2b4035;border:1px solid #79917355;border-radius:4px;padding:3px 5px}
+/* G11 stays inside the existing race panel; exact deltas occur only at gate nodes. */
+#ghost-toggle{padding:5px 8px;margin-top:6px;font-size:11px;border-color:#45f4ff70;color:#8af7ff}
+#ghost-status{display:block;font-size:10px;margin:4px 0;overflow-wrap:anywhere}
+#ghost-splits table{width:100%;border-collapse:collapse;font:10px/1.5 ui-monospace,monospace;font-variant-numeric:tabular-nums}
+#ghost-splits th{text-align:right;color:#c7d2bf;font-weight:normal;border-bottom:1px solid #ffffff25}
+#ghost-splits td{text-align:right;padding:1px 3px}#ghost-splits th:first-child,#ghost-splits td:first-child{text-align:left}
+#ghost-splits .ahead{color:#94e2bc}#ghost-splits .behind{color:#ffb68e}
+/* Existing sector details remain available without duplicating the new table on screen. */
+#race-splits{font-size:9px;max-height:28px;overflow:auto}
+@media(max-width:480px){.course{padding:9px 10px;width:250px;max-width:calc(100vw - 24px)}.course strong{font-size:18px;margin:4px 0}.gates{margin-top:7px;gap:5px}.gate-dot{height:22px;width:22px}.course .fineprint{margin:5px 0}#ghost-splits table{font-size:10px;line-height:1.25}}

@@ -1,0 +1,19 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> physical-fpv-player@0.1.0 test
+> vitest run --run tests/g11-ghost.test.ts
+
+
+ RUN  v5.0.5 /workspace/shared/own-cloud-migration-20261024/FPV-g11-ghost/web
+
+
+ Test Files  1 passed (1)
+      Tests  13 passed (13)
+   Start at  20:26:42
+   Duration  11.08s (tests 99%, transform 1%)
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
