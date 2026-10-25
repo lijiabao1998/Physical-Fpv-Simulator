@@ -9,7 +9,7 @@ import {COURSES,getCourse,type CourseId} from '../src/game/courses';
 import {rotate,clamp,euler} from '../src/physics/math';
 import {saveRecord} from '../src/game/records';
 import {planPhysicsSteps} from '../src/game/timing';
-import {GhostRecorder,ghostClass,ghostKey,loadGhost,saveGhost,ghostPoseAt,gateComparisons,MAX_GHOST_SAMPLES,MAX_GHOST_BYTES} from '../src/game/ghost';
+import {GhostPlayback,GhostRecorder,ghostClass,ghostKey,loadGhost,saveGhost,ghostPoseAt,gateComparisons,MAX_GHOST_SAMPLES,MAX_GHOST_BYTES} from '../src/game/ghost';
 beforeAll(initPhysics);
 const storage=()=>{const map=new Map<string,string>();return {map,getItem:(k:string)=>map.get(k)??null,setItem:(k:string,v:string)=>{map.set(k,v);}};};
 function localLap(courseId:CourseId='british-slalom',observe=true,damping=2){
@@ -102,3 +102,12 @@ it('G11 two actual completed local laps replace a slower PB Ghost only after a g
  saveRecord(store,b.physicsModel,b.assembly,b,b.courseVersion);expect(saveGhost(store,b,b)).toBe(true);expect(loadGhost(store,b)!.total).toBe(b.total);
  writeFileSync('numerical-results/g11-slow-british-slalom.json',JSON.stringify({scope:'Second ordinary-input navigator variant, increased velocity damping; same original physics.',ghost:a,replay:slow.s.exportReplay('g11-test'),end:slow.s.snapshot(),improvementSeconds:a.total-b.total},null,2));slow.s.world.dispose();
 },30000);
+
+it('G11 paused visual cache reuses immutable pose and invalidates on time, identity and reset',()=>{
+ const f=getFixture(),g=f.r.completed(f.s,'cache-test')!,c=new GhostPlayback(),raw=JSON.stringify(g);
+ const first=c.sample(g,1);for(let i=0;i<10000;i++)expect(c.sample(g,1)).toBe(first);
+ const next=c.sample(g,1+FIXED_DT);expect(next).not.toBe(first);expect(next).toEqual(ghostPoseAt(g,1+FIXED_DT));
+ const replacement=structuredClone(g),changed=c.sample(replacement,1+FIXED_DT);expect(changed).not.toBe(next);expect(changed).toEqual(next);
+ c.clear();expect(c.sample(replacement,1+FIXED_DT)).not.toBe(changed);expect(c.sample(g,0)).toEqual(ghostPoseAt(g,0));
+ expect(JSON.stringify(g)).toBe(raw);expect(JSON.stringify(replacement)).toBe(raw);
+});

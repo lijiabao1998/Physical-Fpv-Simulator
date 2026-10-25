@@ -112,3 +112,19 @@ last rAF callback. It asserts exactly120 diagnostic samples, isolating CPU witho
 waiting to evict240 old frames. This handler changes no player/physics/storage.
 Same scene/quality/order, full native functional flow, every assertion, the
 120-second timeout, all inherited tests and product source remain unchanged.
+
+191aaf3 push40197785898 and PR40197789366 both passed124 unit and40/40
+Chromium; each A/B block asserts exactly120 independent diagnostic samples.
+All screenshots are real and retained. Short-window CPU1440 +21.9%/+19.1%
+and360 +21.6%/-11.7% are noisy but near/exceed the frozen20% diagnostic line;
+absolute ~0.1ms and unchanged p95 are context, NOT a waiver. Raw comparisons
+are in pre-cache-120-frame-comparison.json and both immutable CI ZIPs.
+Review found genuinely redundant work: every paused render searched/allocated
+an identical Ghost pose and re-applied the same visual transform. A bounded
+single-entry record-identity+simulation-time cache now reuses that pose; explicit
+course/reset unload clears it, and the renderer updates the Ghost matrix only
+when the pose changes. No physics, sample data, opacity/geometry or A/B method
+changes. The new cache test's original missing-constructor red is retained, then
+checks10000 repeated reads, time advance, replacement identity, reset/unload, and
+no saved-record mutation. All15 G11 plus original110 unit tests pass. Exact-head
+full Chromium and the unchanged20% performance review still remain required.

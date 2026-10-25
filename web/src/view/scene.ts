@@ -14,7 +14,7 @@ export class FlightScene {
   readonly scene=new THREE.Scene();
   readonly camera=new THREE.PerspectiveCamera(100,1,.025,650);
   readonly drone=new THREE.Group();
-  private ghost:THREE.Mesh|null=null;
+  private ghost:THREE.Mesh|null=null;private lastGhostPose:GhostPose|null=null;
   readonly rotors:THREE.Group[]=[];
   readonly gateMeshes:THREE.Mesh[][]=[];
   private sun:THREE.DirectionalLight;
@@ -186,7 +186,7 @@ export class FlightScene {
     for(const x of [-1,1])for(const y of [-1,1])parts.push(new THREE.CylinderGeometry(.064,.064,.008,8).rotateX(Math.PI/2).translate(x*.085,y*.085,.025));
     const geometry=mergeGeometries(parts,false)!;parts.forEach(p=>p.dispose());
     const material=new THREE.MeshBasicMaterial({color:'#007e99',wireframe:true,transparent:true,opacity:.78,depthWrite:false,toneMapped:false});
-    this.ghost=new THREE.Mesh(geometry,material);this.ghost.name='PB Ghost — visual only';this.ghost.frustumCulled=false;this.scene.add(this.ghost);
+    this.ghost=new THREE.Mesh(geometry,material);this.ghost.name='PB Ghost — visual only';this.ghost.matrixAutoUpdate=false;this.ghost.frustumCulled=false;this.scene.add(this.ghost);
   }
   ghostReceipt(){return {visible:this.ghost?.visible??false,position:this.ghost?.position.toArray()??null,body:false,collider:false,drawCalls:this.ghost?.visible?1:0};}
   resize() {const w=Math.max(1,this.canvas.clientWidth),h=Math.max(1,this.canvas.clientHeight);this.renderer.setPixelRatio(renderPixelRatio(w,h,devicePixelRatio,this.low&&this.settings.quality==='auto',this.low));this.renderer.setSize(w,h,false);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();}
@@ -217,7 +217,7 @@ export class FlightScene {
     }
     if(pose){
       if(!this.ghost)this.createGhost();
-      this.ghost!.position.set(...pose.position);const q=pose.quaternion;this.ghost!.quaternion.set(q[1],q[2],q[3],q[0]);
+      if(pose!==this.lastGhostPose){this.ghost!.position.set(...pose.position);const q=pose.quaternion;this.ghost!.quaternion.set(q[1],q[2],q[3],q[0]);this.ghost!.updateMatrix();this.lastGhostPose=pose;}
       const separation=this.ghost!.position.distanceTo(this.camera.position);
       // FPV overlap fades away; never draws an opaque shape over a gate.
       (this.ghost!.material as THREE.MeshBasicMaterial).opacity=this.cameraMode==='fpv'?Math.min(.78,Math.max(0,(separation-.25)*.8)):.78;

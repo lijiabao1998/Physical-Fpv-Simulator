@@ -76,3 +76,15 @@ export function ghostPoseAt(record:GhostRecord,lapElapsed:number):GhostPose{
  return {tick,position:a.position.map((x,i)=>x+(b.position[i]-x)*t) as V3,quaternion:q.map(x=>x/n) as Q4};
 }
 export function gateComparisons(player:RaceRecord['splits'],pb:RaceRecord|null){return player.map(s=>({gate:s.gate,player:s.elapsed,pb:pb?.splits[s.gate-1]?.elapsed??null,delta:pb?.splits[s.gate-1]?s.elapsed-pb.splits[s.gate-1].elapsed:null}));}
+
+/** Single-entry visual cache: paused or repeated reads do not allocate/search again.
+ * Identity/time invalidation and explicit unload never alter the saved record. */
+export class GhostPlayback {
+ private record:GhostRecord|null=null;private elapsed=NaN;private pose:GhostPose|null=null;
+ sample(record:GhostRecord,lapElapsed:number):GhostPose{
+  const elapsed=Math.max(0,Math.min(record.total,Number.isFinite(lapElapsed)?lapElapsed:0));
+  if(record!==this.record||elapsed!==this.elapsed){this.record=record;this.elapsed=elapsed;this.pose=ghostPoseAt(record,elapsed);}
+  return this.pose!;
+ }
+ clear(){this.record=null;this.elapsed=NaN;this.pose=null;}
+}

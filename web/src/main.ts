@@ -5,7 +5,7 @@ import { ZERO, type Controls } from './physics/controller';
 import { norm, type V3 } from './physics/math';
 import { GameSession, loadBest } from './game/session';
 import {COURSES,getCourse,type CourseId} from './game/courses';
-import {GhostRecorder,ghostClass,loadGhost,saveGhost,ghostPoseAt,gateComparisons,type GhostRecord} from './game/ghost';
+import {GhostPlayback,GhostRecorder,ghostClass,loadGhost,saveGhost,gateComparisons,type GhostRecord} from './game/ghost';
 import {loadRecord,saveRecord} from './game/records';
 import { FlightDiagnostics } from './game/diagnostics';
 import { planPhysicsSteps,advanceRenderClock } from './game/timing';
@@ -33,9 +33,9 @@ let game!:GameSession,scene!:FlightScene,input!:InputManager;
 let frame:InputFrame={controls:{...ZERO},actions:[],source:'keyboard',device:'Keyboard',supported:true,raw:[],buttons:[]};
 let accumulator=0,lastTime=0,frames=0,fpsTime=0,lastHud=0,pointerArmStart:number|null=null,keyboardArmStart:number|null=null,armSent=false;
 let bestSavedFor:GameSession['course']|null=null;
-const ghostRecorder=new GhostRecorder();let ghostEnabled=true,ghostHudMarkup='',ghostRecord:GhostRecord|null=null,ghostCourse:GameSession['course']|null=null;
-function observeGhost(){if(ghostCourse!==game.course){ghostCourse=game.course;try{ghostRecord=loadGhost(localStorage,ghostClass(game));}catch{ghostRecord=null;}}ghostRecorder.observe(game);}
-function visibleGhost(){return ghostEnabled&&ghostRecord&&game.recordable&&game.practice?ghostPoseAt(ghostRecord,game.course.elapsed(game.time)):null;}
+const ghostRecorder=new GhostRecorder(),ghostPlayback=new GhostPlayback();let ghostEnabled=true,ghostHudMarkup='',ghostRecord:GhostRecord|null=null,ghostCourse:GameSession['course']|null=null;
+function observeGhost(){if(ghostCourse!==game.course){ghostCourse=game.course;ghostPlayback.clear();try{ghostRecord=loadGhost(localStorage,ghostClass(game));}catch{ghostRecord=null;}}ghostRecorder.observe(game);}
+function visibleGhost(){return ghostEnabled&&ghostRecord&&game.recordable&&game.practice?ghostPlayback.sample(ghostRecord,game.course.elapsed(game.time)):null;}
 const PHYSICS_KEY='physical-fpv-physics-model-v1';
 const COURSE_KEY='physical-fpv-course-selection-v1';
 let initialCourse:CourseId='training-straight';try{const saved=JSON.parse(localStorage.getItem(COURSE_KEY)??'null');if(saved)initialCourse=getCourse(saved.id,saved.version).id;}catch{}
