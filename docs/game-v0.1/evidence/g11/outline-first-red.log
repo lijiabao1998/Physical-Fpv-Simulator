@@ -1,0 +1,26 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+ RUN  v5.0.5 /workspace/shared/own-cloud-migration-20261024/FPV-g11-ghost/web
+
+ ❯ tests/g11-outline.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/g11-outline.test.ts [ tests/g11-outline.test.ts ]
+Error: Cannot find module '../src/view/ghost-outline' imported from /workspace/shared/own-cloud-migration-20261024/FPV-g11-ghost/web/tests/g11-outline.test.ts
+ ❯ tests/g11-outline.test.ts:4:1
+      2| import * as THREE from 'three';
+      3| import {readFileSync} from 'node:fs';
+      4| import {GhostOutline} from '../src/view/ghost-outline';
+       | ^
+      5| import type {GhostPose} from '../src/game/ghost';
+      6| it('G11 outline removes redundant triangle diagonals within segment an…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  22:04:40
+   Duration  205ms (worker 97%, environment 3%)
+

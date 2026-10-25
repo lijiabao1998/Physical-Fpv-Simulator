@@ -25,7 +25,7 @@ for(const width of [1440,412,360])test(`G11 native PB loop, ON/OFF, split delta,
   const current=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot().camera);if(current!==mode)await page.getByTestId('camera').click();
   await page.waitForTimeout(200);const hud=await page.locator('.course').boundingBox();expect(hud!.x).toBeGreaterThanOrEqual(0);expect(hud!.x+hud!.width).toBeLessThanOrEqual(width-10);expect(hud!.y+hud!.height).toBeLessThan(650);
   await page.screenshot({path:info.outputPath(`g11-${mode}-${width}.png`)});
-  const pose=await page.evaluate(()=>(window as any).__FPV_TEST__.ghost());expect(pose.render.visible).toBe(true);expect(pose.render.body).toBe(false);expect(pose.render.collider).toBe(false);
+  const pose=await page.evaluate(()=>(window as any).__FPV_TEST__.ghost());expect(pose.render.visible).toBe(true);expect(pose.render.body).toBe(false);expect(pose.render.collider).toBe(false);expect(pose.render.segments).toBe(132);expect(pose.render.bufferBytes).toBe(3168);
  }
  // Warmed, paused, identical scene and camera; two orders avoid making shader startup look like steady cost.
  // Reset only optional diagnostics through its existing checkbox handler; do not reset or advance the paused player.

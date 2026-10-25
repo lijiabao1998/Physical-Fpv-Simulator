@@ -128,3 +128,19 @@ changes. The new cache test's original missing-constructor red is retained, then
 checks10000 repeated reads, time advance, replacement identity, reset/unload, and
 no saved-record mutation. All15 G11 plus original110 unit tests pass. Exact-head
 full Chromium and the unchanged20% performance review still remain required.
+
+946c785 both runs passed125 unit/40 Chromium; original ZIPs/logs preserved.
+The cache reduced representative costs but412 CPU averages remain+21.2%/+17.0%
+with ordering/runner noise (pre-outline-performance.json). No blanket performance
+pass or absolute-cost waiver was claimed. One bounded visual simplification now
+replaces triangle wireframe with actual edges: identical airframe bounds and tint,
+132 line segments instead of246 (-46.34%), one position-only3168-byte buffer, one
+draw, no texture/shadow. Geometry is reused, intermediate construction buffers are
+disposed, and whole-scene disposal now includes LineSegments resources.
+New first-red then three focused tests cover132 segments/3168bytes, same bounds,
+10000 pose updates reusing buffers/matrix, independent disposal and no simulation/
+persistence dependency. Browser adds actual segment/buffer receipts, while the
+frozen OFF/ON/ON/OFF120-frame method,120-second timeout and20% diagnostic rule
+are unchanged. Original110 plus18G11 unit tests pass; new actual images and full
+exact-head CI remain necessary. Interpret all paired/outlier observations honestly
+after this bounded simplification; do not chase noise by weakening a gate.

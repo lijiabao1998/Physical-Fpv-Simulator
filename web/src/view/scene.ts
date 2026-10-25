@@ -5,6 +5,7 @@ import {FIELD_BOXES,GATES,TREES} from '../game/field';
 import {getCourse,type CourseId} from '../game/courses';
 import {rotate} from '../physics/math';
 import type {GhostPose} from '../game/ghost';
+import {GhostOutline} from './ghost-outline';
 import type {GameSession} from '../game/session';
 import type {Settings} from '../input/settings';
 
@@ -14,7 +15,7 @@ export class FlightScene {
   readonly scene=new THREE.Scene();
   readonly camera=new THREE.PerspectiveCamera(100,1,.025,650);
   readonly drone=new THREE.Group();
-  private ghost:THREE.Mesh|null=null;private lastGhostPose:GhostPose|null=null;
+  private ghost:GhostOutline|null=null;
   readonly rotors:THREE.Group[]=[];
   readonly gateMeshes:THREE.Mesh[][]=[];
   private sun:THREE.DirectionalLight;
@@ -179,16 +180,8 @@ export class FlightScene {
     const tip=this.mesh(new THREE.SphereGeometry(.008,8,6),this.material('#e1bb6b'),[-.065,0,.11],this.drone);tip.castShadow=false;
   }
   /** One merged unlit wire mesh, no collision, body, texture, shadow or controls. */
-  private createGhost(){
-    const parts:THREE.BufferGeometry[]=[];
-    parts.push(new THREE.BoxGeometry(.15,.10,.06));
-    for(const a of [-Math.PI/4,Math.PI/4])parts.push(new THREE.BoxGeometry(.28,.022,.016).rotateZ(a));
-    for(const x of [-1,1])for(const y of [-1,1])parts.push(new THREE.CylinderGeometry(.064,.064,.008,8).rotateX(Math.PI/2).translate(x*.085,y*.085,.025));
-    const geometry=mergeGeometries(parts,false)!;parts.forEach(p=>p.dispose());
-    const material=new THREE.MeshBasicMaterial({color:'#007e99',wireframe:true,transparent:true,opacity:.78,depthWrite:false,toneMapped:false});
-    this.ghost=new THREE.Mesh(geometry,material);this.ghost.name='PB Ghost — visual only';this.ghost.matrixAutoUpdate=false;this.ghost.frustumCulled=false;this.scene.add(this.ghost);
-  }
-  ghostReceipt(){return {visible:this.ghost?.visible??false,position:this.ghost?.position.toArray()??null,body:false,collider:false,drawCalls:this.ghost?.visible?1:0};}
+  private createGhost(){this.ghost=new GhostOutline();this.scene.add(this.ghost);}
+  ghostReceipt(){return {visible:this.ghost?.visible??false,position:this.ghost?.position.toArray()??null,body:false,collider:false,drawCalls:this.ghost?.visible?1:0,segments:this.ghost?this.ghost.geometry.getAttribute('position').count/2:0,bufferBytes:this.ghost?this.ghost.geometry.getAttribute('position').array.byteLength:0};}
   resize() {const w=Math.max(1,this.canvas.clientWidth),h=Math.max(1,this.canvas.clientHeight);this.renderer.setPixelRatio(renderPixelRatio(w,h,devicePixelRatio,this.low&&this.settings.quality==='auto',this.low));this.renderer.setSize(w,h,false);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();}
   setQuality(low:boolean) {
     this.appliedQuality=this.settings.quality;this.low=low;this.renderer.setPixelRatio(Math.min(devicePixelRatio,low?1:1.5));this.renderer.shadowMap.enabled=!low;this.resize();
@@ -217,10 +210,10 @@ export class FlightScene {
     }
     if(pose){
       if(!this.ghost)this.createGhost();
-      if(pose!==this.lastGhostPose){this.ghost!.position.set(...pose.position);const q=pose.quaternion;this.ghost!.quaternion.set(q[1],q[2],q[3],q[0]);this.ghost!.updateMatrix();this.lastGhostPose=pose;}
+      this.ghost!.updatePose(pose);
       const separation=this.ghost!.position.distanceTo(this.camera.position);
       // FPV overlap fades away; never draws an opaque shape over a gate.
-      (this.ghost!.material as THREE.MeshBasicMaterial).opacity=this.cameraMode==='fpv'?Math.min(.78,Math.max(0,(separation-.25)*.8)):.78;
+      this.ghost!.material.opacity=this.cameraMode==='fpv'?Math.min(.78,Math.max(0,(separation-.25)*.8)):.78;
       this.ghost!.visible=true;
     }else if(this.ghost)this.ghost.visible=false;
     this.lastCamera=this.cameraMode;
@@ -238,6 +231,6 @@ export class FlightScene {
     if(fps<35&&!this.low){this.setQuality(true);this.autoHighAttempted=true;}
     else if(fps>55&&this.low&&!this.autoHighAttempted&&this.clock>10){this.autoHighAttempted=true;this.setQuality(false);}
   }
-  dispose(){const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();this.scene.traverse(o=>{if(o instanceof THREE.DirectionalLight||o instanceof THREE.SpotLight||o instanceof THREE.PointLight)o.shadow.dispose();if(o instanceof THREE.Mesh){geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m));}});geometries.forEach(g=>g.dispose());materials.forEach(m=>{for(const v of Object.values(m))if(v instanceof THREE.Texture)v.dispose();m.dispose();});this.renderer.dispose();}
+  dispose(){const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();this.scene.traverse(o=>{if(o instanceof THREE.DirectionalLight||o instanceof THREE.SpotLight||o instanceof THREE.PointLight)o.shadow.dispose();if(o instanceof THREE.Mesh||o instanceof THREE.LineSegments){geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m));}});geometries.forEach(g=>g.dispose());materials.forEach(m=>{for(const v of Object.values(m))if(v instanceof THREE.Texture)v.dispose();m.dispose();});this.renderer.dispose();}
   get qualityLabel(){return `${this.low?'Low':'High'} · render scale ${this.renderer.getPixelRatio().toFixed(2)}`;}
 }
