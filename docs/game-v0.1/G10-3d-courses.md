@@ -1,0 +1,9 @@
+# G10 Three-dimensional courses 1.0
+
+Base: verified G09 956130a4a6c8b40f423fd754fc04212e23bdb3df, 79 unit/numerical and 26 actual Chromium passes in run 40162791773. Independent stacked Draft. Owner explicitly authorizes candidate research, implementation, tests and evidence, not main merge or Pages.
+
+## Frozen product scope
+Preserve Training Straight's exact five gates, original crossing semantics, legacy records/replay and all G07/G08 physics/safety. First implement and verify British Slalom: turns, climb/dive, varied 3D gate orientations. Then Industrial Run: original procedural British warehouses, beams, columns, narrow passages, low obstacles; visible structural boxes and Rapier colliders share geometry. Stable course IDs/versions; course switch disarms/resets. Missing replay course means Training Straight. G09 splits and records isolate course/version/physics/exact assembly. Native selection, progress, splits, PB and retry.
+
+## Gates before release review
+Directional continuous segment-plane crossing, local aperture intersection and aircraft collider projection, ordered gates. Positive/negative tests: forward/reverse/oblique/outside/edge/missed/repeated/wrong-order, oriented mesh/collider parity. Same-input replay and fixed 240Hz at normal/low FPS; 250ms interruption guard unchanged. Preserve original reference/energy/build/input/control/assembly tests. Real Chromium 1440/412/360, FPV and Chase. Compare courses for render CPU, frame intervals/FPS, draw calls, triangles, load time and memory, with source and scope stated. Do not infer physical-phone or hardware validation from cloud measurements; disclose ~20FPS cloud baseline and investigate repeatable major regression. Preserve first reds and raw screenshots. No force push, history rewriting, reduced thresholds, research PR changes or unapproved external assets. G11 Ghost Racing only feasibility/dependencies after G10.
