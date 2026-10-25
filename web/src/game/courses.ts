@@ -1,0 +1,27 @@
+import {FIELD_BOXES,GATES,TREES,type FieldBox} from './field';
+import {add,rotate,type Q4,type V3} from '../physics/math';
+import type {OrientedGate} from './gate-geometry';
+export type CourseId='training-straight'|'british-slalom'|'industrial-run';
+export interface CourseBox extends FieldBox {rotation?:Q4;gateIndex?:number}
+export interface CourseDefinition {id:CourseId;version:string;name:string;description:string;gates:OrientedGate[];boxes:CourseBox[];trees:typeof TREES}
+export function gateRotation(yaw:number,pitch=0):Q4{return [Math.cos(yaw/2)*Math.cos(pitch/2),-Math.sin(yaw/2)*Math.sin(pitch/2),Math.cos(yaw/2)*Math.sin(pitch/2),Math.sin(yaw/2)*Math.cos(pitch/2)];}
+const gate=(center:V3,yaw:number,pitch=0,width=4.4,height=4.4):OrientedGate=>({center,rotation:gateRotation(yaw,pitch),width,height,depth:.24});
+export function gateBoxes(gates:OrientedGate[]):CourseBox[]{return gates.flatMap((g,gateIndex)=>[
+ {offset:[0,-g.width/2,0] as V3,half:[g.depth/2,.10,g.height/2] as V3},
+ {offset:[0,g.width/2,0] as V3,half:[g.depth/2,.10,g.height/2] as V3},
+ {offset:[0,0,g.height/2] as V3,half:[g.depth/2,g.width/2+.10,.10] as V3},
+ {offset:[0,0,-g.height/2] as V3,half:[g.depth/2,g.width/2+.10,.10] as V3},
+ ].map(b=>({center:add(g.center,rotate(g.rotation,b.offset)),half:b.half,rotation:g.rotation,color:'#f47b36',kind:'gate' as const,gateIndex})));}
+const training:CourseDefinition={id:'training-straight',version:'training-five-v1',name:'Training Straight',description:'Original five-gate baseline, preserved.',gates:GATES.map(g=>({...g,rotation:[1,0,0,0]})),boxes:FIELD_BOXES,trees:TREES};
+const slalomGates=[gate([10,0,2.8],0),gate([22,8,5.5],.8,-.18),gate([30,-5,9],-.9,-.35),gate([20,-19,6],-2.2,.3),gate([3,-15,3],2.8,.15),gate([1,4,5],1.2,-.2),gate([16,18,8],.5,-.15)];
+const countryBuildings:CourseBox[]=[];
+for(const [x,y] of [[-21,7],[41,-17],[38,25]]){
+ countryBuildings.push({center:[x,y,2],half:[2.5,1.8,2],color:'#a77b60',kind:'hangar'});
+ for(const sign of [-1,1])countryBuildings.push({center:[x,y+sign*.9,4.45],half:[2.7,1.1,.12],rotation:[Math.cos(.28),-sign*Math.sin(.28),0,0],color:'#46534e',kind:'hangar'});
+ countryBuildings.push({center:[x-1,y,5],half:[.25,.3,1],color:'#8f6853',kind:'hangar'});
+ for(const offset of [-1.3,1.3])countryBuildings.push({center:[x+offset,y-1.82,2.3],half:[.45,.025,.65],color:'#cfdfd4',kind:'barrier'});
+ countryBuildings.push({center:[x,y-1.82,1],half:[.4,.025,1],color:'#3e554a',kind:'barrier'});
+}
+const slalom:CourseDefinition={id:'british-slalom',version:'british-slalom-v1',name:'British Slalom',description:'Country turns, climbing gates and a descending hairpin. Follow orange gate normals.',gates:slalomGates,boxes:[...gateBoxes(slalomGates),...countryBuildings],trees:TREES};
+export const COURSES:readonly CourseDefinition[]=[training,slalom];
+export function getCourse(id:string='training-straight',version?:string):CourseDefinition{const c=COURSES.find(c=>c.id===id);if(!c||version!==undefined&&version!==c.version)throw Error('Unknown course ID/version');return c;}

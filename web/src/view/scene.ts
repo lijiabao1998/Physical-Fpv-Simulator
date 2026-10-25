@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import {renderPixelRatio} from './resolution';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import {FIELD_BOXES,GATES,TREES} from '../game/field';
+import {getCourse,type CourseId} from '../game/courses';
+import {rotate} from '../physics/math';
 import type {GameSession} from '../game/session';
 import type {Settings} from '../input/settings';
 
@@ -22,7 +24,7 @@ export class FlightScene {
   private materials=new Map<string,THREE.MeshStandardMaterial>();
   cameraMode:'chase'|'fpv'='chase';
   fps=0;drawCalls=0;triangles=0;
-  constructor(readonly canvas:HTMLCanvasElement,readonly settings:Settings) {
+  constructor(readonly canvas:HTMLCanvasElement,readonly settings:Settings,readonly courseId:CourseId='training-straight') {
     this.renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
     this.renderer.outputColorSpace=THREE.SRGBColorSpace;
     this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.1;
@@ -48,7 +50,15 @@ export class FlightScene {
   private cylinder(top:number,bottom:number,height:number,color:string,pos:number[],parent?:THREE.Object3D,sides=8) {
     const geometry=new THREE.CylinderGeometry(top,bottom,height,sides);geometry.rotateX(Math.PI/2);return this.mesh(geometry,this.material(color),pos,parent);
   }
+  private courseEnvironment(){
+    const c=getCourse(this.courseId);const ground=this.mesh(new THREE.PlaneGeometry(500,500),this.material('#819a60'),[30,0,-.02]);ground.castShadow=false;
+    this.box([8,6,.03],'#565e59',[0,0,-.01]);
+    for(const b of c.boxes){const mesh=this.box(b.half.map(x=>2*x),b.color,b.center);if(b.rotation)mesh.quaternion.set(b.rotation[1],b.rotation[2],b.rotation[3],b.rotation[0]);if(b.gateIndex!==undefined){mesh.material=(mesh.material as THREE.Material).clone();(this.gateMeshes[b.gateIndex]??=[]).push(mesh);}}
+    for(const tree of c.trees){const [x,y]=tree.position,h=tree.height;this.cylinder(.15,.25,h*.7,'#675842',[x,y,h*.35]);for(let j=0;j<3;j++)this.cylinder(.04,h*(.22-j*.04),h*.48,['#526b48','#5f7c50','#72905b'][j],[x,y,h*(.5+j*.18)],undefined,7);}
+    c.gates.forEach((g,i)=>{this.gateNumber(i);const n=rotate(g.rotation,[1,0,0]);const arrow=this.mesh(new THREE.ConeGeometry(.16,.65,4),this.material('#f7e8ba'),g.center.map((x,k)=>x-n[k]*1.1));arrow.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),new THREE.Vector3(...n));});
+  }
   private environment() {
+    if(this.courseId!=='training-straight'){this.courseEnvironment();return;}
     const ground=this.mesh(new THREE.PlaneGeometry(500,500),this.material('#819a60'),[30,0,-.02]);ground.castShadow=false;
     // Deterministic, instanced tufts: a real mesh field rather than a grid backdrop.
     const grassGeo=new THREE.ConeGeometry(.08,.35,3);grassGeo.rotateX(Math.PI/2);grassGeo.translate(0,0,.16);
@@ -142,8 +152,8 @@ export class FlightScene {
     const canvas=document.createElement('canvas');canvas.width=128;canvas.height=128;const c=canvas.getContext('2d')!;
     c.fillStyle='#35483d';c.fillRect(0,0,128,128);c.fillStyle='#fff0d9';c.font='bold 80px monospace';c.textAlign='center';c.fillText(String(i+1),64,92);
     const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;
-    const g=GATES[i],sign=this.mesh(new THREE.PlaneGeometry(.6,.6),new THREE.MeshStandardMaterial({map:texture,side:THREE.DoubleSide}),[g.center[0]-.13,g.center[1],g.center[2]+g.height/2+.1]);
-    sign.rotation.set(Math.PI/2,-Math.PI/2,0);
+    const g=getCourse(this.courseId).gates[i],sign=this.mesh(new THREE.PlaneGeometry(.6,.6),new THREE.MeshStandardMaterial({map:texture,side:THREE.DoubleSide}),[g.center[0]-.13,g.center[1],g.center[2]+g.height/2+.1]);
+    if(this.courseId==='training-straight')sign.rotation.set(Math.PI/2,-Math.PI/2,0);else{const offset=rotate(g.rotation,[-.15,0,g.height/2+.5]);sign.position.set(...g.center.map((x,k)=>x+offset[k]) as [number,number,number]);sign.quaternion.set(g.rotation[1],g.rotation[2],g.rotation[3],g.rotation[0]).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),Math.PI/2));}
   }
   private aircraft() {
     this.scene.add(this.drone);
@@ -195,7 +205,7 @@ export class FlightScene {
     this.lastCamera=this.cameraMode;
     this.camera.fov=this.cameraMode==='fpv'?this.settings.fov:72;this.camera.updateProjectionMatrix();
     this.gateMeshes.forEach((meshes,i)=>meshes.forEach(m=>(m.material as THREE.MeshStandardMaterial).color.set(i<g.course.next?'#78b997':i===g.course.next?'#f8833c':'#d9ad76')));
-    this.highlight.visible=g.practice&&g.course.next<GATES.length;
+    this.highlight.visible=g.practice&&g.course.next<getCourse(this.courseId).gates.length&&this.courseId==='training-straight';
     if(this.highlight.visible){const gate=GATES[g.course.next];this.highlight.position.set(gate.center[0],gate.center[1],.022);}
     this.sun.position.set(p[0]-30,p[1]-35,65);this.sun.target.position.set(p[0],p[1],0);
     this.renderer.render(this.scene,this.camera);this.drawCalls=this.renderer.info.render.calls;this.triangles=this.renderer.info.render.triangles;
@@ -207,5 +217,6 @@ export class FlightScene {
     if(fps<35&&!this.low){this.setQuality(true);this.autoHighAttempted=true;}
     else if(fps>55&&this.low&&!this.autoHighAttempted&&this.clock>10){this.autoHighAttempted=true;this.setQuality(false);}
   }
+  dispose(){const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();this.scene.traverse(o=>{if(o instanceof THREE.Mesh){geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m));}});geometries.forEach(g=>g.dispose());materials.forEach(m=>{for(const v of Object.values(m))if(v instanceof THREE.Texture)v.dispose();m.dispose();});this.renderer.dispose();}
   get qualityLabel(){return `${this.low?'Low':'High'} · render scale ${this.renderer.getPixelRatio().toFixed(2)}`;}
 }

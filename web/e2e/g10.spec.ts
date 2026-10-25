@@ -1,0 +1,17 @@
+import {test,expect} from '@playwright/test';
+for(const width of [1440,412,360])test(`G10 British Slalom native 3D course, cameras and timing ${width}`,async({page},info)=>{
+ test.setTimeout(90000);await page.setViewportSize({width,height:900});const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));const start=Date.now();
+ await page.goto('http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1');await expect(page.locator('#loading')).toHaveCount(0);const loadMs=Date.now()-start;await page.getByTestId('start').click();const results=[];
+ for(const id of ['training-straight','british-slalom']){
+  const switched=Date.now();await page.locator('#course-select').selectOption(id);await expect(page.locator('#course-select')).toHaveValue(id);const switchMs=Date.now()-switched;const snapshot=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());expect(snapshot.armed).toBe(false);expect(snapshot.gate).toBe(0);expect(snapshot.courseId).toBe(id);
+  await page.getByRole('button',{name:'Physics',exact:true}).click();await page.locator('#performance-toggle').uncheck();await page.locator('#performance-toggle').check();await page.locator('#close-panel').click();
+  const frames=await page.evaluate(()=>new Promise<number[]>(resolve=>{const samples:number[]=[];let prev=performance.now();const next=(n:number)=>{samples.push(n-prev);prev=n;if(samples.length===60)resolve(samples);else requestAnimationFrame(next);};requestAnimationFrame(next);}));
+  const metrics=await page.evaluate(()=>(window as any).__FPV_TEST__.metrics());frames.sort((a,b)=>a-b);results.push({id,switchMs,switchAndSampleMs:Date.now()-switched,metrics,frames:{median:frames[30],p95:frames[57],p99:frames[59]}});
+  await page.screenshot({path:info.outputPath(`${id}-chase-${width}.png`)});await page.getByTestId('camera').click();await page.waitForTimeout(250);await page.screenshot({path:info.outputPath(`${id}-fpv-${width}.png`)});await page.getByTestId('camera').click();
+ }
+ // Deterministic setup is explicitly synthetic; validates native gate state/rendering, not a claimed human-flown lap.
+ const finish=await page.evaluate(async()=>{const courseUrl='/Physical-Fpv-Simulator/src/game/courses.ts',mathUrl='/Physical-Fpv-Simulator/src/physics/math.ts';const {getCourse}=await import(courseUrl);const {rotate}=await import(mathUrl);const h=(window as any).__FPV_TEST__,c=getCourse('british-slalom');for(const g of c.gates){const n=rotate(g.rotation,[1,0,0]);h.place(g.center.map((v:number,k:number)=>v-.05*n[k]),n.map((v:number)=>v*8));h.tick(4);}return h.snapshot();});
+ expect(finish.gate).toBe(7);expect(finish.state).toBe('finished');expect(finish.splits).toHaveLength(7);await expect(page.locator('#best')).toContainText('LOCAL BEST');await page.screenshot({path:info.outputPath(`slalom-finished-${width}.png`)});
+ await page.reload();await expect(page.locator('#loading')).toHaveCount(0);await expect(page.locator('#course-select')).toHaveValue('british-slalom');await expect(page.locator('#best')).toContainText('LOCAL BEST');
+ expect(errors).toEqual([]);await info.attach('g10-course-ab.json',{body:JSON.stringify({width,loadMs,results,finish,errors,hardwareVerified:false},null,2),contentType:'application/json'});
+});

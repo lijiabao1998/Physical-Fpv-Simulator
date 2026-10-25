@@ -1,0 +1,11 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> physical-fpv-player@0.1.0 build
+> tsc --noEmit && vite build && node scripts/check-build.mjs
+
+src/game/course.ts(3,29): error TS2307: Cannot find module './gate-geometry' or its corresponding type declarations.
+src/game/courses.ts(3,33): error TS2307: Cannot find module './gate-geometry' or its corresponding type declarations.
+src/view/scene.ts(58,178): error TS7006: Parameter 'x' implicitly has an 'any' type.
+src/view/scene.ts(58,180): error TS7006: Parameter 'k' implicitly has an 'any' type.
+src/view/scene.ts(156,181): error TS7006: Parameter 'x' implicitly has an 'any' type.
+src/view/scene.ts(156,183): error TS7006: Parameter 'k' implicitly has an 'any' type.

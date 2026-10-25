@@ -1,0 +1,29 @@
+Captured first adversarial endpoint regression failure before roundoff correction.
+Command: npx vitest run tests/g10-gate-geometry.test.ts
+Workspace: /workspace/shared/own-cloud-migration-20261024/FPV-g10-courses/web
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+ RUN  v5.0.5 /workspace/shared/own-cloud-migration-20261024/FPV-g10-courses/web
+
+ ❯ tests/g10-gate-geometry.test.ts (16 tests | 1 failed) 30ms
+   ❯ G10 independent three-dimensional gate geometry (15)
+     × remains invariant under arbitrary rigid transforms 4ms
+
+ FAIL  tests/g10-gate-geometry.test.ts > G10 independent three-dimensional gate geometry > remains invariant under arbitrary rigid transforms
+AssertionError: expected null to be close to 1, received difference is 1, but expected 5e-13
+ ❯ tests/g10-gate-geometry.test.ts:107:62
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 15 passed (16)
+   Start at  12:54:22
+   Duration  218ms (transform 44%, tests 38%, import 14%, worker 4%)
+
+    105|       expect(intersectGate(g,world(g,[-1,.9,0]),world(g,[3,.9,0]),q)).…
+    106|       const onPlane = world(g,[0,.2,.1]);
+    107|       expect(intersectGate(g,world(g,[-1,.2,.1]),onPlane,q)).toBeClose…
+       |                                                              ^
+    108|       expect(intersectGate(g,onPlane,world(g,[1,.2,.1]),q)).toBeNull();
+    109|     }
+
+Exit code: 1
