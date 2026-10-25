@@ -2,3 +2,6 @@
 @media(max-width:480px){header{padding:10px 12px;flex-wrap:wrap;gap:8px}header .brand{display:flex;align-items:baseline;gap:6px;white-space:nowrap;letter-spacing:2px}header .brand .eyebrow{display:none}header nav{width:100%;gap:5px}header nav button{flex:1;min-width:0;padding:8px 5px}.course{top:96px;left:12px}.hud{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}.metric{padding:8px 10px;min-width:0}.metric:nth-child(3){border-right:0}.metric:nth-child(-n+3){border-bottom:1px solid #ffffff15}.metric label{font-size:9px}.metric strong{font-size:17px}.actions{bottom:132px;right:12px}.notice{bottom:200px;max-width:90vw}.touch-controls{bottom:245px;left:14px;right:14px}.stick{width:100px;height:100px}.welcome{max-height:65dvh;overflow:auto}}
 /* G09 race evidence stays within the existing HUD, never adds scene geometry. */
 #race-class,#race-splits,#legacy-best{display:block;overflow-wrap:anywhere;font-size:10px;line-height:1.35;max-width:100%;margin-top:3px}
+/* Actual 360px Chromium first review showed the expanded race panel touching the right edge. */
+.course{max-width:min(360px,calc(100vw - 40px))}
+@media(max-width:600px){.course{max-width:calc(100vw - 24px)}}

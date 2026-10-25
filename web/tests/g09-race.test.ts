@@ -58,3 +58,17 @@ it('G09 scheduled forward crossing events are identical at 60 and 20 FPS',()=>{
  const run=(frameDt:number)=>{const c=new Course();let acc=0,tick=0;for(let frame=0;frame<Math.round(5/frameDt);frame++){const p=planPhysicsSteps(acc,frameDt,true);acc=p.remainder;for(let j=0;j<p.steps;j++){tick++;if(tick%240===0)cross(c,tick/240-1,tick*FIXED_DT);}}return c;};
  const a=run(1/60),b=run(1/20);expect(a.next).toBe(5);expect(a.splits).toEqual(b.splits);expect(a.finishedAt).toBe(b.finishedAt);
 });
+it('G09 actual Rapier collision invalidates an unfinished timed run and reset restores eligibility',()=>{
+ const s=new GameSession();s.start();cross(s.course,0,1);s.world.setInitial([0,0,2],[0,0,-12]);
+ for(let i=0;i<100&&s.state!=='crashed';i++)s.step(ZERO);
+ expect(s.state).toBe('crashed');expect(s.course.invalid).toBe(true);expect(s.course.finishedAt).toBeNull();expect(s.course.splits).toHaveLength(1);
+ s.reset();expect(s.course.invalid).toBe(false);expect(s.course.splits).toEqual([]);s.world.dispose();
+});
+it('G09 malformed record ordering, NaN and faster valid record handling preserve prior bytes',()=>{
+ const map=new Map<string,string>();const storage={getItem:(k:string)=>map.get(k)??null,setItem:(k:string,v:string)=>{map.set(k,v);}};
+ const c=completed(),record={total:4,splits:c.splits};saveRecord(storage,G08_MODEL,DEFAULT_ASSEMBLY,record);const before=map.get(recordKey(G08_MODEL,DEFAULT_ASSEMBLY));
+ expect(saveRecord(storage,G08_MODEL,DEFAULT_ASSEMBLY,{...record,total:NaN})).toBeNull();
+ const bad=structuredClone(record);bad.splits[1].gate=5;expect(saveRecord(storage,G08_MODEL,DEFAULT_ASSEMBLY,bad)).toBeNull();
+ expect(map.get(recordKey(G08_MODEL,DEFAULT_ASSEMBLY))).toBe(before);
+ const slower={total:8,splits:record.splits.map(s=>({...s,elapsed:s.elapsed*2,sector:s.sector*2}))};expect(saveRecord(storage,G08_MODEL,DEFAULT_ASSEMBLY,slower)).toEqual(record);expect(map.get(recordKey(G08_MODEL,DEFAULT_ASSEMBLY))).toBe(before);
+});
