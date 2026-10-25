@@ -153,7 +153,7 @@ export class FlightScene {
     c.fillStyle='#35483d';c.fillRect(0,0,128,128);c.fillStyle='#fff0d9';c.font='bold 80px monospace';c.textAlign='center';c.fillText(String(i+1),64,92);
     const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;
     const g=getCourse(this.courseId).gates[i],sign=this.mesh(new THREE.PlaneGeometry(.6,.6),new THREE.MeshStandardMaterial({map:texture,side:THREE.DoubleSide}),[g.center[0]-.13,g.center[1],g.center[2]+g.height/2+.1]);
-    if(this.courseId==='training-straight')sign.rotation.set(Math.PI/2,-Math.PI/2,0);else{const offset=rotate(g.rotation,[-.15,0,g.height/2+.5]);sign.position.set(...g.center.map((x,k)=>x+offset[k]) as [number,number,number]);sign.quaternion.set(g.rotation[1],g.rotation[2],g.rotation[3],g.rotation[0]).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),Math.PI/2));}
+    if(this.courseId==='training-straight')sign.rotation.set(Math.PI/2,-Math.PI/2,0);else{const offset=rotate(g.rotation,[-.15,0,g.height/2+.5]);sign.position.set(...g.center.map((x,k)=>x+offset[k]) as [number,number,number]);sign.quaternion.set(g.rotation[1],g.rotation[2],g.rotation[3],g.rotation[0]).multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI/2,-Math.PI/2,0)));}
   }
   private aircraft() {
     this.scene.add(this.drone);
@@ -217,6 +217,6 @@ export class FlightScene {
     if(fps<35&&!this.low){this.setQuality(true);this.autoHighAttempted=true;}
     else if(fps>55&&this.low&&!this.autoHighAttempted&&this.clock>10){this.autoHighAttempted=true;this.setQuality(false);}
   }
-  dispose(){const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();this.scene.traverse(o=>{if(o instanceof THREE.Mesh){geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m));}});geometries.forEach(g=>g.dispose());materials.forEach(m=>{for(const v of Object.values(m))if(v instanceof THREE.Texture)v.dispose();m.dispose();});this.renderer.dispose();}
+  dispose(){const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();this.scene.traverse(o=>{if(o instanceof THREE.DirectionalLight||o instanceof THREE.SpotLight||o instanceof THREE.PointLight)o.shadow.dispose();if(o instanceof THREE.Mesh){geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m));}});geometries.forEach(g=>g.dispose());materials.forEach(m=>{for(const v of Object.values(m))if(v instanceof THREE.Texture)v.dispose();m.dispose();});this.renderer.dispose();}
   get qualityLabel(){return `${this.low?'Low':'High'} · render scale ${this.renderer.getPixelRatio().toFixed(2)}`;}
 }

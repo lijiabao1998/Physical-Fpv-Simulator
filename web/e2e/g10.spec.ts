@@ -15,3 +15,10 @@ for(const width of [1440,412,360])test(`G10 British Slalom native 3D course, cam
  await page.reload();await expect(page.locator('#loading')).toHaveCount(0);await expect(page.locator('#course-select')).toHaveValue('british-slalom');await expect(page.locator('#best')).toContainText('LOCAL BEST');
  expect(errors).toEqual([]);await info.attach('g10-course-ab.json',{body:JSON.stringify({width,loadMs,results,finish,errors,hardwareVerified:false},null,2),contentType:'application/json'});
 });
+test('G10 native imported input-only full British lap renders the completed flight',async({page},info)=>{
+ const {readFileSync}=await import('node:fs');const evidence=JSON.parse(readFileSync('numerical-results/g10-guided-flight.json','utf8'));const version=JSON.parse(readFileSync('dist/version.json','utf8'));const bundle={...evidence.replay,build:version.commit};
+ await page.goto('http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1');await expect(page.locator('#loading')).toHaveCount(0);await page.getByTestId('start').click();await page.getByRole('button',{name:'Physics',exact:true}).click();await page.locator('#import-replay').setInputFiles({name:'british-recorded-controls.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(bundle))});await expect(page.locator('#course-select')).toHaveValue('british-slalom');
+ const result=await page.evaluate(count=>{const h=(window as any).__FPV_TEST__;h.tick(count);return h.snapshot();},bundle.events.length);
+ expect(result.gate).toBe(7);expect(result.state).toBe('finished');expect(result.courseValid).toBe(true);expect(result.splits).toEqual(evidence.end.splits);expect(result.position).toEqual(evidence.end.position);
+ await page.screenshot({path:info.outputPath('british-recorded-full-flight-chase.png')});await page.getByTestId('camera').click();await page.waitForTimeout(100);await page.screenshot({path:info.outputPath('british-recorded-full-flight-fpv.png')});await info.attach('recorded-flight-result.json',{body:JSON.stringify({source:'Input-only test navigator, native replay import; no human/hardware claim.',result},null,2),contentType:'application/json'});
+});

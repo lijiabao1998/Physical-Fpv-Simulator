@@ -1,0 +1,581 @@
+[
+  {
+    "width": 1440,
+    "loadMs": 787,
+    "results": [
+      {
+        "id": "training-straight",
+        "switchMs": 612,
+        "switchAndSampleMs": 6533,
+        "metrics": {
+          "diagnostics": {
+            "enabled": true,
+            "samples": 81,
+            "fps": 20.251518863914796,
+            "frameMs": 49.37901234567901,
+            "physicsStepMs": 0.11548635115243891,
+            "renderCpuMs": 0.9283950617274609,
+            "lastSteps": 12,
+            "maxSteps": 17,
+            "lastStop": "Settings opened \u2014 paused and disarmed. Close and resume to fly."
+          },
+          "drawCalls": 75,
+          "triangles": 27164,
+          "memory": {
+            "geometries": 75,
+            "textures": 6
+          },
+          "jsHeapBytes": 47400000,
+          "quality": "Low \u00b7 render scale 0.61",
+          "courseId": "training-straight"
+        },
+        "frames": {
+          "median": 50,
+          "p95": 66.5,
+          "p99": 66.80000000000018
+        }
+      },
+      {
+        "id": "british-slalom",
+        "switchMs": 544,
+        "switchAndSampleMs": 3661,
+        "metrics": {
+          "diagnostics": {
+            "enabled": true,
+            "samples": 72,
+            "fps": 33.75052735198989,
+            "frameMs": 29.629166666666656,
+            "physicsStepMs": 0.1247439836145939,
+            "renderCpuMs": 0.7513888888897782,
+            "lastSteps": 9,
+            "maxSteps": 12,
+            "lastStop": "Settings opened \u2014 paused and disarmed. Close and resume to fly."
+          },
+          "drawCalls": 67,
+          "triangles": 7152,
+          "memory": {
+            "geometries": 67,
+            "textures": 6
+          },
+          "jsHeapBytes": 47400000,
+          "quality": "Low \u00b7 render scale 0.61",
+          "courseId": "british-slalom"
+        },
+        "frames": {
+          "median": 33.29999999999927,
+          "p95": 33.400000000001455,
+          "p99": 33.400000000001455
+        }
+      }
+    ],
+    "finish": {
+      "courseId": "british-slalom",
+      "courseVersion": "british-slalom-v1",
+      "physicsModel": "g08-transient-v1",
+      "state": "finished",
+      "armed": false,
+      "mode": "angle",
+      "time": 4.337500000000074,
+      "airtime": 0,
+      "position": [
+        16.01442527770996,
+        18.007884979248047,
+        8.002127647399902
+      ],
+      "velocity": [
+        6.933292388916016,
+        3.7897887229919434,
+        1.1133917570114136
+      ],
+      "quaternion": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "rates": [
+        0,
+        0,
+        0
+      ],
+      "voltage": 16.36,
+      "current": 0,
+      "soc": 0.9,
+      "thrust": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "rpm": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contacts": 1,
+      "splits": [
+        {
+          "gate": 1,
+          "elapsed": 0,
+          "sector": 0
+        },
+        {
+          "gate": 2,
+          "elapsed": 0.01667067749999429,
+          "sector": 0.01667067749999429
+        },
+        {
+          "gate": 3,
+          "elapsed": 0.033341950103848106,
+          "sector": 0.016671272603853815
+        },
+        {
+          "gate": 4,
+          "elapsed": 0.049990320145991696,
+          "sector": 0.01664837004214359
+        },
+        {
+          "gate": 5,
+          "elapsed": 0.06666178106870557,
+          "sector": 0.016671460922713877
+        },
+        {
+          "gate": 6,
+          "elapsed": 0.08333835638670539,
+          "sector": 0.01667657531799982
+        },
+        {
+          "gate": 7,
+          "elapsed": 0.10000357819106043,
+          "sector": 0.016665221804355035
+        }
+      ],
+      "courseValid": true,
+      "gate": 7,
+      "courseTime": 0.10000357819106043,
+      "reason": "Course complete. Best time saved locally when storage is available.",
+      "energy": {
+        "chemicalJ": 0,
+        "stateJ": 0,
+        "busJ": 0,
+        "packHeatJ": 0,
+        "copperJ": 0,
+        "escJ": 0,
+        "frictionJ": 0,
+        "rotorJ": 0,
+        "energyError": 0,
+        "sourceError": 0,
+        "chargeError": 0,
+        "thermalError": 0,
+        "physicsModel": "g08-transient-v1",
+        "syntheticParameters": true,
+        "rotorKineticJ": 0
+      },
+      "mass": 0.72,
+      "camera": "chase",
+      "frame": {
+        "controls": {
+          "throttle": 0,
+          "roll": 0,
+          "pitch": 0,
+          "yaw": 0
+        },
+        "actions": [],
+        "source": "keyboard",
+        "device": "Keyboard",
+        "supported": true,
+        "raw": [],
+        "buttons": []
+      }
+    },
+    "errors": [],
+    "hardwareVerified": false
+  },
+  {
+    "width": 412,
+    "loadMs": 738,
+    "results": [
+      {
+        "id": "training-straight",
+        "switchMs": 557,
+        "switchAndSampleMs": 5916,
+        "metrics": {
+          "diagnostics": {
+            "enabled": true,
+            "samples": 81,
+            "fps": 22.39672620693469,
+            "frameMs": 44.64938271604938,
+            "physicsStepMs": 0.12248426532021808,
+            "renderCpuMs": 0.8740740740714152,
+            "lastSteps": 12,
+            "maxSteps": 20,
+            "lastStop": "Settings opened \u2014 paused and disarmed. Close and resume to fly."
+          },
+          "drawCalls": 71,
+          "triangles": 27092,
+          "memory": {
+            "geometries": 71,
+            "textures": 6
+          },
+          "jsHeapBytes": 50400000,
+          "quality": "Low \u00b7 render scale 1.00",
+          "courseId": "training-straight"
+        },
+        "frames": {
+          "median": 49.900000000000546,
+          "p95": 50.100000000000364,
+          "p99": 83.39999999999964
+        }
+      },
+      {
+        "id": "british-slalom",
+        "switchMs": 458,
+        "switchAndSampleMs": 2887,
+        "metrics": {
+          "diagnostics": {
+            "enabled": true,
+            "samples": 72,
+            "fps": 45.47464157140148,
+            "frameMs": 21.99027777777779,
+            "physicsStepMs": 0.16041194255516378,
+            "renderCpuMs": 0.6736111111082815,
+            "lastSteps": 8,
+            "maxSteps": 9,
+            "lastStop": "Settings opened \u2014 paused and disarmed. Close and resume to fly."
+          },
+          "drawCalls": 55,
+          "triangles": 7028,
+          "memory": {
+            "geometries": 55,
+            "textures": 4
+          },
+          "jsHeapBytes": 50400000,
+          "quality": "Low \u00b7 render scale 1.00",
+          "courseId": "british-slalom"
+        },
+        "frames": {
+          "median": 16.700000000000728,
+          "p95": 33.399999999999636,
+          "p99": 33.399999999999636
+        }
+      }
+    ],
+    "finish": {
+      "courseId": "british-slalom",
+      "courseVersion": "british-slalom-v1",
+      "physicsModel": "g08-transient-v1",
+      "state": "finished",
+      "armed": false,
+      "mode": "angle",
+      "time": 3.266666666666724,
+      "airtime": 0,
+      "position": [
+        16.01442527770996,
+        18.007884979248047,
+        8.002127647399902
+      ],
+      "velocity": [
+        6.933292388916016,
+        3.7897887229919434,
+        1.1133917570114136
+      ],
+      "quaternion": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "rates": [
+        0,
+        0,
+        0
+      ],
+      "voltage": 16.36,
+      "current": 0,
+      "soc": 0.9,
+      "thrust": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "rpm": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contacts": 1,
+      "splits": [
+        {
+          "gate": 1,
+          "elapsed": 0,
+          "sector": 0
+        },
+        {
+          "gate": 2,
+          "elapsed": 0.016670677499995623,
+          "sector": 0.016670677499995623
+        },
+        {
+          "gate": 3,
+          "elapsed": 0.033341950103851214,
+          "sector": 0.01667127260385559
+        },
+        {
+          "gate": 4,
+          "elapsed": 0.04999032014599614,
+          "sector": 0.016648370042144922
+        },
+        {
+          "gate": 5,
+          "elapsed": 0.06666178106871179,
+          "sector": 0.016671460922715653
+        },
+        {
+          "gate": 6,
+          "elapsed": 0.08333835638671383,
+          "sector": 0.01667657531800204
+        },
+        {
+          "gate": 7,
+          "elapsed": 0.1000035781910702,
+          "sector": 0.016665221804356367
+        }
+      ],
+      "courseValid": true,
+      "gate": 7,
+      "courseTime": 0.1000035781910702,
+      "reason": "Course complete. Best time saved locally when storage is available.",
+      "energy": {
+        "chemicalJ": 0,
+        "stateJ": 0,
+        "busJ": 0,
+        "packHeatJ": 0,
+        "copperJ": 0,
+        "escJ": 0,
+        "frictionJ": 0,
+        "rotorJ": 0,
+        "energyError": 0,
+        "sourceError": 0,
+        "chargeError": 0,
+        "thermalError": 0,
+        "physicsModel": "g08-transient-v1",
+        "syntheticParameters": true,
+        "rotorKineticJ": 0
+      },
+      "mass": 0.72,
+      "camera": "chase",
+      "frame": {
+        "controls": {
+          "throttle": 0,
+          "roll": 0,
+          "pitch": 0,
+          "yaw": 0
+        },
+        "actions": [],
+        "source": "keyboard",
+        "device": "Keyboard",
+        "supported": true,
+        "raw": [],
+        "buttons": []
+      }
+    },
+    "errors": [],
+    "hardwareVerified": false
+  },
+  {
+    "width": 360,
+    "loadMs": 718,
+    "results": [
+      {
+        "id": "training-straight",
+        "switchMs": 468,
+        "switchAndSampleMs": 4924,
+        "metrics": {
+          "diagnostics": {
+            "enabled": true,
+            "samples": 80,
+            "fps": 26.96780718017866,
+            "frameMs": 37.081250000000004,
+            "physicsStepMs": 0.12795278933330617,
+            "renderCpuMs": 0.9112500000028376,
+            "lastSteps": 8,
+            "maxSteps": 13,
+            "lastStop": "Settings opened \u2014 paused and disarmed. Close and resume to fly."
+          },
+          "drawCalls": 71,
+          "triangles": 27092,
+          "memory": {
+            "geometries": 71,
+            "textures": 6
+          },
+          "jsHeapBytes": 50400000,
+          "quality": "Low \u00b7 render scale 1.00",
+          "courseId": "training-straight"
+        },
+        "frames": {
+          "median": 33.399999999999636,
+          "p95": 50,
+          "p99": 50.100000000000364
+        }
+      },
+      {
+        "id": "british-slalom",
+        "switchMs": 402,
+        "switchAndSampleMs": 2597,
+        "metrics": {
+          "diagnostics": {
+            "enabled": true,
+            "samples": 75,
+            "fps": 54.22209369577794,
+            "frameMs": 18.442666666666653,
+            "physicsStepMs": 0.13594527363181907,
+            "renderCpuMs": 0.5519999999999224,
+            "lastSteps": 4,
+            "maxSteps": 8,
+            "lastStop": "Settings opened \u2014 paused and disarmed. Close and resume to fly."
+          },
+          "drawCalls": 54,
+          "triangles": 7026,
+          "memory": {
+            "geometries": 54,
+            "textures": 3
+          },
+          "jsHeapBytes": 50400000,
+          "quality": "Low \u00b7 render scale 1.00",
+          "courseId": "british-slalom"
+        },
+        "frames": {
+          "median": 16.69999999999891,
+          "p95": 33.20000000000073,
+          "p99": 33.29999999999927
+        }
+      }
+    ],
+    "finish": {
+      "courseId": "british-slalom",
+      "courseVersion": "british-slalom-v1",
+      "physicsModel": "g08-transient-v1",
+      "state": "finished",
+      "armed": false,
+      "mode": "angle",
+      "time": 2.800000000000034,
+      "airtime": 0,
+      "position": [
+        16.01442527770996,
+        18.007884979248047,
+        8.002127647399902
+      ],
+      "velocity": [
+        6.933292388916016,
+        3.7897887229919434,
+        1.1133917570114136
+      ],
+      "quaternion": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "rates": [
+        0,
+        0,
+        0
+      ],
+      "voltage": 16.36,
+      "current": 0,
+      "soc": 0.9,
+      "thrust": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "rpm": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contacts": 1,
+      "splits": [
+        {
+          "gate": 1,
+          "elapsed": 0,
+          "sector": 0
+        },
+        {
+          "gate": 2,
+          "elapsed": 0.016670677499995623,
+          "sector": 0.016670677499995623
+        },
+        {
+          "gate": 3,
+          "elapsed": 0.033341950103851214,
+          "sector": 0.01667127260385559
+        },
+        {
+          "gate": 4,
+          "elapsed": 0.04999032014599614,
+          "sector": 0.016648370042144922
+        },
+        {
+          "gate": 5,
+          "elapsed": 0.06666178106871179,
+          "sector": 0.016671460922715653
+        },
+        {
+          "gate": 6,
+          "elapsed": 0.08333835638671383,
+          "sector": 0.01667657531800204
+        },
+        {
+          "gate": 7,
+          "elapsed": 0.1000035781910702,
+          "sector": 0.016665221804356367
+        }
+      ],
+      "courseValid": true,
+      "gate": 7,
+      "courseTime": 0.1000035781910702,
+      "reason": "Course complete. Best time saved locally when storage is available.",
+      "energy": {
+        "chemicalJ": 0,
+        "stateJ": 0,
+        "busJ": 0,
+        "packHeatJ": 0,
+        "copperJ": 0,
+        "escJ": 0,
+        "frictionJ": 0,
+        "rotorJ": 0,
+        "energyError": 0,
+        "sourceError": 0,
+        "chargeError": 0,
+        "thermalError": 0,
+        "physicsModel": "g08-transient-v1",
+        "syntheticParameters": true,
+        "rotorKineticJ": 0
+      },
+      "mass": 0.72,
+      "camera": "chase",
+      "frame": {
+        "controls": {
+          "throttle": 0,
+          "roll": 0,
+          "pitch": 0,
+          "yaw": 0
+        },
+        "actions": [],
+        "source": "keyboard",
+        "device": "Keyboard",
+        "supported": true,
+        "raw": [],
+        "buttons": []
+      }
+    },
+    "errors": [],
+    "hardwareVerified": false
+  }
+]

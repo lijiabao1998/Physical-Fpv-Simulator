@@ -80,6 +80,7 @@ export class GameSession {
     const b=bundle as ReplayBundle;
     if(!b||b.schema!=='physical-fpv-replay-v1'||b.version!=='0.1.0'||b.dt!==FIXED_DT||!Array.isArray(b.events)||!b.events.length||b.events.length>MAX_EVENTS||typeof b.practice!=='boolean')throw Error('Unsupported or oversized replay');
     if(b.physicsModel!==undefined&&b.physicsModel!==G07_MODEL&&b.physicsModel!==G08_MODEL)throw Error('Unknown physics model');
+    if(b.courseId&&b.courseId!=='training-straight'&&typeof b.courseVersion!=='string')throw Error('New-course replay requires its version');
     const selected=getCourse(b.courseId??'training-straight',b.courseVersion??(b.courseId?undefined:COURSE_VERSION));
     assemblyModel(b.assembly);
     for(const e of b.events){validateControls(e.c);if(typeof e.a!=='boolean'||!['angle','acro'].includes(e.m)||!Number.isFinite(e.r)||e.r<1||e.r>10)throw Error('Invalid replay event');}

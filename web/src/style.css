@@ -5,3 +5,6 @@
 /* Actual 360px Chromium first review showed the expanded race panel touching the right edge. */
 .course{max-width:min(360px,calc(100vw - 40px))}
 @media(max-width:600px){.course{max-width:calc(100vw - 24px)}}
+
+/* G10 real Chromium review: separate the course selector from the eyebrow. */
+.course>label{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:11px}.course>label select{max-width:100%;min-width:0;background:#2b4035;border:1px solid #79917355;border-radius:4px;padding:3px 5px}

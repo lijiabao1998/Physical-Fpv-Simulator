@@ -35,3 +35,19 @@ it('G10 real fixed-input takeoff scores British Gate 1 and replays its timestamp
  expect(s.course.next).toBe(1);expect(s.state).toBe('crashed');const end=s.snapshot(),start=s.course.startedAt,b=s.exportReplay('same');
  s.replay(b);for(let i=0;i<b.events.length;i++)s.step(ZERO);expect(s.world.position).toEqual(end.position);expect(s.course.splits).toEqual(end.splits);expect(s.course.startedAt).toBe(start);expect(s.state).toBe('crashed');s.world.dispose();
 });
+
+it('G10 actual British input trajectory and gate timing agree at 60/20/5 Hz rendering batches',async()=>{
+ const {planPhysicsSteps}=await import('../src/game/timing');const outputs=[];
+ for(const hz of [60,20,5]){const s=new GameSession(undefined,true,G08_MODEL,'british-slalom');s.start();s.arm(0);let accumulator=0,tick=0;
+ for(let frame=0;frame<6*hz;frame++){const p=planPhysicsSteps(accumulator,1/hz,true);expect(p.fault).toBeNull();accumulator=p.remainder;for(let i=0;i<p.steps;i++,tick++)s.step({...ZERO,throttle:tick<180?.56:.38,pitch:tick<180?0:.6});}
+ outputs.push({position:s.world.position,splits:s.course.splits,startedAt:s.course.startedAt,state:s.state});expect(planPhysicsSteps(0,.251,true).steps).toBe(0);s.world.dispose();}
+ expect(outputs[1]).toEqual(outputs[0]);expect(outputs[2]).toEqual(outputs[0]);expect(outputs[0].startedAt).not.toBeNull();
+});
+it('G10 versionless new-course replay fails before changing current flight',()=>{
+ const s=new GameSession();s.start();s.arm(0);s.step(ZERO);const before=s.snapshot(),b=s.exportReplay('same');
+ expect(()=>s.replay({...b,courseId:'british-slalom',courseVersion:undefined})).toThrow();expect(s.snapshot()).toEqual(before);s.world.dispose();
+});
+it('G10 slalom gate bars produce real Rapier contacts at their visible oriented positions',()=>{
+ const d=getCourse('british-slalom');
+ for(const g of d.gates){const w=new FlightWorld(undefined,true,d.id),side=rotate(g.rotation,[0,g.width/2,0]);w.setInitial(add(g.center,side),[0,0,0],g.rotation);w.step({thrust:[0,0,0,0],torque:[0,0,0,0]},FIXED_DT);expect(w.contacts).toBeGreaterThan(0);w.dispose();}
+});
