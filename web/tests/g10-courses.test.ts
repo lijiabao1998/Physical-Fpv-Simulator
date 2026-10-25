@@ -57,3 +57,11 @@ it('G10 every course/physics/assembly record stays isolated and old keys remain 
  expect(keys.size).toBe(COURSES.length*32);expect(map.get('physical-fpv-course-best-v1')).toBe('12.000');expect(map.get('unknown-legacy')).toBe('keep exact');
  const before=JSON.stringify([...map]);expect(saveRecord(storage,G08_MODEL,DEFAULT_ASSEMBLY,{total:2,splits:[]},'future-course')).toBeNull();expect(JSON.stringify([...map])).toBe(before);
 });
+
+it('G10 stale queued rAF never rewinds the new-flight clock or hides a real 350ms interruption',async()=>{
+ const {advanceRenderClock,planPhysicsSteps}=await import('../src/game/timing');
+ const stale=advanceRenderClock(1500,1000);expect(stale).toEqual({anchor:1500,elapsed:0});
+ const next=advanceRenderClock(stale.anchor,1550);expect(next).toEqual({anchor:1550,elapsed:.05});expect(planPhysicsSteps(0,next.elapsed,true).steps).toBe(12);
+ const stopped=advanceRenderClock(next.anchor,1900);expect(stopped.elapsed).toBe(.35);expect(planPhysicsSteps(0,stopped.elapsed,true).fault).toContain('250 ms');expect(planPhysicsSteps(0,stopped.elapsed,true).steps).toBe(0);
+ expect(advanceRenderClock(0,1000)).toEqual({anchor:1000,elapsed:0});
+});

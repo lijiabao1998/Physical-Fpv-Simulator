@@ -7,7 +7,7 @@ import { GameSession, loadBest } from './game/session';
 import {COURSES,getCourse,type CourseId} from './game/courses';
 import {loadRecord,saveRecord} from './game/records';
 import { FlightDiagnostics } from './game/diagnostics';
-import { planPhysicsSteps } from './game/timing';
+import { planPhysicsSteps,advanceRenderClock } from './game/timing';
 import { InputManager, type InputFrame } from './input/manager';
 import { cloneSettings, loadSettings, saveSettings, validatedSettings } from './input/settings';
 import { FlightScene } from './view/scene';
@@ -110,7 +110,7 @@ text('throttle',String(Math.round(frame.controls.throttle*100)));text('speed',no
  const perf=performanceStats.snapshot();text('performance-stats',perf.enabled?`${JSON.stringify(perf,null,2)}\nRenderer: ${scene.renderer.getContext().getParameter(scene.renderer.getContext().RENDERER)}\nVendor: ${scene.renderer.getContext().getParameter(scene.renderer.getContext().VENDOR)}\nRenderer may be masked; hardware/software status not inferred.\nDraw calls: ${scene.drawCalls} / triangles: ${scene.triangles}\nRender CPU timing excludes asynchronous GPU work.`:'Diagnostics off');
  if(game.course.finishedAt!==null&&bestSavedFor!==game.course){bestSavedFor=game.course;try{const result=saveRecord(localStorage,game.physicsModel,game.assembly,{total:s.courseTime,splits:s.splits},getCourse(game.courseId).version);if(result!==null)best=result.total;}catch{}}
 }
-function animate(now:number){if(fatal)return;requestAnimationFrame(animate);const realDt=lastTime?Math.max(0,(now-lastTime)/1000):0;lastTime=now;if(realDt>.25)safeStop('Frame interruption over 250 ms — paused and disarmed.');const dt=Math.min(realDt,.1);input.touch.throttle=Math.max(0,Math.min(1,input.touch.throttle+touchLift*dt*.55));let pads:readonly (Gamepad|null)[]=[];try{pads=navigator.getGamepads?.()??[];}catch{}frame=input.sample(pads,dt,now);for(const a of frame.actions)if(!activePanel)action(a);const held=pointerArmStart??keyboardArmStart;if(held!==null&&!armSent&&now-held>=600){arm();armSent=true;}
+function animate(now:number){if(fatal)return;requestAnimationFrame(animate);const renderClock=advanceRenderClock(lastTime,now);const realDt=renderClock.elapsed;lastTime=renderClock.anchor;if(realDt>.25)safeStop('Frame interruption over 250 ms — paused and disarmed.');const dt=Math.min(realDt,.1);input.touch.throttle=Math.max(0,Math.min(1,input.touch.throttle+touchLift*dt*.55));let pads:readonly (Gamepad|null)[]=[];try{pads=navigator.getGamepads?.()??[];}catch{}frame=input.sample(pads,dt,now);for(const a of frame.actions)if(!activePanel)action(a);const held=pointerArmStart??keyboardArmStart;if(held!==null&&!armSent&&now-held>=600){arm();armSent=true;}
  const physicsStart=performanceStats.enabled?performance.now():0;
  const plan=planPhysicsSteps(accumulator,realDt,!activePanel&&['flying','replay'].includes(game.state));accumulator=plan.remainder;if(plan.fault)safeStop(plan.fault);else for(let step=0;step<plan.steps;step++)game.step(frame.controls);
  const physicsEnd=performanceStats.enabled?performance.now():0;scene.render(game,dt);if(performanceStats.enabled)performanceStats.record(realDt*1000,physicsEnd-physicsStart,plan.fault?0:plan.steps,performance.now()-physicsEnd);audio.update(game.power.last.rpm.reduce((a,b)=>a+b,0)/4,settings.sound&&game.armed&&game.state!=='paused');frames++;fpsTime+=realDt;if(fpsTime>=1){scene.autoQuality(frames/fpsTime);frames=0;fpsTime=0;}if(now-lastHud>100){updateHud();lastHud=now;}}
