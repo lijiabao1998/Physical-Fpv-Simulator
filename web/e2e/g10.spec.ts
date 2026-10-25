@@ -33,7 +33,7 @@ test('G10 explicit course loading never exempts a running flight from the 250ms 
  // disarmed flight. Record it, then use the same explicit Resume a player must
  // use. Do not reset clocks, bypass ARM, or exempt any frame from the guard.
  await page.evaluate(()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve()))));
- const preflight=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());
+ const preflight=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());expect(preflight.gate).toBe(0);expect(preflight.splits).toEqual([]);await expect(page.locator('#best')).toContainText('No best lap');
  if(preflight.state==='paused'){expect(preflight.armed).toBe(false);expect(preflight.reason).toContain('250 ms');await page.getByTestId('pause').click();}
  await page.keyboard.down('Space');await expect.poll(()=>page.evaluate(()=>(window as any).__FPV_TEST__.snapshot().armed)).toBe(true);await page.keyboard.up('Space');const before=await page.evaluate(()=>(window as any).__FPV_TEST__.initialization());
  await page.evaluate(()=>{const start=performance.now();while(performance.now()-start<350){/* deliberate real running-frame interruption */}});await expect(page.getByTestId('game-status')).toContainText('250 ms');const stopped=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());expect(stopped.state).toBe('paused');expect(stopped.armed).toBe(false);expect(await page.evaluate(()=>(window as any).__FPV_TEST__.initialization())).toEqual(before);await info.attach('loading-vs-flight-safety.json',{body:JSON.stringify({receipt,crashed,preflight,before,stopped},null,2),contentType:'application/json'});
