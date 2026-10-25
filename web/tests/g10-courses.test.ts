@@ -51,3 +51,9 @@ it('G10 slalom gate bars produce real Rapier contacts at their visible oriented 
  const d=getCourse('british-slalom');
  for(const g of d.gates){const w=new FlightWorld(undefined,true,d.id),side=rotate(g.rotation,[0,g.width/2,0]);w.setInitial(add(g.center,side),[0,0,0],g.rotation);w.step({thrust:[0,0,0,0],torque:[0,0,0,0]},FIXED_DT);expect(w.contacts).toBeGreaterThan(0);w.dispose();}
 });
+it('G10 every course/physics/assembly record stays isolated and old keys remain byte-identical',async()=>{
+ const {saveRecord,loadRecord}=await import('../src/game/records');const map=new Map([['physical-fpv-course-best-v1','12.000'],['unknown-legacy','keep exact']]);const storage={getItem:(k:string)=>map.get(k)??null,setItem:(k:string,v:string)=>{map.set(k,v);}};const keys=new Set();
+ for(const course of COURSES)for(const model of [G07_MODEL,G08_MODEL])for(const frame of ['trainer','light'] as const)for(const battery of ['standard','endurance'] as const)for(const motor of ['balanced','torque'] as const)for(const propeller of ['5inch','4inch'] as const){const assembly={frame,battery,motor,propeller};const record={total:course.gates.length-1,splits:course.gates.map((_,i)=>({gate:i+1,elapsed:i,sector:i?1:0}))};const key=recordKey(model,assembly,course.version);expect(map.has(key)).toBe(false);expect(saveRecord(storage,model,assembly,record,course.version)).toEqual(record);expect(loadRecord(storage,model,assembly,course.version)).toEqual(record);keys.add(key);}
+ expect(keys.size).toBe(COURSES.length*32);expect(map.get('physical-fpv-course-best-v1')).toBe('12.000');expect(map.get('unknown-legacy')).toBe('keep exact');
+ const before=JSON.stringify([...map]);expect(saveRecord(storage,G08_MODEL,DEFAULT_ASSEMBLY,{total:2,splits:[]},'future-course')).toBeNull();expect(JSON.stringify([...map])).toBe(before);
+});
