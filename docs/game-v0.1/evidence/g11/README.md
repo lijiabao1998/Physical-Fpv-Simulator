@@ -95,3 +95,20 @@ in the same callback as the final supplied control, freezing the chosen node.
 The unlit wireframe is a deeper cyan with tone mapping disabled for contrast;
 no geometry/body/physics or alpha fade rule is added. New real images must still
 be reviewed. Test-only synthetic inputs are not manual pilot/hardware proof.
+
+ef630fe push 40196104180: 124 unit +40/40 Chromium passed, all six primary
+images manually inspected with clear Ghost and exact 10.50s lap node. PR run
+40196108961: 124 unit +39/40 Chromium; sole1440 test exhausted its unchanged
+120-second whole-test budget at the final reload/course select, after all
+1200 sampled frames, visual/PB/isolation assertions and A/B attachment completed.
+Artifact12599663214 (78,930,132bytes), SHA256
+1f2bedb964f63aad64dcf26048194f287b89cac9e6846c4f7b9cf689002221e2 retained.
+Its complete same-condition desktop OFF/ON p95=66.8/66.7ms and CPU=.572/.584ms;
+mobile p95=33.4/33.4ms. No repeated >20% Ghost regression in the two300-frame runs.
+To remove redundant waiting rather than relax the timeout or rerun until lucky,
+the G11-only harness now resets optional diagnostics through its existing native
+checkbox change handler before each120-frame block, then returns metrics in that
+last rAF callback. It asserts exactly120 diagnostic samples, isolating CPU without
+waiting to evict240 old frames. This handler changes no player/physics/storage.
+Same scene/quality/order, full native functional flow, every assertion, the
+120-second timeout, all inherited tests and product source remain unchanged.

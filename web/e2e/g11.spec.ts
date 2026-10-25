@@ -28,11 +28,12 @@ for(const width of [1440,412,360])test(`G11 native PB loop, ON/OFF, split delta,
   const pose=await page.evaluate(()=>(window as any).__FPV_TEST__.ghost());expect(pose.render.visible).toBe(true);expect(pose.render.body).toBe(false);expect(pose.render.collider).toBe(false);
  }
  // Warmed, paused, identical scene and camera; two orders avoid making shader startup look like steady cost.
- // Each block exceeds the inherited 240-frame diagnostics window, so CPU means contain only this ON/OFF state.
+ // Reset only optional diagnostics through its existing checkbox handler; do not reset or advance the paused player.
+ // Return the CPU snapshot in the final rAF callback so exactly 120 samples belong to this ON/OFF block.
  for(const on of [false,true,true,false]){
   if((await page.evaluate(()=>(window as any).__FPV_TEST__.ghost().enabled))!==on)await page.locator('#ghost-toggle').click();
-  const timing=await page.evaluate(()=>new Promise<number[]>(resolve=>{const out:number[]=[];let previous=performance.now();const next=(now:number)=>{out.push(now-previous);previous=now;if(out.length===300)resolve(out);else requestAnimationFrame(next);};requestAnimationFrame(next);}));
-  timing.sort((a,b)=>a-b);const m=await page.evaluate(()=>(window as any).__FPV_TEST__.metrics());expect(m.quality).toBe('Low · render scale 1.00');expect(m.diagnostics.samples).toBe(240);samples.push({on,frameMedianMs:timing[150],frameP95Ms:timing[285],sampleFrames:timing.length,metrics:m});
+  const measured=await page.evaluate(()=>{const toggle=document.querySelector<HTMLInputElement>('#performance-toggle')!;toggle.checked=false;toggle.dispatchEvent(new Event('change'));toggle.checked=true;toggle.dispatchEvent(new Event('change'));return new Promise<{timing:number[];metrics:any}>(resolve=>{const out:number[]=[];let previous=performance.now();const next=(now:number)=>{out.push(now-previous);previous=now;if(out.length===120)resolve({timing:out,metrics:(window as any).__FPV_TEST__.metrics()});else requestAnimationFrame(next);};requestAnimationFrame(next);});});
+  const timing=measured.timing;timing.sort((a,b)=>a-b);const m=measured.metrics;expect(m.quality).toBe('Low · render scale 1.00');expect(m.diagnostics.samples).toBe(120);samples.push({on,frameMedianMs:timing[60],frameP95Ms:timing[114],sampleFrames:timing.length,metrics:m});
  }
  await info.attach('g11-raw-off-on-performance.json',{body:JSON.stringify({width,samples,scope:'Real Chromium; same warmed paused scene/camera. Render CPU excludes asynchronous GPU work; no hardware claim.'},null,2),contentType:'application/json'});
  const off=samples.filter(s=>!s.on),on=samples.filter(s=>s.on);expect(on[1].metrics.drawCalls-off[1].metrics.drawCalls).toBeLessThanOrEqual(2);expect(on[1].metrics.triangles-off[1].metrics.triangles).toBeLessThanOrEqual(200);expect(on[1].metrics.memory.geometries-off[1].metrics.memory.geometries).toBeLessThanOrEqual(2);expect(on[1].metrics.memory.textures).toBe(off[1].metrics.memory.textures);
