@@ -1,0 +1,180 @@
+"""Evaluate every frozen synthetic input; never optimize or select a winner."""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import datetime as dt
+import gzip
+import hashlib
+import json
+import platform
+import time
+from pathlib import Path
+
+import numpy as np
+
+from physical_fpv.fpv.synthetic_envelope import simulate_scenario
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def ranges(rows, key):
+    values = [r[key] for r in rows if r.get(key) is not None]
+    return (
+        {"minimum": min(values), "maximum": max(values), "count": len(values)} if values else None
+    )
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    root = Path(__file__).resolve().parents[1]
+    protocol_path = root / "docs/public-lab-synthetic-protocol.json"
+    manifest_path = root / "docs/public-lab-synthetic-evidence/scenarios.json"
+    protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest["protocol_sha256"] != sha(protocol_path):
+        raise RuntimeError("Protocol differs from frozen scenario manifest")
+    params_path = root / protocol["input"]["parameters"]
+    raw_path = root / protocol["input"]["raw_training_cell"]
+    if sha(params_path) != protocol["input"]["parameter_sha256"]:
+        raise RuntimeError("Frozen calibrated parameters changed")
+    if sha(raw_path) != protocol["input"]["raw_sha256"]:
+        raise RuntimeError("Frozen original source bytes changed")
+    base = json.loads(params_path.read_text(encoding="utf-8"))
+    args.output.mkdir(parents=True, exist_ok=False)
+    result = {
+        "label": "SYNTHETIC_ASSUMED",
+        "empirical_acceptance": "NOT_ESTABLISHED",
+        "old_scientific_acceptance": "FAIL:6/8;two low-current cutoff failures",
+        "optimizer_calls": 0,
+        "coefficient_updates": 0,
+        "started_at": dt.datetime.now(dt.UTC).isoformat(),
+        "python": platform.python_version(),
+        "numpy": np.__version__,
+        "protocol_sha256": sha(protocol_path),
+        "manifest_sha256": sha(manifest_path),
+        "parameter_sha256": sha(params_path),
+        "raw_sha256": sha(raw_path),
+        "driver_sha256": sha(Path(__file__).resolve()),
+        "model_sha256": sha(root / "src/physical_fpv/fpv/synthetic_envelope.py"),
+        "trace_spacing_s": 5,
+        "cases": [],
+    }
+    started = time.monotonic()
+    trace_path = args.output / "traces.csv.gz"
+    # Gzip timestamp fixed for reproducible compressed bytes.
+    with (
+        trace_path.open("wb") as raw_stream,
+        gzip.GzipFile(fileobj=raw_stream, mode="wb", mtime=0, filename="") as compressed,
+    ):
+        import io
+
+        with io.TextIOWrapper(compressed, encoding="utf-8", newline="") as stream:
+            columns = [
+                "scenario_id",
+                "current_a",
+                "phase",
+                "phase_current_a",
+                "time_s",
+                "charge_z",
+                "potential_v",
+                "voltage_v",
+                "fast_v",
+                "slow_v",
+                "temperature_k",
+                "heat_w",
+            ]
+            writer = csv.writer(stream)
+            writer.writerow(columns)
+            count = 0
+            for scenario in manifest["scenarios"]:
+                for current in manifest["currents_a"]:
+                    row = simulate_scenario(base, scenario, current)
+                    trace = row.pop("trace")
+                    traces = row.pop("history_traces")
+                    if trace is not None:
+                        traces.append(
+                            {"name": "main_discharge", "current_a": current, "trace": trace}
+                        )
+                    for segment in traces:
+                        values = segment["trace"]
+                        for j in range(len(values["time_s"])):
+                            writer.writerow(
+                                [row["id"], current, segment["name"], segment["current_a"]]
+                                + [format(float(values[k][j]), ".12g") for k in columns[4:]]
+                            )
+                        count += len(values["time_s"])
+                    result["cases"].append(row)
+    result["trace_rows"] = count
+    result["trace_sha256"] = sha(trace_path)
+    result["summaries"] = []
+    for current in manifest["currents_a"]:
+        rows = [r for r in result["cases"] if r["current_a"] == current]
+        statuses = {
+            s: sum(r["status"] == s for r in rows) for s in sorted({r["status"] for r in rows})
+        }
+        numerical_rows = [r for r in rows if r["model_stop_s"] is not None]
+        feasible_rows = [
+            r
+            for r in numerical_rows
+            if r["status"] in ("PHYSICAL_CUTOFF_2P5_V", "DOMAIN_END_WITHOUT_PHYSICAL_CUTOFF")
+        ]
+        result["summaries"].append(
+            {
+                "current_a": current,
+                "all_inputs": len(rows),
+                "statuses": statuses,
+                "numeric_cases": len(numerical_rows),
+                "feasible_cases": len(feasible_rows),
+                "range_scope": (
+                    "Admissible frozen inputs; invalid partial traces retained separately"
+                ),
+                "invalid_partial_traces": len(numerical_rows) - len(feasible_rows),
+                "model_stop_s": ranges(feasible_rows, "model_stop_s"),
+                "physical_cutoff_s": ranges(feasible_rows, "full_physical_cutoff_s"),
+                "terminal_voltage_v": ranges(feasible_rows, "terminal_voltage_v"),
+                "terminal_temperature_c": ranges(feasible_rows, "terminal_temperature_c"),
+                "sampled_peak_temperature_c": ranges(feasible_rows, "sampled_peak_temperature_c"),
+                "thermal_extrapolations": sum(r["thermal_extrapolation"] for r in feasible_rows),
+            }
+        )
+    result["finished_at"] = dt.datetime.now(dt.UTC).isoformat()
+    result["elapsed_wall_s"] = time.monotonic() - started
+    result["limitations"] = [
+        "Finite scenario ranges, not continuous-domain bounds or statistical confidence intervals",
+        "Every invalid/duplicate input retained; no resampling, optimizer, "
+        "best-case tuning or new fit",
+        "No physical qualification of new slow RC/initial states/true OCV/thermal-temperature law",
+        "Thermal maximum sampled at5s plus voltage partitions/endpoints; "
+        "no certified continuous peak",
+        "Model-domain end above2.5V is not physical cutoff or flight endurance",
+        "Motor/ESC/prop/thrust/flight endurance conditional and unvalidated",
+        "Original6/8 and aggregateFAIL retained; old8 known regression, no unseen validation",
+    ]
+    target = args.output / "results.json"
+    target.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(
+        json.dumps(
+            {
+                "started_at": result["started_at"],
+                "finished_at": result["finished_at"],
+                "elapsed_wall_s": result["elapsed_wall_s"],
+                "cases": len(result["cases"]),
+                "trace_rows": count,
+                "results_sha256": sha(target),
+                "summaries": result["summaries"],
+            },
+            indent=2,
+            ensure_ascii=False,
+        ),
+        flush=True,
+    )
+
+
+if __name__ == "__main__":
+    main()

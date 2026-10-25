@@ -1,0 +1,538 @@
+{
+  "base": "38a7db9edd103c3ae0a4c6cfaaa35a452c6b4f7c",
+  "scope": "Reports and archival evidence only; no runtime/mainline integration",
+  "new_simulations": 0,
+  "new_gui_runs": 0,
+  "new_fits": 0,
+  "preserved_status": "6/8 with2cutoffFAIL; aggregateFAIL;224numeric140invalid;117.9C extrapolation",
+  "gui": "original10PASS underdeclaredcondition; oldWin10053 UNRESOLVED; no productionfix",
+  "redaction": "Private host paths and unrelated task names; original hashes retained; embedded original digests still refer to original bytes, not redacted copies",
+  "files": [
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-report.md",
+      "original_repo_path": "docs/public-lab-synthetic-report.md",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "fcd6f560e77f846e307b1b1f0c3b2530715856bb792029ac67250d8d2893736b",
+      "published_sha256": "0dfd50aed1bb0ab37adc5e13af4084aa2282e63f8249eb451356fa6ab4298f5b",
+      "bytes": 9480,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-report.md",
+      "original_repo_path": "docs/public-lab-http-lifecycle-report.md",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "165ce0c8664fb2536371024a420508932a646032b892a5e2354ccec8d7a99643",
+      "published_sha256": "11eeb2ebf78b77fa22dc891e473833a1d4b98ab7f261a1c92bc810599d5d25ad",
+      "bytes": 7242,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-protocol.json",
+      "original_repo_path": "docs/public-lab-synthetic-protocol.json",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "5012c44c5653f54eff96ac4a4fb917d7326227e721eb7b18789632c84e5e231c",
+      "published_sha256": "163761512c806478ce8d0f916f87f8fa63e10c7a7e95d7fc4fed13a9acf9fb01",
+      "bytes": 8634,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/scenarios.json",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/scenarios.json",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "86d5164106d58dc7700c5d008cf04f5c145125f949496b1ce3592b90e340c968",
+      "published_sha256": "26a679cd4bf6e21c039af8dc4d7f340eadd594f771fd7331b5eabacd4181db79",
+      "bytes": 36113,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/oracle-cases.json",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/oracle-cases.json",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "d38076b7bf5c79ef63f7cbf2fccf11947fac7ede5d6e8b00b18a1f316e7d9789",
+      "published_sha256": "d38076b7bf5c79ef63f7cbf2fccf11947fac7ede5d6e8b00b18a1f316e7d9789",
+      "bytes": 431,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/numerical-verification.json",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/numerical-verification.json",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "aa1adb6914b249b7c58e596c6514f0b18eac705bb938eb8590d567856a514114",
+      "published_sha256": "137c472de3a6290b7c3a3a6cb633a1eacb1f042182b448d626a667a9c70b9fd1",
+      "bytes": 5622,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/one-factor-sensitivity.csv",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/one-factor-sensitivity.csv",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "8e39f08a29f1cb5986fae3d2fd0c82990388f7162103d85935be36421bd20508",
+      "published_sha256": "3712783f90a5472e2bfb10c4fd46c1ec251c6984333461049d3df53088a9a4ee",
+      "bytes": 9430,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/independent-review.md",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/independent-review.md",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "dacd3e97cdabf31deb3bb110b46d3bce41fb2541b05224988f1d1e6ae4b35741",
+      "published_sha256": "dacd3e97cdabf31deb3bb110b46d3bce41fb2541b05224988f1d1e6ae4b35741",
+      "bytes": 13317,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/finite-synthetic-ranges.png",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/finite-synthetic-ranges.png",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "c949811007c823267d134f1da0258ec6689026a9b4ca099e62370b72b54fb954",
+      "published_sha256": "c949811007c823267d134f1da0258ec6689026a9b4ca099e62370b72b54fb954",
+      "bytes": 111778,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/primary-01/results.json",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/primary-01/results.json",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "d4438ed36554f1fa4fd12e315ea5f540ce52ae48e2b3b335e5b54cf4f622a5c3",
+      "published_sha256": "4e808174ee524a6d43d4ebb1be554b93925c9c36b5ef4c244312ca954bc5352d",
+      "bytes": 466758,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/baseline-integrity.json",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/baseline-integrity.json",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "701e0edc45eb1bdaef6efa46e575e7581b2024c246da95433f72d335511a93ce",
+      "published_sha256": "7a3c1bad5190790cbcac512cdb747b94d661fdac48b448dd934ba711e11e6b98",
+      "bytes": 247430,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/calibrated-effective-parameters.json",
+      "original_repo_path": "docs/benchmarks/public-lab-chen-final-validation/parameters.json",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "01d086e50d981c3a52349531b51aca82c8990c4c2e0b6462bc111267f84d7cef",
+      "published_sha256": "7e00849c51bcf77668b7be6e9ee22b4dd683754b53b059fdf3a966a7004b19e6",
+      "bytes": 540,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/archived-model.py.txt",
+      "original_repo_path": "src/physical_fpv/fpv/synthetic_envelope.py",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "d1b834f0b8cb10fef30e267fe8a9a4dd3a68595edc2dac2bfa1619c3351d6262",
+      "published_sha256": "d1b834f0b8cb10fef30e267fe8a9a4dd3a68595edc2dac2bfa1619c3351d6262",
+      "bytes": 14693,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/archived-driver.py.txt",
+      "original_repo_path": "scripts/run_public_lab_synthetic.py",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "ce021c58f55d588f808259d7f8cf8ad3b22cca3e7d31285f6af71265b9e0dc32",
+      "published_sha256": "ce021c58f55d588f808259d7f8cf8ad3b22cca3e7d31285f6af71265b9e0dc32",
+      "bytes": 7537,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/archived-checks.py.txt",
+      "original_repo_path": "tests/test_synthetic_envelope.py",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "8ec01694a40d416678356ade2996e76d973785c26a4c86145552f2180ab31741",
+      "published_sha256": "8ec01694a40d416678356ade2996e76d973785c26a4c86145552f2180ab31741",
+      "bytes": 13531,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/execution/synthetic-r5-checks-01/receipt.json",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/execution/synthetic-r5-checks-01/receipt.json",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "bff0760fd7f4eaad9f914c774d3e8f997c9c9edabaee0023a4c872a2ed472ab7",
+      "published_sha256": "21fa07447c2a436871fe82e58450b72a27d3e61c373cbbcf4fc0974b9d2f6499",
+      "bytes": 897,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/execution/synthetic-r5-checks-01/stdout.txt",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/execution/synthetic-r5-checks-01/stdout.txt",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "82b96608a428c0f6c5d69fb35507bf6fb15c30efe04a4bb811862d59a4d59451",
+      "published_sha256": "c7f46bc63ed311cf13043e0530ee11a5cf6737c9e0f86755f518696b8bb594d9",
+      "bytes": 4743,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/execution/synthetic-r5-checks-01/stderr.txt",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/execution/synthetic-r5-checks-01/stderr.txt",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/execution/synthetic-r5-final-checks/receipt.json",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/execution/synthetic-r5-final-checks/receipt.json",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "6be04a499d1c4de3d909408c24a60dcee81b30620cd2564976dc264fbebf7e30",
+      "published_sha256": "76b1bba224f79ffa20ceb899ba0873133535c2c00584fb6dc2a3cae5264e5fd6",
+      "bytes": 839,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/execution/synthetic-r5-final-checks/stdout.txt",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/execution/synthetic-r5-final-checks/stdout.txt",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "2d1d8e048670729e79e3efa5da5cf6edf36dbfdb66eb525596e70d56f212997b",
+      "published_sha256": "e85f6bd48e5dec40e0b99ecce8c9f7d9fa683f42e2d60dbfff3b806b34669982",
+      "bytes": 6754,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/execution/synthetic-r5-final-checks/stderr.txt",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/execution/synthetic-r5-final-checks/stderr.txt",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/execution/synthetic-r5-primary-01/receipt.json",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/execution/synthetic-r5-primary-01/receipt.json",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "25cc9d47fbd05dc9f59621fdb98bf89c304b954b3e2a5bb0f070770eebde65b0",
+      "published_sha256": "f520c1dfbafb66ebc0108ebb6ba9f42ac5e5732ddcd4c0c1d7854c404a1364af",
+      "bytes": 856,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/execution/synthetic-r5-primary-01/stdout.txt",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/execution/synthetic-r5-primary-01/stdout.txt",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "62fd07de742a425b8ac4a96848c749a66c2c090d4bcd173a7f17b6bd867333f5",
+      "published_sha256": "5ffc9d27af978bd006d76fc9b2d491ab195a774b7c8ae4fa76898c36210a44bb",
+      "bytes": 5140,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/execution/synthetic-r5-primary-01/stderr.txt",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/execution/synthetic-r5-primary-01/stderr.txt",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/execution/synthetic-r5-history-flag-01/receipt.json",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/execution/synthetic-r5-history-flag-01/receipt.json",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "72e0b73f5b2e4b70f21c1da658887f0c2da0b61d54ce13021b603dc18255291d",
+      "published_sha256": "ecc4ba7e55db115e53906fbe8dd38a1ae8e26902acbe543fbf2f92aafbbde97f",
+      "bytes": 893,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/execution/synthetic-r5-history-flag-01/stdout.txt",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/execution/synthetic-r5-history-flag-01/stdout.txt",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "eb71c88882e32596921a99bd88c4c7778706f64260a155eda060e9e96fdb5506",
+      "published_sha256": "5e1a279d507065d895f34a21f39897806f6febe98ea58eb6d775ccd4f570c7b1",
+      "bytes": 609,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/execution/synthetic-r5-history-flag-01/stderr.txt",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/execution/synthetic-r5-history-flag-01/stderr.txt",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/execution/synthetic-r5-integrity-01/receipt.json",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/execution/synthetic-r5-integrity-01/receipt.json",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "42ec62aebc0eb267f8e88e5114fe4ca4de580b7a351ae153539f36f60cf31d92",
+      "published_sha256": "d638d1b3a753f5385f8fc25afc97c19ea521a3a52d891c7ffc496c68a01b91d5",
+      "bytes": 895,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/execution/synthetic-r5-integrity-01/stdout.txt",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/execution/synthetic-r5-integrity-01/stdout.txt",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "9f57d48e34ee891c0c2e5c75559e26782a295cdecf832ef3ef4fe877d039db55",
+      "published_sha256": "8f1e0383b68250bafcc4b9543569f5454f0d50f7f9063a0413a8e498bee0db4f",
+      "bytes": 250,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/execution/synthetic-r5-integrity-01/stderr.txt",
+      "original_repo_path": "docs/public-lab-synthetic-evidence/execution/synthetic-r5-integrity-01/stderr.txt",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-protocol.json",
+      "original_repo_path": "docs/public-lab-http-lifecycle-protocol.json",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "9b184ca1909ad3bd28a6675597723868fd79bbba6f8c6be9fe4e6736ecab0e3b",
+      "published_sha256": "dfd91207b7ed472374ec15e24e4539a36937e74875fdd8ec9b4ab6cc88ce557b",
+      "bytes": 5892,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/README.md",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/README.md",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "9b658405f9dddbdc56c93af70cd9335b929f455d5ab3c4a4f99ec30952736f9a",
+      "published_sha256": "9b658405f9dddbdc56c93af70cd9335b929f455d5ab3c4a4f99ec30952736f9a",
+      "bytes": 2111,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/diagnostic-amendment.json",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/diagnostic-amendment.json",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "95957fc712e9d9cb16c169f00b68503d956f44e823ce7347a8632bac8d1a95c3",
+      "published_sha256": "95957fc712e9d9cb16c169f00b68503d956f44e823ce7347a8632bac8d1a95c3",
+      "bytes": 2397,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/integrity.json",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/integrity.json",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "2c2624832512b397ef4d56558f82828ef16743f583b6bb35bc99fa52de8bc757",
+      "published_sha256": "2c2624832512b397ef4d56558f82828ef16743f583b6bb35bc99fa52de8bc757",
+      "bytes": 161985,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/gui-r5-pre-01.xml",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/gui-r5-pre-01.xml",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "b17cf9c5ff87cbcdecd72c425daf9107ec48c0910c1dc16cbf0c0c73a826fc12",
+      "published_sha256": "189e5f6a015fe43a0c22e019a3c9052c7c317358b4f57cd7fd20fbde436eed48",
+      "bytes": 10463,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/gui-r5-pre-02.xml",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/gui-r5-pre-02.xml",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "0824347c68de197bea895856f85ae5d6ad7880e99af513853285cca83ae12a82",
+      "published_sha256": "56ad66eec6b51585750663807ae62f772e4a1777c841d869f768a542d65852dc",
+      "bytes": 5259,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/gui-r5-amended-03.xml",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/gui-r5-amended-03.xml",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "27b57202c88ce2b04b5e0d3c980ae0ddf1aad3c59b7ac3495f91f2eedce3cfb7",
+      "published_sha256": "27b57202c88ce2b04b5e0d3c980ae0ddf1aad3c59b7ac3495f91f2eedce3cfb7",
+      "bytes": 1430,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/prechange-server-source.py.txt",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/prechange-server-source.py.txt",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "84f19480f9fb26c05e44a4af57e3dc0f39df9ac32cef77d50c00873d95145af0",
+      "published_sha256": "84f19480f9fb26c05e44a4af57e3dc0f39df9ac32cef77d50c00873d95145af0",
+      "bytes": 4141,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/prechange-test-source.py.txt",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/prechange-test-source.py.txt",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "328af1e42dfb0c87d707e90a5c4fb6ce5d41685b95d5f86cf8c6d2eb7e45befa",
+      "published_sha256": "328af1e42dfb0c87d707e90a5c4fb6ce5d41685b95d5f86cf8c6d2eb7e45befa",
+      "bytes": 5014,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/runs/gui-r5-amended-03/receipt.json",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/runs/gui-r5-amended-03/receipt.json",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "a523076a13578e341802e6412ee1f03ecbb4ddd987e070d45277d2dbafa34c54",
+      "published_sha256": "5adde09c1ee7e122b2f0994e09ee105fe314cbc2b24a164163d3bfc28ae9c39b",
+      "bytes": 942,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/runs/gui-r5-amended-03/stderr.txt",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/runs/gui-r5-amended-03/stderr.txt",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/runs/gui-r5-amended-03/stdout.txt",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/runs/gui-r5-amended-03/stdout.txt",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "3adfae46aeff76b83c390e0f0f15530833a568442c3a19936912a5bc546abc1d",
+      "published_sha256": "abed1dba8c1f5feecd93c37afaca53a8f163807b7e5e641a31da35af029ca96f",
+      "bytes": 1256,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/runs/gui-r5-pre-01/receipt.json",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/runs/gui-r5-pre-01/receipt.json",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "4744ac3277def45b515faf44387b4b48b10fe78df8f652918fcf0aa07d035ff7",
+      "published_sha256": "4635222e9754109c9a4117460d28e01af3325c6b1983ce5ca1c6e843aa1df377",
+      "bytes": 936,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/runs/gui-r5-pre-01/stderr.txt",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/runs/gui-r5-pre-01/stderr.txt",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/runs/gui-r5-pre-01/stdout.txt",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/runs/gui-r5-pre-01/stdout.txt",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "ac76ef4d1570c5e11b4fcf32b8b9e551706bb29781cefb58a9bc0e31ea13f278",
+      "published_sha256": "4564636e2855955b5699c454ae1bd0ed32df95451a8b3c33e280b362eea70b6e",
+      "bytes": 10491,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/runs/gui-r5-pre-02/receipt.json",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/runs/gui-r5-pre-02/receipt.json",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "9038a958fc2ca9a21b747b1576768ba09f14bd6a9631667a5369a8cd776e17bf",
+      "published_sha256": "be3371214e946b0c8cbdba9f42b66388f7a0cff332169fe3572dc42b748bcf46",
+      "bytes": 901,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/runs/gui-r5-pre-02/stderr.txt",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/runs/gui-r5-pre-02/stderr.txt",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/runs/gui-r5-pre-02/stdout.txt",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/runs/gui-r5-pre-02/stdout.txt",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "2325b404ed831884896cb9833f00335fc38faab740ac80c1f1d11915dc4e202b",
+      "published_sha256": "52f679b29d4298980a2a5d69ef73dd713b12c740d49de533f76ab392a5342f30",
+      "bytes": 6725,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/original-r2/gui-browser-final-r2/receipt.json",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/original-r2/gui-browser-final-r2/receipt.json",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "a6eef373f1c99d5ef93a675188cf49209104a21048d7edea9e94940ac9c2b5c9",
+      "published_sha256": "f57054880cc4ae9c68d37a74ce75411e83ba8b7806dc1d189c9bf545aa5a3f92",
+      "bytes": 996,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/original-r2/gui-browser-final-r2/stderr.txt",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/original-r2/gui-browser-final-r2/stderr.txt",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/original-r2/gui-browser-final-r2/stdout.txt",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/original-r2/gui-browser-final-r2/stdout.txt",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "b0207d6d72535812fd2c0c4f8935e9cbd656f80c98657dd10dddb5446a2194d4",
+      "published_sha256": "eea64392ceef4b09ccb3bb11abc776a42e730cdacd16e1b4a6cb5f88763b2e07",
+      "bytes": 4993,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/original-r2/gui-browser-recheck-r2/receipt.json",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/original-r2/gui-browser-recheck-r2/receipt.json",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "9201456d0d99a6700a6b36bd469d4cb50d9c9f5496765788bbacea03a2853420",
+      "published_sha256": "6debe1884cdfd15c4f79744f3d2aedf563a3fefe52412ce182dbe82c153b5b7d",
+      "bytes": 998,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/original-r2/gui-browser-recheck-r2/stderr.txt",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/original-r2/gui-browser-recheck-r2/stderr.txt",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "transformed": false
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-http-lifecycle-evidence/original-r2/gui-browser-recheck-r2/stdout.txt",
+      "original_repo_path": "docs/public-lab-http-lifecycle-evidence/original-r2/gui-browser-recheck-r2/stdout.txt",
+      "source_local_commit": "83b90eebfe3be774cbcaf74f32d61a768e90536d",
+      "original_sha256": "fce3af54cc4087afc24616c7bc9258bac53cda1d4fc50eed4c190e5fb9bbc723",
+      "published_sha256": "179c2a70cb09276a67a2fd05a983b164dc67937753c63eb84fa821ce27072cf3",
+      "bytes": 4993,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/prior-calibration/result.json",
+      "original_repo_path": "docs/benchmarks/public-lab-chen-final-validation/result.json",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "877b3d34072c599a52255fc464e8d3d841769f5014205ed54c46137ef60bf026",
+      "published_sha256": "aa3f8778534299d12f420b6c70c603036bd1b53985128e203461addef9679c32",
+      "bytes": 40711,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/prior-calibration/pre-fit-freeze.json",
+      "original_repo_path": "docs/benchmarks/public-lab-chen-final-validation/pre-fit-freeze.json",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "17de6a532d4d7da5464e26a09b88990b9178b9ab9e437591b2f43ab6fe7e407b",
+      "published_sha256": "1671765925f0d186014fe56b65200817ec86767ae73b688a4db212ab61341370",
+      "bytes": 5351,
+      "transformed": true
+    },
+    {
+      "published_path": "docs/reports/public-lab-20261012/public-lab-synthetic-evidence/prior-calibration/optimizer-log.json",
+      "original_repo_path": "docs/benchmarks/public-lab-chen-final-validation/optimizer-log.json",
+      "source_local_commit": "1bf952bec4c8e42d43ee0cbeae22d2ee289a7ad6",
+      "original_sha256": "a24300ef1455a20d7d017a8c829b9043599a0097829dc4b9bb79fd9405c505a9",
+      "published_sha256": "6cb0830e8be3f675bae7177b97135130ae1505a80f4ed5208a358487016b84d4",
+      "bytes": 5914,
+      "transformed": true
+    }
+  ],
+  "omitted": [
+    {
+      "path": "docs/public-lab-synthetic-evidence/primary-01/traces.csv.gz",
+      "bytes": 28630070,
+      "sha256": "3b769ec2b611541768cb1e50dca3764ba3ac9de13a91b0f1abb1eabc5b6d9a5d",
+      "reason": "28.6MB; complete local trace retained, no attachment upload"
+    }
+  ],
+  "limits": [
+    "Synthetic initial/history/slowRC are assumptions, not true-state restoration",
+    "No new unseen measured validation or empirical uncertainty bound",
+    "Numerical pass is separate from physical identification and scientificFAIL"
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "protocol_sha256": "d3e545b6fee15c660228e4e00d214e4ec4fd86bd8ef7bc6c1473d8d005f64a19",
+  "protocol_commit": "4a887be57a8d0a5ab2a9a822d998453000228ee6",
+  "base_sha": "839f775fd4c32563d3ee9fc2ed8967b2d9dbf9cc",
+  "train": [
+    {
+      "cell": "02",
+      "step": 7,
+      "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+    },
+    {
+      "cell": "02",
+      "step": 12,
+      "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+    },
+    {
+      "cell": "02",
+      "step": 17,
+      "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+    },
+    {
+      "cell": "02",
+      "step": 22,
+      "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+    }
+  ],
+  "holdout": [
+    {
+      "cell": "03",
+      "step": 7,
+      "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+    },
+    {
+      "cell": "03",
+      "step": 12,
+      "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+    },
+    {
+      "cell": "03",
+      "step": 17,
+      "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+    },
+    {
+      "cell": "03",
+      "step": 22,
+      "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+    },
+    {
+      "cell": "04",
+      "step": 7,
+      "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+    },
+    {
+      "cell": "04",
+      "step": 12,
+      "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+    },
+    {
+      "cell": "04",
+      "step": 17,
+      "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+    },
+    {
+      "cell": "04",
+      "step": 22,
+      "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+    }
+  ],
+  "code_sha256": {
+    "<LOCAL_PATH>": "702e0d67577dfe4055bfd66376c07d22de1fa152b8e24be4c60c381c069faa45",
+    "src\\physical_fpv\\fpv\\public_lab_ecm.py": "3617b5e97399316b3abaffea791138eb65221f299a11b3ad1665cf556406cf1a",
+    "src\\physical_fpv\\fpv\\public_lab_pack.py": "b4b62479ef6b42a757d933ba07c43fb298d6732a721ad3dad2fca14560d5c2c3",
+    "src\\physical_fpv\\data.py": "11bd252b15fbf5010e7c756302b14159c62e7f9762d6b75765d0ea2b0c2d9004",
+    "src\\physical_fpv\\fpv\\powertrain.py": "12bd80fe214baffaa1a237a13505999a3f872ba3199f5f45ab0564bab0c35b4f"
+  },
+  "resume": {
+    "from": "docs\\benchmarks\\public-lab-chen-v1",
+    "fitting_rerun": false,
+    "parameter_sha256": "01d086e50d981c3a52349531b51aca82c8990c4c2e0b6462bc111267f84d7cef",
+    "original_fit_freeze": {
+      "protocol_sha256": "d3e545b6fee15c660228e4e00d214e4ec4fd86bd8ef7bc6c1473d8d005f64a19",
+      "protocol_commit": "4a887be57a8d0a5ab2a9a822d998453000228ee6",
+      "base_sha": "839f775fd4c32563d3ee9fc2ed8967b2d9dbf9cc",
+      "train": [
+        {
+          "cell": "02",
+          "step": 7,
+          "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+        },
+        {
+          "cell": "02",
+          "step": 12,
+          "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+        },
+        {
+          "cell": "02",
+          "step": 17,
+          "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+        },
+        {
+          "cell": "02",
+          "step": 22,
+          "sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35"
+        }
+      ],
+      "holdout": [
+        {
+          "cell": "03",
+          "step": 7,
+          "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+        },
+        {
+          "cell": "03",
+          "step": 12,
+          "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+        },
+        {
+          "cell": "03",
+          "step": 17,
+          "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+        },
+        {
+          "cell": "03",
+          "step": 22,
+          "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb"
+        },
+        {
+          "cell": "04",
+          "step": 7,
+          "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+        },
+        {
+          "cell": "04",
+          "step": 12,
+          "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+        },
+        {
+          "cell": "04",
+          "step": 17,
+          "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+        },
+        {
+          "cell": "04",
+          "step": 22,
+          "sha256": "e1cbb60e79911824d5559f12db8e8ecdd4781d077a45f5b1ecbcf103aa271d9e"
+        }
+      ],
+      "code_sha256": {
+        "<LOCAL_PATH>": "7e7bb57e4a0be7133cbb09bd5a4df6767bf9192b7a3169797567af8bc43b4f91",
+        "src\\physical_fpv\\fpv\\public_lab_ecm.py": "6f360f99e5834f9e6ca02d576d2c68eaeb9c2905a038feea376b0f5d986aec61",
+        "src\\physical_fpv\\fpv\\public_lab_pack.py": "9b31c72515e92051974ff0e0985cd91fed7c30913d4196a5534712c274c14bc1",
+        "src\\physical_fpv\\data.py": "f9f7194dad23787d89101fd5612da63b1ce93487d91ccc99f5c06aea9c35ec8c",
+        "src\\physical_fpv\\fpv\\powertrain.py": "c3540f7be70cdaa5e8dcdeef91acd16d2e8038e39bd098b9044e969e501c0304"
+      }
+    }
+  }
+}

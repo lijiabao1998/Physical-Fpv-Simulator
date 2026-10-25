@@ -1,0 +1,173 @@
+{
+  "voltage_max_abs_error_v": 8.544276397515205e-13,
+  "temperature_max_abs_error_k": 1.2505552149377763e-12,
+  "event_time_max_abs_error_s": 4.2895135266007856e-07,
+  "label": "NUMERICAL_ERROR_NOT_EMPIRICAL_PREDICTION_ERROR",
+  "raw": [
+    {
+      "label": "NUMERICAL_ORACLE_NOT_MEASUREMENT",
+      "case": 0,
+      "current_a": 0,
+      "duration_s": 7200,
+      "voltage_max_abs_error_v": 0.0,
+      "temperature_max_abs_error_k": 0.0,
+      "charge_max_abs_error_z": 0.0
+    },
+    {
+      "label": "INDEPENDENT_ODE_FIRST_CUTOFF",
+      "case": 0,
+      "event_time_error_s": 4.2895135266007856e-07
+    },
+    {
+      "label": "NUMERICAL_ORACLE_NOT_MEASUREMENT",
+      "case": 0,
+      "current_a": 2.5,
+      "duration_s": 7188.466428982182,
+      "voltage_max_abs_error_v": 5.710987238671805e-13,
+      "temperature_max_abs_error_k": 9.094947017729282e-13,
+      "charge_max_abs_error_z": 6.106226635438361e-15
+    },
+    {
+      "label": "NUMERICAL_ORACLE_NOT_MEASUREMENT",
+      "case": 1,
+      "current_a": 0.0,
+      "duration_s": 2640.0,
+      "voltage_max_abs_error_v": 0.0,
+      "temperature_max_abs_error_k": 0.0,
+      "charge_max_abs_error_z": 0.0
+    },
+    {
+      "label": "NUMERICAL_ORACLE_NOT_MEASUREMENT",
+      "case": 1,
+      "current_a": 0,
+      "duration_s": 7200,
+      "voltage_max_abs_error_v": 0.0,
+      "temperature_max_abs_error_k": 0.0,
+      "charge_max_abs_error_z": 0.0
+    },
+    {
+      "label": "INDEPENDENT_ODE_FIRST_CUTOFF",
+      "case": 1,
+      "event_time_error_s": 2.3738812160445377e-07
+    },
+    {
+      "label": "NUMERICAL_ORACLE_NOT_MEASUREMENT",
+      "case": 1,
+      "current_a": 2.5,
+      "duration_s": 6892.515641403237,
+      "voltage_max_abs_error_v": 6.661338147750939e-13,
+      "temperature_max_abs_error_k": 7.958078640513122e-13,
+      "charge_max_abs_error_z": 5.384581669432009e-15
+    },
+    {
+      "label": "NUMERICAL_ORACLE_NOT_MEASUREMENT",
+      "case": 2,
+      "current_a": -0.05,
+      "duration_s": 2640.0,
+      "voltage_max_abs_error_v": 8.046896482483135e-13,
+      "temperature_max_abs_error_k": 1.7053025658242404e-13,
+      "charge_max_abs_error_z": 1.9984014443252818e-15
+    },
+    {
+      "label": "NUMERICAL_ORACLE_NOT_MEASUREMENT",
+      "case": 2,
+      "current_a": 0,
+      "duration_s": 7200,
+      "voltage_max_abs_error_v": 3.0109248427834245e-13,
+      "temperature_max_abs_error_k": 2.2737367544323206e-13,
+      "charge_max_abs_error_z": 0.0
+    },
+    {
+      "label": "INDEPENDENT_ODE_FIRST_CUTOFF",
+      "case": 2,
+      "event_time_error_s": 3.192499207216315e-07
+    },
+    {
+      "label": "NUMERICAL_ORACLE_NOT_MEASUREMENT",
+      "case": 2,
+      "current_a": 2.5,
+      "duration_s": 6732.243486712872,
+      "voltage_max_abs_error_v": 8.08242361927114e-13,
+      "temperature_max_abs_error_k": 1.2505552149377763e-12,
+      "charge_max_abs_error_z": 5.495603971894525e-15
+    },
+    {
+      "label": "NUMERICAL_ORACLE_NOT_MEASUREMENT",
+      "case": 3,
+      "current_a": 0.0,
+      "duration_s": 2640.0,
+      "voltage_max_abs_error_v": 8.544276397515205e-13,
+      "temperature_max_abs_error_k": 3.979039320256561e-13,
+      "charge_max_abs_error_z": 0.0
+    },
+    {
+      "label": "NUMERICAL_ORACLE_NOT_MEASUREMENT",
+      "case": 3,
+      "current_a": 0,
+      "duration_s": 7200,
+      "voltage_max_abs_error_v": 8.881784197001252e-16,
+      "temperature_max_abs_error_k": 1.7053025658242404e-13,
+      "charge_max_abs_error_z": 0.0
+    },
+    {
+      "label": "INDEPENDENT_ODE_FIRST_CUTOFF",
+      "case": 3,
+      "event_time_error_s": 3.4747154131764546e-07
+    },
+    {
+      "label": "NUMERICAL_ORACLE_NOT_MEASUREMENT",
+      "case": 3,
+      "current_a": 2.5,
+      "duration_s": 6888.00102388622,
+      "voltage_max_abs_error_v": 6.066258606551855e-13,
+      "temperature_max_abs_error_k": 7.389644451905042e-13,
+      "charge_max_abs_error_z": 5.218048215738236e-15
+    },
+    {
+      "label": "OLD_MODEL_NUMERICAL_REGRESSION_ONLY",
+      "current_a": 0.5,
+      "stop_time_error_s": 0.0,
+      "voltage_max_abs_error_v": 4.440892098500626e-16,
+      "old_stop_reason": "soc_zero_before_voltage_cutoff",
+      "new_stop_reason": "DOMAIN_END_WITHOUT_PHYSICAL_CUTOFF"
+    },
+    {
+      "label": "OLD_MODEL_NUMERICAL_REGRESSION_ONLY",
+      "current_a": 2.5,
+      "stop_time_error_s": 4.28909515903797e-07,
+      "voltage_max_abs_error_v": 4.440892098500626e-16,
+      "old_stop_reason": "voltage_cutoff_2p5_v",
+      "new_stop_reason": "PHYSICAL_CUTOFF_2P5_V"
+    },
+    {
+      "label": "OLD_MODEL_NUMERICAL_REGRESSION_ONLY",
+      "current_a": 5.0,
+      "stop_time_error_s": 1.9243134374846704e-07,
+      "voltage_max_abs_error_v": 4.440892098500626e-16,
+      "old_stop_reason": "voltage_cutoff_2p5_v",
+      "new_stop_reason": "PHYSICAL_CUTOFF_2P5_V"
+    },
+    {
+      "label": "OLD_MODEL_NUMERICAL_REGRESSION_ONLY",
+      "current_a": 7.5,
+      "stop_time_error_s": 4.728099156636745e-08,
+      "voltage_max_abs_error_v": 4.440892098500626e-16,
+      "old_stop_reason": "voltage_cutoff_2p5_v",
+      "new_stop_reason": "PHYSICAL_CUTOFF_2P5_V"
+    },
+    {
+      "label": "PASSIVE_ENERGY_NUMERICAL_CHECK",
+      "rc_energy_relative_residual": 4.0343258860715243e-13,
+      "thermal_energy_relative_residual": 1.4657060705808576e-12
+    },
+    {
+      "label": "NONMONOTONIC_FIRST_CROSSING_NEGATIVE_CONTROL",
+      "first_crossing_s": 5.652682302657765,
+      "independent_error_s": 9.195744343770684e-08,
+      "shared_form_brent_error_s": 9.195747185941627e-08,
+      "start_v": 2.546388067058961,
+      "end_v": 2.5651213586305035,
+      "sampled_min_v": 2.337904649407136
+    }
+  ]
+}

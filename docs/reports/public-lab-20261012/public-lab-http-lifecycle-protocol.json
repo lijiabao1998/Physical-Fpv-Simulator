@@ -1,0 +1,81 @@
+{
+  "title": "Bounded local GUI HTTP lifecycle diagnosis",
+  "status": "FREEZE_BEFORE_EXECUTION; unread-body cause is a hypothesis",
+  "baseline": "ee5ca8ada4542cb3ad985ba07971b9fe02b42cf5",
+  "branch": "fix/public-lab-http-lifecycle-20261012",
+  "worktree": "<LOCAL_PATH>",
+  "scope": "HTTP server lifecycle, directly related HTTP tests and new diagnostic evidence only",
+  "scientific_model_parameter_gate_changes": false,
+  "original_security_assertions_changes": false,
+  "original_failure_records": [
+    "../preflight/commands/gui-browser-final-r2",
+    "../preflight/commands/gui-browser-recheck-r2"
+  ],
+  "observed_prior_failure": "Each original GUI/browser run recorded nine passes and one cross-Origin /reset client Win10053 failure before HTTP status parsing. Preserve both records.",
+  "hypotheses": [
+    "The valid framed POST body can arrive after headers are parsed; an early403 with unread bytes followed by HTTP/1.0 socket shutdown can reset the client before it receives the error status.",
+    "An unclosed urllib HTTPError response or server/thread teardown may instead contribute; inspect actual ownership and timing before attributing cause.",
+    "External scheduling or transport conditions may remain unresolved; do not label an unproven environment cause or treat a passing retry as proof."
+  ],
+  "execution_controls": {
+    "runner": "../run_fpv_serial.py around the existing run_bounded.py",
+    "every_test_compute_and_commit": "Use the shared atomic lease, one core, IDLE priority, single library threads, --coordinate-cs and a finite wall limit.",
+    "town_priority": "Normal-priority other priority work publishing retains priority; do not touch its or other tasks' processes.",
+    "lease_busy_exit75": "Stop attempting jobs and await the parent's notification. Never busy-loop or remove another job's lease.",
+    "dependencies": "Use the existing fpv-calibration venv and HTTP worktree PYTHONPATH; no installation or settings changes.",
+    "transport_failure": "Not a test result. Inspect the unique receipt and Git state before any retry; never repeat a confirmed successful commit."
+  },
+  "budget": {
+    "prechange_started_runs_max": 2,
+    "postchange_started_applicable_runs_max": 2,
+    "test_run_wall_seconds_max": 120,
+    "fits": 0,
+    "dfn_or_new_scientific_solves": 0,
+    "new_source_acquisitions": 0,
+    "unbounded_retries": 0
+  },
+  "prechange_runs": [
+    {
+      "name": "gui-r5-pre-01",
+      "purpose": "One unchanged integration plus mocked-browser suite run; preserve the actual outcome and complete traceback.",
+      "tests": ["tests/test_fpv_integration.py", "tests/test_fpv_browser_logic.py"]
+    },
+    {
+      "name": "gui-r5-pre-02",
+      "purpose": "One deterministic split-send request with the original handler and finite event barriers. Instrument only body-read count, queued body bytes, response and shutdown order. Delay body until header parsing completes, and delay client response parsing until server shutdown completes to expose unread-data closure.",
+      "request": "POST /reset, Content-Length2, application/json, body{}, Origin https://example.com",
+      "limits": "Exactly one controlled rejected POST. Socket timeouts and barriers are finite; no probabilistic repeat loop.",
+      "causality": "Record a real client status/error and whether the original handler leaves body bytes unread. Instrumented timing is disclosed; it is distinct from ordinary-suite reproduction."
+    }
+  ],
+  "repair_conditions": {
+    "required": "A demonstrated lifecycle defect with evidence supporting the change; keep unresolved attribution explicit.",
+    "candidate_if_supported": "Consume only a valid declared body within the existing4096-byte limit before completing a rejected request; bound the read. Keep the Origin allowlist, local bind, status/security decisions, JSON validation and transactional state behavior.",
+    "invalid_framing": "Never drain unbounded data, guess a body length or accept oversized/ambiguous requests. Preserve rejection and disclose any intentionally closed malformed transport.",
+    "no_test_masking": "Do not suppress Win10053, catch arbitrary client failures as expectedHTTPError, relax assertions, add sleeps until lucky, or change network/security settings."
+  },
+  "postchange_runs": [
+    {
+      "name": "gui-r5-post-01",
+      "purpose": "The deterministic lifecycle regression and focused HTTP security/framing/transaction checks. New observations must explain any additional correction."
+    },
+    {
+      "name": "gui-r5-post-02",
+      "purpose": "The unchanged integration and mocked-browser suite plus the focused new HTTP tests; broader scope, not a lucky retry. Use only if justified and remain within the two-run cap."
+    }
+  ],
+  "acceptance": [
+    "Prior failure logs, all new argv/stdout/stderr/receipts and the exact diagnostic source are retained.",
+    "A supported lifecycle mechanism is distinguished from any unproven explanation of historical Win10053.",
+    "Readable403 for the valid controlled rejected request and unchanged cross-Origin rejection/state assertions; no error-as-success substitution.",
+    "Original scientific sources, data, parameters, protocols, numerical results, gates and failures remain byte-identical to the baseline.",
+    "A local commit and reviewable diff are delivered; no push, merge, deployment or source acquisition."
+  ],
+  "stop_conditions": [
+    "Lease busy or observed Lean/Lake requires defer/pause own work only.",
+    "Once the two prechange attempts are used, stop reproduction; do not expand a hidden loop.",
+    "If cause is not established, state it and do not claim historical Win10053 resolved.",
+    "After applicable checks pass, only seal evidence and commit; no additional scientific computation or GUI retry.",
+    "Any remaining failure after two postchange runs is retained and reported."
+  ]
+}

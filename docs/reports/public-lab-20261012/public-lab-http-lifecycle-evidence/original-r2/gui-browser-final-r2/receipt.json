@@ -1,0 +1,41 @@
+{
+  "command": [
+    "<LOCAL_PATH>",
+    "-X",
+    "utf8=0",
+    "-m",
+    "pytest",
+    "-vv",
+    "-ra",
+    "tests/test_fpv_integration.py",
+    "tests/test_fpv_browser_logic.py",
+    "--junitxml=docs/public-lab-portability-evidence/gui-browser-final-r2.xml",
+    "--basetemp=<LOCAL_PATH>"
+  ],
+  "cwd": "<LOCAL_PATH>",
+  "started_at": "2026-10-11T23:17:28.366876+00:00",
+  "wall_limit_s": 120,
+  "scientific_execution": true,
+  "cost_usd": 0,
+  "cpu_affinity_mask": 1,
+  "priority": "IDLE_PRIORITY_CLASS",
+  "child_temp_directory": "<LOCAL_PATH>",
+  "python_utf8_mode": true,
+  "thread_limits": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1"
+  },
+  "cs_coordination": {
+    "enabled": true,
+    "initial_processes": [],
+    "pauses": []
+  },
+  "pid": 14060,
+  "timeout": false,
+  "finished_at": "2026-10-11T23:17:31.605413+00:00",
+  "elapsed_wall_s": 3.235000000015134,
+  "exit_code": 1
+}

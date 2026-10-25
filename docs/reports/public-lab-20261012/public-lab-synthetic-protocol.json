@@ -1,0 +1,92 @@
+{
+  "title": "Frozen finite synthetic scenario and uncertainty baseline",
+  "base": "ee5ca8ada4542cb3ad985ba07971b9fe02b42cf5",
+  "status": "FROZEN_BEFORE_SYNTHETIC_SOLVE; NO_NEW_FIT",
+  "authorization": "Synthetic simulation and engineering verification; not true-state/history restoration or new coefficient identification",
+  "label": "Source-calibrated effective baseline with SYNTHETIC_ASSUMED states and conditions",
+  "input": {
+    "parameters": "docs/benchmarks/public-lab-chen-final-validation/parameters.json",
+    "parameter_sha256": "01d086e50d981c3a52349531b51aca82c8990c4c2e0b6462bc111267f84d7cef",
+    "raw_training_cell": "data/raw/LGM50_cell02.csv",
+    "raw_sha256": "650e7f9ac5217b4db158047e50b6b464100b13f4859002421114edebca629b35",
+    "raw_role": "Hash integrity only; no numeric refit or replay in this round",
+    "source": "Chen et al., LG M50, original record https://doi.org/10.5281/zenodo.4032561, CC BY 4.0; original units A,V,s,Ah,degC",
+    "history_evidence": "docs/public-lab-identifiability-report.md and its immutable evidence",
+    "old_validation": "6/8 pass, two low-current cutoff failures, aggregate scientific FAIL; cells03/04 old8 are known regression only"
+  },
+  "scenario_design": {
+    "seed": 20261012,
+    "generator": "numpy.random.Generator(PCG64); independently choose one entry per axis, in JSON axis order, 64 complete rows; no resampling invalid or duplicate rows",
+    "seeded_rows": 64,
+    "controls": "Two named references, then each non-baseline value of every axis varied individually about memory_reference; no best-case selection",
+    "freeze": "Write scenarios.json and its SHA256 before any physics solve, then commit protocol/scenarios locally",
+    "currents_a": [0.5, 2.5, 5.0, 7.5],
+    "axes": {
+      "anchor_z": [0.95, 0.98, 1.0],
+      "p_fast_v": [-0.08, 0.0, 0.08],
+      "p_slow_v": [-0.4, 0.0, 0.4],
+      "gap_s": [0.0, 2640.0, 2760.0],
+      "gap_current_a": [-0.05, 0.0, 0.05],
+      "r_slow_ohm": [0.05, 0.2, 0.8],
+      "tau_slow_s": [300.0, 1000.0, 10000.0, 100000.0],
+      "u_stress_v": [-0.075, 0.0, 0.4],
+      "heat_capacity_scale": [0.5, 1.0, "120_J_per_K"],
+      "cooling_scale": [0.5, 1.0, 2.0],
+      "ambient_c": [13.8, 26.8, 28.2],
+      "initial_temperature_c": [26.8, 40.0, 55.0]
+    },
+    "memory_reference": {
+      "anchor_z": 0.98, "p_fast_v": 0.0, "p_slow_v": 0.0,
+      "gap_s": 2640.0, "gap_current_a": 0.0,
+      "r_slow_ohm": 0.2, "tau_slow_s": 10000.0,
+      "u_stress_v": 0.0, "heat_capacity_scale": 1.0,
+      "cooling_scale": 1.0, "ambient_c": 26.8, "initial_temperature_c": 26.8
+    },
+    "old_reference": "anchor_z=1,p_fast=p_slow=0,gap=0,I_gap=0,R_slow=0,delta_U=0,C/H original,Ta=T0=26.8degC; fixed rest7200s leaves equilibrium unchanged"
+  },
+  "assumption_sources": {
+    "charge_anchors": "Illustrative priors; usable measured discharge capacity is not identified inventory capacity; eta=1 is a synthetic hypothesis",
+    "gap_duration": "0 and conditional 2640..2760s wall-display arithmetic from R4; template is pre-run gap plus rest, NOT the actual SBr chronology or true missing history",
+    "gap_current": "Illustrative +/-0.05A unobserved input; NOT inferred leakage or charge efficiency",
+    "initial_polarization": "Illustrative +/-0.08V fast (old7.5A R1 loss scale) and +/-0.4V slow (observed relaxation scale, NOT an identified slow-state amplitude)",
+    "slow_branch": "Illustrative positive RC prior, no identified R/tau or claim of predictive improvement; adding RC to an effective U may double-count loss",
+    "potential_stress": "U_syn(z)=linear_interp(old9U,z)+delta*(1-z); -0.075V tests the old ~70mV endpoint deficit, +0.4V tests relaxation-scale model-form uncertainty; no optimized knots or true OCV claim",
+    "thermal": "C/H variations are engineering priors within original fit bounds; ambient/initial values use observed temperature scales only; not missing-temperature reconstruction",
+    "probability": "Discrete seeded design is not a probability distribution or empirical confidence interval"
+  },
+  "physics": {
+    "charge": "dz/dt=-I/(3600Q), current positive on discharge and negative on charge; propagate through gap/rest/profile without reset or clipping",
+    "polarization": "dp_k/dt=(I R_k-p_k)/tau_k; C_k=tau_k/R_k; branch disabled at R_slow=0 requires p_slow=0 and is omitted",
+    "voltage": "V=U_syn(z)-I R0-p_fast-p_slow; U temperature-independent",
+    "heat": "qdot=I^2 R0+sum(p_k^2/R_k); nonnegative resistor dissipation, not I*sum(p) heat; reversible/entropic heat set0 by declared synthetic simplification",
+    "temperature": "C_th*dT/dt=qdot-H*(T-Ta); constant ambient in each entire scenario; exact exponential convolution, limit handled at equal poles",
+    "energy": "E_RC=sum(tau_k*p_k^2/(2R_k)); dE_RC/dt=sum(I*p_k-p_k^2/R_k); I*(U-V)=qdot+dE_RC/dt",
+    "initial_energy_prior": "At the anchor only, E_RC<=0.1*3600Q*4.25J. This arbitrary engineering prior is not a conservation law, measured bound or all-time cap",
+    "potential_constraints": "13 fixed knots [0,.001,.002,.005,.01,.025,.05,.1,.2,.4,.6,.8,1] interpolate old9 plus declared stress; no free coefficients; values2.3..4.25V and adjacent increments>=.001V",
+    "state_constraints": "z in[0,1] at all times, R/tau/C/H positive, finite Kelvin>0; invalids are retained; never restore/reset measured state",
+    "voltage_upper_guard": "V<=4.25V continuously over gap/rest/profile, partitioning every potential knot and stationary point; guard is a model prior, not a certified battery safety rating",
+    "temperature_limit": "No arbitrary thermal cutoff. Flag sampled T>55degC as extrapolation beyond prior source scale; no temperature validation law or credible range established"
+  },
+  "execution": {
+    "history": "Synthetic gap at prescribed I for prescribed duration, then7200s zero-current rest, then prescribed CC; per-scenario global anchor is explicit",
+    "stop": "First actual V<=2.5V, or z=0 model-domain end, or upper-voltage/model-validity guard; domain end without2.5V is NOT a physical cutoff or flight endurance",
+    "cutoff_algorithm": "On each linear-U interval V'=constant+two exponentials; isolate its roots by partitioning at the at-most-one derivative extremum. Split V at all stationary points and knots, then search the first threshold. No assumption of globally monotone V",
+    "root_iterations_max": 64,
+    "event_bracket_s_max": 0.000001,
+    "trace_spacing_s": 5.0,
+    "trace_note": "Include exact stop, knots and voltage extrema; temperature maximum remains sampled at5s, not a certified continuous maximum",
+    "budget": "One CPU, IDLE priority, threads1,$0,each batch<=1800s; exclusive fpv lease; defer/pause own child for Lean/Lake, normal other priority work jobs retain priority",
+    "runs": "One primary manifest solve; rerun only after an actual code defect or failed frozen check, preserving original log/results and reasoning"
+  },
+  "verification": {
+    "methods": "Frozen analytic model vs independent SciPy solve_ivp oracle on predeclared cases; old zero-memory equivalence; conserved signed charge, RC passive energy and heat; zero-R branch; equal thermal poles; first crossing of a deliberately nonmonotonic voltage; seed/invalid preservation; all old tracked files hash invariant",
+    "oracle_cases": "old_reference plus memory_reference, anchor.95/negative input history and nonzero positive initial polarizations at current2.5A; no oracle parameter selection",
+    "solver": "solve_ivp DOP853 rtol1e-11,atol1e-12,max_step30s",
+    "numerical_tolerances": {"voltage_v": 0.0000001, "polarization_v": 0.0000001, "temperature_k": 0.00001, "charge_z": 0.0000000001, "energy_identity_relative": 0.00000001, "event_time_s": 0.000001},
+    "negative_controls": "invalid charge overflow, initial energy-prior violation, forbidden nonzero disabled-branch state, upper-voltage prior violation, z=0 above2.5V, first-crossing/rebound trap; intentional invalids must stay rejected",
+    "empirical_acceptance": "NONE; no newly unseen measurement set or measured uncertainty coverage; old6/8 and aggregateFAIL retained",
+    "fitting": "Zero optimizer calls and zero coefficient updates"
+  },
+  "deliverables": "Opt-in synthetic model/CLI, all frozen scenario inputs and statuses, full cell V/T traces and stop reasons, finite-design ranges/sensitivity, numerical checks, independent review, hashes/raw logs, local separate science/HTTP commits",
+  "exclusions": "No new source downloads/search calibration, motor/ESC/prop/thrust identification, flight endurance claim, GUI/science conflation, gate relaxation, remote publish, merge or deployment"
+}

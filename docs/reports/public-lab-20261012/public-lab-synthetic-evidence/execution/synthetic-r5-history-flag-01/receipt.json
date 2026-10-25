@@ -1,0 +1,36 @@
+{
+  "command": [
+    ".venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests\\test_synthetic_envelope.py::test_extrapolation_flag_includes_preparation_heat_peak",
+    "-rA",
+    "-s"
+  ],
+  "cwd": "<LOCAL_PATH>",
+  "started_at": "2026-10-12T03:02:39.691049+00:00",
+  "wall_limit_s": 60,
+  "scientific_execution": true,
+  "cost_usd": 0,
+  "cpu_affinity_mask": 1,
+  "priority": "IDLE_PRIORITY_CLASS",
+  "child_temp_directory": "<LOCAL_PATH>",
+  "python_utf8_mode": true,
+  "thread_limits": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1"
+  },
+  "cs_coordination": {
+    "enabled": true,
+    "initial_processes": [],
+    "pauses": []
+  },
+  "pid": 8004,
+  "timeout": false,
+  "finished_at": "2026-10-12T03:02:43.633830+00:00",
+  "elapsed_wall_s": 3.937000000005355,
+  "exit_code": 0
+}

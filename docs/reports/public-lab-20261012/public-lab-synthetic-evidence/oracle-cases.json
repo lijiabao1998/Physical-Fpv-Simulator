@@ -1,0 +1,11 @@
+{
+  "frozen_before_any_physics_solve": true,
+  "role": "Numerical oracles, not ensemble parameter selection or measurements",
+  "current_a": 2.5,
+  "cases": [
+    {"base": "old_reference", "changes": {}},
+    {"base": "memory_reference", "changes": {}},
+    {"base": "memory_reference", "changes": {"anchor_z": 0.95, "gap_current_a": -0.05}},
+    {"base": "memory_reference", "changes": {"p_fast_v": 0.03, "p_slow_v": 0.04}}
+  ]
+}
