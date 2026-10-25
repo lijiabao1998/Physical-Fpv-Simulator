@@ -65,3 +65,15 @@ it('G10 stale queued rAF never rewinds the new-flight clock or hides a real 350m
  const stopped=advanceRenderClock(next.anchor,1900);expect(stopped.elapsed).toBe(.35);expect(planPhysicsSteps(0,stopped.elapsed,true).fault).toContain('250 ms');expect(planPhysicsSteps(0,stopped.elapsed,true).steps).toBe(0);
  expect(advanceRenderClock(0,1000)).toEqual({anchor:1000,elapsed:0});
 });
+
+it('G10 Industrial structural visuals have exact real static colliders and actual contact responses',()=>{
+ const d=getCourse('industrial-run'),w=new FlightWorld(undefined,true,d.id);const colliders:any[]=[];w.world.forEachCollider(c=>{if(c.handle!==w.collider.handle)colliders.push(c);});
+ d.boxes.forEach((b,i)=>{const c=colliders[i+1],p=c.translation(),h=c.halfExtents(),q=c.rotation();[p.x,p.y,p.z].forEach((x,k)=>expect(x).toBeCloseTo(b.center[k],5));[h.x,h.y,h.z].forEach((x,k)=>expect(x).toBeCloseTo(b.half[k],6));[q.w,q.x,q.y,q.z].forEach((x,k)=>expect(x).toBeCloseTo((b.rotation??[1,0,0,0])[k],6));});w.dispose();
+ // Probe a wall, a steel beam and each low barrier. This tests physics contacts,
+ // independently of the complete controls-only navigation flight.
+ for(const center of [[21,4,2.5],[17.5,0,4.65],[25,0,.4],[38,23,.5]] as const){const world=new FlightWorld(undefined,true,d.id);world.setInitial([...center],[0,0,0]);world.step({thrust:[0,0,0,0],torque:[0,0,0,0]},FIXED_DT);expect(world.contacts).toBeGreaterThan(0);world.dispose();}
+});
+it('G10 Industrial follows oriented sequential gates, rejects reverse and skipped openings',()=>{
+ const d=getCourse('industrial-run'),c=new Course(true,d.id);const last=d.gates[6],n=rotate(last.rotation,[1,0,0]);expect(c.update(add(last.center,scale(n,-1)),add(last.center,n),1,.02)).toBe(false);
+ for(const g of d.gates){const n=rotate(g.rotation,[1,0,0]),a=add(g.center,scale(n,-1)),b=add(g.center,n);expect(c.update(b,a,2,.02)).toBe(false);expect(c.update(a,b,3+c.next,.02)).toBe(true);}expect(c.next).toBe(7);
+});

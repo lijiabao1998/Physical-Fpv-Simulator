@@ -51,7 +51,7 @@ export class FlightScene {
     const geometry=new THREE.CylinderGeometry(top,bottom,height,sides);geometry.rotateX(Math.PI/2);return this.mesh(geometry,this.material(color),pos,parent);
   }
   private courseEnvironment(){
-    const c=getCourse(this.courseId);const ground=this.mesh(new THREE.PlaneGeometry(500,500),this.material('#819a60'),[30,0,-.02]);ground.castShadow=false;
+    const c=getCourse(this.courseId);const ground=this.mesh(new THREE.PlaneGeometry(500,500),this.material(this.courseId==='industrial-run'?'#777c74':'#819a60'),[30,0,-.02]);ground.castShadow=false;
     this.box([8,6,.03],'#565e59',[0,0,-.01]);
     for(const b of c.boxes){const mesh=this.box(b.half.map(x=>2*x),b.color,b.center);if(b.rotation)mesh.quaternion.set(b.rotation[1],b.rotation[2],b.rotation[3],b.rotation[0]);if(b.gateIndex!==undefined){mesh.material=(mesh.material as THREE.Material).clone();(this.gateMeshes[b.gateIndex]??=[]).push(mesh);}}
     for(const tree of c.trees){const [x,y]=tree.position,h=tree.height;this.cylinder(.15,.25,h*.7,'#675842',[x,y,h*.35]);for(let j=0;j<3;j++)this.cylinder(.04,h*(.22-j*.04),h*.48,['#526b48','#5f7c50','#72905b'][j],[x,y,h*(.5+j*.18)],undefined,7);}

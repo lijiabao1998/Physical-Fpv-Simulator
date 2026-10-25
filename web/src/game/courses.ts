@@ -23,5 +23,24 @@ for(const [x,y] of [[-21,7],[41,-17],[38,25]]){
  countryBuildings.push({center:[x,y-1.82,1],half:[.4,.025,1],color:'#3e554a',kind:'barrier'});
 }
 const slalom:CourseDefinition={id:'british-slalom',version:'british-slalom-v1',name:'British Slalom',description:'Country turns, climbing gates and a descending hairpin. Follow orange gate normals.',gates:slalomGates,boxes:[...gateBoxes(slalomGates),...countryBuildings],trees:TREES};
-export const COURSES:readonly CourseDefinition[]=[training,slalom];
+const industrialGates=[gate([10,0,2.1],0,0,4,3.6),gate([20,0,2.3],0,0,3.6,3.6),gate([32,0,2.3],0,0,3.6,3.6),gate([38,16,3.3],Math.PI/2,0,3.6,3.4),gate([38,28,3.5],Math.PI/2,0,3.6,3.4),gate([25,32,6],2.6,-.2),gate([10,23,3],-2.5,.3)];
+// Every structural surface below is rendered and instantiated as the same static
+// Rapier cuboid. Open ends are genuine openings, not invisible pass-through walls.
+const industrialBuildings:CourseBox[]=[];
+const structure=(center:V3,half:V3,color:string,rotation?:Q4)=>industrialBuildings.push({center,half,color,rotation,kind:'hangar'});
+for(const sign of [-1,1]){
+ structure([21,sign*4,2.5],[9,.18,2.5],'#96654d');
+ for(const x of [12,18,24,30])structure([x,sign*3.75,2.6],[.16,.22,2.6],'#455657');
+ structure([21,sign*2,5.6],[9.3,2.2,.14],'#505b61',[Math.cos(.15),-sign*Math.sin(.15),0,0]);
+ // Transverse shed, its open ends face north and south.
+ structure([38+sign*3.2,19,2.8],[.18,7,2.8],'#a27354');
+ for(const y of [12,19,26])structure([38+sign*2.95,y,2.9],[.2,.16,2.9],'#455657');
+ structure([38+sign*1.6,19,6.05],[1.8,7.3,.14],'#505b61',[Math.cos(.15),0,sign*Math.sin(.15),0]);
+}
+for(const x of [12,17.5,30])structure([x,0,4.65],[.16,4,.22],'#455657');
+structure([25,0,.4],[.25,2.7,.4],'#c4a147');
+for(const y of [12,20,26])structure([38,y,5.15],[3.2,.16,.22],'#455657');
+structure([38,23,.5],[2.3,.25,.5],'#c4a147');
+const industrial:CourseDefinition={id:'industrial-run',version:'industrial-run-v1',name:'Industrial Run',description:'Open-ended brick warehouses, steel beams and low barriers. Structural meshes have matching static collisions.',gates:industrialGates,boxes:[...gateBoxes(industrialGates),...industrialBuildings],trees:[]};
+export const COURSES:readonly CourseDefinition[]=[training,slalom,industrial];
 export function getCourse(id:string='training-straight',version?:string):CourseDefinition{const c=COURSES.find(c=>c.id===id);if(!c||version!==undefined&&version!==c.version)throw Error('Unknown course ID/version');return c;}
