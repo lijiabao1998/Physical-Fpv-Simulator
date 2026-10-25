@@ -98,7 +98,7 @@ test('record actual browser frame intervals without claiming physical-device per
   expect(Number.isFinite(result.meanFps)).toBe(true);
 });
 test('synthetic scenario setup: all five ordered gates finish and best persists',async({page})=>{
-  // G08 versioned migration: this immutable-key regression explicitly exercises G07. Assertions below remain unchanged.
+  // G09 records are configuration-scoped; old keys remain immutable legacy evidence. G07 course assertions remain.
   await page.addInitScript(()=>localStorage.setItem('physical-fpv-physics-model-v1','g07-quasistatic-v1'));
   await page.goto(base);await expect(page.locator('#loading')).toHaveCount(0);
   // Run the deterministic fixture immediately after the native start handler,
@@ -109,7 +109,7 @@ test('synthetic scenario setup: all five ordered gates finish and best persists'
     for(const [x,y,z] of [[10,0,2.1],[23,-4,2.6],[36,1,3.1],[50,6,2.6],[65,0,2.1]]) {
       h.place([x-.05,y,z],[8,0,0]);h.tick(4);
     }
-    w.__COURSE_RESULT__={snapshot:h.snapshot(),best:localStorage.getItem('physical-fpv-course-best-v1')};
+    w.__COURSE_RESULT__={snapshot:h.snapshot(),best:JSON.parse(localStorage.getItem('physical-fpv-race-v1:training-five-v1:g07-quasistatic-v1:trainer:standard:balanced:5inch')??'null')?.total?.toString()??null};
   },{once:true}));
   await page.getByTestId('start').click();
   const end=await page.evaluate(()=>(window as unknown as {__COURSE_RESULT__:{snapshot:Snapshot;best:string|null}}).__COURSE_RESULT__);
@@ -117,7 +117,8 @@ test('synthetic scenario setup: all five ordered gates finish and best persists'
   expect(Number(end.best)).toBeGreaterThan(0);
   await page.reload();await expect(page.locator('#loading')).toHaveCount(0);
   await expect(page.locator('#best')).toContainText('LOCAL BEST');
-  expect(await page.evaluate(()=>localStorage.getItem('physical-fpv-course-best-v1'))).toBe(end.best);
+  expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('physical-fpv-race-v1:training-five-v1:g07-quasistatic-v1:trainer:standard:balanced:5inch')??'null')?.total?.toString())).toBe(end.best);
+  expect(await page.evaluate(()=>localStorage.getItem('physical-fpv-course-best-v1'))).toBeNull();
 });
 test('computed Acro yaw input changes quaternion without test attitude assignment',async({page})=>{
   await page.goto(base);await expect(page.locator('#loading')).toHaveCount(0);await page.getByTestId('start').click();

@@ -1,0 +1,47 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> physical-fpv-player@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.5 /workspace/shared/own-cloud-migration-20261024/FPV-g09-race/web
+
+ ❯ tests/g09-race.test.ts (6 tests | 1 failed) 257ms
+   × G09 ordered splits sum exactly; backwards, skipped, outside and repeated gates do not score 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/g09-race.test.ts > G09 ordered splits sum exactly; backwards, skipped, outside and repeated gates do not score
+AssertionError: expected [ +0, 1, 1.9999999999999998, 3, 4 ] to deeply equal [ +0, 1, 2, 3, 4 ]
+
+- Expected
++ Received
+
+  [
+    0,
+    1,
+-   2,
++   1.9999999999999998,
+    3,
+    4,
+  ]
+
+ ❯ tests/g09-race.test.ts:19:85
+     17|  expect(c.update([9,10,2.1],[11,10,2.1],1,.02)).toBe(false);
+     18|  expect(cross(c,0,1)).toBe(true);expect(cross(c,0,1.1)).toBe(false);
+     19|  GATES.slice(1).forEach((_,i)=>cross(c,i+1,i+2));expect(c.splits.map(x…
+       |                                                                                     ^
+     20|  expect(c.splits.reduce((n,x)=>n+x.sector,0)).toBe(c.elapsed(10));
+     21|  expect(cross(c,4,12)).toBe(false);expect(c.splits).toHaveLength(5);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 6 passed (7)
+      Tests  1 failed | 75 passed (76)
+   Start at  12:29:16
+   Duration  2.95s (tests 93%, import 4%, transform 2%)
+
+    Isolate  7 workers spawned · ~110ms startup each (spawn + environment, per file)
+             at least ~274ms faster with isolate: false — reuses workers across files instead of one per file
+

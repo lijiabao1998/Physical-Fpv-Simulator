@@ -36,11 +36,11 @@ test('G08 five-gate best, persistent version rollback and unrelated storage rema
  },{once:true}));
  await page.getByTestId('start').click();
  const end=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());expect(end.physicsModel).toBe('g08-transient-v1');expect(end.gate).toBe(5);expect(end.state).toBe('finished');
- const key='physical-fpv-course-best-v1-g08-transient-v1',best=await page.evaluate(k=>localStorage.getItem(k),key);expect(Number(best)).toBeGreaterThan(0);
+ const key='physical-fpv-race-v1:training-five-v1:g08-transient-v1:trainer:standard:balanced:5inch',best=await page.evaluate(k=>localStorage.getItem(k),key);expect(JSON.parse(best!).total).toBeGreaterThan(0);
  await page.reload();await expect(page.locator('#loading')).toHaveCount(0);await expect(page.locator('#best')).toContainText('LOCAL BEST');
  await page.getByTestId('start').click();await page.getByRole('button',{name:'Physics',exact:true}).click();await page.locator('#physics-model').selectOption('g07-quasistatic-v1');await page.locator('#apply-physics').click();
  const reset=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());expect(reset.physicsModel).toBe('g07-quasistatic-v1');expect(reset.armed).toBe(false);expect(reset.rpm).toEqual([0,0,0,0]);expect(reset.gate).toBe(0);
- await page.reload();await expect(page.locator('#loading')).toHaveCount(0);await expect(page.locator('#best')).toContainText('12.00');
+ await page.reload();await expect(page.locator('#loading')).toHaveCount(0);await expect(page.locator('#legacy-best')).toContainText('12.00');
  const stored=await page.evaluate(k=>({old:localStorage.getItem('physical-fpv-course-best-v1'),next:localStorage.getItem(k),other:localStorage.getItem('unrelated-save'),model:localStorage.getItem('physical-fpv-physics-model-v1')}),key);
  expect(stored).toEqual({old:'12',next:best,other:'keep-me',model:'g07-quasistatic-v1'});
 });
