@@ -51,7 +51,7 @@ it('G11 ghost observation/sample rendering leaves every player state, event, col
 it('G11 exact input replay and ghost alignment agree at 60/20/5 Hz without another ghost physics body',()=>{
  const f=getFixture(),g=f.r.completed(f.s,'same')!,bundle=f.s.exportReplay('same'),results=[];
  for(const hz of [60,20,5]){const s=new GameSession();s.replay(bundle);let accumulator=0,tick=0;const nodes=[];
- while(tick<bundle.events.length){const p=planPhysicsSteps(accumulator,1/hz,true);expect(p.fault).toBeNull();accumulator=p.remainder;for(let i=0;i<p.steps&&tick<bundle.events.length;i++,tick++){s.step(ZERO);if((tick+1)%48===0)nodes.push(ghostPoseAt(g,s.course.elapsed(s.time)));}}
+ while(tick<bundle.events.length){const p=planPhysicsSteps(accumulator,1/hz,true);expect(p.fault).toBeNull();accumulator=p.remainder;for(let i=0;i<p.steps&&tick<bundle.events.length;i++,tick++){s.step(ZERO);if((tick+1)%4===0||tick+1===bundle.events.length){const pose=g.poses[Math.ceil((tick+1)/4)];expect(s.world.position).toEqual(pose.position);expect(s.world.quaternion).toEqual(pose.quaternion);}if((tick+1)%48===0)nodes.push(ghostPoseAt(g,s.course.elapsed(s.time)));}}
  expect(s.snapshot().position).toEqual(f.s.snapshot().position);expect(s.snapshot().energy).toEqual(f.s.snapshot().energy);expect(s.course.splits).toEqual(f.s.course.splits);expect(s.events).toEqual([]);results.push({hz,nodes,end:s.snapshot()});s.world.dispose();}
  expect(results[1].nodes).toEqual(results[0].nodes);expect(results[2].nodes).toEqual(results[0].nodes);
  writeFileSync('numerical-results/g11-timing.json',JSON.stringify({dt:FIXED_DT,results},null,2));

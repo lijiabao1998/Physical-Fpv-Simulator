@@ -41,3 +41,37 @@ localInputFlight helper resets/arms using existing session methods then supplies
 that input stream; it is not production autopilot and not human/controller proof.
 Production build must expose no test API. Hardware Xbox/DualSense USB/Bluetooth,
 physical phones, aircraft and battery remain unverified.
+
+## Actual first browser evidence and bounded test-wiring repair
+
+Test-only b00b68ef run 40193376307: inherited 110 unit and all 32 inherited real
+Chromium cases passed; the sole new missing-Ghost-control test failed as intended.
+Artifact 12599032235 SHA256 fc1be5b07fb91d799530be6dce3be606c11b585f77993ebfc40ce2ad795b7aa4
+retains original screenshot/trace/logs. No product code was in that commit.
+
+First product b1c8283 push run 40194075426: 124 unit and 37/40 actual Chromium
+passed. All 32 inherited cases passed. Original artifact 12598549825 (74,439,601
+bytes; SHA256 740bc6787b6bfff55d0d0b1e8f8c981bee67804d9556ec835b747b2cc24d8cb7)
+is retained unchanged. New 1440 case ended OFF/ON A/B in OFF, then incorrectly read
+null visual pose after retry. Explicit native ON before that assertion repairs
+wiring, not the product. At 412/360, exact trace shows Auto promoted from Low to
+High during the last OFF sample; shadow textures increased by two. The new test
+now selects existing manual Low before measuring and asserts identical quality
+for every sample. Texture/draw/geometry limits remain unchanged; no performance
+regression is hidden by loosening a threshold. first-ab-quality-confound.json
+contains the original trace's decoded metrics, including both quality labels.
+
+Actual first images were inspected: HUD fits 360/412/1440, but a faster player left
+its slower Ghost behind the camera. Revised screenshot setup first completes the
+slower actual local lap (41.9962958223 s), improves it with the faster local lap
+(35.9691254598 s), and then flies the slower ordinary input stream to chase that
+faster PB. At lap 10.5 s, gate 2 delta is +1.0142589494 s and both camera frusta
+contain the Ghost. A test-only camera reset matches native retry semantics.
+No player body/force correction is used. New actual images still require review.
+
+Replay verification was strengthened to compare every captured pose sample against
+the replayed player's position and quaternion at 60/20/5 Hz batches. Fourteen G11
+unit cases plus all original 110 pass. Added browser-native imported pause/resume
+provenance check and raw A/B attachment before assertions, so later failures retain
+measurements. The 39 original physics/input/reference/course/record/timing/test/
+workflow files are byte-identical to G10; independent SHA256 receipt is delivered.

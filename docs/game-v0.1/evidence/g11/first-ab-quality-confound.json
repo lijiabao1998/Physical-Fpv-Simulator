@@ -1,0 +1,281 @@
+[
+  {
+    "trace": "/workspace/shared/own-cloud-migration-20261024/FPV-g11-first-product-red/web/test-results/g11-G11-native-PB-loop-ON--e057e-V-Chase-and-performance-360/trace.zip",
+    "samples": [
+      {
+        "diagnostics": {
+          "enabled": true,
+          "samples": 240,
+          "fps": 48.98159108535042,
+          "frameMs": 20.41583333333333,
+          "physicsStepMs": 0.21470239965255655,
+          "renderCpuMs": 0.5445833333309565,
+          "lastSteps": 0,
+          "maxSteps": 23,
+          "lastStop": "Frame interruption over 250 ms \u2014 paused and disarmed."
+        },
+        "drawCalls": 11,
+        "triangles": 6110,
+        "memory": {
+          "geometries": 61,
+          "textures": 4
+        },
+        "jsHeapBytes": 76600000,
+        "quality": "Low \u00b7 render scale 1.00",
+        "courseId": "british-slalom"
+      },
+      {
+        "diagnostics": {
+          "enabled": true,
+          "samples": 240,
+          "fps": 59.01736094034328,
+          "frameMs": 16.944166666666668,
+          "physicsStepMs": 0.21470239965255655,
+          "renderCpuMs": 0.3766666666648234,
+          "lastSteps": 0,
+          "maxSteps": 23,
+          "lastStop": "Frame interruption over 250 ms \u2014 paused and disarmed."
+        },
+        "drawCalls": 12,
+        "triangles": 6110,
+        "memory": {
+          "geometries": 61,
+          "textures": 4
+        },
+        "jsHeapBytes": 76600000,
+        "quality": "Low \u00b7 render scale 1.00",
+        "courseId": "british-slalom"
+      },
+      {
+        "diagnostics": {
+          "enabled": true,
+          "samples": 240,
+          "fps": 59.75351674343334,
+          "frameMs": 16.735416666666666,
+          "physicsStepMs": 0.21470239965255655,
+          "renderCpuMs": 0.36708333333347887,
+          "lastSteps": 0,
+          "maxSteps": 23,
+          "lastStop": "Frame interruption over 250 ms \u2014 paused and disarmed."
+        },
+        "drawCalls": 12,
+        "triangles": 6110,
+        "memory": {
+          "geometries": 61,
+          "textures": 4
+        },
+        "jsHeapBytes": 76600000,
+        "quality": "Low \u00b7 render scale 1.00",
+        "courseId": "british-slalom"
+      },
+      {
+        "diagnostics": {
+          "enabled": true,
+          "samples": 240,
+          "fps": 56.253515844740306,
+          "frameMs": 17.776666666666664,
+          "physicsStepMs": 0.21470239965255655,
+          "renderCpuMs": 0.47208333333522506,
+          "lastSteps": 0,
+          "maxSteps": 23,
+          "lastStop": "Frame interruption over 250 ms \u2014 paused and disarmed."
+        },
+        "drawCalls": 57,
+        "triangles": 12580,
+        "memory": {
+          "geometries": 76,
+          "textures": 6
+        },
+        "jsHeapBytes": 76600000,
+        "quality": "High \u00b7 render scale 1.00",
+        "courseId": "british-slalom"
+      }
+    ]
+  },
+  {
+    "trace": "/workspace/shared/own-cloud-migration-20261024/FPV-g11-first-product-red/web/test-results/g11-G11-native-PB-loop-ON--0d68f--Chase-and-performance-1440/trace.zip",
+    "samples": [
+      {
+        "diagnostics": {
+          "enabled": true,
+          "samples": 240,
+          "fps": 31.860239748304107,
+          "frameMs": 31.387083333333333,
+          "physicsStepMs": 0.17796310839295956,
+          "renderCpuMs": 0.70291666666526,
+          "lastSteps": 0,
+          "maxSteps": 31,
+          "lastStop": "Frame interruption over 250 ms \u2014 paused and disarmed."
+        },
+        "drawCalls": 16,
+        "triangles": 6160,
+        "memory": {
+          "geometries": 68,
+          "textures": 6
+        },
+        "jsHeapBytes": 76600000,
+        "quality": "Low \u00b7 render scale 0.61",
+        "courseId": "british-slalom"
+      },
+      {
+        "diagnostics": {
+          "enabled": true,
+          "samples": 240,
+          "fps": 37.9957254808834,
+          "frameMs": 26.31875,
+          "physicsStepMs": 0.17796310839295956,
+          "renderCpuMs": 0.5208333333321207,
+          "lastSteps": 0,
+          "maxSteps": 31,
+          "lastStop": "Frame interruption over 250 ms \u2014 paused and disarmed."
+        },
+        "drawCalls": 17,
+        "triangles": 6160,
+        "memory": {
+          "geometries": 68,
+          "textures": 6
+        },
+        "jsHeapBytes": 76600000,
+        "quality": "Low \u00b7 render scale 0.61",
+        "courseId": "british-slalom"
+      },
+      {
+        "diagnostics": {
+          "enabled": true,
+          "samples": 240,
+          "fps": 38.19770495456065,
+          "frameMs": 26.179583333333333,
+          "physicsStepMs": 0.17796310839295956,
+          "renderCpuMs": 0.5249999999992724,
+          "lastSteps": 0,
+          "maxSteps": 31,
+          "lastStop": "Frame interruption over 250 ms \u2014 paused and disarmed."
+        },
+        "drawCalls": 17,
+        "triangles": 6160,
+        "memory": {
+          "geometries": 68,
+          "textures": 6
+        },
+        "jsHeapBytes": 76600000,
+        "quality": "Low \u00b7 render scale 0.61",
+        "courseId": "british-slalom"
+      },
+      {
+        "diagnostics": {
+          "enabled": true,
+          "samples": 240,
+          "fps": 38.19770495456063,
+          "frameMs": 26.179583333333344,
+          "physicsStepMs": 0.17796310839295956,
+          "renderCpuMs": 0.5266666666679763,
+          "lastSteps": 0,
+          "maxSteps": 31,
+          "lastStop": "Frame interruption over 250 ms \u2014 paused and disarmed."
+        },
+        "drawCalls": 16,
+        "triangles": 6160,
+        "memory": {
+          "geometries": 68,
+          "textures": 6
+        },
+        "jsHeapBytes": 76600000,
+        "quality": "Low \u00b7 render scale 0.61",
+        "courseId": "british-slalom"
+      }
+    ]
+  },
+  {
+    "trace": "/workspace/shared/own-cloud-migration-20261024/FPV-g11-first-product-red/web/test-results/g11-G11-native-PB-loop-ON--177e4-V-Chase-and-performance-412/trace.zip",
+    "samples": [
+      {
+        "diagnostics": {
+          "enabled": true,
+          "samples": 240,
+          "fps": 44.03831333259937,
+          "frameMs": 22.707499999999996,
+          "physicsStepMs": 0.20420985123416274,
+          "renderCpuMs": 0.5579166666662786,
+          "lastSteps": 0,
+          "maxSteps": 27,
+          "lastStop": "Frame interruption over 250 ms \u2014 paused and disarmed."
+        },
+        "drawCalls": 11,
+        "triangles": 6110,
+        "memory": {
+          "geometries": 62,
+          "textures": 5
+        },
+        "jsHeapBytes": 81400000,
+        "quality": "Low \u00b7 render scale 1.00",
+        "courseId": "british-slalom"
+      },
+      {
+        "diagnostics": {
+          "enabled": true,
+          "samples": 240,
+          "fps": 52.941565746806965,
+          "frameMs": 18.888749999999998,
+          "physicsStepMs": 0.20420985123416274,
+          "renderCpuMs": 0.3979166666664241,
+          "lastSteps": 0,
+          "maxSteps": 27,
+          "lastStop": "Frame interruption over 250 ms \u2014 paused and disarmed."
+        },
+        "drawCalls": 12,
+        "triangles": 6110,
+        "memory": {
+          "geometries": 62,
+          "textures": 5
+        },
+        "jsHeapBytes": 81400000,
+        "quality": "Low \u00b7 render scale 1.00",
+        "courseId": "british-slalom"
+      },
+      {
+        "diagnostics": {
+          "enabled": true,
+          "samples": 240,
+          "fps": 53.33451854485658,
+          "frameMs": 18.749583333333323,
+          "physicsStepMs": 0.20420985123416274,
+          "renderCpuMs": 0.4075000000006791,
+          "lastSteps": 0,
+          "maxSteps": 27,
+          "lastStop": "Frame interruption over 250 ms \u2014 paused and disarmed."
+        },
+        "drawCalls": 12,
+        "triangles": 6110,
+        "memory": {
+          "geometries": 62,
+          "textures": 5
+        },
+        "jsHeapBytes": 81400000,
+        "quality": "Low \u00b7 render scale 1.00",
+        "courseId": "british-slalom"
+      },
+      {
+        "diagnostics": {
+          "enabled": true,
+          "samples": 240,
+          "fps": 53.13849219528395,
+          "frameMs": 18.81875,
+          "physicsStepMs": 0.20420985123416274,
+          "renderCpuMs": 0.45291666666720026,
+          "lastSteps": 0,
+          "maxSteps": 27,
+          "lastStop": "Frame interruption over 250 ms \u2014 paused and disarmed."
+        },
+        "drawCalls": 57,
+        "triangles": 12580,
+        "memory": {
+          "geometries": 76,
+          "textures": 7
+        },
+        "jsHeapBytes": 81400000,
+        "quality": "High \u00b7 render scale 1.00",
+        "courseId": "british-slalom"
+      }
+    ]
+  }
+]
