@@ -16,9 +16,8 @@ for(const width of [1440,412,360])test(`G11 native PB loop, ON/OFF, split delta,
  const improved=await localFlight(page,'british-slalom');expect(improved.courseTime).toBeLessThan(complete.courseTime);await page.getByTestId('retry').click();await expect(page.locator('#ghost-status')).toContainText(`PB ${f.ghost.total.toFixed(2)}`);
  // Slower genuine controls now chase the faster PB; a measured lap node keeps the Ghost in both camera frusta.
  const count=Math.floor((old.ghost.startedAt+10.5)*240);
- await page.evaluate(({controls,count})=>{const h=(window as any).__FPV_TEST__;h.localInputFlight(controls,count);}, {controls:old.replay.events.map((e:any)=>e.c),count});
- await page.getByTestId('pause').click(); // Freeze camera/pose during the same-condition OFF/ON comparison.
- const state=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());if(state.state!=='paused')await page.getByTestId('pause').click();
+ await page.evaluate(({controls,count})=>{const h=(window as any).__FPV_TEST__;h.localInputFlight(controls,count);document.querySelector<HTMLButtonElement>('[data-testid="pause"]')!.click();}, {controls:old.replay.events.map((e:any)=>e.c),count});
+ // Same-callback native pause handler fixes the screenshot node before a variable rendering wait can advance flight.
  const frozen=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());expect(frozen.state).toBe('paused');
  await expect(page.locator('#ghost-splits .behind')).toContainText('+1.01');
  const samples=[];
@@ -29,10 +28,11 @@ for(const width of [1440,412,360])test(`G11 native PB loop, ON/OFF, split delta,
   const pose=await page.evaluate(()=>(window as any).__FPV_TEST__.ghost());expect(pose.render.visible).toBe(true);expect(pose.render.body).toBe(false);expect(pose.render.collider).toBe(false);
  }
  // Warmed, paused, identical scene and camera; two orders avoid making shader startup look like steady cost.
+ // Each block exceeds the inherited 240-frame diagnostics window, so CPU means contain only this ON/OFF state.
  for(const on of [false,true,true,false]){
   if((await page.evaluate(()=>(window as any).__FPV_TEST__.ghost().enabled))!==on)await page.locator('#ghost-toggle').click();
-  const timing=await page.evaluate(()=>new Promise<number[]>(resolve=>{const out:number[]=[];let previous=performance.now();const next=(now:number)=>{out.push(now-previous);previous=now;if(out.length===90)resolve(out);else requestAnimationFrame(next);};requestAnimationFrame(next);}));
-  timing.sort((a,b)=>a-b);const m=await page.evaluate(()=>(window as any).__FPV_TEST__.metrics());expect(m.quality).toBe('Low · render scale 1.00');samples.push({on,frameMedianMs:timing[45],frameP95Ms:timing[85],metrics:m});
+  const timing=await page.evaluate(()=>new Promise<number[]>(resolve=>{const out:number[]=[];let previous=performance.now();const next=(now:number)=>{out.push(now-previous);previous=now;if(out.length===300)resolve(out);else requestAnimationFrame(next);};requestAnimationFrame(next);}));
+  timing.sort((a,b)=>a-b);const m=await page.evaluate(()=>(window as any).__FPV_TEST__.metrics());expect(m.quality).toBe('Low · render scale 1.00');expect(m.diagnostics.samples).toBe(240);samples.push({on,frameMedianMs:timing[150],frameP95Ms:timing[285],sampleFrames:timing.length,metrics:m});
  }
  await info.attach('g11-raw-off-on-performance.json',{body:JSON.stringify({width,samples,scope:'Real Chromium; same warmed paused scene/camera. Render CPU excludes asynchronous GPU work; no hardware claim.'},null,2),contentType:'application/json'});
  const off=samples.filter(s=>!s.on),on=samples.filter(s=>s.on);expect(on[1].metrics.drawCalls-off[1].metrics.drawCalls).toBeLessThanOrEqual(2);expect(on[1].metrics.triangles-off[1].metrics.triangles).toBeLessThanOrEqual(200);expect(on[1].metrics.memory.geometries-off[1].metrics.memory.geometries).toBeLessThanOrEqual(2);expect(on[1].metrics.memory.textures).toBe(off[1].metrics.memory.textures);

@@ -75,3 +75,23 @@ unit cases plus all original 110 pass. Added browser-native imported pause/resum
 provenance check and raw A/B attachment before assertions, so later failures retain
 measurements. The 39 original physics/input/reference/course/record/timing/test/
 workflow files are byte-identical to G10; independent SHA256 receipt is delivered.
+
+Independent review of the unchanged FlightDiagnostics implementation found its
+render CPU mean covers a rolling 240-frame window. Ninety-frame A/B blocks produce
+valid isolated rAF intervals but can mix the previous toggle state into CPU means.
+The G11-only test now samples 300 frames per block and requires all 240 diagnostic
+slots, so final CPU means contain only the current state. No physics/product code,
+quality budget, threshold or inherited test changes. The earlier exact-head runs
+are allowed to finish and retained rather than canceled or silently replaced.
+
+8226613 push run 40195132895 passed 124 unit and all 40 actual Chromium cases;
+Pages/deploy skipped. Artifact 12600260296 SHA256
+39097623b4ff3b6d56677d38d065b36de0554f42dc4e107f0536150cd177506f retained.
+Actual raw-image review (not just green assertions) found pale Ghost-on-sky
+contrast and partial 360 Chase HUD occlusion: waiting for the asynchronous
+Playwright pause click advanced the sampled lap from 10.5 to 10.78–11.28 s.
+The screenshot fixture now invokes the existing native pause-button handler
+in the same callback as the final supplied control, freezing the chosen node.
+The unlit wireframe is a deeper cyan with tone mapping disabled for contrast;
+no geometry/body/physics or alpha fade rule is added. New real images must still
+be reviewed. Test-only synthetic inputs are not manual pilot/hardware proof.

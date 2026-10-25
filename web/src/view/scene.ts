@@ -185,7 +185,7 @@ export class FlightScene {
     for(const a of [-Math.PI/4,Math.PI/4])parts.push(new THREE.BoxGeometry(.28,.022,.016).rotateZ(a));
     for(const x of [-1,1])for(const y of [-1,1])parts.push(new THREE.CylinderGeometry(.064,.064,.008,8).rotateX(Math.PI/2).translate(x*.085,y*.085,.025));
     const geometry=mergeGeometries(parts,false)!;parts.forEach(p=>p.dispose());
-    const material=new THREE.MeshBasicMaterial({color:'#45f4ff',wireframe:true,transparent:true,opacity:.72,depthWrite:false});
+    const material=new THREE.MeshBasicMaterial({color:'#007e99',wireframe:true,transparent:true,opacity:.78,depthWrite:false,toneMapped:false});
     this.ghost=new THREE.Mesh(geometry,material);this.ghost.name='PB Ghost — visual only';this.ghost.frustumCulled=false;this.scene.add(this.ghost);
   }
   ghostReceipt(){return {visible:this.ghost?.visible??false,position:this.ghost?.position.toArray()??null,body:false,collider:false,drawCalls:this.ghost?.visible?1:0};}
@@ -220,7 +220,7 @@ export class FlightScene {
       this.ghost!.position.set(...pose.position);const q=pose.quaternion;this.ghost!.quaternion.set(q[1],q[2],q[3],q[0]);
       const separation=this.ghost!.position.distanceTo(this.camera.position);
       // FPV overlap fades away; never draws an opaque shape over a gate.
-      (this.ghost!.material as THREE.MeshBasicMaterial).opacity=this.cameraMode==='fpv'?Math.min(.72,Math.max(0,(separation-.25)*.8)):.72;
+      (this.ghost!.material as THREE.MeshBasicMaterial).opacity=this.cameraMode==='fpv'?Math.min(.78,Math.max(0,(separation-.25)*.8)):.78;
       this.ghost!.visible=true;
     }else if(this.ghost)this.ghost.visible=false;
     this.lastCamera=this.cameraMode;
