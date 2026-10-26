@@ -1,0 +1,180 @@
+{
+  "officialBase": "ce51a64a711b1c1760f87a5b9848b27ac5383a89",
+  "files": [
+    {
+      "path": ".github/workflows/player.yml",
+      "sha256": "9742a8d2ac2e2f0d4341e71c9072fe75d7ed293e0addea09d4927a9c8a5ae675",
+      "unchanged": true
+    },
+    {
+      "path": "reference/fixtures.json",
+      "sha256": "ef4b09e260f48445d46f3b3aa245f1346df33378c91fa0015ab4c4616f9fa57d",
+      "unchanged": true
+    },
+    {
+      "path": "reference/generate.py",
+      "sha256": "61c9f45fb5cffa254e6bf255fb049f3f719efa9a697e87a249c1c0fa5b2c5004",
+      "unchanged": true
+    },
+    {
+      "path": "reference/python/README.md",
+      "sha256": "d9bc5c9d421340c3f538ab76b29b957f4473b54b0eba4bb2e1ddb9de22b542a2",
+      "unchanged": true
+    },
+    {
+      "path": "reference/python/flight.py",
+      "sha256": "bda3f76012065e99997ad20d1ee25a0eb010e58c46a04ca4b50dcdc07d378888",
+      "unchanged": true
+    },
+    {
+      "path": "reference/python/fpv-completion.md",
+      "sha256": "27b2b5b3661f028e0b329c8d01bf372a28a9f63f5fa45f406d4df33c4ec499ad",
+      "unchanged": true
+    },
+    {
+      "path": "reference/python/fpv-flight.md",
+      "sha256": "ea81188c159739efe98189f27d08cb99fdc9d17977519fc0279455f5b8e3eb6f",
+      "unchanged": true
+    },
+    {
+      "path": "reference/python/fpv-powertrain.md",
+      "sha256": "10520b9072441e3193ba0570d03cacc3e129c07a371d75e2608cdadeaf0f4cf1",
+      "unchanged": true
+    },
+    {
+      "path": "reference/python/powertrain.py",
+      "sha256": "12bd80fe214baffaa1a237a13505999a3f872ba3199f5f45ab0564bab0c35b4f",
+      "unchanged": true
+    },
+    {
+      "path": "reference/source-manifest.json",
+      "sha256": "62f98c232081e93d76707031e7dc26576d4d4943a425746406fc94150162d1ca",
+      "unchanged": true
+    },
+    {
+      "path": "web/e2e/g08.spec.ts",
+      "sha256": "712be93d37bedf60c39c8c02d1bde664ea7cc0c6bae49a59b62fb4771faa50fa",
+      "unchanged": true
+    },
+    {
+      "path": "web/e2e/player.spec.ts",
+      "sha256": "fe60a9fc7fbd3f412b5de72ffe8a35d8759b0022790e000c907015ce616e17bf",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/game/course.ts",
+      "sha256": "18f4fb0a6ddb77c1c2984bd1bdbb40eb4cbd878c3c0a21e3171296c2e511b225",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/game/diagnostics.ts",
+      "sha256": "9e4a4bddde4b9d072239f09066febd42bbccb8ad7bb1ed39674745d1909beaa4",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/game/field.ts",
+      "sha256": "9bff79f5ac95da3b3141611b4667d4f3611a37e707fe75739731195ee747b526",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/game/session.ts",
+      "sha256": "c41b52ad134a3db821dad411eb09ac13c1b5bf21dc7ed908102b792724d51965",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/game/timing.ts",
+      "sha256": "72613a87af2b0fe22d91d3951d076153957815b01faf44f3c5d4d3b01bd0230e",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/input/manager.ts",
+      "sha256": "79c22cdf17081bb53f94861b51634b86c629f3a8bfd69475d4b0b79c3c8ce6a0",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/input/settings.ts",
+      "sha256": "ca21319f76f12733f6b93d7333c54e393bf020aa79ca8a29170489768fd36b4b",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/physics/config.ts",
+      "sha256": "13f87bec4c71f07b2a6420a22844786504e9adb15e7be0b6c150c8306740afb0",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/physics/controller.ts",
+      "sha256": "cc76b7b8d3d47b898b055a029515ead34cf874736474f0f7419cbd9049ce745b",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/physics/math.ts",
+      "sha256": "e440652859a44d3e462def2acd75245771ed1c5aa5b2503cb5b056f6def1ecb4",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/physics/powertrain.ts",
+      "sha256": "ad35e528f8e23fd92cee2c121fbfe0fa139669c4766d386f865c54571f6c1bdb",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/physics/transient.ts",
+      "sha256": "f3f02aeec0c9e66b8b8040835b20c88c16de9374045df7c2f88c7d6b7fae7547",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/physics/world.ts",
+      "sha256": "1a37e9009af57e8218d840af990cee0b78b5fd6c966cc88b6e6015a8668bd0e6",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/view/audio.ts",
+      "sha256": "ff0e605c39c290c38e654a8feb3720adfdc64dc86582ab5b011ddbb634229d6a",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/view/resolution.ts",
+      "sha256": "a7b935a23b130b9655f1edb346e1db18f6cb8e669d03a2b81e23968c870188d1",
+      "unchanged": true
+    },
+    {
+      "path": "web/src/view/scene.ts",
+      "sha256": "7eeb12b986fa7bdb702d8ac3350ebbff70d5845ef91cb4970eb33eed0f4ae282",
+      "unchanged": true
+    },
+    {
+      "path": "web/tests/g07-reliability.test.ts",
+      "sha256": "77b6fbabb20e962735056e1c7d390539f4882f16ee74ad4d86e58729335f55fe",
+      "unchanged": true
+    },
+    {
+      "path": "web/tests/g08-transients.test.ts",
+      "sha256": "965cc4e377fca80c437cc57d0f80c150514c20ab448da83b83a5d90685a5dbda",
+      "unchanged": true
+    },
+    {
+      "path": "web/tests/input-game.test.ts",
+      "sha256": "02987e586f06fa739990c85b76e136c4d141aa56eba263aaa70b65d1462d9b90",
+      "unchanged": true
+    },
+    {
+      "path": "web/tests/numerical-report.test.ts",
+      "sha256": "37ee511d33d64fb586f64a47d4cad4af1f5f43d05b1e2b04431a486d3567ec5b",
+      "unchanged": true
+    },
+    {
+      "path": "web/tests/physics.test.ts",
+      "sha256": "223ba53482500d10a3fb7fbc0e74e80eba05d4c5ff058f3fb1f825f912fe0a35",
+      "unchanged": true
+    },
+    {
+      "path": "web/tests/reference-fixtures.ts",
+      "sha256": "c83e3fd964cd56ed594644aca09028c633119f11ad721faf6c965d31486bb5dd",
+      "unchanged": true
+    },
+    {
+      "path": "web/tests/timing.test.ts",
+      "sha256": "b0ff04e4574d9a1f33437db4bfafdf709d15c3a4051a4ba2e363d4c9effafb61",
+      "unchanged": true
+    }
+  ]
+}
