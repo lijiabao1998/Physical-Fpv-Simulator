@@ -23,6 +23,6 @@ describe('FPV-I18N-01 presentation only',()=>{
   }
  });
  it('preserves formatted numeric evidence and units',()=>{
-  for(const text of ['Lap 12.30 s','Impact at 3.7 m/s. Retry to fly again.','Total mass: 0.490 kg','Position m: -0.001, 2.345, 0.105','Current (last electrical substep): 12.345 A','Thrust (physical-step mean), N: 1.234, 2.345'])expect(translate(text,'zh-TW').match(/-?\d+(?:\.\d+)?/g)).toEqual(text.match(/-?\d+(?:\.\d+)?/g));
+  for(const text of ['Lap 12.30 s','Impact at 3.7 m/s. Retry to fly again.','Total mass: 0.490 kg','Position m: -0.001, 2.345, 0.105','Current (last electrical substep): 12.345 A','Thrust (physical-step mean), N: 1.234, 2.345','Physics guard: synthetic cell temperature outside [273.15, 333.15]. Retry.'])expect(translate(text,'zh-TW').match(/-?\d+(?:\.\d+)?/g)).toEqual(text.match(/-?\d+(?:\.\d+)?/g));
  });
 });

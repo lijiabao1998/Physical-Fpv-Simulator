@@ -4,6 +4,17 @@ export function resolveLanguage(storage?:Pick<Storage,'getItem'>,languages:reado
 export function saveLanguage(language:Language,storage?:Pick<Storage,'setItem'>){try{if(!storage)return false;storage.setItem(LANGUAGE_KEY,language);return true;}catch{return false;}}
 const entries=`Physical FPV · Training Field|Physical FPV · 飛行訓練場
 None|無
+ESC duty|ESC 占空比
+airspeed|空速
+synthetic SOC|合成電池荷電狀態（SOC）
+rotor speed|轉子轉速
+synthetic cell temperature|合成電芯溫度
+throttle|油門
+roll|橫滾
+pitch|俯仰
+yaw|偏航
+rate|角速度
+dt|時間步長（dt）
 Language|語言
 Language / 語言|語言 / Language
 Language saved on this device.|語言已儲存在此裝置。
@@ -116,6 +127,8 @@ Enable local performance diagnostics (optional)|啟用本機效能診斷（選�
 Diagnostics off|診斷已關閉
 Input replay|輸入重播
 Replay stores fixed-step inputs and assembly locally in an exported JSON file. Use the same build/runtime; cross-platform bitwise determinism is not promised.|重播會將固定步長的輸入與機體組合儲存在本機匯出的 JSON 檔。請使用相同建置版本／執行環境；不保證跨平台逐位元完全一致。
+Choose replay file…|選擇重播檔案…
+No file selected|尚未選擇檔案
 Export replay|匯出重播
 Watch this flight|觀看本次飛行
 Import replay (maximum 32 MB)|匯入重播（最大 32 MB）
@@ -188,6 +201,7 @@ export function translate(source:string,language:Language):string{
  const jsonLine=source.match(/^(\s*)"([^"\n]+)": (.*)$/);
  if(jsonLine){const labels:Record<string,string>={chemicalJ:'化學能 J',stateJ:'狀態能量 J',busJ:'匯流排能量 J',packHeatJ:'電池組熱量 J',copperJ:'銅損 J',escJ:'ESC 熱量 J',frictionJ:'摩擦能量 J',rotorJ:'轉子輸出能量 J',energyError:'能量誤差 J',sourceError:'來源能量誤差 J',chargeError:'電荷誤差 C',thermalError:'熱量誤差 J',physicsModel:'物理模型',syntheticParameters:'合成參數',rotorKineticJ:'轉子動能 J',enabled:'已啟用',samples:'樣本數',fps:'FPS',frameMs:'畫面間隔 ms',physicsStepMs:'物理步耗時 ms',renderCpuMs:'CPU 繪圖耗時 ms',lastSteps:'上次步數',maxSteps:'最大步數',lastStop:'上次停止原因'};const label=labels[jsonLine[2]];if(label){let value=jsonLine[3];if(jsonLine[2]==='lastStop'){const match=value.match(/^"(.*)"(,?)$/);if(match)value='"'+translate(match[1],language)+'"'+match[2];}return jsonLine[1]+'"'+label+' ('+jsonLine[2]+')": '+value;}}
  const rules:Array<[RegExp,(...v:string[])=>string]>=[
+ [/^Selected file: (.*)$/,v=>`已選擇檔案：${v}`],
  [/^TRAINING FIELD \/ v(.+)$/,v=>`飛行訓練場 / v${v}`],
  [/^(\d+) \/ 5 gates$/,v=>`${v} / 5 道關卡`],[/^Lap (.+) s$/,v=>`單圈 ${v} s`],[/^LOCAL BEST (.+) s$/,v=>`本機最佳 ${v} s`],
  [/^Impact at (.+) m\/s\. Retry to fly again\.$/,v=>`以 ${v} m/s 撞擊。請重試以再次飛行。`],
@@ -196,7 +210,7 @@ export function translate(source:string,language:Language):string{
  [/^Axes: (.*)$/,v=>`軸：${v}`],[/^Buttons: (.*)$/,v=>`按鈕：${v}`],
  [/^Total mass: (.*)$/,v=>`總質量：${v}`],[/^Battery: (.*) \(synthetic\)$/,v=>`電池：${v}（合成）`],[/^Motor constant: (.*)$/,v=>`馬達常數：${v}`],[/^Prop diameter: (.*)$/,v=>`槳葉直徑：${v}`],[/^Four mounts: (.*)$/,v=>`四個馬達座：${v}`],
  [/^Physics: (.*) \(synthetic\)$/,v=>`物理模型：${v}（合成）`],[/^State: (.*) \/ (ARMED|DISARMED)$/, (v,a)=>`狀態：${({ready:'準備就緒',flying:'飛行中',paused:'已暫停',crashed:'已墜機',finished:'已完成',replay:'重播中'} as Record<string,string>)[v]??v} / ${a==='ARMED'?'已解鎖（ARMED）':'已鎖定（DISARMED）'}`],
- [/^Position m: (.*)$/,v=>`位置 m：${v}`],[/^Mass: (.*)$/,v=>`質量：${v}`],[/^Current \(last electrical substep\): (.*)$/,v=>`電流（最後電氣子步）：${v}`],[/^Thrust \(physical-step mean\), N: (.*)$/,v=>`推力（物理步平均值），N：${v}`],[/^Rendered FPS: (.*) \(this session\)$/,v=>`繪圖 FPS：${v}（本次使用）`],[/^Draw calls: (.*) \/ triangles: (.*)$/, (v,t)=>`繪圖呼叫：${v} / 三角形：${t}`],[/^Quality: (Low|High) · render scale (.*)$/, (v,scale)=>`畫面品質：${v==='Low'?'低':'高'} · 繪圖縮放 ${scale}`],[/^Target only: desktop 60 \/ mobile 30 FPS$/,()=> '僅為目標：桌面 60 / 行動裝置 30 FPS'],[/^Renderer: (.*)$/,v=>`繪圖器：${v}`],[/^Vendor: (.*)$/,v=>`廠商：${v}`],[/^Build v(.*)$/,v=>`建置版本 v${v}`],[/^(.+) outside \[(.*), (.*)\]$/, (label,low,high)=>`${label} 超出有效範圍 [${low}, ${high}]`],
+ [/^Position m: (.*)$/,v=>`位置 m：${v}`],[/^Mass: (.*)$/,v=>`質量：${v}`],[/^Current \(last electrical substep\): (.*)$/,v=>`電流（最後電氣子步）：${v}`],[/^Thrust \(physical-step mean\), N: (.*)$/,v=>`推力（物理步平均值），N：${v}`],[/^Rendered FPS: (.*) \(this session\)$/,v=>`繪圖 FPS：${v}（本次使用）`],[/^Draw calls: (.*) \/ triangles: (.*)$/, (v,t)=>`繪圖呼叫：${v} / 三角形：${t}`],[/^Quality: (Low|High) · render scale (.*)$/, (v,scale)=>`畫面品質：${v==='Low'?'低':'高'} · 繪圖縮放 ${scale}`],[/^Target only: desktop 60 \/ mobile 30 FPS$/,()=> '僅為目標：桌面 60 / 行動裝置 30 FPS'],[/^Renderer: (.*)$/,v=>`繪圖器：${v}`],[/^Vendor: (.*)$/,v=>`廠商：${v}`],[/^Build v(.*)$/,v=>`建置版本 v${v}`],[/^(.+) outside \[(.*), (.*)\]$/, (label,low,high)=>`${translate(label,language)} 超出有效範圍 [${low}, ${high}]`],
  ];
  for(const [pattern,render] of rules){const match=source.match(pattern);if(match)return render(...match.slice(1));}
  return source;
