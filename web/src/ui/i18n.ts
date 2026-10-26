@@ -3,6 +3,7 @@ export const LANGUAGE_KEY='physical-fpv-ui-lang-v1';
 export function resolveLanguage(storage?:Pick<Storage,'getItem'>,languages:readonly string[]=[]):Language{try{const saved=storage?.getItem(LANGUAGE_KEY);if(saved==='en'||saved==='zh-TW')return saved;}catch{}return languages[0]?.toLowerCase().startsWith('zh')?'zh-TW':'en';}
 export function saveLanguage(language:Language,storage?:Pick<Storage,'setItem'>){try{if(!storage)return false;storage.setItem(LANGUAGE_KEY,language);return true;}catch{return false;}}
 const entries=`Physical FPV · Training Field|Physical FPV · 飛行訓練場
+None|無
 Language|語言
 Language / 語言|語言 / Language
 Language saved on this device.|語言已儲存在此裝置。
@@ -184,6 +185,8 @@ export function translate(source:string,language:Language):string{
  if(language==='en')return source;
  if(dictionary[source]!==undefined)return dictionary[source];
  if(source.includes('\n'))return source.split('\n').map(line=>translate(line,language)).join('\n');
+ const jsonLine=source.match(/^(\s*)"([^"\n]+)": (.*)$/);
+ if(jsonLine){const labels:Record<string,string>={chemicalJ:'化學能 J',stateJ:'狀態能量 J',busJ:'匯流排能量 J',packHeatJ:'電池組熱量 J',copperJ:'銅損 J',escJ:'ESC 熱量 J',frictionJ:'摩擦能量 J',rotorJ:'轉子輸出能量 J',energyError:'能量誤差 J',sourceError:'來源能量誤差 J',chargeError:'電荷誤差 C',thermalError:'熱量誤差 J',physicsModel:'物理模型',syntheticParameters:'合成參數',rotorKineticJ:'轉子動能 J',enabled:'已啟用',samples:'樣本數',fps:'FPS',frameMs:'畫面間隔 ms',physicsStepMs:'物理步耗時 ms',renderCpuMs:'CPU 繪圖耗時 ms',lastSteps:'上次步數',maxSteps:'最大步數',lastStop:'上次停止原因'};const label=labels[jsonLine[2]];if(label){let value=jsonLine[3];if(jsonLine[2]==='lastStop'){const match=value.match(/^"(.*)"(,?)$/);if(match)value='"'+translate(match[1],language)+'"'+match[2];}return jsonLine[1]+'"'+label+' ('+jsonLine[2]+')": '+value;}}
  const rules:Array<[RegExp,(...v:string[])=>string]>=[
  [/^TRAINING FIELD \/ v(.+)$/,v=>`飛行訓練場 / v${v}`],
  [/^(\d+) \/ 5 gates$/,v=>`${v} / 5 道關卡`],[/^Lap (.+) s$/,v=>`單圈 ${v} s`],[/^LOCAL BEST (.+) s$/,v=>`本機最佳 ${v} s`],
@@ -193,7 +196,7 @@ export function translate(source:string,language:Language):string{
  [/^Axes: (.*)$/,v=>`軸：${v}`],[/^Buttons: (.*)$/,v=>`按鈕：${v}`],
  [/^Total mass: (.*)$/,v=>`總質量：${v}`],[/^Battery: (.*) \(synthetic\)$/,v=>`電池：${v}（合成）`],[/^Motor constant: (.*)$/,v=>`馬達常數：${v}`],[/^Prop diameter: (.*)$/,v=>`槳葉直徑：${v}`],[/^Four mounts: (.*)$/,v=>`四個馬達座：${v}`],
  [/^Physics: (.*) \(synthetic\)$/,v=>`物理模型：${v}（合成）`],[/^State: (.*) \/ (ARMED|DISARMED)$/, (v,a)=>`狀態：${({ready:'準備就緒',flying:'飛行中',paused:'已暫停',crashed:'已墜機',finished:'已完成',replay:'重播中'} as Record<string,string>)[v]??v} / ${a==='ARMED'?'已解鎖（ARMED）':'已鎖定（DISARMED）'}`],
- [/^Position m: (.*)$/,v=>`位置 m：${v}`],[/^Mass: (.*)$/,v=>`質量：${v}`],[/^Current \(last electrical substep\): (.*)$/,v=>`電流（最後電氣子步）：${v}`],[/^Thrust \(physical-step mean\), N: (.*)$/,v=>`推力（物理步平均值），N：${v}`],[/^Rendered FPS: (.*) \(this session\)$/,v=>`繪圖 FPS：${v}（本次使用）`],[/^Draw calls: (.*) \/ triangles: (.*)$/, (v,t)=>`繪圖呼叫：${v} / 三角形：${t}`],[/^Quality: (.*)$/,v=>`畫面品質：${v}`],[/^Target only: desktop 60 \/ mobile 30 FPS$/,()=> '僅為目標：桌面 60 / 行動裝置 30 FPS'],[/^Renderer: (.*)$/,v=>`繪圖器：${v}`],[/^Vendor: (.*)$/,v=>`廠商：${v}`],[/^Build v(.*)$/,v=>`建置版本 v${v}`],
+ [/^Position m: (.*)$/,v=>`位置 m：${v}`],[/^Mass: (.*)$/,v=>`質量：${v}`],[/^Current \(last electrical substep\): (.*)$/,v=>`電流（最後電氣子步）：${v}`],[/^Thrust \(physical-step mean\), N: (.*)$/,v=>`推力（物理步平均值），N：${v}`],[/^Rendered FPS: (.*) \(this session\)$/,v=>`繪圖 FPS：${v}（本次使用）`],[/^Draw calls: (.*) \/ triangles: (.*)$/, (v,t)=>`繪圖呼叫：${v} / 三角形：${t}`],[/^Quality: (Low|High) · render scale (.*)$/, (v,scale)=>`畫面品質：${v==='Low'?'低':'高'} · 繪圖縮放 ${scale}`],[/^Target only: desktop 60 \/ mobile 30 FPS$/,()=> '僅為目標：桌面 60 / 行動裝置 30 FPS'],[/^Renderer: (.*)$/,v=>`繪圖器：${v}`],[/^Vendor: (.*)$/,v=>`廠商：${v}`],[/^Build v(.*)$/,v=>`建置版本 v${v}`],[/^(.+) outside \[(.*), (.*)\]$/, (label,low,high)=>`${label} 超出有效範圍 [${low}, ${high}]`],
  ];
  for(const [pattern,render] of rules){const match=source.match(pattern);if(match)return render(...match.slice(1));}
  return source;

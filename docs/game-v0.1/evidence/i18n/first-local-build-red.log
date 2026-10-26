@@ -1,0 +1,7 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> physical-fpv-player@0.1.0 build
+> tsc --noEmit && vite build && node scripts/check-build.mjs
+
+src/main.ts(2,54): error TS2307: Cannot find module './ui/i18n' or its corresponding type declarations.
+src/ui/localize-dom.ts(1,39): error TS2307: Cannot find module './i18n' or its corresponding type declarations.
