@@ -10,7 +10,7 @@ for(const width of [1440,412,360])for(const language of ['zh-TW','en'])test(`I18
  for(const panel of ['controls','aircraft','physics']){
   await page.locator(`[data-panel=${panel}]`).click();
   await expect(page.locator('#drawer')).toBeVisible();
-  const bounds=await page.locator('#drawer').boundingBox();expect(bounds!.x).toBeGreaterThanOrEqual(0);expect(bounds!.x+bounds!.width).toBeLessThanOrEqual(width);
+  const bounds=await page.locator('#drawer').boundingBox();expect(bounds!.x).toBeGreaterThanOrEqual(0);expect(bounds!.x+bounds!.width).toBeLessThanOrEqual(width);const languageBounds=await page.locator('#ui-language').boundingBox();expect(bounds!.y).toBeGreaterThanOrEqual(languageBounds!.y+languageBounds!.height);
   await page.screenshot({path:info.outputPath(`${panel}-${language}-${width}.png`)});
   await page.locator('#drawer').evaluate(drawer=>{drawer.scrollTop=drawer.scrollHeight;});await page.screenshot({path:info.outputPath(`${panel}-bottom-${language}-${width}.png`)});
   await page.locator('#drawer').evaluate(drawer=>{drawer.scrollTop=0;});
