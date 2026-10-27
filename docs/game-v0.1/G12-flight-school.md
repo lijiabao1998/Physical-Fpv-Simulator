@@ -58,3 +58,33 @@ controller disarm. Inspect actual 1440/412/390/360px FPV/Chase screenshots witho
 covering sticks, safety controls or HUD. Physical phones/controllers remain untested.
 Retain first failures and raw results. No workflow/threshold changes or hidden
 performance waivers; G11 remains independent and blocked until its gate resolves.
+
+## Core-only implementation receipt (2026-10-27)
+Card freeze: b529a56, before product code. First implementation/test commit:
+89661e9. First focused test run: 9 pass / 1 fail; replay lock was inadvertently
+cleared when an imported session replaced the attempt token. Corrected the
+observer token-change path to keep replay locked until explicit fresh begin.
+Also regression-tested pause → resume cannot impersonate deliberate safe disarm.
+Focused rerun: 10/10. Full inherited + school suite: 115/115 (11 files), and
+TypeScript noEmit pass. These are local numerical/unit checks, not Chromium/UI,
+ordinary-input lesson completion, official CI or hardware acceptance.
+Original first-red log SHA256:
+68f20ec6ddf5815ec882cbacbc16762ca0253893b6d4d8802fe6cf802cdd7943.
+Full unit log SHA256:
+5363ef658e3304f3d402823b7e7daec4254c942025644dabd3691479144289aa.
+
+### Integration contract
+`FlightSchool` owns no language, storage, game or renderer object. UI supplies:
+`{...game.snapshot(), controls:game.lastControls, contact:game.world.contact,
+practice:game.practice, gateCount:getCourse(game.courseId).gates.length,
+assemblyKey:JSON.stringify([game.assembly.frame,game.assembly.battery,
+game.assembly.motor,game.assembly.propeller])}`.
+Call `begin(game.course, observation)` on school start and explicit fresh Retry;
+`observe(game.course, observation)` after EVERY native fixed tick and immediately
+after native ARM/disarm/pause actions (including keyboard/gamepad). `markReplay()`
+at replay entry; successful import must not call begin, even when its course token
+changes. Call `stop()` when exiting school. Reset/reconfiguration auto clears on
+new course token/identity, but a Replay-locked session requires explicit fresh
+school retry; do not relabel imported playback as a local attempt. Language only
+reads `snapshot()`. No need to translate internal lesson/axis/identity IDs.
+All native controls, including 600ms hold and existing safeStop, remain in charge.

@@ -34,14 +34,14 @@ export class FlightSchool {
     blocked:this.invalid||this.replayLocked,provisionalDifficulty:true};}
   observe(attempt:object,o:SchoolObservation){
     if(!this.active)return;
-    if(this.token!==attempt||this.key!==identity(o)){this.begin(attempt,o);return;}
+    if(this.token!==attempt||this.key!==identity(o)){if(this.replayLocked){this.token=attempt;this.key=identity(o);return;}this.begin(attempt,o);return;}
     if(o.state==='replay'){this.markReplay();return;}
     if(this.replayLocked||this.invalid)return;
     if(o.state==='crashed'||!o.courseValid){this.reject();return;}
     if(!Number.isFinite(o.time)||!finite(o.position,3)||!finite(o.velocity,3)||!finite(o.quaternion,4)||!finite(o.rates,3)||!Object.values(o.controls).every(Number.isFinite)){this.reject();return;}
     const elapsed=o.time-this.lastTime;this.lastTime=o.time;
     if(elapsed< -1e-8){this.begin(attempt,o);return;}
-    if(o.state==='paused'||o.state==='ready')return;
+    if(o.state==='paused'||o.state==='ready'){if(this.lesson==='takeoff'){this.zeroSeen=false;this.armedSeen=false;this.gentleSeen=false;this.lifted=false;this.feedback='Safety stop. Restart safe takeoff';}return;}
     const tick=Math.abs(elapsed-FIXED_DT)<1e-7;
     if(elapsed>FIXED_DT+1e-7){this.hoverTicks=0;this.axisTicks=0;this.feedback='Observe every fixed physics tick';return;}
     if(this.lesson==='complete')return;
