@@ -152,3 +152,22 @@ while school is open (owner visual review). Landscape coarse 800x360/844x390 (wi
 desktop rule) still overlaps right stick, actions and notice: pre-existing, outside the
 frozen matrix, not fixed. 360x640 leaves the course panel 42px tall. Physical phones and
 controllers remain untested; owner difficulty/balance review remains outstanding.
+
+Independent verification of the receipt above (2026-10-27, separate Claude agent, not
+external review): scope is exactly 3 files; the frozen text above is unchanged. Provenance
+correction: the first-red log was produced on 74ef387 plus the then-uncommitted spec edit,
+byte-identical to 825a2bb; rerun on a clean `git archive` of 825a2bb gives 3 failed /
+5 passed with the same coarse `.course` 14879.25 px² (log d20162fa...). Its own probe over
+17 viewports (153 states each side) reproduced the 30/63 before-overlaps in the frozen
+matrix and found 0/63 after, with no new or larger overlap anywhere and identical 1440
+rects. G12 spec at d72bd71: 7 passed / 1 failed twice, the inherited 412 Space 200 ms
+line under load; 412 alone passes at head and fails at the base copy (timing, not this
+change). Remaining risks it measured: (1) while school is open on coarse narrow screens
+below about 746 px of visible height, clock and gates also scroll out of the course
+panel (375x667 cap 71 px); at 320x568 the cap is 0 px and the panel still overlaps the
+course 7696 px² (34040 px² before). (2) Pre-existing and safety-relevant: in landscape
+800x360 the visible school Safe stop/Retry buttons sit under `#arm`, and Close under
+`#disarm` or the right stick, so a tap on Safe stop presses Hold ARM. (3) Pre-existing:
+widths 601-704 px still overlap the course panel under the desktop rule. (4) The fix
+needs `:has()` and `dvh`; without them the cap is skipped and the old overlap returns.
+Items (1)-(3) need an owner decision or a separate card before release.
