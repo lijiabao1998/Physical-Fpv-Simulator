@@ -41,7 +41,7 @@ test('G10 explicit course loading never exempts a running flight from the 250ms 
 for(const width of [1440,412,360])test(`G10 bilingual course identity and safe selection ${width}`,async({page},info)=>{
  await page.setViewportSize({width,height:900});await page.goto('http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1');await expect(page.locator('#loading')).toHaveCount(0);
  for(const id of ['training-straight','british-slalom','industrial-run']){
-  await page.locator('#course-select').selectOption(id);const before=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());expect(before.armed).toBe(false);
+  await page.locator('#course-select').selectOption(id);await page.evaluate(()=>{const h=(window as any).__FPV_TEST__;if(h.snapshot().state==='flying')document.querySelector<HTMLButtonElement>('#pause')!.click();});const before=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());expect(before.armed).toBe(false);
   for(const language of ['zh-TW','en']){
    await page.locator('#ui-language').selectOption(language);expect(await page.locator('#course-select').inputValue()).toBe(id);
    const after=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());for(const key of ['courseId','courseVersion','physicsModel','gate','splits','energy','position'])expect(after[key]).toEqual(before[key]);
