@@ -2,7 +2,7 @@ import { readFile, stat, readdir } from 'node:fs/promises';
 import { resolve, relative } from 'node:path';
 import assert from 'node:assert/strict';
 const root = resolve('dist');
-const base = '/Physical-Fpv-Simulator/';
+const base = '/fpv/';
 const html = await readFile(resolve(root, 'index.html'), 'utf8');
 assert.match(html, /<canvas|type="module"/, 'Application entry missing');
 const references = [...html.matchAll(/(?:src|href)=["']([^"']+)["']/g)].map(m => m[1]);

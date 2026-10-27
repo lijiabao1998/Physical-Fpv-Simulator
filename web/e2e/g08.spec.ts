@@ -2,13 +2,13 @@ import {test,expect} from '@playwright/test';
 for(const width of [1440,360,412])test('G08 actual Chromium A/B and version rollback '+width,async({page},info)=>{
  test.setTimeout(60000);await page.setViewportSize({width,height:900});
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
- await page.goto('http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1');await expect(page.locator('#loading')).toHaveCount(0);await page.getByTestId('start').click();
+ await page.goto('http://127.0.0.1:4173/fpv/?test=1');await expect(page.locator('#loading')).toHaveCount(0);await page.getByTestId('start').click();
  const measurements=[];
  for(const model of ['g07-quasistatic-v1','g08-transient-v1']){
   await page.getByRole('button',{name:'Physics',exact:true}).click();await page.locator('#physics-model').selectOption(model);await page.locator('#apply-physics').click();
   const result=await page.evaluate(async(version)=>{
    // Independent fresh sessions: same initial state and controls; measures simulation CPU, not GPU or displayed FPS.
-   const moduleUrl='/Physical-Fpv-Simulator/src/game/session.ts';
+   const moduleUrl='/fpv/src/game/session.ts';
    const {GameSession}=await import(moduleUrl);
    const samples:number[]=[],g=new GameSession(undefined,false,version);g.start();g.arm(0);
    for(let i=0;i<240;i++){const t=performance.now();g.step({throttle:.6,roll:0,pitch:0,yaw:0});samples.push(performance.now()-t);}
@@ -29,7 +29,7 @@ for(const width of [1440,360,412])test('G08 actual Chromium A/B and version roll
 });
 test('G08 five-gate best, persistent version rollback and unrelated storage remain isolated',async({page})=>{
  await page.addInitScript(()=>{if(!localStorage.getItem('fixture-seeded')){localStorage.setItem('fixture-seeded','1');localStorage.setItem('physical-fpv-course-best-v1','12');localStorage.setItem('unrelated-save','keep-me');localStorage.setItem('physical-fpv-physics-model-v1','unknown-invalid-model');}});
- await page.goto('http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1');await expect(page.locator('#loading')).toHaveCount(0);
+ await page.goto('http://127.0.0.1:4173/fpv/?test=1');await expect(page.locator('#loading')).toHaveCount(0);
  await page.getByTestId('start').evaluate(button=>button.addEventListener('click',()=>{
   const h=(window as any).__FPV_TEST__;
   for(const [x,y,z] of [[10,0,2.1],[23,-4,2.6],[36,1,3.1],[50,6,2.6],[65,0,2.1]]){h.place([x-.05,y,z],[8,0,0]);h.tick(4);}
