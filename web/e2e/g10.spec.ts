@@ -38,3 +38,15 @@ test('G10 explicit course loading never exempts a running flight from the 250ms 
  await page.keyboard.down('Space');await expect.poll(()=>page.evaluate(()=>(window as any).__FPV_TEST__.snapshot().armed)).toBe(true);await page.keyboard.up('Space');const before=await page.evaluate(()=>(window as any).__FPV_TEST__.initialization());
  await page.evaluate(()=>{const start=performance.now();while(performance.now()-start<350){/* deliberate real running-frame interruption */}});await expect(page.getByTestId('game-status')).toContainText('250 ms');const stopped=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());expect(stopped.state).toBe('paused');expect(stopped.armed).toBe(false);expect(await page.evaluate(()=>(window as any).__FPV_TEST__.initialization())).toEqual(before);await info.attach('loading-vs-flight-safety.json',{body:JSON.stringify({receipt,crashed,preflight,before,stopped},null,2),contentType:'application/json'});
 });
+for(const width of [1440,412,360])test(`G10 bilingual course identity and safe selection ${width}`,async({page},info)=>{
+ await page.setViewportSize({width,height:900});await page.goto('http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1');await expect(page.locator('#loading')).toHaveCount(0);
+ for(const id of ['training-straight','british-slalom','industrial-run']){
+  await page.locator('#course-select').selectOption(id);const before=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());expect(before.armed).toBe(false);
+  for(const language of ['zh-TW','en']){
+   await page.locator('#ui-language').selectOption(language);expect(await page.locator('#course-select').inputValue()).toBe(id);
+   const after=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());for(const key of ['courseId','courseVersion','physicsModel','gate','splits','energy','position'])expect(after[key]).toEqual(before[key]);
+   await expect(page.locator('#course-select option:checked')).toHaveText(({ 'training-straight':['直線訓練場','Training Straight'],'british-slalom':['英式立體迴轉','British Slalom'],'industrial-run':['工業障礙賽道','Industrial Run']} as Record<string,string[]>)[id][language==='zh-TW'?0:1]);
+   await page.screenshot({path:info.outputPath(`g10-${id}-${language}-${width}.png`)});
+  }
+ }
+});
