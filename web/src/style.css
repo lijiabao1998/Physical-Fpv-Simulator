@@ -22,3 +22,9 @@
 .school-panel{position:absolute;top:100px;right:28px;width:300px;padding:12px;background:#182a23ed;border:1px solid #79917355;border-radius:12px;z-index:2;font-size:12px;max-height:350px;overflow:auto}.school-panel[hidden]{display:none}.school-panel p{margin:7px 0}.school-panel small{display:block;font-size:10px}.school-panel .row{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}.school-panel button{font-size:11px;padding:7px}#school-open{margin-top:5px;font-size:11px;padding:5px 9px}@media(max-width:600px){.school-panel{top:auto;bottom:357px;left:12px;right:12px;width:auto;max-height:135px;padding:9px;font-size:11px}.school-panel .row{gap:4px}.school-panel button{padding:5px;font-size:10px}.school-panel p{margin:4px 0}}
 
 .school-panel .row{position:sticky;bottom:0;background:#182a23;padding-top:4px}
+/* G12 360px real-image review: the open school panel covered course progress. On narrow
+   screens it keeps its own band above sticks (coarse) or notice/actions (fine); while it is
+   open the course panel stays in place and scrolls inside the space left above that band. */
+@media(max-width:600px){#app{--school-bottom:275px;--course-top:130px}.school-panel{bottom:var(--school-bottom)}#app:has(>#school-panel:not([hidden])) .course{max-height:calc(100dvh - var(--course-top) - var(--school-bottom) - 143px);overflow-y:auto}}
+@media(max-width:600px) and (pointer:coarse){#app{--school-bottom:357px}}
+@media(max-width:480px){#app{--course-top:96px}}
