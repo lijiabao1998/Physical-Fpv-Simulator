@@ -44,7 +44,7 @@ for(const width of [1440,412,360])test(`G10 bilingual course identity and safe s
   await page.locator('#course-select').selectOption(id);await page.evaluate(()=>{const h=(window as any).__FPV_TEST__;if(h.snapshot().state==='flying')document.querySelector<HTMLButtonElement>('#pause')!.click();});const before=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());expect(before.armed).toBe(false);
   for(const language of ['zh-TW','en']){
    await page.locator('#ui-language').selectOption(language);expect(await page.locator('#course-select').inputValue()).toBe(id);
-   const after=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());for(const key of ['courseId','courseVersion','physicsModel','gate','splits','energy','position'])expect(after[key]).toEqual(before[key]);
+   const after=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());for(const key of ['courseId','courseVersion','physicsModel','gate','splits','energy','position','time','state','armed','mass','rpm','quaternion'])expect(after[key]).toEqual(before[key]);
    await expect(page.locator('#course-select option:checked')).toHaveText(({ 'training-straight':['直線訓練場','Training Straight'],'british-slalom':['英式立體迴轉','British Slalom'],'industrial-run':['工業障礙賽道','Industrial Run']} as Record<string,string[]>)[id][language==='zh-TW'?0:1]);
    await page.screenshot({path:info.outputPath(`g10-${id}-${language}-${width}.png`)});
   }
