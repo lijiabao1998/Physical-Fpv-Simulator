@@ -21,6 +21,14 @@ for(const width of [1440,412,390,360])test(`G12 bilingual school native flow and
   const after=await page.evaluate(()=>({s:(window as any).__FPV_TEST__.snapshot(),school:(window as any).__FPV_TEST__.school()}));expect(after.school).toEqual(before.school);for(const k of ['position','energy','splits','courseTime','time'])expect(after.s[k]).toEqual(before.s[k]);
   const overlap=await page.evaluate(()=>{const a=document.querySelector('#school-panel')!.getBoundingClientRect();return ['#left-stick','#right-stick','.actions','.hud','#ui-language'].map(sel=>{const b=document.querySelector(sel)!.getBoundingClientRect();return {sel,area:Math.max(0,Math.min(a.right,b.right)-Math.max(a.left,b.left))*Math.max(0,Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top))};});});for(const item of overlap)expect(item.area,item.sel).toBe(0);
   await page.screenshot({path:info.outputPath(`g12-complete-${language}-${width}.png`)});
+  // Frozen G12 FPV/Chase matrix: same completed native attempt, real camera button only.
+  await page.getByTestId('camera').click();
+  await page.evaluate(()=>new Promise<void>(resolve=>requestAnimationFrame(()=>resolve())));
+  const fpv=await page.evaluate(()=>({s:(window as any).__FPV_TEST__.snapshot(),school:(window as any).__FPV_TEST__.school()}));
+  expect(fpv.s.camera).toBe('fpv');expect(fpv.school).toEqual(before.school);
+  for(const k of ['position','energy','splits','courseTime','time'])expect(fpv.s[k]).toEqual(before.s[k]);
+  await page.screenshot({path:info.outputPath(`g12-complete-${language}-fpv-${width}.png`)});
+  await page.getByTestId('camera').click();expect((await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot())).camera).toBe('chase');
  }
  await page.locator('#school-retry').click();expect((await page.evaluate(()=>(window as any).__FPV_TEST__.school())).completed).toBe(0);await page.locator('#school-stop').click();const paused=await page.evaluate(()=>(window as any).__FPV_TEST__.school());await page.waitForTimeout(200);expect((await page.evaluate(()=>(window as any).__FPV_TEST__.school())).hoverSeconds).toBe(paused.hoverSeconds);expect((await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot())).armed).toBe(false);
  await page.locator('#school-close').click();await expect(page.locator('#school-panel')).toBeHidden();await page.locator('[data-panel=aircraft]').click();expect(await page.locator('#practice').inputValue()).toBe('false');await page.locator('#close-panel').click();await page.locator('#school-open').click();await page.locator('[data-panel=aircraft]').click();expect(await page.locator('#practice').inputValue()).toBe('true');
