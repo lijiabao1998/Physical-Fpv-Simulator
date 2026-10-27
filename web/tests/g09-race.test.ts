@@ -72,3 +72,30 @@ it('G09 malformed record ordering, NaN and faster valid record handling preserve
  expect(map.get(recordKey(G08_MODEL,DEFAULT_ASSEMBLY))).toBe(before);
  const slower={total:8,splits:record.splits.map(s=>({...s,elapsed:s.elapsed*2,sector:s.sector*2}))};expect(saveRecord(storage,G08_MODEL,DEFAULT_ASSEMBLY,slower)).toEqual(record);expect(map.get(recordKey(G08_MODEL,DEFAULT_ASSEMBLY))).toBe(before);
 });
+
+for(const model of [G07_MODEL,G08_MODEL])for(const stop of ['boundary','manual-pause','frame-stop'] as const){
+ it(`G09 ${model} ${stop} preserves Resume safety and correct PB eligibility`,()=>{
+  // Synthetic position setup exercises native gate/boundary transitions, not a flown lap.
+  const s=new GameSession({...DEFAULT_ASSEMBLY},true,model);s.start();
+  const nativeCross=(i:number)=>{const g=GATES[i];s.world.setInitial([g.center[0]-.05,g.center[1],g.center[2]],[8,0,0]);for(let j=0;j<4;j++)s.step(ZERO);};
+  try{
+   nativeCross(0);expect(s.course.next).toBe(1);
+   if(stop==='boundary'){s.world.setInitial([221,0,10],[0,0,0]);s.step(ZERO);expect(s.reason).toBe('Training boundary reached — paused. Retry.');}
+   else if(stop==='manual-pause')s.pause();
+   else s.fail('Frame interruption over 250 ms — paused and disarmed.'); // Existing UI safeStop's native call; no timing threshold changed.
+   expect(s.state).toBe('paused');expect(s.armed).toBe(false);
+   const pausedTime=s.time;s.step(ZERO);expect(s.time).toBe(pausedTime);
+   expect(s.course.invalid).toBe(stop==='boundary');
+   s.pause();expect(s.state).toBe('flying');expect(s.armed).toBe(false);
+   for(let i=1;i<GATES.length;i++)nativeCross(i);
+   const writes=new Map<string,string>(),storage={getItem:(k:string)=>writes.get(k)??null,setItem:(k:string,v:string)=>{writes.set(k,v);}};
+   const record=saveRecord(storage,model,s.assembly,{total:s.snapshot().courseTime,splits:s.snapshot().splits});
+   if(stop==='boundary'){
+    expect(s.course.finishedAt).toBeNull();expect(s.course.next).toBe(1);expect(record).toBeNull();expect(writes.size).toBe(0);
+    s.reset();expect(s.course.invalid).toBe(false);expect(s.course.splits).toEqual([]);
+   }else{
+    expect(s.state).toBe('finished');expect(s.course.next).toBe(5);expect(record).not.toBeNull();expect(writes.size).toBe(1);
+   }
+  }finally{s.world.dispose();}
+ });
+}
