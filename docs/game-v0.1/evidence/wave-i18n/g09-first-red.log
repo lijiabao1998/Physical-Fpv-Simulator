@@ -1,0 +1,38 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> physical-fpv-player@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.5 /workspace/scratch/3b5db52091dd/FPV-wave-g09/web
+
+ ❯ tests/g09-i18n.test.ts (1 test | 1 failed) 8ms
+   × G09 localizes race feedback without changing numeric evidence or identity 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/g09-i18n.test.ts > G09 localizes race feedback without changing numeric evidence or identity
+AssertionError: expected 'No best lap for this class' to be '此設定尚無有效最佳紀錄' // Object.is equality
+
+Expected: "此設定尚無有效最佳紀錄"
+Received: "No best lap for this class"
+
+ ❯ tests/g09-i18n.test.ts:9:39
+      7|  ['Legacy unclassified: 19.00 s (not this class)','歷史未分類紀錄：19.00 s（不屬於…
+      8|  ['G1 0.00s (+0.00) · G2 2.34s (+2.34)','第 1 關 0.00 秒（分段 +0.00） · 第 2 …
+      9|  ]){expect(translate(source,'zh-TW')).toBe(expected);expect(translate(…
+       |                                       ^
+     10|  expect(translate('G08 · trainer / standard / sport / standard','zh-TW…
+     11| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 8 passed (9)
+      Tests  1 failed | 79 passed (80)
+   Start at  10:32:54
+   Duration  3.59s (tests 94%, import 4%, transform 1%, worker 1%)
+
+    Isolate  9 workers spawned · ~123ms startup each (spawn + environment, per file)
+             at least ~429ms faster with isolate: false — reuses workers across files instead of one per file
+

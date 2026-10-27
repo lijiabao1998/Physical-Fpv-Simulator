@@ -72,3 +72,16 @@ for(const id of ['training-straight','industrial-run'])test(`G11 ${id} local com
  for(const mode of ['chase','fpv']){const camera=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot().camera);if(camera!==mode)await page.getByTestId('camera').click();await page.waitForTimeout(150);await page.screenshot({path:info.outputPath(`g11-${id}-${mode}-1440.png`)});}
  const ghost=await page.evaluate(()=>(window as any).__FPV_TEST__.ghost());expect(ghost.loaded).toBe(true);await info.attach('g11-other-course.json',{body:JSON.stringify({id,completed,ghost},null,2),contentType:'application/json'});
 });
+for(const width of [1440,412,360])test(`G11 bilingual ghost retains paused pose, PB and deltas ${width}`,async({page},info)=>{
+ test.setTimeout(60000);await page.setViewportSize({width,height:900});await boot(page);await localFlight(page,'slow-british-slalom');await page.getByTestId('retry').click();
+ const old=fixture('slow-british-slalom'),count=Math.floor((old.ghost.startedAt+10.5)*240);
+ await page.evaluate(({controls,count})=>{const h=(window as any).__FPV_TEST__;h.localInputFlight(controls,count);document.querySelector<HTMLButtonElement>('#pause')!.click();},{controls:old.replay.events.map((e:any)=>e.c),count});
+ const before=await page.evaluate(()=>({s:(window as any).__FPV_TEST__.snapshot(),g:(window as any).__FPV_TEST__.ghost(),storage:{...localStorage}}));
+ for(const language of ['zh-TW','en']){
+  await page.locator('#ui-language').selectOption(language);await expect(page.locator('#ghost-toggle')).toHaveText(language==='zh-TW'?'個人最佳 Ghost：顯示':'PB Ghost: ON');
+  const after=await page.evaluate(()=>({s:(window as any).__FPV_TEST__.snapshot(),g:(window as any).__FPV_TEST__.ghost(),storage:{...localStorage}}));
+  expect(after.g.pose).toEqual(before.g.pose);for(const key of ['splits','energy','position','quaternion','time','courseTime'])expect(after.s[key]).toEqual(before.s[key]);
+  for(const [key,value] of Object.entries(before.storage))if(key!=='physical-fpv-ui-lang-v1')expect((after.storage as Record<string,string>)[key]).toBe(value);
+  await page.screenshot({path:info.outputPath(`g11-${language}-${width}.png`)});
+ }
+});
