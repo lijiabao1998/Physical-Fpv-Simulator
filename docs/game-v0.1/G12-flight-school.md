@@ -102,3 +102,14 @@ school state are emitted as numerical-results/g12-school-flight.json. The helper
 exists only in the unit test; it is not a player autopilot. Focused final suite
 11/11 plus strict TypeScript passes. UI/Chromium and exact final candidate CI remain
 integration gates; owner approval of provisional difficulty remains outstanding.
+
+### Integration review before first official browser run
+Independent review found free-flight entry retained practice=false and exit did
+not enter free-flight mode. Both fixed through existing reset(assembly, practice),
+not physics changes. School starts a fresh disarmed practice attempt; exit starts
+fresh disarmed free-flight. Mobile panel now anchored above sticks and includes
+explicit no-overlap assertions for sticks/actions/HUD/language. Real screenshots
+must still verify layout; TypeScript is not visual acceptance. UI observes every
+fixed tick without deep-cloning full snapshots; inactive school reads no world.
+Native original 600ms ARM handler unchanged; development-only scripted fixture
+uses normal controls/native actions and is not human flight or production autopilot.
