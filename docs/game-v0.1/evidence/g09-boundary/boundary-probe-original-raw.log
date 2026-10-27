@@ -1,0 +1,45 @@
+{
+  "scope": "synthetic pose setup, real native boundary check, Resume and score persistence",
+  "failed": {
+    "state": "paused",
+    "reason": "Training boundary reached — paused. Retry.",
+    "valid": true,
+    "gate": 1
+  },
+  "end": {
+    "state": "finished",
+    "valid": true,
+    "gate": 5
+  },
+  "stored": {
+    "total": 0.07083273605490198,
+    "splits": [
+      {
+        "gate": 1,
+        "elapsed": 0,
+        "sector": 0
+      },
+      {
+        "gate": 2,
+        "elapsed": 0.020833333333333332,
+        "sector": 0.020833333333333332
+      },
+      {
+        "gate": 3,
+        "elapsed": 0.03749988087791675,
+        "sector": 0.01666654754458342
+      },
+      {
+        "gate": 4,
+        "elapsed": 0.054166547544583415,
+        "sector": 0.016666666666666663
+      },
+      {
+        "gate": 5,
+        "elapsed": 0.07083273605490198,
+        "sector": 0.016666188510318564
+      }
+    ]
+  },
+  "writes": 1
+}

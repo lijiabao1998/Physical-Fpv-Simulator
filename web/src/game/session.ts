@@ -69,7 +69,7 @@ export class GameSession {
       }
       if(this.course.finishedAt!==null){this.state='finished';this.disarm('Course complete. Best time saved locally when storage is available.');}
       if(this.power.soc<.055)this.fail('Synthetic pack depleted — stopped and disarmed. Retry.');
-      if(Math.abs(this.world.position[0])>220||Math.abs(this.world.position[1])>220||this.world.position[2]>180||this.world.position[2]<-5)this.fail('Training boundary reached — paused. Retry.');
+      if(Math.abs(this.world.position[0])>220||Math.abs(this.world.position[1])>220||this.world.position[2]>180||this.world.position[2]<-5){this.course.invalidate();this.fail('Training boundary reached — paused. Retry.');}
     } catch(error) {this.fail(`Physics guard: ${(error as Error).message}. Retry.`);}
   }
   exportReplay(build:string):ReplayBundle {
