@@ -3,6 +3,7 @@ export const LANGUAGE_KEY='physical-fpv-ui-lang-v1';
 export function resolveLanguage(storage?:Pick<Storage,'getItem'>,languages:readonly string[]=[]):Language{try{const saved=storage?.getItem(LANGUAGE_KEY);if(saved==='en'||saved==='zh-TW')return saved;}catch{}return languages[0]?.toLowerCase().startsWith('zh')?'zh-TW':'en';}
 export function saveLanguage(language:Language,storage?:Pick<Storage,'setItem'>){try{if(!storage)return false;storage.setItem(LANGUAGE_KEY,language);return true;}catch{return false;}}
 const entries=`Physical FPV · Training Field|Physical FPV · 飛行訓練場
+No best lap for this class|此設定尚無有效最佳紀錄
 None|無
 ESC duty|ESC 占空比
 airspeed|空速
@@ -200,7 +201,10 @@ export function translate(source:string,language:Language):string{
  if(source.includes('\n'))return source.split('\n').map(line=>translate(line,language)).join('\n');
  const jsonLine=source.match(/^(\s*)"([^"\n]+)": (.*)$/);
  if(jsonLine){const labels:Record<string,string>={chemicalJ:'化學能 J',stateJ:'狀態能量 J',busJ:'匯流排能量 J',packHeatJ:'電池組熱量 J',copperJ:'銅損 J',escJ:'ESC 熱量 J',frictionJ:'摩擦能量 J',rotorJ:'轉子輸出能量 J',energyError:'能量誤差 J',sourceError:'來源能量誤差 J',chargeError:'電荷誤差 C',thermalError:'熱量誤差 J',physicsModel:'物理模型',syntheticParameters:'合成參數',rotorKineticJ:'轉子動能 J',enabled:'已啟用',samples:'樣本數',fps:'FPS',frameMs:'畫面間隔 ms',physicsStepMs:'物理步耗時 ms',renderCpuMs:'CPU 繪圖耗時 ms',lastSteps:'上次步數',maxSteps:'最大步數',lastStop:'上次停止原因'};const label=labels[jsonLine[2]];if(label){let value=jsonLine[3];if(jsonLine[2]==='lastStop'){const match=value.match(/^"(.*)"(,?)$/);if(match)value='"'+translate(match[1],language)+'"'+match[2];}return jsonLine[1]+'"'+label+' ('+jsonLine[2]+')": '+value;}}
+ if(/^G\d+ [\d.]+s \(\+[\d.]+\)( · G\d+ [\d.]+s \(\+[\d.]+\))*$/.test(source))return source.replace(/G(\d+) ([\d.]+)s \(\+([\d.]+)\)/g,(_,gate,total,sector)=>`第 ${gate} 關 ${total} 秒（分段 +${sector}）`);
  const rules:Array<[RegExp,(...v:string[])=>string]>=[
+ [/^LOCAL BEST (.+) s · this class$/,v=>`本機最佳 ${v} s · 此設定`],
+ [/^Legacy unclassified: (.+) s \(not this class\)$/,v=>`歷史未分類紀錄：${v} s（不屬於此設定）`],
  [/^Selected file: (.*)$/,v=>`已選擇檔案：${v}`],
  [/^TRAINING FIELD \/ v(.+)$/,v=>`飛行訓練場 / v${v}`],
  [/^(\d+) \/ 5 gates$/,v=>`${v} / 5 道關卡`],[/^Lap (.+) s$/,v=>`單圈 ${v} s`],[/^LOCAL BEST (.+) s$/,v=>`本機最佳 ${v} s`],

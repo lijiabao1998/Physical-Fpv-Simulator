@@ -4,12 +4,12 @@ import { Powertrain } from '../physics/powertrain';
 import {TransientPowertrain,G07_MODEL,G08_MODEL,type PhysicsModel} from '../physics/transient';
 import { ZERO,motorDuties,validateControls,type Controls,type FlightMode } from '../physics/controller';
 import { norm,type V3 } from '../physics/math';
-import { Course } from './course';
+import { Course,COURSE_VERSION } from './course';
 
 export type SessionState='ready'|'flying'|'paused'|'crashed'|'finished'|'replay';
 export interface ReplayEvent { c:Controls; a:boolean; m:FlightMode; r:number }
 export interface ReplayBundle {
-  schema:'physical-fpv-replay-v1';physicsModel?:PhysicsModel;version:'0.1.0';build:string;dt:number;assembly:Assembly;practice:boolean;events:ReplayEvent[];
+  schema:'physical-fpv-replay-v1';courseVersion?:string;physicsModel?:PhysicsModel;version:'0.1.0';build:string;dt:number;assembly:Assembly;practice:boolean;events:ReplayEvent[];
 }
 const MAX_EVENTS=144000;
 export class GameSession {
@@ -65,20 +65,21 @@ export class GameSession {
       if(this.armed)this.airtime+=dt;
       this.course.update(previous,this.world.position,this.time,dt);
       if(this.world.contact&&this.world.impactSpeed>3.5) {
-        this.state='crashed';this.disarm(`Impact at ${this.world.impactSpeed.toFixed(1)} m/s. Retry to fly again.`);
+        this.course.invalidate();this.state='crashed';this.disarm(`Impact at ${this.world.impactSpeed.toFixed(1)} m/s. Retry to fly again.`);
       }
       if(this.course.finishedAt!==null){this.state='finished';this.disarm('Course complete. Best time saved locally when storage is available.');}
       if(this.power.soc<.055)this.fail('Synthetic pack depleted — stopped and disarmed. Retry.');
-      if(Math.abs(this.world.position[0])>220||Math.abs(this.world.position[1])>220||this.world.position[2]>180||this.world.position[2]<-5)this.fail('Training boundary reached — paused. Retry.');
+      if(Math.abs(this.world.position[0])>220||Math.abs(this.world.position[1])>220||this.world.position[2]>180||this.world.position[2]<-5){this.course.invalidate();this.fail('Training boundary reached — paused. Retry.');}
     } catch(error) {this.fail(`Physics guard: ${(error as Error).message}. Retry.`);}
   }
   exportReplay(build:string):ReplayBundle {
-    return {schema:'physical-fpv-replay-v1',physicsModel:this.physicsModel,version:'0.1.0',build,dt:FIXED_DT,assembly:{...this.assembly},practice:this.practice,events:structuredClone(this.events)};
+    return {schema:'physical-fpv-replay-v1',courseVersion:COURSE_VERSION,physicsModel:this.physicsModel,version:'0.1.0',build,dt:FIXED_DT,assembly:{...this.assembly},practice:this.practice,events:structuredClone(this.events)};
   }
   replay(bundle:unknown) {
     const b=bundle as ReplayBundle;
     if(!b||b.schema!=='physical-fpv-replay-v1'||b.version!=='0.1.0'||b.dt!==FIXED_DT||!Array.isArray(b.events)||!b.events.length||b.events.length>MAX_EVENTS||typeof b.practice!=='boolean')throw Error('Unsupported or oversized replay');
     if(b.physicsModel!==undefined&&b.physicsModel!==G07_MODEL&&b.physicsModel!==G08_MODEL)throw Error('Unknown physics model');
+    if(b.courseVersion!==undefined&&b.courseVersion!==COURSE_VERSION)throw Error('Unknown course version');
     assemblyModel(b.assembly);
     for(const e of b.events){validateControls(e.c);if(typeof e.a!=='boolean'||!['angle','acro'].includes(e.m)||!Number.isFinite(e.r)||e.r<1||e.r>10)throw Error('Invalid replay event');}
     const events=structuredClone(b.events);
@@ -89,7 +90,7 @@ export class GameSession {
       position:this.world.position,velocity:this.world.velocity,quaternion:this.world.quaternion,rates:this.world.rates,
       voltage:this.power.last.voltage,current:this.power.last.current,soc:this.power.soc,
       thrust:[...this.power.last.thrust],rpm:[...this.power.last.rpm],contacts:this.world.contacts,
-      gate:this.course.next,courseTime:this.course.elapsed(this.time),reason:this.reason,energy:this.power.audit(),mass:this.world.model.mass};
+      splits:structuredClone(this.course.splits),courseValid:!this.course.invalid,gate:this.course.next,courseTime:this.course.elapsed(this.time),reason:this.reason,energy:this.power.audit(),mass:this.world.model.mass};
   }
 }
 export const BEST_KEY='physical-fpv-course-best-v1';

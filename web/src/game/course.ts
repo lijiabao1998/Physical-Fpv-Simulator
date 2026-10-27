@@ -1,11 +1,15 @@
 import { GATES } from './field';
 import type { V3 } from '../physics/math';
+export const COURSE_VERSION='training-five-v1';
+export interface GateSplit {gate:number;elapsed:number;sector:number}
 /** Ordered forward plane crossings. Interpolate at plane, then test the clear aperture. */
 export class Course {
+  splits:GateSplit[]=[];invalid=false;
+  invalidate(){this.invalid=true;this.finishedAt=null;}
   next=0; startedAt:number|null=null;finishedAt:number|null=null;
   constructor(readonly enabled=true) {}
   update(previous:V3,current:V3,time:number,dt:number) {
-    if(!this.enabled||this.next>=GATES.length)return false;
+    if(this.invalid||!this.enabled||this.next>=GATES.length)return false;
     const g=GATES[this.next],x=g.center[0];
     if(previous[0]>=x||current[0]<x||current[0]<=previous[0])return false;
     const alpha=(x-previous[0])/(current[0]-previous[0]);
@@ -13,6 +17,8 @@ export class Course {
     const margin=.17;
     if(Math.abs(y-g.center[1])>g.width/2-margin||Math.abs(z-g.center[2])>g.height/2-margin)return false;
     if(this.startedAt===null)this.startedAt=Math.max(0,time-dt+alpha*dt);
+    const elapsed=Math.max(0,time-dt+alpha*dt)-this.startedAt;
+    this.splits.push({gate:this.next+1,elapsed,sector:elapsed-(this.splits.at(-1)?.elapsed??0)});
     this.next++;
     if(this.next===GATES.length)this.finishedAt=Math.max(0,time-dt+alpha*dt);
     return true;
