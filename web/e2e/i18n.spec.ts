@@ -47,6 +47,14 @@ test('I18N storage failure and Chinese browser fallback remain usable',async({br
 test('I18N Chinese native ARM hold, switch without reset, then settings disarm',async({page})=>{
  await page.addInitScript(()=>localStorage.setItem('physical-fpv-ui-lang-v1','zh-TW'));
  await page.goto(url);await expect(page.locator('#loading')).toHaveCount(0);await page.locator('#start').click();
+ // Start can legitimately be followed by the unchanged 250ms safety stop on a slow frame.
+ // Accept only that explicit disarmed condition and use one normal player Resume.
+ const afterStart=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());
+ if(afterStart.state==='paused'){
+  expect(afterStart.reason).toBe('Frame interruption over 250 ms — paused and disarmed.');expect(afterStart.armed).toBe(false);
+  await page.locator('#pause').click();
+ }
+ const beforeHold=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());expect(beforeHold.state).toBe('flying');expect(beforeHold.armed).toBe(false);
  await page.keyboard.down('Space');await page.waitForTimeout(750);await page.keyboard.up('Space');await expect(page.locator('#arm')).toHaveText('已解鎖（ARMED）');
  // Observe both states inside the same native change event, with no physics tick in between.
  await page.locator('#ui-language').evaluate(select=>{select.addEventListener('change',()=>{(window as any).__I18N_AFTER__=(window as any).__FPV_TEST__.snapshot();});select.addEventListener('input',()=>{(window as any).__I18N_BEFORE__=(window as any).__FPV_TEST__.snapshot();});});
