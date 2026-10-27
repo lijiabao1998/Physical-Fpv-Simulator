@@ -1,0 +1,36 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+ RUN  v5.0.5 /workspace/scratch/3b5db52091dd/FPV-wave-g09/web
+
+ ❯ tests/g09-race.test.ts (15 tests | 2 failed) 340ms
+   × G09 g07-quasistatic-v1 boundary preserves Resume safety and correct PB eligibility 10ms
+   × G09 g08-transient-v1 boundary preserves Resume safety and correct PB eligibility 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/g09-race.test.ts > G09 g07-quasistatic-v1 boundary preserves Resume safety and correct PB eligibility
+ FAIL  tests/g09-race.test.ts > G09 g08-transient-v1 boundary preserves Resume safety and correct PB eligibility
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/g09-race.test.ts:88:29
+     86|    expect(s.state).toBe('paused');expect(s.armed).toBe(false);
+     87|    const pausedTime=s.time;s.step(ZERO);expect(s.time).toBe(pausedTime…
+     88|    expect(s.course.invalid).toBe(stop==='boundary');
+       |                             ^
+     89|    s.pause();expect(s.state).toBe('flying');expect(s.armed).toBe(false…
+     90|    for(let i=1;i<GATES.length;i++)nativeCross(i);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 13 passed (15)
+   Start at  11:21:21
+   Duration  584ms (tests 78%, transform 12%, import 9%, worker 1%)
+

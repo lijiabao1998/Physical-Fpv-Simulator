@@ -1,0 +1,10 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+ RUN  v5.0.5 /workspace/scratch/3b5db52091dd/FPV-wave-g09/web
+
+
+ Test Files  2 passed (2)
+      Tests  16 passed (16)
+   Start at  11:22:10
+   Duration  941ms (tests 83%, import 11%, transform 5%, worker 1%)
+
