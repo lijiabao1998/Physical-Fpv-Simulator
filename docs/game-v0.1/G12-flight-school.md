@@ -88,3 +88,17 @@ new course token/identity, but a Replay-locked session requires explicit fresh
 school retry; do not relabel imported playback as a local attempt. Language only
 reads `snapshot()`. No need to translate internal lesson/axis/identity IDs.
 All native controls, including 600ms hold and existing safeStop, remain in charge.
+
+### Native input-only feasibility receipt
+An additional test-only normal-control navigator completes ALL five lessons in
+5622 commanded ticks plus the initial gentle-throttle tick (23.4291666667s native
+simulation), Training Straight 5/5 gates, native finished state. No transform,
+force, mass, physics, threshold or gate writes. Native disarm/rearm happens at
+lesson1→2, and all later ticks go through the original motor mixer/Rapier world.
+Stage tick counts: takeoff291, hover990, axes291, first gate799, challenge3251.
+This establishes candidate conditions are reachable in the native model, NOT
+human difficulty acceptance. Original command stream, transitions, endpoint and
+school state are emitted as numerical-results/g12-school-flight.json. The helper
+exists only in the unit test; it is not a player autopilot. Focused final suite
+11/11 plus strict TypeScript passes. UI/Chromium and exact final candidate CI remain
+integration gates; owner approval of provisional difficulty remains outstanding.

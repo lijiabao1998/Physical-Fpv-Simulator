@@ -1,3 +1,4 @@
+import {mkdirSync,writeFileSync} from 'node:fs';
 import {beforeAll,it,expect} from 'vitest';
 import {FlightSchool,type SchoolObservation} from '../src/game/school';
 import {FIXED_DT} from '../src/physics/config';
@@ -20,3 +21,28 @@ it('attempt, configuration, crash and exit clear progress; no storage or languag
 it('replay remains blocked across pause/resume and token change until explicit fresh begin',()=>{const r=rig();r.s.markReplay();r.o.state='replay';r.s.observe({},r.o);r.o.state='paused';r.s.observe(r.token,r.o);r.o.state='flying';r.s.observe(r.token,r.o);expect(r.s.snapshot().blocked).toBe(true);r.s.begin({},observation());expect(r.s.snapshot().blocked).toBe(false);});
 it('nonfinite data fails closed; observer never mutates deeply frozen observation',()=>{const r=rig();const frozen=structuredClone(r.o);for(const v of Object.values(frozen))if(typeof v==='object'&&v)Object.freeze(v);Object.freeze(frozen);expect(()=>r.s.observe(r.token,frozen)).not.toThrow();r.tick({velocity:[NaN,0,0]});expect(r.s.snapshot().blocked).toBe(true);});
 it('native ARM rejection and exact physics/replay/energy noninterference across 960 steps',()=>{const a=new GameSession(),b=new GameSession();a.start();b.start();expect(a.arm(.8)).toBe(false);expect(b.arm(.8)).toBe(false);const school=new FlightSchool();const obs=(g:GameSession):SchoolObservation=>({...g.snapshot(),assemblyKey:JSON.stringify(g.assembly),practice:g.practice,gateCount:getCourse(g.courseId).gates.length,contact:g.world.contact,controls:g.lastControls});school.begin(a.course,obs(a));a.arm(0);b.arm(0);school.observe(a.course,obs(a));for(let i=0;i<960;i++){const c={...ZERO,throttle:Math.min(.55,i/600)};a.step(c);b.step(c);school.observe(a.course,obs(a));expect(a.snapshot()).toEqual(b.snapshot());}expect(a.exportReplay('same')).toEqual(b.exportReplay('same'));a.world.dispose();b.world.dispose();});
+it('ordinary native controls complete all five lessons without state placement or physics writes',()=>{
+ const game=new GameSession();game.start();const school=new FlightSchool();
+ const observation=():SchoolObservation=>({...game.snapshot(),controls:game.lastControls,contact:game.world.contact,practice:game.practice,assemblyKey:JSON.stringify(game.assembly),gateCount:getCourse(game.courseId).gates.length});
+ school.begin(game.course,observation());expect(game.arm(0)).toBe(true);school.observe(game.course,observation());
+ const step=(c:typeof ZERO)=>{game.step(c);school.observe(game.course,observation());};step({...ZERO,throttle:.2});
+ const clamp=(x:number,a:number,b:number)=>Math.max(a,Math.min(b,x));
+ // Test-only ordinary input controller, like G10's existing navigation test. Never ships in player.
+ const control=(target:number[])=>{const p=game.world.position,v=game.world.velocity,[w,x,y,z]=game.world.quaternion;
+ const roll=Math.atan2(2*(w*x+y*z),1-2*(x*x+y*y)),pitch=Math.asin(clamp(2*(w*y-z*x),-1,1)),yaw=Math.atan2(2*(w*z+x*y),1-2*(y*y+z*z));
+ const a=target.map((t,k)=>clamp(1.3*(t-p[k])-2*v[k],-3,3));const ax=Math.cos(yaw)*a[0]+Math.sin(yaw)*a[1],ay=-Math.sin(yaw)*a[0]+Math.cos(yaw)*a[1];
+ return {throttle:clamp(game.power.hover()*Math.sqrt((9.80665+a[2])/(9.80665*Math.max(.4,Math.cos(roll)*Math.cos(pitch)))),.05,.8),pitch:clamp(Math.atan2(ax,9.80665+a[2])/.6,-1,1),roll:clamp(-Math.atan2(ay,9.80665+a[2])/.6,-1,1),yaw:clamp(-yaw*.8,-.4,.4)};};
+ let disarmed=false;const stageTicks:Record<string,number>={};const commands:unknown[]=[];const transitions:unknown[]=[];let lastLesson=school.lesson;
+ for(let tick=0;tick<240*100&&school.lesson!=='complete'&&game.state==='flying';tick++){
+   const stage=school.snapshot();stageTicks[stage.lesson]=(stageTicks[stage.lesson]??0)+1;
+   if(stage.lesson==='takeoff'&&stage.takeoffStep==='disarm'&&!disarmed){game.disarm();school.observe(game.course,observation());disarmed=true;expect(game.arm(0)).toBe(true);school.observe(game.course,observation());}
+   let c=control([0,0,2]);
+   if(school.lesson==='axes'){
+     const axis=school.snapshot().axis;if(axis==='throttle')c=control([0,0,3]);else if(axis)c={...c,[axis]:.3};
+   }
+   if(school.lesson==='gate'||school.lesson==='challenge'){const gate=getCourse(game.courseId).gates[game.course.next];if(gate)c=control([gate.center[0]+2,gate.center[1],gate.center[2]]);}
+   commands.push({tick,controls:c,school:school.lesson});step(c);if(lastLesson!==school.lesson){transitions.push({tick,from:lastLesson,to:school.lesson,snapshot:game.snapshot()});lastLesson=school.lesson;}
+ }
+ expect({lesson:school.lesson,state:game.state,progress:school.snapshot(),stageTicks}).toMatchObject({lesson:'complete',state:'finished'});
+ expect(game.course.next).toBe(5);expect(game.course.invalid).toBe(false);mkdirSync('numerical-results',{recursive:true});writeFileSync('numerical-results/g12-school-flight.json',JSON.stringify({scope:'Test-only normal native control inputs. No position/force writes or player autopilot. Not human or hardware validation. Difficulty provisional.',stageTicks,transitions,commands,result:game.snapshot(),school:school.snapshot()},null,2));game.world.dispose();
+},30000);
