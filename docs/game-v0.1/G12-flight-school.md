@@ -113,3 +113,42 @@ must still verify layout; TypeScript is not visual acceptance. UI observes every
 fixed tick without deep-cloning full snapshots; inactive school reads no world.
 Native original 600ms ARM handler unchanged; development-only scripted fixture
 uses normal controls/native actions and is not human flight or production autopilot.
+
+### Mobile school/course overlap receipt (2026-10-27, Claude)
+Defect (GPT real-image review; its unpushed CSS draft was not available): at phone
+widths the open `#school-panel` covered `.course` (name, selector, title, clock, gates,
+splits). The G12 e2e only checked sticks/actions/HUD/language, so CI 40447850363 stayed
+green at 74ef387. Local real Chromium (pinned Playwright 1.64.1 driving the preinstalled
+headless shell 153; CI uses 156), 70 views at 74ef387: fine 1440 and 412/390/360x900,
+coarse touch 360/390/412x800, zh-TW/en, lesson 1 on all three courses, completed school,
+completed + legacy record. 33/70 overlapped, only `.course` and its lines: every coarse
+view (12454-40740 px²) and fine 412/390/360x900 at the longest zh-TW text (1680-1940 px²).
+
+First red: 825a2bb, test only, appends `.course` to both existing overlap lists.
+`npx playwright test e2e/g12.spec.ts`: 4 failed / 4 passed; coarse 360/390/412 `.course`
+14879.25 px² (expected); 1440 failed earlier at the inherited 200 ms Space check
+(armed=true), timing before the new assertion. One rerun: 6 failed / 2 passed (same
+coarse red; 1440/412/390 same Space line). Log SHA256 9009c777..., 26974b5d....
+
+Fix: 90c06e3, CSS only, max-width 600px. The panel keeps a band 357px above the bottom on
+coarse pointers (unchanged, above sticks) and 275px on fine pointers (above notice/
+actions). While it is open the course panel keeps its place, is capped to
+`100dvh - course top - band - 135px - 8px` and scrolls inside. 1440 rects identical. No
+markup, physics, input, ARM 600 ms, 250 ms guard, threshold or workflow change.
+
+Results at 90c06e3: `npm run reference` pass; `npm test` 15 files / 135 tests pass;
+`npm run build` pass (dirty=false); G12 spec 8/8 pass (log fbefdf4f...). After matrix
+70/70: zero overlap with `.course` (visible lines), sticks, actions, HUD, language,
+header; panel inside viewport; no horizontal overflow. Full `npm run test:e2e` once:
+40 passed / 18 failed (log b6513e6f...) in G08/G10/I18N/player and G12 412 Space line,
+while a sibling Chromium job held load near 7.8 on 4 CPUs; failed pages show the
+product's own "Frame interruption over 250 ms" pause. Rerun of those 18: 3 passed / 15
+failed (log 4a847277...). Control at unmodified 74ef387: player.spec:10 and g10.spec:27
+fail the same way (log 7f14e0af...). Not green locally; exact-head official CI required.
+
+Still open: on coarse 800px-tall phones the course panel shows name, selector, title,
+clock, gates and best; class/splits/legacy/input status/school button scroll inside it
+while school is open (owner visual review). Landscape coarse 800x360/844x390 (width >600
+desktop rule) still overlaps right stick, actions and notice: pre-existing, outside the
+frozen matrix, not fixed. 360x640 leaves the course panel 42px tall. Physical phones and
+controllers remain untested; owner difficulty/balance review remains outstanding.
