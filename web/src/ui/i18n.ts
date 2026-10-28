@@ -19,7 +19,7 @@ Flight school|飛行學校
 Retry school|重試教學
 Safe stop|安全停止
 Return to free flight|返回自由飛行
-Candidate lessons · difficulty awaiting owner review|候選教學 · 難度待業主確認
+Lessons · provisional difficulty|教學課程 · 暫定難度
 1 / 5 · Safe takeoff|1 / 5 · 安全起飛
 2 / 5 · Stable hover|2 / 5 · 定點懸停
 3 / 5 · Four-axis controls|3 / 5 · 四軸操控

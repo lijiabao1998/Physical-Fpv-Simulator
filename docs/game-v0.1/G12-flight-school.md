@@ -201,3 +201,57 @@ npm test 15 files / 135 tests pass (twice); CI=true npm run build pass (strict t
 vite, check-build: base /fpv/, dirty=false, og.jpg in dist). Not run in this step: real
 Chromium e2e including g12.spec.ts, exact-head official CI, Pages. Earlier official
 results at 0e4bb23 do not carry over; the frozen exact-head workflow is still required.
+
+## Owner release decision 2 (2026-10-28, Claude)
+Owner decision 2026-10-28, the owner's answer to Claude's question, relayed to this step by
+the orchestrating Claude session (no owner message ID was available to this step). Option
+chosen: 「已知問題隨版上，文案一併改」. Option text: "(1)(3) 寫進卡面當已知問題，和橫向安全停止
+一起另開卡；文案改成「教學課程 · 暫定難度」（英文 Lessons · provisional difficulty），推上去跑 CI，
+綠了就合並發布". It follows 「G10＋G12 一起上」 above; frozen conditions stay unchanged.
+
+Known issues shipped with this release, not fixed here; all three go to one separate
+follow-up card (not opened in this step):
+(1) Short coarse screens scroll clock/gates inside the course panel while school is open;
+    320x568 still overlaps the course 7696 px² (34040 px² before the fix).
+(3) Widths 601-704 px overlap the course panel under the desktop rule (pre-existing).
+(2) Safety-relevant, pre-existing: in landscape (800x360) Safe stop/Retry sit under `#arm`,
+    so a tap on Safe stop presses Hold ARM.
+Item (4) above (`:has()`/`dvh`) is not named in the option text and stays disclosed above.
+
+Copy change, the only product change: the school panel line in web/src/main.ts "Candidate
+lessons · difficulty awaiting owner review" → "Lessons · provisional difficulty"; its
+web/src/ui/i18n.ts entry → "Lessons · provisional difficulty|教學課程 · 暫定難度". grep of web/
+(src, tests, e2e): no other occurrence; no test asserts this line or a dictionary count
+(tests/i18n.test.ts round-trips every entry). No CSS, markup structure, physics, input,
+ARM 600 ms, 250 ms guard, threshold, lesson, test or workflow change. The receipt label
+`difficulty:'provisional owner review required'` in e2e/g12.spec.ts is test metadata, not
+product text; unchanged.
+
+Checks on 2e4b23b plus the copy edit, before this text (Node 22.22.0, Python 3.13.17, NumPy
+2.3.5, Playwright 1.64.1 driving a preinstalled Chrome 153 headless shell; CI: Node 24,
+Python 3.12, Chromium 156): `CI=true npm run reference` pass, fixtures byte-identical;
+`CI=true npm test` 15 files / 135 tests pass (log 349e1cfd...); `CI=true npm run build`
+strict tsc and vite pass, then check-build stopped at its CI clean-tree assertion
+(dirty=true, edit uncommitted: expected); that bundle holds the new en/zh strings and
+neither old one. Then `CI=true npx playwright test e2e/g12.spec.ts e2e/i18n.spec.ts` (dev
+server + preview of that dist): 20 passed / 0 failed (G12 8, I18N 12), first run, 6.8 min,
+no rerun (log 737418b5...).
+
+Screenshots 360x800 hasTouch/isMobile on `npm run preview`, school open at lesson 1, zh-TW
+and en switched in place; viewed. The new line shows once the panel is scrolled: at 360x800
+and 320x568 the 135 px panel's sticky button row covers it at scrollTop 0 (zh-TW line y
+408-422 under row 403-433; en all but 3 px), exactly like the old line at 2e4b23b; 27/17 px
+of panel scroll reveals it. The 1440 e2e screenshot shows it unscrolled. Against a scratch build of 2e4b23b at 360x800 and
+320x568, both languages: 0 of 124 element rects differ, same overlaps and scroll sizes;
+360x800 pixels differ only inside the line's box (zh-TW 0 px unscrolled). 320x568: panel
+overlaps the course 7696 px² in both languages and the header 296 px² in zh-TW, same at
+2e4b23b.
+
+Also seen, pre-existing (same at 2e4b23b), outside the frozen matrix, for the same
+follow-up card: at 320x568 coarse in zh-TW the welcome Start button (y 378-425) lies under
+the fixed `.actions` bar (y 369-436); a centered tap hits `.actions` (my first screenshot
+run timed out there; log kept). en is unaffected.
+
+Not run here: full `npm run test:e2e`, exact-head official CI, Pages. A card cannot record
+its own commit's build; the post-commit `CI=true npm run build` (dirty=false) is in the
+hand-off. Physical phones and controllers remain untested.
