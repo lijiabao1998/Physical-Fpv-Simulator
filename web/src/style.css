@@ -49,6 +49,11 @@
 @media(max-width:480px){#app{--welcome-bottom:207px}}
 @media(max-width:480px) and (pointer:coarse){#app{--welcome-bottom:353px}}
 @media(max-width:480px) and (max-height:600px){.welcome{padding:12px 16px}}
+/* Touch tablets and touch laptops (wider than 600px, taller than 550px): the centred card could reach the left stick
+   (1024x768 zh-TW: Enter 0 px from it). Its bottom is anchored 8px above the sticks (offset 126px, or 190px up to 850px
+   wide, plus the 118px stick); a short screen scrolls the text inside .welcome-body. */
+@media(min-width:601px) and (min-height:551px) and (pointer:coarse){#app{--welcome-clear:252px}.welcome{top:auto;bottom:var(--welcome-clear);transform:none;max-height:calc(100dvh - var(--welcome-clear) - 64px);display:flex;flex-direction:column;overflow:hidden}.welcome .welcome-body{flex:0 1 auto;min-height:0;overflow:auto}.welcome .primary{flex:none;align-self:flex-start}.welcome .fineprint{flex:none}}
+@media(min-width:601px) and (max-width:850px) and (min-height:551px) and (pointer:coarse){#app{--welcome-clear:316px}}
 /* Short landscape course card, school closed: on main the card ran under the HUD, which took every tap on Flight school
    (844x390 first red: "hud subtree intercepts pointer events"). Above the left stick it keeps course select and Flight
    school in row 1, clock and gates in row 2; the remaining lines scroll inside the card. */
