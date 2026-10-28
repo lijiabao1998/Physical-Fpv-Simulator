@@ -32,7 +32,7 @@ for(const width of [1440,412,390,360])test(`G12 bilingual school native flow and
  }
  await page.locator('#school-retry').click();expect((await page.evaluate(()=>(window as any).__FPV_TEST__.school())).completed).toBe(0);await page.locator('#school-stop').click();const paused=await page.evaluate(()=>(window as any).__FPV_TEST__.school());await page.waitForTimeout(200);expect((await page.evaluate(()=>(window as any).__FPV_TEST__.school())).hoverSeconds).toBe(paused.hoverSeconds);expect((await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot())).armed).toBe(false);
  await page.locator('#school-close').click();await expect(page.locator('#school-panel')).toBeHidden();await page.locator('[data-panel=aircraft]').click();expect(await page.locator('#practice').inputValue()).toBe('false');await page.locator('#close-panel').click();await page.locator('#school-open').click();await page.locator('[data-panel=aircraft]').click();expect(await page.locator('#practice').inputValue()).toBe('true');
- await info.attach('g12-native-receipt.json',{body:JSON.stringify({width,result,scope:'Ordinary-control automated software fixture, not human/controller/hardware validation',difficulty:'provisional owner review required'},null,2),contentType:'application/json'});
+ await info.attach('g12-native-receipt.json',{body:JSON.stringify({width,result,scope:'Ordinary-control automated software fixture, not human/controller/hardware validation',difficulty:'provisional, accepted for release by the owner 2026-10-28'},null,2),contentType:'application/json'});
 });
 
 for(const width of [360,390,412])test(`G12 coarse-pointer school controls remain separate ${width}`,async({browser},info)=>{
