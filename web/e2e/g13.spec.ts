@@ -70,16 +70,25 @@ for(const v of views.filter(v=>v.w>v.h))for(const language of ['zh-TW','en'])tes
   await page.goto(root);await expect(page.locator('#loading')).toHaveCount(0);await page.locator('#ui-language').selectOption(language);
   await page.locator('#start').tap();await page.locator('#school-open').tap();await expect(page.locator('#school-stop')).toBeVisible();
   const centre=async()=>{const b=(await page.locator('#school-stop').boundingBox())!;return {x:b.x+b.width/2,y:b.y+b.height/2};};
-  const arm=()=>page.evaluate(()=>{const h=(window as any).__FPV_TEST__;h.schoolAction('arm');h.schoolTick({throttle:0,roll:0,pitch:0,yaw:0});h.schoolRefresh();return h.snapshot().armed;});
-  expect(await arm()).toBe(true);const tap=await centre();await page.touchscreen.tap(tap.x,tap.y);
+  // The product's 250 ms frame guard can pause and disarm a slow emulated page before the tap (seen under CPU load).
+  // As in G10 and I18N, accept only that explicit condition and resume as a player would; every stop below is then
+  // pinned to Safe stop's own reason, so a guard stop can never pass for a Safe stop tap.
+  const safeReason='Paused and disarmed. Resume, then ARM again.';
+  const arm=()=>page.evaluate(()=>{const h=(window as any).__FPV_TEST__;h.schoolAction('arm');h.schoolTick({throttle:0,roll:0,pitch:0,yaw:0});h.schoolRefresh();return h.snapshot();});
+  let armed=await arm();
+  for(let i=0;i<3&&!armed.armed&&armed.state==='paused'&&String(armed.reason).includes('250 ms');i++){await page.getByTestId('pause').click();armed=await arm();}
+  expect(armed.armed,`armed before the tap (${armed.state}: ${armed.reason})`).toBe(true);const tap=await centre();await page.touchscreen.tap(tap.x,tap.y);
   const tapped=await page.evaluate(()=>({s:(window as any).__FPV_TEST__.snapshot(),school:(window as any).__FPV_TEST__.school()}));
+  expect(tapped.s.reason).toBe(safeReason);
   expect(tapped.s.armed).toBe(false);expect(tapped.s.state).toBe('paused');expect(tapped.school.completed).toBe(0);expect(tapped.school.takeoffStep).toBe('zero');
-  // A held contact that started on Safe stop must never turn into the 0.6 s ARM hold.
+  // A held contact that started on Safe stop must never turn into the 0.6 s ARM hold. Afterwards the reason is either
+  // the one Retry left or Safe stop's own (if the hold ends in a click); any other stop, such as the guard, fails.
   await page.locator('#school-retry').tap();const hold=await centre();const cdp=await context.newCDPSession(page);
+  const before=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());
   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:hold.x,y:hold.y,id:7}]});await page.waitForTimeout(700);await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
   const held=await page.evaluate(()=>({s:(window as any).__FPV_TEST__.snapshot(),school:(window as any).__FPV_TEST__.school()}));
-  expect(held.s.armed).toBe(false);expect(held.school.completed).toBe(0);
+  expect(held.s.armed).toBe(false);expect(held.school.completed).toBe(0);expect([before.reason,safeReason]).toContain(held.s.reason);
   await page.screenshot({path:info.outputPath(`g13-touch-${v.w}x${v.h}-${language}.png`)});
-  await info.attach(`g13-touch-${v.w}x${v.h}-${language}.json`,{body:JSON.stringify({viewport:v,language,tap,hold,tapped,held,scope:'Chromium touch emulation (CDP), not physical phone validation'},null,1),contentType:'application/json'});
+  await info.attach(`g13-touch-${v.w}x${v.h}-${language}.json`,{body:JSON.stringify({viewport:v,language,armed,tap,tapped,hold,before,held,scope:'Chromium touch emulation (CDP), not physical phone validation'},null,1),contentType:'application/json'});
  }finally{await context.close();}
 });
