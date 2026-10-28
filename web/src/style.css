@@ -28,3 +28,31 @@
 @media(max-width:600px){#app{--school-bottom:275px;--course-top:130px}.school-panel{bottom:var(--school-bottom)}#app:has(>#school-panel:not([hidden])) .course{max-height:calc(100dvh - var(--course-top) - var(--school-bottom) - 143px);overflow-y:auto}}
 @media(max-width:600px) and (pointer:coarse){#app{--school-bottom:357px}}
 @media(max-width:480px){#app{--course-top:96px}}
+/* G13 (frozen acceptance in docs/game-v0.1/G13-mobile-school-layout.md; owner 2026-10-28 「這個你自己來，安全清完盡可能覆蓋全部内容就行」).
+   Layout only. The panel is two blocks: the lesson text scrolls inside .school-body, and .school-foot (the provisional-
+   difficulty line and the three controls) always stays in view, so both are visible at scrollTop 0. No position:sticky:
+   a sticky footer inside the scrolling panel left an unhit-testable painted copy below the panel in Chromium (844x390).
+   Each control is a 44px target clear of ARM, Disarm and both sticks. */
+.school-panel:not([hidden]){display:flex;flex-direction:column;overflow:hidden}.school-panel .school-body{flex:0 1 auto;min-height:0;overflow:auto}.school-panel .school-foot{flex:none;margin-top:8px;padding-top:6px;border-top:1px solid #ffffff14}.school-panel .school-foot small{display:block;font-size:10px;line-height:1.3}
+.school-panel .row{position:static;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:6px;padding-top:0;background:none}.school-panel .row button{min-height:44px;padding:4px 6px;line-height:1.15;white-space:normal;overflow-wrap:anywhere}
+/* 601-850px: the panel starts right of the course card (issue 3: 650x900 overlapped it by 649 px²). */
+@media(min-width:601px) and (max-width:850px){#app:has(>#school-panel:not([hidden])) .course{max-width:310px}.school-panel{left:max(342px,calc(100vw - 344px));right:16px;width:auto}}
+/* Narrow portrait (issue 1): while the school is open the course card is a one-row strip (clock, gates); the panel hangs
+   below it, as tall as its content, never lower than the sticks (coarse) or the notice and actions (fine). */
+@media(max-width:600px){#app:has(>#school-panel:not([hidden])) .course{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:8px;height:46px;max-height:none;overflow:hidden;padding:8px 12px}#app:has(>#school-panel:not([hidden])) .course>:not(#course-clock):not(.gates){display:none}#app:has(>#school-panel:not([hidden])) .course .gates{margin-top:0}.school-panel{top:calc(var(--course-top) + 54px);bottom:auto;max-height:calc(100dvh - var(--course-top) - 54px - var(--school-bottom))}.school-panel .school-foot{display:grid;grid-template-columns:72px minmax(0,1fr);align-items:center;column-gap:6px}.school-panel .school-foot .row{margin-top:0}}
+@media(max-width:480px) and (max-height:600px){#app:has(>#school-panel:not([hidden])){--course-top:83px}#app:has(>#school-panel:not([hidden])) .course{top:83px}}
+@media(max-width:480px) and (max-height:600px) and (pointer:coarse){#app{--school-bottom:345px}}
+/* Narrow portrait welcome (issue 4): the card ends above the sticks (coarse) or the actions (fine). As in the school
+   panel, the text scrolls inside .welcome-body while Enter and the fine print stay in view. */
+@media(max-width:600px){#app{--welcome-bottom:167px}.welcome{top:calc(var(--course-top) - 12px);transform:none;max-height:calc(100dvh - var(--course-top) + 12px - var(--welcome-bottom));display:flex;flex-direction:column;overflow:hidden}.welcome .welcome-body{flex:0 1 auto;min-height:0;overflow:auto}.welcome .primary{flex:none;align-self:flex-start}.welcome .fineprint{flex:none}}
+@media(max-width:600px) and (pointer:coarse){#app{--welcome-bottom:316px}}
+@media(max-width:480px){#app{--welcome-bottom:207px}}
+@media(max-width:480px) and (pointer:coarse){#app{--welcome-bottom:353px}}
+@media(max-width:480px) and (max-height:600px){.welcome{padding:12px 16px}}
+/* Short landscape course card, school closed: on main the card ran under the HUD, which took every tap on Flight school
+   (844x390 first red: "hud subtree intercepts pointer events"). Above the left stick it keeps course select and Flight
+   school in row 1, clock and gates in row 2; the remaining lines scroll inside the card. */
+@media(max-height:550px){.course{top:53px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:8px;row-gap:6px;max-height:calc(100dvh - 279px);overflow:auto;padding:8px 12px}.course>label{grid-column:1;grid-row:1;margin:0}.course #school-open{grid-column:2;grid-row:1;margin:0}.course #course-clock{grid-column:1;grid-row:2}.course .gates{grid-column:2;grid-row:2;margin-top:0}.course>:not(label):not(#school-open):not(#course-clock):not(.gates){grid-column:1/-1}}
+/* Short landscape (issue 2, safety): compact header; course strip top-left and school panel top-right, both above the
+   sticks, so Safe stop, Retry and Close never sit on ARM, Disarm or a stick; the welcome card sits between the sticks. */
+@media(max-height:550px){header{padding-top:6px;padding-bottom:6px}header .brand .eyebrow{display:none}#app:has(>#school-panel:not([hidden])) .course{top:53px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:8px;height:auto;width:min(360px,calc(100vw - 420px));max-height:calc(100dvh - 279px);overflow:hidden;padding:8px 12px}#app:has(>#school-panel:not([hidden])) .course>:not(#course-clock):not(.gates){display:none}#app:has(>#school-panel:not([hidden])) .course .gates{margin-top:0}.school-panel{top:53px;bottom:auto;left:auto;right:16px;width:min(380px,calc(100vw - 32px));max-height:calc(100dvh - 271px)}#school-title,#school-feedback{display:inline}#school-feedback:not(:empty)::before{content:' · '}.school-panel .school-foot{display:grid;grid-template-columns:80px minmax(0,1fr);align-items:center;column-gap:6px}.school-panel .school-foot .row{margin-top:0}.welcome{top:53px;left:146px;transform:none;max-height:calc(100dvh - 156px);display:flex;flex-direction:column;overflow:hidden}.welcome .welcome-body{flex:0 1 auto;min-height:0;overflow:auto}.welcome .primary{flex:none;align-self:flex-start}.welcome .fineprint{flex:none}}
