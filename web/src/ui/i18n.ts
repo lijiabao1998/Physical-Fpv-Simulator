@@ -4,6 +4,17 @@ export function resolveLanguage(storage?:Pick<Storage,'getItem'>,languages:reado
 export function saveLanguage(language:Language,storage?:Pick<Storage,'setItem'>){try{if(!storage)return false;storage.setItem(LANGUAGE_KEY,language);return true;}catch{return false;}}
 const entries=`Physical FPV · Training Field|Physical FPV · 飛行訓練場
 No best lap for this class|此設定尚無有效最佳紀錄
+Course|賽道
+Training Straight|直線訓練場
+British Slalom|英式立體迴轉
+Industrial Run|工業障礙賽道
+BRITISH SLALOM|英式立體迴轉
+INDUSTRIAL RUN|工業障礙賽道
+Course changed|已切換賽道
+New-course replay requires its version|新賽道重播必須包含賽道版本
+Original five-gate baseline, preserved.|保留原有五道關卡基準。
+Country turns, climbing gates and a descending hairpin. Follow orange gate normals.|鄉間迴轉、爬升關卡與下降髮夾彎。請依橘色關卡的前進方向穿越。
+Open-ended brick warehouses, steel beams and low barriers. Structural meshes have matching static collisions.|開放式磚造倉庫、鋼樑與低空障礙。建築結構具有對應的靜態碰撞體。
 None|無
 ESC duty|ESC 占空比
 airspeed|空速
@@ -205,6 +216,7 @@ export function translate(source:string,language:Language):string{
  const rules:Array<[RegExp,(...v:string[])=>string]>=[
  [/^LOCAL BEST (.+) s · this class$/,v=>`本機最佳 ${v} s · 此設定`],
  [/^Legacy unclassified: (.+) s \(not this class\)$/,v=>`歷史未分類紀錄：${v} s（不屬於此設定）`],
+ [/^(\d+) \/ (\d+) gates$/, (passed,total)=>`${passed} / ${total} 道關卡`],
  [/^Selected file: (.*)$/,v=>`已選擇檔案：${v}`],
  [/^TRAINING FIELD \/ v(.+)$/,v=>`飛行訓練場 / v${v}`],
  [/^(\d+) \/ 5 gates$/,v=>`${v} / 5 道關卡`],[/^Lap (.+) s$/,v=>`單圈 ${v} s`],[/^LOCAL BEST (.+) s$/,v=>`本機最佳 ${v} s`],

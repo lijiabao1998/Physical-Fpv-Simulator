@@ -1,6 +1,6 @@
 import RAPIER from '@dimforge/rapier3d-compat';
 import { DEFAULT_MODEL, GRAVITY, RHO, validateDt, type Model } from './config';
-import { FIELD_BOXES,TREES } from '../game/field';
+import {getCourse,type CourseId} from '../game/courses';
 import { add, dot, inverseRotate, norm, normalized, rotate, scale, type Q4,type V3 } from './math';
 import type { PowerOutput } from './powertrain';
 
@@ -14,7 +14,7 @@ export class FlightWorld {
   readonly collider: RAPIER.Collider;
   readonly events=new RAPIER.EventQueue(true);
   contacts=0; impactSpeed=0; contact=false;
-  constructor(readonly model: Model=DEFAULT_MODEL, environment=true) {
+  constructor(readonly model: Model=DEFAULT_MODEL, environment=true,courseId:CourseId='training-straight') {
     this.world=new RAPIER.World({x:0,y:0,z:-GRAVITY});
     this.world.numSolverIterations=8;
     const desc=RAPIER.RigidBodyDesc.dynamic().setTranslation(0,0,.105).setCanSleep(false).setCcdEnabled(true)
@@ -23,8 +23,8 @@ export class FlightWorld {
     this.collider=this.world.createCollider(RAPIER.ColliderDesc.cuboid(.14,.14,.06).setMass(0).setFriction(.6).setRestitution(0).setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS),this.body);
     if(environment) {
       this.world.createCollider(RAPIER.ColliderDesc.cuboid(250,250,.5).setTranslation(0,0,-.5).setFriction(.7).setRestitution(0));
-      for(const box of FIELD_BOXES) this.world.createCollider(RAPIER.ColliderDesc.cuboid(...box.half).setTranslation(...box.center).setFriction(.5).setRestitution(0));
-      for(const tree of TREES) this.world.createCollider(RAPIER.ColliderDesc.cuboid(.25,.25,tree.height*.35).setTranslation(tree.position[0],tree.position[1],tree.height*.35).setRestitution(0));
+      for(const box of getCourse(courseId).boxes){const desc=RAPIER.ColliderDesc.cuboid(...box.half).setTranslation(...box.center).setFriction(.5).setRestitution(0);if(box.rotation){const [w,x,y,z]=box.rotation;desc.setRotation({w,x,y,z});}this.world.createCollider(desc);}
+      for(const tree of getCourse(courseId).trees) this.world.createCollider(RAPIER.ColliderDesc.cuboid(.25,.25,tree.height*.35).setTranslation(tree.position[0],tree.position[1],tree.height*.35).setRestitution(0));
     }
   }
   get position() { return arr(this.body.translation()); }

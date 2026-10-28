@@ -1,0 +1,44 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> physical-fpv-player@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.5 /workspace/scratch/3b5db52091dd/FPV-wave-g10/web
+
+ ❯ tests/i18n.test.ts (5 tests | 1 failed) 16ms
+   ❯ FPV-I18N-01 presentation only (5)
+     × covers all static safety reasons in untouched session, input and clock modules 5ms
+ ❯ tests/g10-i18n.test.ts (1 test | 1 failed) 8ms
+   × G10 names, count and switching status are presentation only 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/g10-i18n.test.ts > G10 names, count and switching status are presentation only
+AssertionError: expected 'Course' not to be 'Course' // Object.is equality
+ ❯ tests/g10-i18n.test.ts:4:174
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/i18n.test.ts > FPV-I18N-01 presentation only > covers all static safety reasons in untouched session, input and clock modules
+AssertionError: New-course replay requires its version: expected 'New-course replay requires its version' not to be 'New-course replay requires its version' // Object.is equality
+ ❯ tests/i18n.test.ts:22:62
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 11 passed (13)
+      Tests  2 failed | 110 passed (112)
+   Start at  10:35:31
+   Duration  11.70s (tests 96%, transform 2%, import 2%)
+
+    Isolate  13 workers spawned · ~127ms startup each (spawn + environment, per file)
+             at least ~696ms faster with isolate: false — reuses workers across files instead of one per file
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

@@ -1,0 +1,17 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> physical-fpv-player@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.5 /workspace/shared/own-cloud-migration-20261024/FPV-g10-courses/web
+
+
+ Test Files  9 passed (9)
+      Tests  101 passed (101)
+   Start at  12:55:45
+   Duration  3.54s (tests 93%, import 5%, transform 2%, worker 1%)
+
+    Isolate  9 workers spawned · ~121ms startup each (spawn + environment, per file)
+             at least ~424ms faster with isolate: false — reuses workers across files instead of one per file
+

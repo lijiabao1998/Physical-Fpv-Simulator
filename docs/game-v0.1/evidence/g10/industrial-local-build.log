@@ -1,0 +1,38 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> physical-fpv-player@0.1.0 build
+> tsc --noEmit && vite build && node scripts/check-build.mjs
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 28 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/version.json                   0.17 kB │ gzip:     0.16 kB
+dist/index.html                     0.90 kB │ gzip:     0.55 kB
+dist/THIRD_PARTY_LICENSES.txt      12.49 kB │ gzip:     4.50 kB
+dist/assets/index-BH_EutEC.css      7.26 kB │ gzip:     2.46 kB
+dist/assets/index-FRVEsjjB.js   4,946.07 kB │ gzip: 1,830.40 kB
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 3000 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 340ms
+{
+  "check": "static-build",
+  "status": "PASS",
+  "checked": 2,
+  "version": {
+    "version": "0.1.0",
+    "commit": "e66a8ea4acdf16bc85bfc68cd3aa27189490683d",
+    "dirty": true,
+    "base": "/Physical-Fpv-Simulator/",
+    "builtAt": "2026-10-25T05:53:57.983Z"
+  },
+  "assets": [
+    "index-BH_EutEC.css",
+    "index-FRVEsjjB.js"
+  ]
+}

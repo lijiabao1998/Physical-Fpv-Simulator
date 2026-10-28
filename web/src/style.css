@@ -5,6 +5,9 @@
 /* Actual 360px Chromium first review showed the expanded race panel touching the right edge. */
 .course{max-width:min(360px,calc(100vw - 40px))}
 @media(max-width:600px){.course{max-width:calc(100vw - 24px)}}
+
+/* G10 real Chromium review: separate the course selector from the eyebrow. */
+.course>label{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:11px}.course>label select{max-width:100%;min-width:0;background:#2b4035;border:1px solid #79917355;border-radius:4px;padding:3px 5px}
 /* Language changes presentation, never flight state. */
 .language-control{display:flex;align-items:center;gap:6px;font-size:11px}.language-control select{background:#263b32;color:inherit;border:1px solid #ffffff30;border-radius:7px;padding:7px;max-width:130px}html[lang=zh-TW] .welcome h1{letter-spacing:0;line-height:1.2}html[lang=zh-TW] .actions{max-width:380px}html[lang=zh-TW] .eyebrow{letter-spacing:1px}@media(max-width:850px){header{flex-wrap:wrap}.language-control{margin-left:auto}.course{top:130px}}@media(max-width:480px){header .language-control{position:absolute;right:12px;top:7px}.language-control>span{display:none}.language-control select{font-size:11px;padding:5px;max-width:100px}header .brand{font-size:13px!important;letter-spacing:1px}.course{top:96px}html[lang=zh-TW] .actions{max-width:330px}html[lang=zh-TW] .actions button{padding:7px;font-size:10px}}
 .language-control{position:fixed;top:16px;right:28px;z-index:6}header{padding-right:190px}.drawer{padding-top:65px}.drawer header{padding-right:0}@media(max-width:850px){header{padding-right:165px}.language-control{top:12px;right:16px}}@media(max-width:480px){header{padding-right:12px}.language-control{top:7px;right:12px}.drawer header{padding-right:0}}

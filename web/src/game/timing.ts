@@ -10,3 +10,9 @@ export function planPhysicsSteps(accumulator:number,elapsed:number,active:boolea
   if(steps>60)return {steps:0,remainder:0,fault:'Physics catch-up limit — paused and disarmed.'};
   return {steps,remainder:Math.max(0,total-steps*FIXED_DT),fault:null};
 }
+
+/** A previously queued rAF timestamp can precede an explicit initialization anchor.
+ * Ignore its negative elapsed time without ever moving the anchor backwards. */
+export function advanceRenderClock(previousMs:number,callbackMs:number){
+ return {anchor:Math.max(previousMs,callbackMs),elapsed:previousMs?Math.max(0,(callbackMs-previousMs)/1000):0};
+}
