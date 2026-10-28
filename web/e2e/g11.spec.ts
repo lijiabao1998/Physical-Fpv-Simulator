@@ -1,6 +1,6 @@
 import {test,expect,type Page} from '@playwright/test';
 import {readFileSync} from 'node:fs';
-const root='http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1';
+const root='http://127.0.0.1:4173/fpv/?test=1';
 const fixture=(id='british-slalom')=>JSON.parse(readFileSync(`numerical-results/g11-${id}.json`,'utf8'));
 async function boot(page:Page){await page.goto(root);await expect(page.locator('#loading')).toHaveCount(0);await page.getByTestId('start').click();}
 async function localFlight(page:Page,id:string,count?:number){const f=fixture(id);await page.locator('#course-select').selectOption(f.replay.courseId);return page.evaluate(({controls,count})=>(window as any).__FPV_TEST__.localInputFlight(controls,count),{controls:f.replay.events.map((e:any)=>e.c),count:count??f.replay.events.length});}
@@ -55,7 +55,7 @@ test('G11 imported completed replay never writes class PB or Ghost; pause/resume
  const done=await page.evaluate(()=>{const h=(window as any).__FPV_TEST__;h.tick(14000);return {end:h.snapshot(),ghost:h.ghost(),keys:Object.keys(localStorage)};});expect(done.end.state).toBe('finished');expect(done.ghost.recordable).toBe(false);expect(done.keys.filter((k:string)=>k.startsWith('physical-fpv-race-v1')||k.startsWith('physical-fpv-pb-ghost-v1'))).toEqual([]);await expect(page.locator('#best')).toContainText('No best lap');
  await info.attach('g11-import-isolation.json',{body:JSON.stringify(done,null,2),contentType:'application/json'});
 });
-test('G11 production has native ghost toggle and no fixture API',async({page})=>{await page.goto('http://127.0.0.1:4174/Physical-Fpv-Simulator/?test=1');await expect(page.locator('#loading')).toHaveCount(0);await expect(page.locator('#ghost-toggle')).toHaveText('PB Ghost: ON');expect(await page.evaluate(()=>(window as any).__FPV_TEST__)).toBeUndefined();});
+test('G11 production has native ghost toggle and no fixture API',async({page})=>{await page.goto('http://127.0.0.1:4174/fpv/?test=1');await expect(page.locator('#loading')).toHaveCount(0);await expect(page.locator('#ghost-toggle')).toHaveText('PB Ghost: ON');expect(await page.evaluate(()=>(window as any).__FPV_TEST__)).toBeUndefined();});
 test('G11 crash, unfinished, repeated completion and imported faster replay preserve valid PB/Ghost bytes',async({page},info)=>{
  test.setTimeout(60000);await boot(page);await localFlight(page,'slow-british-slalom');
  const read=()=>page.evaluate(()=>Object.fromEntries(Object.entries(localStorage).filter(([k])=>k.startsWith('physical-fpv-race-v1')||k.startsWith('physical-fpv-pb-ghost-v1'))));
