@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
-const root='http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1';
+const root='http://127.0.0.1:4173/fpv/?test=1';
 const fixture=()=>JSON.parse(readFileSync('numerical-results/g12-school-flight.json','utf8'));
 for(const width of [1440,412,390,360])test(`G12 bilingual school native flow and safety ${width}`,async({page},info)=>{
  test.setTimeout(90000);await page.setViewportSize({width,height:900});await page.goto(root);await expect(page.locator('#loading')).toHaveCount(0);await page.getByTestId('start').click();await page.locator('#school-open').click();
