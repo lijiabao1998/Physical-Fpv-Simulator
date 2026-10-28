@@ -92,3 +92,33 @@ for(const v of views.filter(v=>v.w>v.h))for(const language of ['zh-TW','en'])tes
   await info.attach(`g13-touch-${v.w}x${v.h}-${language}.json`,{body:JSON.stringify({viewport:v,language,armed,tap,tapped,hold,before,held,scope:'Chromium touch emulation (CDP), not physical phone validation'},null,1),contentType:'application/json'});
  }finally{await context.close();}
 });
+// Codex P2 on PR #13: in short landscape the cards sat at 53px while a wrapped header put its menu at 40-73px, so the
+// course card took every tap on Aircraft, Controls, Physics and Pause (568x400). In each state, every header control
+// must be hit at its centre, no card may overlap the header, and no card may leave the viewport.
+const headerViews=[{w:480,h:400},{w:568,h:400},{w:600,h:400},{w:640,h:360},{w:900,h:400}];
+for(const v of headerViews)for(const coarse of [true,false])test(`G13 short-landscape header stays reachable ${v.w}x${v.h} ${coarse?'coarse':'fine'}`,async({browser})=>{
+ test.setTimeout(120000);const failures:string[]=[];
+ for(const language of ['zh-TW','en']){
+  const context=await browser.newContext({viewport:{width:v.w,height:v.h},hasTouch:coarse,isMobile:coarse});const page=await context.newPage();
+  try{
+   await page.goto(root);await expect(page.locator('#loading')).toHaveCount(0);await page.locator('#ui-language').selectOption(language);
+   const check=(state:string)=>page.evaluate(state=>{
+    const errors:string[]=[];const header=document.querySelector('header')!.getBoundingClientRect();
+    const label=(e:Element|null)=>!e?'nothing':e.id?'#'+e.id:(e as HTMLElement).dataset?.panel?`[data-panel=${(e as HTMLElement).dataset.panel}]`:e.className?'.'+String(e.className).split(' ')[0]:e.tagName;
+    for(const e of [...document.querySelectorAll<HTMLElement>('header nav button'),document.querySelector<HTMLElement>('#ui-language')!]){
+     const r=e.getBoundingClientRect();const hit=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);
+     if(!(hit===e||e.contains(hit)))errors.push(`${state}: ${label(e)} centre hits ${label(hit)}`);}
+    for(const sel of ['.course','#school-panel','.welcome']){
+     const e=document.querySelector<HTMLElement>(sel);if(!e||e.hidden||!e.getClientRects().length)continue;const r=e.getBoundingClientRect();
+     const a=Math.max(0,Math.min(r.right,header.right)-Math.max(r.left,header.left))*Math.max(0,Math.min(r.bottom,header.bottom)-Math.max(r.top,header.top));
+     if(a>0)errors.push(`${state}: ${sel} overlaps the header by ${a.toFixed(0)}px²`);
+     if(r.left<-.5||r.right>innerWidth+.5)errors.push(`${state}: ${sel} leaves the viewport (x ${r.left.toFixed(0)}-${r.right.toFixed(0)})`);}
+    return errors;},state);
+   failures.push(...(await check('welcome')).map(x=>`${language} ${x}`));
+   await page.evaluate(()=>document.querySelector<HTMLButtonElement>('#start')!.click());failures.push(...(await check('flying')).map(x=>`${language} ${x}`));
+   await page.evaluate(()=>document.querySelector<HTMLButtonElement>('#school-open')!.click());await expect(page.locator('#school-panel')).toBeVisible();
+   failures.push(...(await check('school')).map(x=>`${language} ${x}`));
+  }finally{await context.close();}
+ }
+ expect(failures,failures.join('\n')).toEqual([]);
+});
