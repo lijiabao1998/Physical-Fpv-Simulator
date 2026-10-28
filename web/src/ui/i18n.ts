@@ -15,6 +15,42 @@ New-course replay requires its version|新賽道重播必須包含賽道版本
 Original five-gate baseline, preserved.|保留原有五道關卡基準。
 Country turns, climbing gates and a descending hairpin. Follow orange gate normals.|鄉間迴轉、爬升關卡與下降髮夾彎。請依橘色關卡的前進方向穿越。
 Open-ended brick warehouses, steel beams and low barriers. Structural meshes have matching static collisions.|開放式磚造倉庫、鋼樑與低空障礙。建築結構具有對應的靜態碰撞體。
+Flight school|飛行學校
+Retry school|重試教學
+Safe stop|安全停止
+Return to free flight|返回自由飛行
+Lessons · provisional difficulty|教學課程 · 暫定難度
+1 / 5 · Safe takeoff|1 / 5 · 安全起飛
+2 / 5 · Stable hover|2 / 5 · 定點懸停
+3 / 5 · Four-axis controls|3 / 5 · 四軸操控
+4 / 5 · Precision gate|4 / 5 · 精準穿門
+5 / 5 · Complete course|5 / 5 · 完整賽道
+5 / 5 · School complete|5 / 5 · 教學完成
+School ready|教學準備就緒
+School closed|已關閉教學
+Zero throttle, then hold ARM|油門歸零，再按住 ARM 解鎖
+Replay cannot earn school progress|觀看重播不能取得教學進度
+Attempt invalid. Retry school|本次操作無效，請重試教學
+Safety stop. Restart safe takeoff|已安全停止，請重新練習安全起飛
+Observe every fixed physics tick|必須逐一觀測固定物理步
+Hold ARM with zero throttle|油門歸零，按住 ARM 解鎖
+Raise throttle gently to take off|緩慢增加油門以起飛
+Disarm safely to finish takeoff lesson|安全鎖定馬達以完成起飛課程
+Rearm and hold a stable hover|重新解鎖並保持穩定懸停
+Hold this stable hover|繼續保持穩定懸停
+Return to the hover zone|請返回懸停區域並降低速度
+Practice throttle|練習油門：觀察上升反應
+Practice pitch|練習俯仰：觀察機體反應
+Practice roll|練習橫滾：觀察機體反應
+Practice yaw|練習偏航：觀察機體反應
+Fly through the next gate in order|依正確方向穿越下一道關卡
+Complete the course with valid ordered gates|依順序有效通過全部關卡
+School complete. Simulation training only|教學完成；僅為模擬訓練，非真實飛行資格
+Hover target: 1–3 m altitude, within 4 m of start; stay level and slow for 3 s.|懸停目標：高度 1–3 公尺，距起點 4 公尺內；保持水平、低速 3 秒。
+↑/↓ throttle · W/S pitch · A/D roll · Q/E yaw · hold Space 0.6s ARM · X disarm|↑/↓ 油門 · W/S 俯仰 · A/D 橫滾 · Q/E 偏航 · 按住空白鍵 0.6 秒解鎖 · X 鎖定馬達
+Left stick: yaw / integrated throttle. Right: roll / pitch. Hold ARM 0.6s.|左搖桿：偏航／累積油門。右搖桿：橫滾／俯仰。按住 ARM 0.6 秒解鎖。
+RT/R2 throttle · left X yaw · right stick roll/pitch · hold A/✕ 0.6s ARM · B/○ disarm|RT/R2 油門 · 左搖桿橫軸偏航 · 右搖桿橫滾／俯仰 · 按住 A/✕ 0.6 秒解鎖 · B/○ 鎖定馬達
+Mode 2: left stick throttle/yaw · right stick roll/pitch · hold A/✕ 0.6s ARM · B/○ disarm|Mode 2：左搖桿油門／偏航 · 右搖桿橫滾／俯仰 · 按住 A/✕ 0.6 秒解鎖 · B/○ 鎖定馬達
 None|無
 ESC duty|ESC 占空比
 airspeed|空速
@@ -217,6 +253,7 @@ export function translate(source:string,language:Language):string{
  [/^LOCAL BEST (.+) s · this class$/,v=>`本機最佳 ${v} s · 此設定`],
  [/^Legacy unclassified: (.+) s \(not this class\)$/,v=>`歷史未分類紀錄：${v} s（不屬於此設定）`],
  [/^(\d+) \/ (\d+) gates$/, (passed,total)=>`${passed} / ${total} 道關卡`],
+ [/^Lessons (\d+) \/ 5 · Hover (.+) \/ (.+) s$/, (count,time,required)=>`課程 ${count} / 5 · 懸停 ${time} / ${required} 秒`],
  [/^Selected file: (.*)$/,v=>`已選擇檔案：${v}`],
  [/^TRAINING FIELD \/ v(.+)$/,v=>`飛行訓練場 / v${v}`],
  [/^(\d+) \/ 5 gates$/,v=>`${v} / 5 道關卡`],[/^Lap (.+) s$/,v=>`單圈 ${v} s`],[/^LOCAL BEST (.+) s$/,v=>`本機最佳 ${v} s`],

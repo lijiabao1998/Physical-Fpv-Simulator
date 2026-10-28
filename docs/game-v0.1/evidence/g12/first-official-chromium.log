@@ -1,0 +1,1126 @@
+﻿2026-10-27T02:51:07.5559716Z Current runner version: '2.338.0'
+2026-10-27T02:51:07.5575571Z ##[group]Runner Image Provisioner
+2026-10-27T02:51:07.5576146Z Hosted Compute Agent
+2026-10-27T02:51:07.5576643Z Version: 20261021.618
+2026-10-27T02:51:07.5577048Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-27T02:51:07.5577705Z Build Date: 2026-10-21T00:45:21Z
+2026-10-27T02:51:07.5578140Z Worker ID: {984e5f00-4850-4aa3-84c3-214f42a53769}
+2026-10-27T02:51:07.5578594Z Region: centralus
+2026-10-27T02:51:07.5578972Z Cloud: Azure
+2026-10-27T02:51:07.5579309Z ##[endgroup]
+2026-10-27T02:51:07.5580078Z ##[group]Operating System
+2026-10-27T02:51:07.5580500Z Ubuntu
+2026-10-27T02:51:07.5580893Z 24.04.5
+2026-10-27T02:51:07.5581245Z LTS
+2026-10-27T02:51:07.5581564Z ##[endgroup]
+2026-10-27T02:51:07.5581890Z ##[group]Runner Image
+2026-10-27T02:51:07.5582299Z Image: ubuntu-24.04
+2026-10-27T02:51:07.5582680Z Version: 20261012.334.1
+2026-10-27T02:51:07.5583467Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-27T02:51:07.5584335Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-27T02:51:07.5584970Z ##[endgroup]
+2026-10-27T02:51:07.5585633Z ##[group]GITHUB_TOKEN Permissions
+2026-10-27T02:51:07.5586974Z Contents: read
+2026-10-27T02:51:07.5587322Z Metadata: read
+2026-10-27T02:51:07.5587883Z ##[endgroup]
+2026-10-27T02:51:07.5589194Z Secret source: Actions
+2026-10-27T02:51:07.5589804Z Cache mode: write
+2026-10-27T02:51:07.5590434Z Prepare workflow directory
+2026-10-27T02:51:07.5830075Z Prepare all required actions
+2026-10-27T02:51:07.5862314Z Getting action download info
+2026-10-27T02:51:07.8201211Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-27T02:51:07.9467756Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-27T02:51:08.1114866Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-27T02:51:08.2533724Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-27T02:51:08.3773009Z Download action repository 'actions/upload-pages-artifact@v3' (SHA:56afc609e74202658d3ffba0e8f6dda462b719fa)
+2026-10-27T02:51:08.6168340Z Getting action download info
+2026-10-27T02:51:08.7338806Z Complete job name: verify
+2026-10-27T02:51:08.8015355Z ##[group]Run actions/checkout@v4
+2026-10-27T02:51:08.8015960Z with:
+2026-10-27T02:51:08.8016414Z   repository: lijiabao1998/Physical-Fpv-Simulator
+2026-10-27T02:51:08.8021080Z   token: ***
+2026-10-27T02:51:08.8021461Z   ssh-strict: true
+2026-10-27T02:51:08.8021849Z   ssh-user: git
+2026-10-27T02:51:08.8022260Z   persist-credentials: true
+2026-10-27T02:51:08.8022710Z   clean: true
+2026-10-27T02:51:08.8023118Z   sparse-checkout-cone-mode: true
+2026-10-27T02:51:08.8023607Z   fetch-depth: 1
+2026-10-27T02:51:08.8024004Z   fetch-tags: false
+2026-10-27T02:51:08.8024428Z   show-progress: true
+2026-10-27T02:51:08.8024854Z   lfs: false
+2026-10-27T02:51:08.8025225Z   submodules: false
+2026-10-27T02:51:08.8025637Z   set-safe-directory: true
+2026-10-27T02:51:08.8026108Z   allow-unsafe-pr-checkout: false
+2026-10-27T02:51:08.8026686Z ##[endgroup]
+2026-10-27T02:51:09.0846372Z Syncing repository: lijiabao1998/Physical-Fpv-Simulator
+2026-10-27T02:51:09.0848090Z ##[group]Getting Git version info
+2026-10-27T02:51:09.0848996Z Working directory is '/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator'
+2026-10-27T02:51:09.0850165Z [command]/usr/bin/git version
+2026-10-27T02:51:09.0924414Z git version 2.55.0
+2026-10-27T02:51:09.0943352Z ##[endgroup]
+2026-10-27T02:51:09.0948082Z Temporarily overriding HOME='/home/runner/work/_temp/54f8171d-44da-42fe-9ced-244e66e878d9' before making global git config changes
+2026-10-27T02:51:09.0949826Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T02:51:09.0951613Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator
+2026-10-27T02:51:09.0995628Z Deleting the contents of '/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator'
+2026-10-27T02:51:09.1002463Z ##[group]Initializing the repository
+2026-10-27T02:51:09.1009534Z [command]/usr/bin/git init /home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator
+2026-10-27T02:51:09.1089439Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-27T02:51:09.1090477Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-27T02:51:09.1091816Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-27T02:51:09.1092622Z hint: call:
+2026-10-27T02:51:09.1093163Z hint:
+2026-10-27T02:51:09.1093867Z hint: 	git config --global init.defaultBranch <name>
+2026-10-27T02:51:09.1094796Z hint:
+2026-10-27T02:51:09.1095610Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-27T02:51:09.1097034Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-27T02:51:09.1098327Z hint:
+2026-10-27T02:51:09.1098899Z hint: 	git branch -m <name>
+2026-10-27T02:51:09.1099541Z hint:
+2026-10-27T02:51:09.1100441Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-27T02:51:09.1102194Z Initialized empty Git repository in /home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/.git/
+2026-10-27T02:51:09.1104080Z [command]/usr/bin/git remote add origin https://github.com/lijiabao1998/Physical-Fpv-Simulator
+2026-10-27T02:51:09.1147181Z ##[endgroup]
+2026-10-27T02:51:09.1148450Z ##[group]Disabling automatic garbage collection
+2026-10-27T02:51:09.1150611Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-27T02:51:09.1178566Z ##[endgroup]
+2026-10-27T02:51:09.1179705Z ##[group]Setting up auth
+2026-10-27T02:51:09.1184640Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T02:51:09.1213951Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T02:51:09.1533900Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T02:51:09.1564062Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T02:51:09.1748995Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T02:51:09.1764594Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T02:51:09.1936858Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-27T02:51:09.1970289Z ##[endgroup]
+2026-10-27T02:51:09.1971352Z ##[group]Fetching the repository
+2026-10-27T02:51:09.1979879Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +bce488a8cfc24b8ce72307892d42ed4dfe975681:refs/remotes/pull/12/merge
+2026-10-27T02:51:09.7938595Z From https://github.com/lijiabao1998/Physical-Fpv-Simulator
+2026-10-27T02:51:09.7939617Z  * [new ref]         bce488a8cfc24b8ce72307892d42ed4dfe975681 -> pull/12/merge
+2026-10-27T02:51:09.7943492Z ##[endgroup]
+2026-10-27T02:51:09.7944549Z ##[group]Determining the checkout info
+2026-10-27T02:51:09.7945902Z ##[endgroup]
+2026-10-27T02:51:09.7956483Z [command]/usr/bin/git sparse-checkout disable
+2026-10-27T02:51:09.8000903Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-27T02:51:09.8026615Z ##[group]Checking out the ref
+2026-10-27T02:51:09.8028743Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/12/merge
+2026-10-27T02:51:09.8122495Z Note: switching to 'refs/remotes/pull/12/merge'.
+2026-10-27T02:51:09.8122904Z 
+2026-10-27T02:51:09.8123446Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-27T02:51:09.8124084Z changes and commit them, and you can discard any commits you make in this
+2026-10-27T02:51:09.8125045Z state without impacting any branches by switching back to a branch.
+2026-10-27T02:51:09.8125634Z 
+2026-10-27T02:51:09.8126133Z If you want to create a new branch to retain commits you create, you may
+2026-10-27T02:51:09.8127170Z do so (now or later) by using -c with the switch command. Example:
+2026-10-27T02:51:09.8127872Z 
+2026-10-27T02:51:09.8128263Z   git switch -c <new-branch-name>
+2026-10-27T02:51:09.8128729Z 
+2026-10-27T02:51:09.8129119Z Or undo this operation with:
+2026-10-27T02:51:09.8129591Z 
+2026-10-27T02:51:09.8129869Z   git switch -
+2026-10-27T02:51:09.8130204Z 
+2026-10-27T02:51:09.8130575Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-27T02:51:09.8131119Z 
+2026-10-27T02:51:09.8131594Z HEAD is now at bce488a Merge e5e6084c1932b62e0e7c5a111e70a86c61c439cc into 41b645e41371a9ce02fa8e4a5c9813ba57b1e075
+2026-10-27T02:51:09.8133457Z ##[endgroup]
+2026-10-27T02:51:09.8164771Z [command]/usr/bin/git log -1 --format=%H
+2026-10-27T02:51:09.8186546Z bce488a8cfc24b8ce72307892d42ed4dfe975681
+2026-10-27T02:51:09.8411719Z ##[group]Run actions/setup-node@v4
+2026-10-27T02:51:09.8412229Z with:
+2026-10-27T02:51:09.8412680Z   node-version: 24
+2026-10-27T02:51:09.8413133Z   cache: npm
+2026-10-27T02:51:09.8413624Z   cache-dependency-path: web/package-lock.json
+2026-10-27T02:51:09.8414158Z   always-auth: false
+2026-10-27T02:51:09.8414623Z   check-latest: false
+2026-10-27T02:51:09.8416488Z   token: ***
+2026-10-27T02:51:09.8416960Z ##[endgroup]
+2026-10-27T02:51:09.9546619Z Found in cache @ /opt/hostedtoolcache/node/24.21.0/x64
+2026-10-27T02:51:09.9548142Z (node:2063) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T02:51:09.9549418Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T02:51:09.9550990Z ##[group]Environment details
+2026-10-27T02:51:13.1452051Z node: v24.21.0
+2026-10-27T02:51:13.1452440Z npm: 11.19.0
+2026-10-27T02:51:13.1452775Z yarn: 1.22.22
+2026-10-27T02:51:13.1453708Z ##[endgroup]
+2026-10-27T02:51:13.1464336Z [command]/opt/hostedtoolcache/node/24.21.0/x64/bin/npm config get cache
+2026-10-27T02:51:13.4521902Z /home/runner/.npm
+2026-10-27T02:51:13.6166913Z Cache hit for: node-cache-Linux-x64-npm-e9519240640797f7dedc9b6d978d9b4a58fc64b8b46e48e09a38ba87ec950b0f
+2026-10-27T02:51:13.6231085Z (node:2063) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-27T02:51:14.5018117Z Received 53686378 of 53686378 (100.0%), 68.5 MBs/sec
+2026-10-27T02:51:14.5018532Z Cache Size: ~51 MB (53686378 B)
+2026-10-27T02:51:14.5070086Z [command]/usr/bin/tar -xf /home/runner/work/_temp/605eb6b5-0d23-4a09-a7fa-cd847ff17044/cache.tzst -P -C /home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator --use-compress-program unzstd
+2026-10-27T02:51:14.5650671Z Cache restored successfully
+2026-10-27T02:51:14.5678491Z Cache restored from key: node-cache-Linux-x64-npm-e9519240640797f7dedc9b6d978d9b4a58fc64b8b46e48e09a38ba87ec950b0f
+2026-10-27T02:51:14.6481690Z ##[group]Run actions/setup-python@v5
+2026-10-27T02:51:14.6481869Z with:
+2026-10-27T02:51:14.6482014Z   python-version: 3.12
+2026-10-27T02:51:14.6482151Z   check-latest: false
+2026-10-27T02:51:14.6483397Z   token: ***
+2026-10-27T02:51:14.6483526Z   update-environment: true
+2026-10-27T02:51:14.6483679Z   allow-prereleases: false
+2026-10-27T02:51:14.6483817Z   freethreaded: false
+2026-10-27T02:51:14.6483942Z ##[endgroup]
+2026-10-27T02:51:14.7296072Z ##[group]Installed versions
+2026-10-27T02:51:14.7430486Z (node:2120) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T02:51:14.7431270Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T02:51:14.7432093Z Successfully set up CPython (3.12.15)
+2026-10-27T02:51:14.7432571Z ##[endgroup]
+2026-10-27T02:51:14.7795921Z ##[group]Run python -m pip install numpy==2.3.5
+2026-10-27T02:51:14.7796207Z [36;1mpython -m pip install numpy==2.3.5[0m
+2026-10-27T02:51:14.8129106Z shell: /usr/bin/bash -e {0}
+2026-10-27T02:51:14.8129315Z env:
+2026-10-27T02:51:14.8129486Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:14.8129748Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-27T02:51:14.8129991Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:14.8130210Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:14.8130434Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:14.8130652Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-27T02:51:14.8130849Z ##[endgroup]
+2026-10-27T02:51:18.0056310Z Collecting numpy==2.3.5
+2026-10-27T02:51:18.0889674Z   Downloading numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+2026-10-27T02:51:18.1269217Z Downloading numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.6 MB)
+2026-10-27T02:51:18.7040508Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.6/16.6 MB 30.0 MB/s  0:00:00
+2026-10-27T02:51:18.8872403Z Installing collected packages: numpy
+2026-10-27T02:51:20.0927083Z Successfully installed numpy-2.3.5
+2026-10-27T02:51:20.0932600Z 
+2026-10-27T02:51:20.0932937Z [notice] A new release of pip is available: 26.2.1 -> 26.2.2
+2026-10-27T02:51:20.0933356Z [notice] To update, run: pip install --upgrade pip
+2026-10-27T02:51:20.1359971Z ##[group]Run npm ci
+2026-10-27T02:51:20.1360141Z [36;1mnpm ci[0m
+2026-10-27T02:51:20.1414393Z shell: /usr/bin/bash -e {0}
+2026-10-27T02:51:20.1414536Z env:
+2026-10-27T02:51:20.1414694Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:20.1414974Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-27T02:51:20.1415214Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:20.1415429Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:20.1415649Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:20.1415871Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-27T02:51:20.1416055Z ##[endgroup]
+2026-10-27T02:51:22.7407308Z 
+2026-10-27T02:51:22.7408262Z added 53 packages, and audited 54 packages in 3s
+2026-10-27T02:51:22.7408596Z 
+2026-10-27T02:51:22.7408771Z 13 packages are looking for funding
+2026-10-27T02:51:22.7409144Z   run `npm fund` for details
+2026-10-27T02:51:22.7414314Z 
+2026-10-27T02:51:22.7414480Z found 0 vulnerabilities
+2026-10-27T02:51:22.7905833Z ##[group]Run npm run reference
+2026-10-27T02:51:22.7906018Z [36;1mnpm run reference[0m
+2026-10-27T02:51:22.7961303Z shell: /usr/bin/bash -e {0}
+2026-10-27T02:51:22.7961463Z env:
+2026-10-27T02:51:22.7961623Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:22.7961872Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-27T02:51:22.7962113Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:22.7962331Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:22.7962552Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:22.7962773Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-27T02:51:22.7962957Z ##[endgroup]
+2026-10-27T02:51:22.8713948Z 
+2026-10-27T02:51:22.8714419Z > physical-fpv-player@0.1.0 reference
+2026-10-27T02:51:22.8714783Z > python3 ../reference/generate.py
+2026-10-27T02:51:22.8714948Z 
+2026-10-27T02:51:23.4862315Z Wrote 5 pinned Python trajectories; source hashes verified, no hardware claim.
+2026-10-27T02:51:23.5041896Z ##[group]Run npm test
+2026-10-27T02:51:23.5042066Z [36;1mnpm test[0m
+2026-10-27T02:51:23.5096844Z shell: /usr/bin/bash -e {0}
+2026-10-27T02:51:23.5096991Z env:
+2026-10-27T02:51:23.5097149Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:23.5097401Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-27T02:51:23.5097914Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:23.5098247Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:23.5098476Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:23.5098704Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-27T02:51:23.5098894Z ##[endgroup]
+2026-10-27T02:51:23.5849787Z 
+2026-10-27T02:51:23.5850171Z > physical-fpv-player@0.1.0 test
+2026-10-27T02:51:23.5850498Z > vitest run
+2026-10-27T02:51:23.5850617Z 
+2026-10-27T02:51:23.9135460Z 
+2026-10-27T02:51:23.9138522Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/web[39m
+2026-10-27T02:51:23.9139020Z 
+2026-10-27T02:51:24.1152466Z  [32m✓[39m tests/g10-gate-geometry.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+2026-10-27T02:51:25.5296253Z  [32m✓[39m tests/g10-courses.test.ts [2m([22m[2m13 tests[22m[2m)[22m[33m 1271[2mms[22m[39m
+2026-10-27T02:51:25.5297620Z    [33m[2m✓[22m[39m G10 switching resets/disarms and old replay stays Training; both physics models replay unchanged[33m 324[2mms[22m[39m
+2026-10-27T02:51:25.5338860Z    [33m[2m✓[22m[39m G10 real fixed-input takeoff scores British Gate 1 and replays its timestamp without body writes[33m 484[2mms[22m[39m
+2026-10-27T02:51:25.5349059Z    [33m[2m✓[22m[39m G10 actual British input trajectory and gate timing agree at 60/20/5 Hz rendering batches[33m 384[2mms[22m[39m
+2026-10-27T02:51:26.7639513Z  [32m✓[39m tests/g08-transients.test.ts [2m([22m[2m13 tests[22m[2m)[22m[33m 2613[2mms[22m[39m
+2026-10-27T02:51:26.7667304Z    [33m[2m✓[22m[39m starts at rest, has finite spin-up, current limiting, and passive coast-down without deleting rotor energy[33m 308[2mms[22m[39m
+2026-10-27T02:51:26.7673369Z    [33m[2m✓[22m[39m reports same-condition G07/G08 flight and 120/240/480 Hz outcomes without altering old trajectory fixtures[33m 625[2mms[22m[39m
+2026-10-27T02:51:26.7702380Z    [33m[2m✓[22m[39m keeps a sixty-second synthetic powertrain run inside energy, temperature, and speed bounds[33m 1071[2mms[22m[39m
+2026-10-27T02:51:27.3700491Z  [32m✓[39m tests/physics.test.ts [2m([22m[2m27 tests[22m[2m)[22m[33m 469[2mms[22m[39m
+2026-10-27T02:51:27.3870281Z  [32m✓[39m tests/school.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 1740[2mms[22m[39m
+2026-10-27T02:51:27.3871436Z    [33m[2m✓[22m[39m native ARM rejection and exact physics/replay/energy noninterference across 960 steps[33m 467[2mms[22m[39m
+2026-10-27T02:51:27.3872506Z    [33m[2m✓[22m[39m ordinary native controls complete all five lessons without state placement or physics writes[33m 1206[2mms[22m[39m
+2026-10-27T02:51:27.9283818Z  [32m✓[39m tests/g09-race.test.ts [2m([22m[2m9 tests[22m[2m)[22m[33m 427[2mms[22m[39m
+2026-10-27T02:51:28.0699549Z  [32m✓[39m tests/input-game.test.ts [2m([22m[2m16 tests[22m[2m)[22m[33m 578[2mms[22m[39m
+2026-10-27T02:51:28.5445934Z  [32m✓[39m tests/numerical-report.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 483[2mms[22m[39m
+2026-10-27T02:51:28.5446889Z    [33m[2m✓[22m[39m writes numerical comparison, refinement and passive-energy evidence with explicit gates[33m 428[2mms[22m[39m
+2026-10-27T02:51:28.9156943Z  [32m✓[39m tests/g07-reliability.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 732[2mms[22m[39m
+2026-10-27T02:51:28.9167907Z    [33m[2m✓[22m[39m Xbox Wireless Controller: ten minutes API input, mapping, index and fail-safe transitions[33m 327[2mms[22m[39m
+2026-10-27T02:51:29.0598003Z  [32m✓[39m tests/i18n.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+2026-10-27T02:51:29.1697815Z  [32m✓[39m tests/timing.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+2026-10-27T02:51:29.2866582Z  [32m✓[39m tests/g09-i18n.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+2026-10-27T02:51:29.4139568Z  [32m✓[39m tests/school-i18n.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 5[2mms[22m[39m
+2026-10-27T02:51:29.5289336Z  [32m✓[39m tests/g10-i18n.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+2026-10-27T02:51:34.9810502Z  [32m✓[39m tests/g10-guided-flight.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 6307[2mms[22m[39m
+2026-10-27T02:51:34.9818354Z    [33m[2m✓[22m[39m G10 input-only british-slalom full lap and recorded-input replay, not player autopilot[33m 3612[2mms[22m[39m
+2026-10-27T02:51:34.9819249Z    [33m[2m✓[22m[39m G10 input-only industrial-run full lap and recorded-input replay, not player autopilot[33m 2694[2mms[22m[39m
+2026-10-27T02:51:34.9833069Z 
+2026-10-27T02:51:34.9836571Z [2m Test Files [22m [1m[32m15 passed[39m[22m[90m (15)[39m
+2026-10-27T02:51:34.9837563Z [2m      Tests [22m [1m[32m129 passed[39m[22m[90m (129)[39m
+2026-10-27T02:51:34.9838150Z [2m   Start at [22m 02:51:23
+2026-10-27T02:51:34.9840184Z [2m   Duration [22m 11.07s[2m (tests 95%, transform 2%, import 2%)[22m
+2026-10-27T02:51:34.9847551Z 
+2026-10-27T02:51:35.0361298Z ##[group]Run npm run build
+2026-10-27T02:51:35.0361478Z [36;1mnpm run build[0m
+2026-10-27T02:51:35.0413715Z shell: /usr/bin/bash -e {0}
+2026-10-27T02:51:35.0413855Z env:
+2026-10-27T02:51:35.0414010Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:35.0414254Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-27T02:51:35.0414499Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:35.0414716Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:35.0414932Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:35.0415153Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-27T02:51:35.0415348Z ##[endgroup]
+2026-10-27T02:51:35.1085546Z 
+2026-10-27T02:51:35.1085953Z > physical-fpv-player@0.1.0 build
+2026-10-27T02:51:35.1086454Z > tsc --noEmit && vite build && node scripts/check-build.mjs
+2026-10-27T02:51:35.1086686Z 
+2026-10-27T02:51:35.5051387Z [36mvite v8.3.5 [32mbuilding client environment for production...[36m[39m
+2026-10-27T02:51:35.5112890Z transforming...
+2026-10-27T02:51:35.5971076Z ✓ 31 modules transformed.
+2026-10-27T02:51:35.6415107Z rendering chunks...
+2026-10-27T02:51:35.7023376Z computing gzip size...
+2026-10-27T02:51:35.7558041Z dist/version.json                   0.17 kB │ gzip:     0.16 kB
+2026-10-27T02:51:35.7558445Z dist/index.html                     0.90 kB │ gzip:     0.55 kB
+2026-10-27T02:51:35.7558884Z dist/THIRD_PARTY_LICENSES.txt      12.49 kB │ gzip:     4.50 kB
+2026-10-27T02:51:35.7559372Z dist/assets/index-BNQ_dM7l.css      9.89 kB │ gzip:     2.99 kB
+2026-10-27T02:51:35.7559960Z dist/assets/index-CsAMP3bE.js   4,977.63 kB │ gzip: 1,844.35 kB
+2026-10-27T02:51:35.7560216Z 
+2026-10-27T02:51:35.7568601Z [33m[plugin builtin:vite-reporter] 
+2026-10-27T02:51:35.7568856Z [32m✓ built in 251ms[39m
+2026-10-27T02:51:35.7569159Z (!) Some chunks are larger than 3000 kB after minification. Consider:
+2026-10-27T02:51:35.7569593Z - Using dynamic import() to code-split the application
+2026-10-27T02:51:35.7570092Z - Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+2026-10-27T02:51:35.7570686Z - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+2026-10-27T02:51:35.7900611Z {
+2026-10-27T02:51:35.7900874Z   "check": "static-build",
+2026-10-27T02:51:35.7901132Z   "status": "PASS",
+2026-10-27T02:51:35.7901334Z   "checked": 2,
+2026-10-27T02:51:35.7901485Z   "version": {
+2026-10-27T02:51:35.7901608Z     "version": "0.1.0",
+2026-10-27T02:51:35.7901804Z     "commit": "bce488a8cfc24b8ce72307892d42ed4dfe975681",
+2026-10-27T02:51:35.7902218Z     "dirty": false,
+2026-10-27T02:51:35.7902367Z     "base": "/Physical-Fpv-Simulator/",
+2026-10-27T02:51:35.7902568Z     "builtAt": "2026-10-27T02:51:35.685Z"
+2026-10-27T02:51:35.7902714Z   },
+2026-10-27T02:51:35.7902817Z   "assets": [
+2026-10-27T02:51:35.7902959Z     "index-BNQ_dM7l.css",
+2026-10-27T02:51:35.7903115Z     "index-CsAMP3bE.js"
+2026-10-27T02:51:35.7903257Z   ]
+2026-10-27T02:51:35.7903358Z }
+2026-10-27T02:51:35.8008109Z ##[group]Run npx playwright install --with-deps chromium
+2026-10-27T02:51:35.8008379Z [36;1mnpx playwright install --with-deps chromium[0m
+2026-10-27T02:51:35.8063261Z shell: /usr/bin/bash -e {0}
+2026-10-27T02:51:35.8063404Z env:
+2026-10-27T02:51:35.8063559Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:35.8063884Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-27T02:51:35.8064123Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:35.8064342Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:35.8064639Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:35.8064867Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-27T02:51:35.8065048Z ##[endgroup]
+2026-10-27T02:51:36.2969857Z Installing dependencies...
+2026-10-27T02:51:36.3038440Z Switching to root user to install dependencies...
+2026-10-27T02:51:36.3782009Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-27T02:51:36.4262023Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-10-27T02:51:36.4262962Z Get:6 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2026-10-27T02:51:36.4301759Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2026-10-27T02:51:36.4338204Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2026-10-27T02:51:36.4351452Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2026-10-27T02:51:36.5207572Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [598 kB]
+2026-10-27T02:51:36.5388356Z Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [661 kB]
+2026-10-27T02:51:36.5438397Z Get:9 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [12.4 kB]
+2026-10-27T02:51:36.5586992Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1401 kB]
+2026-10-27T02:51:36.5701818Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [310 kB]
+2026-10-27T02:51:36.5728191Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1706 kB]
+2026-10-27T02:51:36.5768524Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [343 kB]
+2026-10-27T02:51:36.5796750Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1805 kB]
+2026-10-27T02:51:36.5862987Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [411 kB]
+2026-10-27T02:51:36.6411401Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1146 kB]
+2026-10-27T02:51:36.6450799Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [231 kB]
+2026-10-27T02:51:36.6462649Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1223 kB]
+2026-10-27T02:51:36.6504293Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [246 kB]
+2026-10-27T02:51:36.6977705Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1713 kB]
+2026-10-27T02:51:36.7034852Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [392 kB]
+2026-10-27T02:51:42.1299660Z Fetched 12.6 MB in 1s (12.7 MB/s)
+2026-10-27T02:51:42.6598673Z Reading package lists...
+2026-10-27T02:51:42.6782270Z Reading package lists...
+2026-10-27T02:51:42.8138303Z Building dependency tree...
+2026-10-27T02:51:42.8143960Z Reading state information...
+2026-10-27T02:51:42.9160616Z libasound2t64 is already the newest version (1.2.11-1ubuntu0.3).
+2026-10-27T02:51:42.9161170Z libasound2t64 set to manually installed.
+2026-10-27T02:51:42.9161669Z libatk-bridge2.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-27T02:51:42.9162195Z libatk-bridge2.0-0t64 set to manually installed.
+2026-10-27T02:51:42.9163266Z libatk1.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-27T02:51:42.9163721Z libatk1.0-0t64 set to manually installed.
+2026-10-27T02:51:42.9164130Z libatspi2.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-27T02:51:42.9164567Z libatspi2.0-0t64 set to manually installed.
+2026-10-27T02:51:42.9164985Z libcairo2 is already the newest version (1.18.0-3build1).
+2026-10-27T02:51:42.9165381Z libcairo2 set to manually installed.
+2026-10-27T02:51:42.9165795Z libcups2t64 is already the newest version (2.4.7-1.2ubuntu7.14).
+2026-10-27T02:51:42.9166203Z libcups2t64 set to manually installed.
+2026-10-27T02:51:42.9166654Z libdbus-1-3 is already the newest version (1.14.10-4ubuntu4.1).
+2026-10-27T02:51:42.9167074Z libdbus-1-3 set to manually installed.
+2026-10-27T02:51:42.9167711Z libdrm2 is already the newest version (2.4.125-1ubuntu0.1~24.04.2).
+2026-10-27T02:51:42.9168031Z libdrm2 set to manually installed.
+2026-10-27T02:51:42.9168350Z libgbm1 is already the newest version (25.2.8-0ubuntu0.24.04.4).
+2026-10-27T02:51:42.9168659Z libgbm1 set to manually installed.
+2026-10-27T02:51:42.9168920Z libnspr4 is already the newest version (2:4.35-1.1build1).
+2026-10-27T02:51:42.9169124Z libnspr4 set to manually installed.
+2026-10-27T02:51:42.9169349Z libpango-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2026-10-27T02:51:42.9169562Z libpango-1.0-0 set to manually installed.
+2026-10-27T02:51:42.9169779Z libx11-6 is already the newest version (2:1.8.7-1ubuntu0.1).
+2026-10-27T02:51:42.9169980Z libx11-6 set to manually installed.
+2026-10-27T02:51:42.9170175Z libxcb1 is already the newest version (1.15-1ubuntu2).
+2026-10-27T02:51:42.9170366Z libxcb1 set to manually installed.
+2026-10-27T02:51:42.9170584Z libxcomposite1 is already the newest version (1:0.4.5-1build3).
+2026-10-27T02:51:42.9170802Z libxcomposite1 set to manually installed.
+2026-10-27T02:51:42.9171022Z libxdamage1 is already the newest version (1:1.1.6-1build1).
+2026-10-27T02:51:42.9171324Z libxdamage1 set to manually installed.
+2026-10-27T02:51:42.9171587Z libxext6 is already the newest version (2:1.3.4-1build2).
+2026-10-27T02:51:42.9171782Z libxext6 set to manually installed.
+2026-10-27T02:51:42.9171989Z libxfixes3 is already the newest version (1:6.0.0-2build1).
+2026-10-27T02:51:42.9172200Z libxfixes3 set to manually installed.
+2026-10-27T02:51:42.9172416Z libxkbcommon0 is already the newest version (1.6.0-1build1).
+2026-10-27T02:51:42.9172624Z libxkbcommon0 set to manually installed.
+2026-10-27T02:51:42.9172838Z libxrandr2 is already the newest version (2:1.5.2-2build1).
+2026-10-27T02:51:42.9173038Z libxrandr2 set to manually installed.
+2026-10-27T02:51:42.9173294Z fonts-noto-color-emoji is already the newest version (2.047-0ubuntu0.24.04.1).
+2026-10-27T02:51:42.9173588Z libfontconfig1 is already the newest version (2.15.0-1.1ubuntu2).
+2026-10-27T02:51:42.9173872Z libfontconfig1 set to manually installed.
+2026-10-27T02:51:42.9174128Z libfreetype6 is already the newest version (2.13.2+dfsg-1ubuntu0.2).
+2026-10-27T02:51:42.9174356Z libfreetype6 set to manually installed.
+2026-10-27T02:51:42.9174578Z fonts-liberation is already the newest version (1:2.1.5-3).
+2026-10-27T02:51:42.9174798Z fonts-liberation set to manually installed.
+2026-10-27T02:51:42.9175018Z The following additional packages will be installed:
+2026-10-27T02:51:42.9175270Z   gir1.2-glib-2.0 libglib2.0-bin libglib2.0-data libnss3-tools
+2026-10-27T02:51:42.9175494Z   xfonts-encodings xfonts-utils xserver-common
+2026-10-27T02:51:42.9175671Z Suggested packages:
+2026-10-27T02:51:42.9175848Z   low-memory-monitor
+2026-10-27T02:51:42.9176043Z Recommended packages:
+2026-10-27T02:51:42.9176487Z   fonts-ipafont-mincho fonts-tlwg-loma xfonts-base
+2026-10-27T02:51:42.9333589Z The following NEW packages will be installed:
+2026-10-27T02:51:42.9334128Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+2026-10-27T02:51:42.9336510Z   fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+2026-10-27T02:51:42.9336743Z   xfonts-utils
+2026-10-27T02:51:42.9338665Z The following packages will be upgraded:
+2026-10-27T02:51:42.9339298Z   gir1.2-glib-2.0 libglib2.0-0t64 libglib2.0-bin libglib2.0-data libnss3
+2026-10-27T02:51:42.9341433Z   libnss3-tools xserver-common xvfb
+2026-10-27T02:51:42.9461310Z 8 upgraded, 9 newly installed, 0 to remove and 96 not upgraded.
+2026-10-27T02:51:42.9461562Z Need to get 25.9 MB of archives.
+2026-10-27T02:51:42.9461790Z After this operation, 79.5 MB of additional disk space will be used.
+2026-10-27T02:51:42.9462052Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-27T02:51:43.0292225Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-ipafont-gothic all 00303-21ubuntu1 [3513 kB]
+2026-10-27T02:51:43.1109600Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-data all 2.80.0-6ubuntu3.10 [50.2 kB]
+2026-10-27T02:51:43.1511133Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-bin amd64 2.80.0-6ubuntu3.10 [97.9 kB]
+2026-10-27T02:51:43.1825600Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gir1.2-glib-2.0 amd64 2.80.0-6ubuntu3.10 [183 kB]
+2026-10-27T02:51:43.2152611Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-0t64 amd64 2.80.0-6ubuntu3.10 [1548 kB]
+2026-10-27T02:51:43.2596296Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 fonts-freefont-ttf all 20211204+svn4273-2 [5641 kB]
+2026-10-27T02:51:43.3451483Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-tlwg-loma-otf all 1:0.7.3-1 [107 kB]
+2026-10-27T02:51:43.3760943Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-unifont all 1:15.1.01-1build1 [2993 kB]
+2026-10-27T02:51:43.4353789Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-wqy-zenhei all 0.9.45-8 [7472 kB]
+2026-10-27T02:51:43.5481471Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libnss3 amd64 2:3.98-1ubuntu0.3 [1445 kB]
+2026-10-27T02:51:43.6051794Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libnss3-tools amd64 2:3.98-1ubuntu0.3 [615 kB]
+2026-10-27T02:51:43.6494674Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-encodings all 1:1.0.5-0ubuntu2 [578 kB]
+2026-10-27T02:51:43.6941981Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-utils amd64 1:7.7+6build3 [94.4 kB]
+2026-10-27T02:51:43.7449863Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 xfonts-cyrillic all 1:1.0.5+nmu1 [384 kB]
+2026-10-27T02:51:43.7807972Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-scalable all 1:1.0.3-1.3 [304 kB]
+2026-10-27T02:51:43.8178962Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 xserver-common all 2:21.1.12-1ubuntu1.9 [35.0 kB]
+2026-10-27T02:51:43.8530248Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 xvfb amd64 2:21.1.12-1ubuntu1.9 [877 kB]
+2026-10-27T02:51:44.0337024Z Fetched 25.9 MB in 1s (28.1 MB/s)
+2026-10-27T02:51:44.0526860Z Selecting previously unselected package fonts-ipafont-gothic.
+2026-10-27T02:51:44.0798177Z (Reading database ... 
+2026-10-27T02:51:44.0798379Z (Reading database ... 5%
+2026-10-27T02:51:44.0798543Z (Reading database ... 10%
+2026-10-27T02:51:44.0798760Z (Reading database ... 15%
+2026-10-27T02:51:44.0798916Z (Reading database ... 20%
+2026-10-27T02:51:44.0799205Z (Reading database ... 25%
+2026-10-27T02:51:44.0799454Z (Reading database ... 30%
+2026-10-27T02:51:44.0799668Z (Reading database ... 35%
+2026-10-27T02:51:44.0799811Z (Reading database ... 40%
+2026-10-27T02:51:44.0799953Z (Reading database ... 45%
+2026-10-27T02:51:44.0800287Z (Reading database ... 50%
+2026-10-27T02:51:44.0829947Z (Reading database ... 55%
+2026-10-27T02:51:44.2014748Z (Reading database ... 60%
+2026-10-27T02:51:44.4089426Z (Reading database ... 65%
+2026-10-27T02:51:44.5971916Z (Reading database ... 70%
+2026-10-27T02:51:44.8003307Z (Reading database ... 75%
+2026-10-27T02:51:44.9453870Z (Reading database ... 80%
+2026-10-27T02:51:45.1490235Z (Reading database ... 85%
+2026-10-27T02:51:45.3235739Z (Reading database ... 90%
+2026-10-27T02:51:45.5031418Z (Reading database ... 95%
+2026-10-27T02:51:45.5031733Z (Reading database ... 100%
+2026-10-27T02:51:45.5032102Z (Reading database ... 203540 files and directories currently installed.)
+2026-10-27T02:51:45.5067975Z Preparing to unpack .../00-fonts-ipafont-gothic_00303-21ubuntu1_all.deb ...
+2026-10-27T02:51:45.5236400Z Unpacking fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-10-27T02:51:45.7293761Z Preparing to unpack .../01-libglib2.0-data_2.80.0-6ubuntu3.10_all.deb ...
+2026-10-27T02:51:45.7312366Z Unpacking libglib2.0-data (2.80.0-6ubuntu3.10) over (2.80.0-6ubuntu3.9) ...
+2026-10-27T02:51:45.7608076Z Preparing to unpack .../02-libglib2.0-bin_2.80.0-6ubuntu3.10_amd64.deb ...
+2026-10-27T02:51:45.7699813Z Unpacking libglib2.0-bin (2.80.0-6ubuntu3.10) over (2.80.0-6ubuntu3.9) ...
+2026-10-27T02:51:45.8116680Z Preparing to unpack .../03-gir1.2-glib-2.0_2.80.0-6ubuntu3.10_amd64.deb ...
+2026-10-27T02:51:45.8134461Z Unpacking gir1.2-glib-2.0:amd64 (2.80.0-6ubuntu3.10) over (2.80.0-6ubuntu3.9) ...
+2026-10-27T02:51:45.8434750Z Preparing to unpack .../04-libglib2.0-0t64_2.80.0-6ubuntu3.10_amd64.deb ...
+2026-10-27T02:51:45.8490348Z Unpacking libglib2.0-0t64:amd64 (2.80.0-6ubuntu3.10) over (2.80.0-6ubuntu3.9) ...
+2026-10-27T02:51:45.9047822Z Selecting previously unselected package fonts-freefont-ttf.
+2026-10-27T02:51:45.9159674Z Preparing to unpack .../05-fonts-freefont-ttf_20211204+svn4273-2_all.deb ...
+2026-10-27T02:51:45.9168266Z Unpacking fonts-freefont-ttf (20211204+svn4273-2) ...
+2026-10-27T02:51:46.0056674Z Selecting previously unselected package fonts-tlwg-loma-otf.
+2026-10-27T02:51:46.0154655Z Preparing to unpack .../06-fonts-tlwg-loma-otf_1%3a0.7.3-1_all.deb ...
+2026-10-27T02:51:46.0160913Z Unpacking fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-10-27T02:51:46.0330415Z Selecting previously unselected package fonts-unifont.
+2026-10-27T02:51:46.0426376Z Preparing to unpack .../07-fonts-unifont_1%3a15.1.01-1build1_all.deb ...
+2026-10-27T02:51:46.0432216Z Unpacking fonts-unifont (1:15.1.01-1build1) ...
+2026-10-27T02:51:46.2184587Z Selecting previously unselected package fonts-wqy-zenhei.
+2026-10-27T02:51:46.2283418Z Preparing to unpack .../08-fonts-wqy-zenhei_0.9.45-8_all.deb ...
+2026-10-27T02:51:46.2363732Z Unpacking fonts-wqy-zenhei (0.9.45-8) ...
+2026-10-27T02:51:46.6841735Z Preparing to unpack .../09-libnss3_2%3a3.98-1ubuntu0.3_amd64.deb ...
+2026-10-27T02:51:46.6862681Z Unpacking libnss3:amd64 (2:3.98-1ubuntu0.3) over (2:3.98-1ubuntu0.2) ...
+2026-10-27T02:51:46.7315899Z Preparing to unpack .../10-libnss3-tools_2%3a3.98-1ubuntu0.3_amd64.deb ...
+2026-10-27T02:51:46.7334032Z Unpacking libnss3-tools (2:3.98-1ubuntu0.3) over (2:3.98-1ubuntu0.2) ...
+2026-10-27T02:51:46.7873207Z Selecting previously unselected package xfonts-encodings.
+2026-10-27T02:51:46.7973445Z Preparing to unpack .../11-xfonts-encodings_1%3a1.0.5-0ubuntu2_all.deb ...
+2026-10-27T02:51:46.7980032Z Unpacking xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-10-27T02:51:46.8204520Z Selecting previously unselected package xfonts-utils.
+2026-10-27T02:51:46.8299574Z Preparing to unpack .../12-xfonts-utils_1%3a7.7+6build3_amd64.deb ...
+2026-10-27T02:51:46.8306020Z Unpacking xfonts-utils (1:7.7+6build3) ...
+2026-10-27T02:51:46.8617537Z Selecting previously unselected package xfonts-cyrillic.
+2026-10-27T02:51:46.8712826Z Preparing to unpack .../13-xfonts-cyrillic_1%3a1.0.5+nmu1_all.deb ...
+2026-10-27T02:51:46.8897167Z Unpacking xfonts-cyrillic (1:1.0.5+nmu1) ...
+2026-10-27T02:51:46.9160139Z Selecting previously unselected package xfonts-scalable.
+2026-10-27T02:51:46.9253575Z Preparing to unpack .../14-xfonts-scalable_1%3a1.0.3-1.3_all.deb ...
+2026-10-27T02:51:46.9260031Z Unpacking xfonts-scalable (1:1.0.3-1.3) ...
+2026-10-27T02:51:46.9580587Z Preparing to unpack .../15-xserver-common_2%3a21.1.12-1ubuntu1.9_all.deb ...
+2026-10-27T02:51:46.9601903Z Unpacking xserver-common (2:21.1.12-1ubuntu1.9) over (2:21.1.12-1ubuntu1.8) ...
+2026-10-27T02:51:46.9929102Z Preparing to unpack .../16-xvfb_2%3a21.1.12-1ubuntu1.9_amd64.deb ...
+2026-10-27T02:51:47.0015747Z Unpacking xvfb (2:21.1.12-1ubuntu1.9) over (2:21.1.12-1ubuntu1.8) ...
+2026-10-27T02:51:47.0583226Z Setting up fonts-wqy-zenhei (0.9.45-8) ...
+2026-10-27T02:51:47.0700432Z Setting up fonts-freefont-ttf (20211204+svn4273-2) ...
+2026-10-27T02:51:47.0718929Z Setting up libnss3:amd64 (2:3.98-1ubuntu0.3) ...
+2026-10-27T02:51:47.0738880Z Setting up libglib2.0-0t64:amd64 (2.80.0-6ubuntu3.10) ...
+2026-10-27T02:51:47.0848939Z Setting up libglib2.0-data (2.80.0-6ubuntu3.10) ...
+2026-10-27T02:51:47.0868284Z Setting up fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-10-27T02:51:47.0886138Z Setting up xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-10-27T02:51:47.0905706Z Setting up gir1.2-glib-2.0:amd64 (2.80.0-6ubuntu3.10) ...
+2026-10-27T02:51:47.0924646Z Setting up fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-10-27T02:51:47.0983815Z update-alternatives: using /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf to provide /usr/share/fonts/truetype/fonts-japanese-gothic.ttf (fonts-japanese-gothic.ttf) in auto mode
+2026-10-27T02:51:47.1141658Z Setting up xserver-common (2:21.1.12-1ubuntu1.9) ...
+2026-10-27T02:51:47.1161567Z Setting up libnss3-tools (2:3.98-1ubuntu0.3) ...
+2026-10-27T02:51:47.1182113Z Setting up fonts-unifont (1:15.1.01-1build1) ...
+2026-10-27T02:51:47.1200889Z Setting up xvfb (2:21.1.12-1ubuntu1.9) ...
+2026-10-27T02:51:47.1228782Z Setting up libglib2.0-bin (2.80.0-6ubuntu3.10) ...
+2026-10-27T02:51:47.1247356Z Setting up xfonts-utils (1:7.7+6build3) ...
+2026-10-27T02:51:47.1290236Z Setting up xfonts-cyrillic (1:1.0.5+nmu1) ...
+2026-10-27T02:51:47.1548985Z Setting up xfonts-scalable (1:1.0.3-1.3) ...
+2026-10-27T02:51:47.1836345Z Processing triggers for libc-bin (2.39-0ubuntu8.9) ...
+2026-10-27T02:51:47.3941342Z Processing triggers for man-db (2.12.0-4build2) ...
+2026-10-27T02:51:47.3962342Z Not building database; man-db/auto-update is not 'true'.
+2026-10-27T02:51:47.3972487Z Processing triggers for fontconfig (2.15.0-1.1ubuntu2) ...
+2026-10-27T02:51:48.5443410Z 
+2026-10-27T02:51:48.5443955Z Running kernel seems to be up-to-date.
+2026-10-27T02:51:48.5444142Z 
+2026-10-27T02:51:48.5444218Z Restarting services...
+2026-10-27T02:51:48.5783572Z  systemctl restart packagekit.service php8.3-fpm.service polkit.service udisks2.service
+2026-10-27T02:51:48.6770365Z 
+2026-10-27T02:51:48.6771381Z Service restarts being deferred:
+2026-10-27T02:51:48.6771767Z  systemctl restart ModemManager.service
+2026-10-27T02:51:48.6772121Z  systemctl restart networkd-dispatcher.service
+2026-10-27T02:51:48.6772328Z 
+2026-10-27T02:51:48.6772474Z No containers need to be restarted.
+2026-10-27T02:51:48.6772683Z 
+2026-10-27T02:51:48.6772848Z No user sessions are running outdated binaries.
+2026-10-27T02:51:48.6773046Z 
+2026-10-27T02:51:48.6773308Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-10-27T02:51:49.3848767Z Downloading Chrome for Testing 156.0.8078.4 (playwright chromium v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-linux64.zip
+2026-10-27T02:51:49.7642846Z |                                                                                |   0% of 191.1 MiB
+2026-10-27T02:51:50.1659419Z |■■■■■■■■                                                                        |  10% of 191.1 MiB
+2026-10-27T02:51:50.2633087Z |■■■■■■■■■■■■■■■■                                                                |  20% of 191.1 MiB
+2026-10-27T02:51:50.3378508Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 191.1 MiB
+2026-10-27T02:51:50.4259623Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 191.1 MiB
+2026-10-27T02:51:50.5208196Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 191.1 MiB
+2026-10-27T02:51:50.6169489Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 191.1 MiB
+2026-10-27T02:51:50.6982437Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 191.1 MiB
+2026-10-27T02:51:50.8015814Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 191.1 MiB
+2026-10-27T02:51:50.8795979Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 191.1 MiB
+2026-10-27T02:51:50.9979661Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 191.1 MiB
+2026-10-27T02:51:53.2283490Z Chrome for Testing 156.0.8078.4 (playwright chromium v1248) downloaded to /home/runner/.cache/ms-playwright/chromium-1248
+2026-10-27T02:51:53.2286360Z Downloading FFmpeg (playwright ffmpeg v1013) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1013/ffmpeg-linux.zip
+2026-10-27T02:51:53.4924354Z |                                                                                |   0% of 2.2 MiB
+2026-10-27T02:51:53.5171829Z |■■■■■■■■                                                                        |  10% of 2.2 MiB
+2026-10-27T02:51:53.5261052Z |■■■■■■■■■■■■■■■■                                                                |  20% of 2.2 MiB
+2026-10-27T02:51:53.5340635Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.2 MiB
+2026-10-27T02:51:53.5422354Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.2 MiB
+2026-10-27T02:51:53.5434849Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.2 MiB
+2026-10-27T02:51:53.5507892Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.2 MiB
+2026-10-27T02:51:53.5518565Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.2 MiB
+2026-10-27T02:51:53.5534756Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.2 MiB
+2026-10-27T02:51:53.5599192Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.2 MiB
+2026-10-27T02:51:53.5608375Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.2 MiB
+2026-10-27T02:51:53.6016526Z FFmpeg (playwright ffmpeg v1013) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1013
+2026-10-27T02:51:53.6019035Z Downloading Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-headless-shell-linux64.zip
+2026-10-27T02:51:53.9133442Z |                                                                                |   0% of 120 MiB
+2026-10-27T02:51:54.2472981Z |■■■■■■■■                                                                        |  10% of 120 MiB
+2026-10-27T02:51:54.3091427Z |■■■■■■■■■■■■■■■■                                                                |  20% of 120 MiB
+2026-10-27T02:51:54.3449944Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 120 MiB
+2026-10-27T02:51:54.3894513Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 120 MiB
+2026-10-27T02:51:54.4103907Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 120 MiB
+2026-10-27T02:51:54.4420995Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 120 MiB
+2026-10-27T02:51:54.4852255Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 120 MiB
+2026-10-27T02:51:54.5103878Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 120 MiB
+2026-10-27T02:51:54.5418205Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 120 MiB
+2026-10-27T02:51:54.5788946Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 120 MiB
+2026-10-27T02:51:56.1717286Z Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1248
+2026-10-27T02:51:56.2019454Z ##[group]Run npm run test:e2e
+2026-10-27T02:51:56.2019773Z [36;1mnpm run test:e2e[0m
+2026-10-27T02:51:56.2075407Z shell: /usr/bin/bash -e {0}
+2026-10-27T02:51:56.2075630Z env:
+2026-10-27T02:51:56.2075892Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:56.2076234Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-27T02:51:56.2076604Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:56.2076951Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:56.2077256Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T02:51:56.2077756Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-27T02:51:56.2078053Z ##[endgroup]
+2026-10-27T02:51:56.2742848Z 
+2026-10-27T02:51:56.2743298Z > physical-fpv-player@0.1.0 test:e2e
+2026-10-27T02:51:56.2743662Z > playwright test
+2026-10-27T02:51:56.2743777Z 
+2026-10-27T02:51:57.8708016Z 
+2026-10-27T02:51:57.8708988Z Running 54 tests using 1 worker
+2026-10-27T02:51:57.8709263Z 
+2026-10-27T02:52:17.8698403Z   ✓   1 e2e/g08.spec.ts:2:35 › G08 actual Chromium A/B and version rollback 1440 (18.4s)
+2026-10-27T02:52:32.2291007Z   ✓   2 e2e/g08.spec.ts:2:35 › G08 actual Chromium A/B and version rollback 360 (14.3s)
+2026-10-27T02:52:47.1966197Z   ✓   3 e2e/g08.spec.ts:2:35 › G08 actual Chromium A/B and version rollback 412 (15.0s)
+2026-10-27T02:52:54.7486563Z   ✓   4 e2e/g08.spec.ts:30:1 › G08 five-gate best, persistent version rollback and unrelated storage remain isolated (7.5s)
+2026-10-27T02:53:03.6410015Z   ✓   5 e2e/g09.spec.ts:2:35 › G09 native splits, class isolation and legacy preservation 1440 (8.9s)
+2026-10-27T02:53:10.5244507Z   ✓   6 e2e/g09.spec.ts:2:35 › G09 native splits, class isolation and legacy preservation 412 (6.9s)
+2026-10-27T02:53:17.0115508Z   ✓   7 e2e/g09.spec.ts:2:35 › G09 native splits, class isolation and legacy preservation 360 (6.5s)
+2026-10-27T02:53:20.6185297Z   ✓   8 e2e/g09.spec.ts:17:1 › G09 missed gate and actual collision never save a record (3.6s)
+2026-10-27T02:53:27.6588437Z   ✓   9 e2e/g09.spec.ts:23:35 › G09 bilingual race state survives language switching 1440 (7.0s)
+2026-10-27T02:53:33.1968242Z   ✓  10 e2e/g09.spec.ts:23:35 › G09 bilingual race state survives language switching 412 (5.5s)
+2026-10-27T02:53:38.4987360Z   ✓  11 e2e/g09.spec.ts:23:35 › G09 bilingual race state survives language switching 360 (5.3s)
+2026-10-27T02:54:00.9125754Z   ✓  12 e2e/g10.spec.ts:2:35 › G10 British Slalom native 3D course, cameras and timing 1440 (22.4s)
+2026-10-27T02:54:18.6651811Z   ✓  13 e2e/g10.spec.ts:2:35 › G10 British Slalom native 3D course, cameras and timing 412 (17.7s)
+2026-10-27T02:54:37.7227649Z   ✓  14 e2e/g10.spec.ts:2:35 › G10 British Slalom native 3D course, cameras and timing 360 (19.0s)
+2026-10-27T02:54:44.3855985Z   ✓  15 e2e/g10.spec.ts:19:59 › G10 native imported input-only full british-slalom lap renders the completed flight (6.6s)
+2026-10-27T02:54:50.6731404Z   ✓  16 e2e/g10.spec.ts:19:59 › G10 native imported input-only full industrial-run lap renders the completed flight (6.3s)
+2026-10-27T02:54:58.6572774Z   ✓  17 e2e/g10.spec.ts:27:1 › G10 explicit course loading never exempts a running flight from the 250ms guard (8.0s)
+2026-10-27T02:55:01.6304770Z   ✘  18 e2e/g10.spec.ts:41:35 › G10 bilingual course identity and safe selection 1440 (2.9s)
+2026-10-27T02:55:04.6089544Z   ✘  19 e2e/g10.spec.ts:41:35 › G10 bilingual course identity and safe selection 412 (2.4s)
+2026-10-27T02:55:07.3632468Z   ✘  20 e2e/g10.spec.ts:41:35 › G10 bilingual course identity and safe selection 360 (2.3s)
+2026-10-27T02:56:43.5474137Z   ✘  21 e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 1440 (1.6m)
+2026-10-27T02:58:17.6977947Z   ✘  22 e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 412 (1.5m)
+2026-10-27T02:59:52.3091883Z   ✘  23 e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 390 (1.5m)
+2026-10-27T03:01:26.4547604Z   ✘  24 e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 360 (1.5m)
+2026-10-27T03:01:43.1332568Z   ✓  25 e2e/i18n.spec.ts:3:72 › I18N native zh-TW 1440 (16.2s)
+2026-10-27T03:01:59.6021689Z   ✓  26 e2e/i18n.spec.ts:3:72 › I18N native en 1440 (16.4s)
+2026-10-27T03:02:12.3246453Z   ✓  27 e2e/i18n.spec.ts:3:72 › I18N native zh-TW 412 (12.7s)
+2026-10-27T03:02:24.9944421Z   ✓  28 e2e/i18n.spec.ts:3:72 › I18N native en 412 (12.7s)
+2026-10-27T03:02:37.5891137Z   ✓  29 e2e/i18n.spec.ts:3:72 › I18N native zh-TW 360 (12.6s)
+2026-10-27T03:02:49.4689206Z   ✓  30 e2e/i18n.spec.ts:3:72 › I18N native en 360 (11.9s)
+2026-10-27T03:02:57.1080557Z   ✓  31 e2e/i18n.spec.ts:23:1 › I18N switch is in-place, preserves unsaved selections, pause/disarm, settings, best and replay bytes (7.6s)
+2026-10-27T03:03:01.0858382Z   ✓  32 e2e/i18n.spec.ts:40:1 › I18N storage failure and Chinese browser fallback remain usable (4.0s)
+2026-10-27T03:03:07.5336104Z   ✓  33 e2e/i18n.spec.ts:47:1 › I18N Chinese native ARM hold, switch without reset, then settings disarm (6.4s)
+2026-10-27T03:03:11.1926031Z   ✓  34 e2e/i18n.spec.ts:59:38 › I18N coarse-pointer mobile zh-TW (3.6s)
+2026-10-27T03:03:14.7975619Z   ✓  35 e2e/i18n.spec.ts:59:38 › I18N coarse-pointer mobile en (3.6s)
+2026-10-27T03:03:19.9430358Z   ✓  36 e2e/i18n.spec.ts:68:1 › I18N native replay chooser is localized and malformed replay preserves paused flight (5.1s)
+2026-10-27T03:03:27.3372795Z   ✓  37 e2e/player.spec.ts:10:1 › actual Chromium: start, confirmed ARM, takeoff, mode, fail-safe, retry and views (7.4s)
+2026-10-27T03:03:31.1146597Z   ✓  38 e2e/player.spec.ts:33:1 › deterministic browser physics: gate crossing, collision and reset (3.8s)
+2026-10-27T03:03:37.6882166Z   ✓  39 e2e/player.spec.ts:41:1 › production Pages-base bundle renders with provenance and no development hooks (6.6s)
+2026-10-27T03:03:45.1193916Z   ✓  40 e2e/player.spec.ts:62:1 › synthetic Standard Gamepad API: connection, zero-throttle ARM and disconnect fail-safe (7.4s)
+2026-10-27T03:03:56.5179647Z   ✓  41 e2e/player.spec.ts:88:1 › record actual browser frame intervals without claiming physical-device performance (11.4s)
+2026-10-27T03:04:00.4799104Z   ✓  42 e2e/player.spec.ts:100:1 › synthetic scenario setup: all five ordered gates finish and best persists (4.0s)
+2026-10-27T03:04:05.4169474Z   ✓  43 e2e/player.spec.ts:123:1 › computed Acro yaw input changes quaternion without test attitude assignment (4.9s)
+2026-10-27T03:04:15.7754669Z   ✓  44 e2e/player.spec.ts:135:1 › calibration controls and layout persist on reload using a synthetic centered pad (10.3s)
+2026-10-27T03:04:20.5297384Z   ✓  45 e2e/player.spec.ts:154:1 › assembly UI changes actual model mass and resets disarmed (4.7s)
+2026-10-27T03:04:26.6099938Z   ✓  46 e2e/player.spec.ts:169:1 › replay file export/import, malformed input rejection and same-build playback (6.1s)
+2026-10-27T03:04:34.0218382Z   ✓  47 e2e/player.spec.ts:188:32 › mobile 360: touch input, fail-safe and native controls (7.4s)
+2026-10-27T03:04:41.8741696Z   ✓  48 e2e/player.spec.ts:188:32 › mobile 412: touch input, fail-safe and native controls (7.8s)
+2026-10-27T03:04:48.0149693Z   ✓  49 e2e/player.spec.ts:209:1 › production keyboard takeoff uses native input without development hooks (6.1s)
+2026-10-27T03:04:55.6200801Z   ✓  50 e2e/player.spec.ts:222:1 › G07 fixed-timestamp API controls remain present and reconnect cannot auto-arm (7.6s)
+2026-10-27T03:05:01.3521882Z   ✓  51 e2e/player.spec.ts:236:35 › G07 optional measured diagnostics at 1440 (5.7s)
+2026-10-27T03:05:05.7522127Z   ✓  52 e2e/player.spec.ts:236:35 › G07 optional measured diagnostics at 360 (4.4s)
+2026-10-27T03:05:10.4892472Z   ✓  53 e2e/player.spec.ts:236:35 › G07 optional measured diagnostics at 412 (4.7s)
+2026-10-27T03:05:16.1598983Z   ✓  54 e2e/player.spec.ts:246:1 › G07 review regression: Auto and Low recalculate pixel ratio without resize (5.7s)
+2026-10-27T03:05:16.4199500Z 
+2026-10-27T03:05:16.4203159Z 
+2026-10-27T03:05:16.4210824Z   1) e2e/g10.spec.ts:41:35 › G10 bilingual course identity and safe selection 1440 ─────────────────
+2026-10-27T03:05:16.4211732Z 
+2026-10-27T03:05:16.4211956Z     Error: expect(received).toEqual(expected) // deep equality
+2026-10-27T03:05:16.4212207Z 
+2026-10-27T03:05:16.4212314Z     - Expected  - 3
+2026-10-27T03:05:16.4212537Z     + Received  + 3
+2026-10-27T03:05:16.4212659Z 
+2026-10-27T03:05:16.4212737Z       Array [
+2026-10-27T03:05:16.4212955Z     -   -0.000010699506674427539,
+2026-10-27T03:05:16.4213211Z     -   0.000003428221816648147,
+2026-10-27T03:05:16.4213437Z     -   0.059868477284908295,
+2026-10-27T03:05:16.4213678Z     +   -0.000008113666808640119,
+2026-10-27T03:05:16.4213922Z     +   0.000004149427240918158,
+2026-10-27T03:05:16.4214158Z     +   0.05988510325551033,
+2026-10-27T03:05:16.4214371Z       ]
+2026-10-27T03:05:16.4214469Z 
+2026-10-27T03:05:16.4214616Z       45 |   for(const language of ['zh-TW','en']){
+2026-10-27T03:05:16.4215274Z       46 |    await page.locator('#ui-language').selectOption(language);expect(await page.locator('#course-select').inputValue()).toBe(id);
+2026-10-27T03:05:16.4216436Z     > 47 |    const after=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());for(const key of ['courseId','courseVersion','physicsModel','gate','splits','energy','position'])expect(after[key]).toEqual(before[key]);
+2026-10-27T03:05:16.4217618Z          |                                                                                                                                                                                                     ^
+2026-10-27T03:05:16.4219194Z       48 |    await expect(page.locator('#course-select option:checked')).toHaveText(({ 'training-straight':['直線訓練場','Training Straight'],'british-slalom':['英式立體迴轉','British Slalom'],'industrial-run':['工業障礙賽道','Industrial Run']} as Record<string,string[]>)[id][language==='zh-TW'?0:1]);
+2026-10-27T03:05:16.4220593Z       49 |    await page.screenshot({path:info.outputPath(`g10-${id}-${language}-${width}.png`)});
+2026-10-27T03:05:16.4220999Z       50 |   }
+2026-10-27T03:05:16.4221442Z         at /home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/web/e2e/g10.spec.ts:47:197
+2026-10-27T03:05:16.4221791Z 
+2026-10-27T03:05:16.4222189Z     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4222785Z     test-results/g10-G10-bilingual-course-identity-and-safe-selection-1440/test-failed-1.png
+2026-10-27T03:05:16.4223443Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4223715Z 
+2026-10-27T03:05:16.4224049Z     Error Context: test-results/g10-G10-bilingual-course-identity-and-safe-selection-1440/error-context.md
+2026-10-27T03:05:16.4224423Z 
+2026-10-27T03:05:16.4224783Z     attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4225425Z     test-results/g10-G10-bilingual-course-identity-and-safe-selection-1440/trace.zip
+2026-10-27T03:05:16.4225820Z     Usage:
+2026-10-27T03:05:16.4225921Z 
+2026-10-27T03:05:16.4226300Z         npx playwright show-trace test-results/g10-G10-bilingual-course-identity-and-safe-selection-1440/trace.zip
+2026-10-27T03:05:16.4226698Z 
+2026-10-27T03:05:16.4227044Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4227296Z 
+2026-10-27T03:05:16.4227811Z   2) e2e/g10.spec.ts:41:35 › G10 bilingual course identity and safe selection 412 ──────────────────
+2026-10-27T03:05:16.4228120Z 
+2026-10-27T03:05:16.4228296Z     Error: expect(received).toEqual(expected) // deep equality
+2026-10-27T03:05:16.4228516Z 
+2026-10-27T03:05:16.4228605Z     - Expected  - 3
+2026-10-27T03:05:16.4228815Z     + Received  + 3
+2026-10-27T03:05:16.4228929Z 
+2026-10-27T03:05:16.4229001Z       Array [
+2026-10-27T03:05:16.4229203Z     -   -0.000014122497304924764,
+2026-10-27T03:05:16.4229432Z     -   0.0000025088602342293598,
+2026-10-27T03:05:16.4229642Z     -   0.05984599515795708,
+2026-10-27T03:05:16.4229873Z     +   -0.000008243622687587049,
+2026-10-27T03:05:16.4230279Z     +   0.0000041164562389894854,
+2026-10-27T03:05:16.4230503Z     +   0.05988510325551033,
+2026-10-27T03:05:16.4230703Z       ]
+2026-10-27T03:05:16.4230799Z 
+2026-10-27T03:05:16.4230936Z       45 |   for(const language of ['zh-TW','en']){
+2026-10-27T03:05:16.4231565Z       46 |    await page.locator('#ui-language').selectOption(language);expect(await page.locator('#course-select').inputValue()).toBe(id);
+2026-10-27T03:05:16.4232686Z     > 47 |    const after=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());for(const key of ['courseId','courseVersion','physicsModel','gate','splits','energy','position'])expect(after[key]).toEqual(before[key]);
+2026-10-27T03:05:16.4233810Z          |                                                                                                                                                                                                     ^
+2026-10-27T03:05:16.4235283Z       48 |    await expect(page.locator('#course-select option:checked')).toHaveText(({ 'training-straight':['直線訓練場','Training Straight'],'british-slalom':['英式立體迴轉','British Slalom'],'industrial-run':['工業障礙賽道','Industrial Run']} as Record<string,string[]>)[id][language==='zh-TW'?0:1]);
+2026-10-27T03:05:16.4236318Z       49 |    await page.screenshot({path:info.outputPath(`g10-${id}-${language}-${width}.png`)});
+2026-10-27T03:05:16.4236714Z       50 |   }
+2026-10-27T03:05:16.4237139Z         at /home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/web/e2e/g10.spec.ts:47:197
+2026-10-27T03:05:16.4237637Z 
+2026-10-27T03:05:16.4238036Z     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4238689Z     test-results/g10-G10-bilingual-course-identity-and-safe-selection-412/test-failed-1.png
+2026-10-27T03:05:16.4239405Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4239674Z 
+2026-10-27T03:05:16.4240062Z     Error Context: test-results/g10-G10-bilingual-course-identity-and-safe-selection-412/error-context.md
+2026-10-27T03:05:16.4240476Z 
+2026-10-27T03:05:16.4240860Z     attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4241476Z     test-results/g10-G10-bilingual-course-identity-and-safe-selection-412/trace.zip
+2026-10-27T03:05:16.4241942Z     Usage:
+2026-10-27T03:05:16.4242043Z 
+2026-10-27T03:05:16.4242429Z         npx playwright show-trace test-results/g10-G10-bilingual-course-identity-and-safe-selection-412/trace.zip
+2026-10-27T03:05:16.4242856Z 
+2026-10-27T03:05:16.4243203Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4243467Z 
+2026-10-27T03:05:16.4243824Z   3) e2e/g10.spec.ts:41:35 › G10 bilingual course identity and safe selection 360 ──────────────────
+2026-10-27T03:05:16.4244143Z 
+2026-10-27T03:05:16.4244332Z     Error: expect(received).toEqual(expected) // deep equality
+2026-10-27T03:05:16.4244559Z 
+2026-10-27T03:05:16.4244838Z     - Expected  - 3
+2026-10-27T03:05:16.4245044Z     + Received  + 3
+2026-10-27T03:05:16.4245162Z 
+2026-10-27T03:05:16.4245242Z       Array [
+2026-10-27T03:05:16.4245456Z     -   -0.000014438352081924677,
+2026-10-27T03:05:16.4245812Z     -   0.00000242559440266632,
+2026-10-27T03:05:16.4246081Z     -   0.0598439946770668,
+2026-10-27T03:05:16.4246319Z     +   -0.000008265614269475918,
+2026-10-27T03:05:16.4246565Z     +   0.000004110877853236161,
+2026-10-27T03:05:16.4246796Z     +   0.05988510325551033,
+2026-10-27T03:05:16.4247007Z       ]
+2026-10-27T03:05:16.4247106Z 
+2026-10-27T03:05:16.4247245Z       45 |   for(const language of ['zh-TW','en']){
+2026-10-27T03:05:16.4248140Z       46 |    await page.locator('#ui-language').selectOption(language);expect(await page.locator('#course-select').inputValue()).toBe(id);
+2026-10-27T03:05:16.4249324Z     > 47 |    const after=await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot());for(const key of ['courseId','courseVersion','physicsModel','gate','splits','energy','position'])expect(after[key]).toEqual(before[key]);
+2026-10-27T03:05:16.4250384Z          |                                                                                                                                                                                                     ^
+2026-10-27T03:05:16.4251855Z       48 |    await expect(page.locator('#course-select option:checked')).toHaveText(({ 'training-straight':['直線訓練場','Training Straight'],'british-slalom':['英式立體迴轉','British Slalom'],'industrial-run':['工業障礙賽道','Industrial Run']} as Record<string,string[]>)[id][language==='zh-TW'?0:1]);
+2026-10-27T03:05:16.4252983Z       49 |    await page.screenshot({path:info.outputPath(`g10-${id}-${language}-${width}.png`)});
+2026-10-27T03:05:16.4253386Z       50 |   }
+2026-10-27T03:05:16.4253796Z         at /home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/web/e2e/g10.spec.ts:47:197
+2026-10-27T03:05:16.4254133Z 
+2026-10-27T03:05:16.4254539Z     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4255214Z     test-results/g10-G10-bilingual-course-identity-and-safe-selection-360/test-failed-1.png
+2026-10-27T03:05:16.4255928Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4256189Z 
+2026-10-27T03:05:16.4256542Z     Error Context: test-results/g10-G10-bilingual-course-identity-and-safe-selection-360/error-context.md
+2026-10-27T03:05:16.4256953Z 
+2026-10-27T03:05:16.4257333Z     attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4258070Z     test-results/g10-G10-bilingual-course-identity-and-safe-selection-360/trace.zip
+2026-10-27T03:05:16.4258468Z     Usage:
+2026-10-27T03:05:16.4258571Z 
+2026-10-27T03:05:16.4258953Z         npx playwright show-trace test-results/g10-G10-bilingual-course-identity-and-safe-selection-360/trace.zip
+2026-10-27T03:05:16.4259377Z 
+2026-10-27T03:05:16.4259865Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4260137Z 
+2026-10-27T03:05:16.4260516Z   4) e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 1440 ───────────────────────
+2026-10-27T03:05:16.4260845Z 
+2026-10-27T03:05:16.4260969Z     Test timeout of 90000ms exceeded.
+2026-10-27T03:05:16.4261134Z 
+2026-10-27T03:05:16.4261313Z     Error: locator.click: Test timeout of 90000ms exceeded.
+2026-10-27T03:05:16.4261618Z     Call log:
+2026-10-27T03:05:16.4261857Z       - waiting for locator('#school-open')
+2026-10-27T03:05:16.4262265Z         - locator resolved to <button id="school-open">Flight school</button>
+2026-10-27T03:05:16.4262640Z       - attempting click action
+2026-10-27T03:05:16.4263041Z         2 × waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4263410Z           - element is visible, enabled and stable
+2026-10-27T03:05:16.4263726Z           - scrolling into view if needed
+2026-10-27T03:05:16.4263997Z           - done scrolling
+2026-10-27T03:05:16.4264546Z           - <h1>…</h1> from <section id="welcome" class="welcome">…</section> subtree intercepts pointer events
+2026-10-27T03:05:16.4264975Z         - retrying click action
+2026-10-27T03:05:16.4265206Z         - waiting 20ms
+2026-10-27T03:05:16.4265565Z         2 × waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4265924Z           - element is visible, enabled and stable
+2026-10-27T03:05:16.4266234Z           - scrolling into view if needed
+2026-10-27T03:05:16.4266488Z           - done scrolling
+2026-10-27T03:05:16.4267012Z           - <h1>…</h1> from <section id="welcome" class="welcome">…</section> subtree intercepts pointer events
+2026-10-27T03:05:16.4267690Z         - retrying click action
+2026-10-27T03:05:16.4267922Z           - waiting 100ms
+2026-10-27T03:05:16.4268326Z         117 × waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4268701Z             - element is visible, enabled and stable
+2026-10-27T03:05:16.4269028Z             - scrolling into view if needed
+2026-10-27T03:05:16.4269292Z             - done scrolling
+2026-10-27T03:05:16.4269825Z             - <h1>…</h1> from <section id="welcome" class="welcome">…</section> subtree intercepts pointer events
+2026-10-27T03:05:16.4270253Z           - retrying click action
+2026-10-27T03:05:16.4270472Z             - waiting 500ms
+2026-10-27T03:05:16.4270763Z         - waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4271119Z         - element is visible, enabled and stable
+2026-10-27T03:05:16.4271424Z         - scrolling into view if needed
+2026-10-27T03:05:16.4271686Z         - done scrolling
+2026-10-27T03:05:16.4271823Z 
+2026-10-27T03:05:16.4271832Z 
+2026-10-27T03:05:16.4272159Z       4 | const fixture=()=>JSON.parse(readFileSync('numerical-results/g12-school-flight.json','utf8'));
+2026-10-27T03:05:16.4272900Z       5 | for(const width of [1440,412,390,360])test(`G12 bilingual school native flow and safety ${width}`,async({page},info)=>{
+2026-10-27T03:05:16.4273947Z     > 6 |  test.setTimeout(90000);await page.setViewportSize({width,height:900});await page.goto(root);await expect(page.locator('#loading')).toHaveCount(0);await page.locator('#school-open').click();
+2026-10-27T03:05:16.4274905Z         |                                                                                                                                                                                       ^
+2026-10-27T03:05:16.4275720Z       7 |  await expect(page.locator('#school-panel')).toBeVisible();expect((await page.evaluate(()=>(window as any).__FPV_TEST__.school())).lesson).toBe('takeoff');
+2026-10-27T03:05:16.4276461Z       8 |  // Native ARM hold protection stays on its existing UI handler; no school auto-ARM.
+2026-10-27T03:05:16.4277069Z       9 |  expect((await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot())).armed).toBe(false);
+2026-10-27T03:05:16.4277981Z         at /home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/web/e2e/g12.spec.ts:6:183
+2026-10-27T03:05:16.4278334Z 
+2026-10-27T03:05:16.4278730Z     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4279340Z     test-results/g12-G12-bilingual-school-native-flow-and-safety-1440/test-failed-1.png
+2026-10-27T03:05:16.4280021Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4280291Z 
+2026-10-27T03:05:16.4280634Z     Error Context: test-results/g12-G12-bilingual-school-native-flow-and-safety-1440/error-context.md
+2026-10-27T03:05:16.4281140Z 
+2026-10-27T03:05:16.4281510Z     attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4282041Z     test-results/g12-G12-bilingual-school-native-flow-and-safety-1440/trace.zip
+2026-10-27T03:05:16.4282423Z     Usage:
+2026-10-27T03:05:16.4282522Z 
+2026-10-27T03:05:16.4282905Z         npx playwright show-trace test-results/g12-G12-bilingual-school-native-flow-and-safety-1440/trace.zip
+2026-10-27T03:05:16.4283290Z 
+2026-10-27T03:05:16.4283634Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4283900Z 
+2026-10-27T03:05:16.4284272Z   5) e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 412 ────────────────────────
+2026-10-27T03:05:16.4284599Z 
+2026-10-27T03:05:16.4284714Z     Test timeout of 90000ms exceeded.
+2026-10-27T03:05:16.4284883Z 
+2026-10-27T03:05:16.4285058Z     Error: locator.click: Test timeout of 90000ms exceeded.
+2026-10-27T03:05:16.4285355Z     Call log:
+2026-10-27T03:05:16.4285600Z       - waiting for locator('#school-open')
+2026-10-27T03:05:16.4286008Z         - locator resolved to <button id="school-open">Flight school</button>
+2026-10-27T03:05:16.4286390Z       - attempting click action
+2026-10-27T03:05:16.4286770Z         2 × waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4287141Z           - element is visible, enabled and stable
+2026-10-27T03:05:16.4287547Z           - scrolling into view if needed
+2026-10-27T03:05:16.4287805Z           - done scrolling
+2026-10-27T03:05:16.4288606Z           - <section id="welcome" class="welcome">…</section> intercepts pointer events
+2026-10-27T03:05:16.4289006Z         - retrying click action
+2026-10-27T03:05:16.4289232Z         - waiting 20ms
+2026-10-27T03:05:16.4289580Z         2 × waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4289925Z           - element is visible, enabled and stable
+2026-10-27T03:05:16.4290234Z           - scrolling into view if needed
+2026-10-27T03:05:16.4290501Z           - done scrolling
+2026-10-27T03:05:16.4290944Z           - <section id="welcome" class="welcome">…</section> intercepts pointer events
+2026-10-27T03:05:16.4291330Z         - retrying click action
+2026-10-27T03:05:16.4291551Z           - waiting 100ms
+2026-10-27T03:05:16.4291922Z         123 × waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4292301Z             - element is visible, enabled and stable
+2026-10-27T03:05:16.4292617Z             - scrolling into view if needed
+2026-10-27T03:05:16.4292881Z             - done scrolling
+2026-10-27T03:05:16.4293331Z             - <section id="welcome" class="welcome">…</section> intercepts pointer events
+2026-10-27T03:05:16.4293693Z           - retrying click action
+2026-10-27T03:05:16.4293933Z             - waiting 500ms
+2026-10-27T03:05:16.4294241Z         - waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4294466Z 
+2026-10-27T03:05:16.4294472Z 
+2026-10-27T03:05:16.4294794Z       4 | const fixture=()=>JSON.parse(readFileSync('numerical-results/g12-school-flight.json','utf8'));
+2026-10-27T03:05:16.4295501Z       5 | for(const width of [1440,412,390,360])test(`G12 bilingual school native flow and safety ${width}`,async({page},info)=>{
+2026-10-27T03:05:16.4296706Z     > 6 |  test.setTimeout(90000);await page.setViewportSize({width,height:900});await page.goto(root);await expect(page.locator('#loading')).toHaveCount(0);await page.locator('#school-open').click();
+2026-10-27T03:05:16.4297760Z         |                                                                                                                                                                                       ^
+2026-10-27T03:05:16.4298570Z       7 |  await expect(page.locator('#school-panel')).toBeVisible();expect((await page.evaluate(()=>(window as any).__FPV_TEST__.school())).lesson).toBe('takeoff');
+2026-10-27T03:05:16.4299312Z       8 |  // Native ARM hold protection stays on its existing UI handler; no school auto-ARM.
+2026-10-27T03:05:16.4300029Z       9 |  expect((await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot())).armed).toBe(false);
+2026-10-27T03:05:16.4300655Z         at /home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/web/e2e/g12.spec.ts:6:183
+2026-10-27T03:05:16.4300996Z 
+2026-10-27T03:05:16.4301387Z     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4301952Z     test-results/g12-G12-bilingual-school-native-flow-and-safety-412/test-failed-1.png
+2026-10-27T03:05:16.4302608Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4302861Z 
+2026-10-27T03:05:16.4303179Z     Error Context: test-results/g12-G12-bilingual-school-native-flow-and-safety-412/error-context.md
+2026-10-27T03:05:16.4303522Z 
+2026-10-27T03:05:16.4303870Z     attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4304417Z     test-results/g12-G12-bilingual-school-native-flow-and-safety-412/trace.zip
+2026-10-27T03:05:16.4304789Z     Usage:
+2026-10-27T03:05:16.4304897Z 
+2026-10-27T03:05:16.4305238Z         npx playwright show-trace test-results/g12-G12-bilingual-school-native-flow-and-safety-412/trace.zip
+2026-10-27T03:05:16.4305603Z 
+2026-10-27T03:05:16.4305958Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4306211Z 
+2026-10-27T03:05:16.4306578Z   6) e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 390 ────────────────────────
+2026-10-27T03:05:16.4306902Z 
+2026-10-27T03:05:16.4307026Z     Test timeout of 90000ms exceeded.
+2026-10-27T03:05:16.4307193Z 
+2026-10-27T03:05:16.4307356Z     Error: locator.click: Test timeout of 90000ms exceeded.
+2026-10-27T03:05:16.4307843Z     Browser logs:
+2026-10-27T03:05:16.4307957Z 
+2026-10-27T03:05:16.4316804Z     <launching> /home/runner/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,AvoidCorsURLLoaderRestartOnRedirect,Translate,AutoDeElevate,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/tmp/playwright_chromiumdev_profile-yHCKGo --remote-debugging-pipe --no-startup-window
+2026-10-27T03:05:16.4325278Z     <launched> pid=4112
+2026-10-27T03:05:16.4326139Z     [pid=4112][err] [1027/025818.193456:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+2026-10-27T03:05:16.4327307Z     [pid=4112][err] [1027/025818.197606:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+2026-10-27T03:05:16.4328656Z     [pid=4112][err] [1027/025818.197658:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+2026-10-27T03:05:16.4329784Z     [pid=4112][err] [1027/025818.200421:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+2026-10-27T03:05:16.4330769Z     [pid=4112][err] [1027/025818.217702:WARNING:media/gpu/vaapi/vaapi_wrapper.cc:1655] drmGetDevices2() has not found any devices
+2026-10-27T03:05:16.4331674Z     [pid=4112][err] [1027/025818.219227:WARNING:sandbox/policy/linux/sandbox_linux.cc:405] InitializeSandbox() called with multiple threads in process gpu-process.
+2026-10-27T03:05:16.4332656Z     [pid=4112][err] [1027/025818.307931:INFO:CONSOLE:946] "[vite] connecting...", source: http://127.0.0.1:4173/Physical-Fpv-Simulator/@vite/client (946)
+2026-10-27T03:05:16.4333543Z     [pid=4112][err] [1027/025818.359013:INFO:CONSOLE:1055] "[vite] connected.", source: http://127.0.0.1:4173/Physical-Fpv-Simulator/@vite/client (1055)
+2026-10-27T03:05:16.4334604Z     [pid=4112][err] [1027/025818.799400:ERROR:gpu/command_buffer/service/gl_utils.cc:431] [.WebGL-0x21c001c7c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+2026-10-27T03:05:16.4335906Z     [pid=4112][err] [1027/025818.948711:INFO:CONSOLE:0] "[.WebGL-0x21c001c7c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels", source: http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1 (0)
+2026-10-27T03:05:16.4337206Z     [pid=4112][err] [1027/025818.951921:ERROR:gpu/command_buffer/service/gl_utils.cc:431] [.WebGL-0x21c001c7c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+2026-10-27T03:05:16.4338696Z     [pid=4112][err] [1027/025818.992767:INFO:CONSOLE:0] "[.WebGL-0x21c001c7c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels", source: http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1 (0)
+2026-10-27T03:05:16.4340147Z     [pid=4112][err] [1027/025818.997270:ERROR:gpu/command_buffer/service/gl_utils.cc:431] [.WebGL-0x21c001c7c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+2026-10-27T03:05:16.4341494Z     [pid=4112][err] [1027/025819.050926:INFO:CONSOLE:0] "[.WebGL-0x21c001c7c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels", source: http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1 (0)
+2026-10-27T03:05:16.4342980Z     [pid=4112][err] [1027/025819.061345:ERROR:gpu/command_buffer/service/gl_utils.cc:431] [.WebGL-0x21c001c7c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+2026-10-27T03:05:16.4344671Z     [pid=4112][err] [1027/025819.096387:INFO:CONSOLE:0] "[.WebGL-0x21c001c7c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)", source: http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1 (0)
+2026-10-27T03:05:16.4345636Z     [pid=4112] <gracefully close start>
+2026-10-27T03:05:16.4345894Z     Call log:
+2026-10-27T03:05:16.4346133Z       - waiting for locator('#school-open')
+2026-10-27T03:05:16.4346542Z         - locator resolved to <button id="school-open">Flight school</button>
+2026-10-27T03:05:16.4346918Z       - attempting click action
+2026-10-27T03:05:16.4347332Z         2 × waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4347806Z           - element is visible, enabled and stable
+2026-10-27T03:05:16.4348114Z           - scrolling into view if needed
+2026-10-27T03:05:16.4348367Z           - done scrolling
+2026-10-27T03:05:16.4348813Z           - <section id="welcome" class="welcome">…</section> intercepts pointer events
+2026-10-27T03:05:16.4349200Z         - retrying click action
+2026-10-27T03:05:16.4349425Z         - waiting 20ms
+2026-10-27T03:05:16.4349769Z         2 × waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4350132Z           - element is visible, enabled and stable
+2026-10-27T03:05:16.4350428Z           - scrolling into view if needed
+2026-10-27T03:05:16.4350678Z           - done scrolling
+2026-10-27T03:05:16.4351104Z           - <section id="welcome" class="welcome">…</section> intercepts pointer events
+2026-10-27T03:05:16.4351479Z         - retrying click action
+2026-10-27T03:05:16.4351705Z           - waiting 100ms
+2026-10-27T03:05:16.4352067Z         126 × waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4352425Z             - element is visible, enabled and stable
+2026-10-27T03:05:16.4352727Z             - scrolling into view if needed
+2026-10-27T03:05:16.4352989Z             - done scrolling
+2026-10-27T03:05:16.4353423Z             - <section id="welcome" class="welcome">…</section> intercepts pointer events
+2026-10-27T03:05:16.4353803Z           - retrying click action
+2026-10-27T03:05:16.4354038Z             - waiting 500ms
+2026-10-27T03:05:16.4354341Z         - waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4354561Z 
+2026-10-27T03:05:16.4354567Z 
+2026-10-27T03:05:16.4354875Z       4 | const fixture=()=>JSON.parse(readFileSync('numerical-results/g12-school-flight.json','utf8'));
+2026-10-27T03:05:16.4355566Z       5 | for(const width of [1440,412,390,360])test(`G12 bilingual school native flow and safety ${width}`,async({page},info)=>{
+2026-10-27T03:05:16.4356579Z     > 6 |  test.setTimeout(90000);await page.setViewportSize({width,height:900});await page.goto(root);await expect(page.locator('#loading')).toHaveCount(0);await page.locator('#school-open').click();
+2026-10-27T03:05:16.4357648Z         |                                                                                                                                                                                       ^
+2026-10-27T03:05:16.4358470Z       7 |  await expect(page.locator('#school-panel')).toBeVisible();expect((await page.evaluate(()=>(window as any).__FPV_TEST__.school())).lesson).toBe('takeoff');
+2026-10-27T03:05:16.4359348Z       8 |  // Native ARM hold protection stays on its existing UI handler; no school auto-ARM.
+2026-10-27T03:05:16.4359933Z       9 |  expect((await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot())).armed).toBe(false);
+2026-10-27T03:05:16.4360556Z         at /home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/web/e2e/g12.spec.ts:6:183
+2026-10-27T03:05:16.4360921Z 
+2026-10-27T03:05:16.4361307Z     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4361924Z     test-results/g12-G12-bilingual-school-native-flow-and-safety-390/test-failed-1.png
+2026-10-27T03:05:16.4362709Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4362972Z 
+2026-10-27T03:05:16.4363297Z     Error Context: test-results/g12-G12-bilingual-school-native-flow-and-safety-390/error-context.md
+2026-10-27T03:05:16.4363657Z 
+2026-10-27T03:05:16.4364033Z     attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4364607Z     test-results/g12-G12-bilingual-school-native-flow-and-safety-390/trace.zip
+2026-10-27T03:05:16.4364979Z     Usage:
+2026-10-27T03:05:16.4365081Z 
+2026-10-27T03:05:16.4365434Z         npx playwright show-trace test-results/g12-G12-bilingual-school-native-flow-and-safety-390/trace.zip
+2026-10-27T03:05:16.4365811Z 
+2026-10-27T03:05:16.4366155Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4366414Z 
+2026-10-27T03:05:16.4366788Z   7) e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 360 ────────────────────────
+2026-10-27T03:05:16.4367120Z 
+2026-10-27T03:05:16.4367237Z     Test timeout of 90000ms exceeded.
+2026-10-27T03:05:16.4367399Z 
+2026-10-27T03:05:16.4367709Z     Error: locator.click: Test timeout of 90000ms exceeded.
+2026-10-27T03:05:16.4367998Z     Browser logs:
+2026-10-27T03:05:16.4368112Z 
+2026-10-27T03:05:16.4376898Z     <launching> /home/runner/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,AvoidCorsURLLoaderRestartOnRedirect,Translate,AutoDeElevate,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/tmp/playwright_chromiumdev_profile-FpqVxb --remote-debugging-pipe --no-startup-window
+2026-10-27T03:05:16.4385308Z     <launched> pid=4204
+2026-10-27T03:05:16.4386121Z     [pid=4204][err] [1027/025952.716357:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+2026-10-27T03:05:16.4387352Z     [pid=4204][err] [1027/025952.722495:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+2026-10-27T03:05:16.4388620Z     [pid=4204][err] [1027/025952.722563:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+2026-10-27T03:05:16.4389906Z     [pid=4204][err] [1027/025952.725428:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+2026-10-27T03:05:16.4390982Z     [pid=4204][err] [1027/025952.741012:WARNING:media/gpu/vaapi/vaapi_wrapper.cc:1655] drmGetDevices2() has not found any devices
+2026-10-27T03:05:16.4391901Z     [pid=4204][err] [1027/025952.743945:WARNING:sandbox/policy/linux/sandbox_linux.cc:405] InitializeSandbox() called with multiple threads in process gpu-process.
+2026-10-27T03:05:16.4392949Z     [pid=4204][err] [1027/025952.843430:INFO:CONSOLE:946] "[vite] connecting...", source: http://127.0.0.1:4173/Physical-Fpv-Simulator/@vite/client (946)
+2026-10-27T03:05:16.4393875Z     [pid=4204][err] [1027/025952.889835:INFO:CONSOLE:1055] "[vite] connected.", source: http://127.0.0.1:4173/Physical-Fpv-Simulator/@vite/client (1055)
+2026-10-27T03:05:16.4394959Z     [pid=4204][err] [1027/025953.305499:ERROR:gpu/command_buffer/service/gl_utils.cc:431] [.WebGL-0x29b4001cbc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+2026-10-27T03:05:16.4396452Z     [pid=4204][err] [1027/025953.457258:INFO:CONSOLE:0] "[.WebGL-0x29b4001cbc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels", source: http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1 (0)
+2026-10-27T03:05:16.4397886Z     [pid=4204][err] [1027/025953.461097:ERROR:gpu/command_buffer/service/gl_utils.cc:431] [.WebGL-0x29b4001cbc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+2026-10-27T03:05:16.4399323Z     [pid=4204][err] [1027/025953.518863:INFO:CONSOLE:0] "[.WebGL-0x29b4001cbc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels", source: http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1 (0)
+2026-10-27T03:05:16.4400714Z     [pid=4204][err] [1027/025953.523050:ERROR:gpu/command_buffer/service/gl_utils.cc:431] [.WebGL-0x29b4001cbc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+2026-10-27T03:05:16.4402110Z     [pid=4204][err] [1027/025953.559074:INFO:CONSOLE:0] "[.WebGL-0x29b4001cbc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels", source: http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1 (0)
+2026-10-27T03:05:16.4403787Z     [pid=4204][err] [1027/025953.568073:ERROR:gpu/command_buffer/service/gl_utils.cc:431] [.WebGL-0x29b4001cbc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+2026-10-27T03:05:16.4405419Z     [pid=4204][err] [1027/025953.604617:INFO:CONSOLE:0] "[.WebGL-0x29b4001cbc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)", source: http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1 (0)
+2026-10-27T03:05:16.4406445Z     [pid=4204] <gracefully close start>
+2026-10-27T03:05:16.4406695Z     Call log:
+2026-10-27T03:05:16.4406935Z       - waiting for locator('#school-open')
+2026-10-27T03:05:16.4407331Z         - locator resolved to <button id="school-open">Flight school</button>
+2026-10-27T03:05:16.4407819Z       - attempting click action
+2026-10-27T03:05:16.4408386Z         2 × waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4408800Z           - element is visible, enabled and stable
+2026-10-27T03:05:16.4409154Z           - scrolling into view if needed
+2026-10-27T03:05:16.4409419Z           - done scrolling
+2026-10-27T03:05:16.4410149Z           - <span class="eyebrow">WELCOME TO THE FLIGHT CLUB</span> from <section id="welcome" class="welcome">…</section> subtree intercepts pointer events
+2026-10-27T03:05:16.4410715Z         - retrying click action
+2026-10-27T03:05:16.4410943Z         - waiting 20ms
+2026-10-27T03:05:16.4411293Z         2 × waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4411699Z           - element is visible, enabled and stable
+2026-10-27T03:05:16.4412186Z           - scrolling into view if needed
+2026-10-27T03:05:16.4412448Z           - done scrolling
+2026-10-27T03:05:16.4413150Z           - <span class="eyebrow">WELCOME TO THE FLIGHT CLUB</span> from <section id="welcome" class="welcome">…</section> subtree intercepts pointer events
+2026-10-27T03:05:16.4413716Z         - retrying click action
+2026-10-27T03:05:16.4413943Z           - waiting 100ms
+2026-10-27T03:05:16.4414313Z         128 × waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4414734Z             - element is visible, enabled and stable
+2026-10-27T03:05:16.4415097Z             - scrolling into view if needed
+2026-10-27T03:05:16.4415374Z             - done scrolling
+2026-10-27T03:05:16.4416088Z             - <span class="eyebrow">WELCOME TO THE FLIGHT CLUB</span> from <section id="welcome" class="welcome">…</section> subtree intercepts pointer events
+2026-10-27T03:05:16.4416651Z           - retrying click action
+2026-10-27T03:05:16.4416886Z             - waiting 500ms
+2026-10-27T03:05:16.4417190Z         - waiting for element to be visible, enabled and stable
+2026-10-27T03:05:16.4417519Z 
+2026-10-27T03:05:16.4417526Z 
+2026-10-27T03:05:16.4417883Z       4 | const fixture=()=>JSON.parse(readFileSync('numerical-results/g12-school-flight.json','utf8'));
+2026-10-27T03:05:16.4418680Z       5 | for(const width of [1440,412,390,360])test(`G12 bilingual school native flow and safety ${width}`,async({page},info)=>{
+2026-10-27T03:05:16.4419697Z     > 6 |  test.setTimeout(90000);await page.setViewportSize({width,height:900});await page.goto(root);await expect(page.locator('#loading')).toHaveCount(0);await page.locator('#school-open').click();
+2026-10-27T03:05:16.4420641Z         |                                                                                                                                                                                       ^
+2026-10-27T03:05:16.4421582Z       7 |  await expect(page.locator('#school-panel')).toBeVisible();expect((await page.evaluate(()=>(window as any).__FPV_TEST__.school())).lesson).toBe('takeoff');
+2026-10-27T03:05:16.4422349Z       8 |  // Native ARM hold protection stays on its existing UI handler; no school auto-ARM.
+2026-10-27T03:05:16.4422930Z       9 |  expect((await page.evaluate(()=>(window as any).__FPV_TEST__.snapshot())).armed).toBe(false);
+2026-10-27T03:05:16.4423693Z         at /home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator/web/e2e/g12.spec.ts:6:183
+2026-10-27T03:05:16.4424075Z 
+2026-10-27T03:05:16.4424521Z     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4425144Z     test-results/g12-G12-bilingual-school-native-flow-and-safety-360/test-failed-1.png
+2026-10-27T03:05:16.4425968Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4426223Z 
+2026-10-27T03:05:16.4426555Z     Error Context: test-results/g12-G12-bilingual-school-native-flow-and-safety-360/error-context.md
+2026-10-27T03:05:16.4427049Z 
+2026-10-27T03:05:16.4427588Z     attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4428211Z     test-results/g12-G12-bilingual-school-native-flow-and-safety-360/trace.zip
+2026-10-27T03:05:16.4428583Z     Usage:
+2026-10-27T03:05:16.4428680Z 
+2026-10-27T03:05:16.4429047Z         npx playwright show-trace test-results/g12-G12-bilingual-school-native-flow-and-safety-360/trace.zip
+2026-10-27T03:05:16.4429426Z 
+2026-10-27T03:05:16.4429755Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-27T03:05:16.4430003Z 
+2026-10-27T03:05:16.4430079Z   7 failed
+2026-10-27T03:05:16.4430566Z     e2e/g10.spec.ts:41:35 › G10 bilingual course identity and safe selection 1440 ──────────────────
+2026-10-27T03:05:16.4431329Z     e2e/g10.spec.ts:41:35 › G10 bilingual course identity and safe selection 412 ───────────────────
+2026-10-27T03:05:16.4431994Z     e2e/g10.spec.ts:41:35 › G10 bilingual course identity and safe selection 360 ───────────────────
+2026-10-27T03:05:16.4432668Z     e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 1440 ────────────────────────
+2026-10-27T03:05:16.4433334Z     e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 412 ─────────────────────────
+2026-10-27T03:05:16.4434125Z     e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 390 ─────────────────────────
+2026-10-27T03:05:16.4434799Z     e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 360 ─────────────────────────
+2026-10-27T03:05:16.4435187Z   47 passed (13.3m)
+2026-10-27T03:05:16.7106762Z ##[error]Process completed with exit code 1.
+2026-10-27T03:05:16.7171057Z ##[group]Run actions/upload-artifact@v4
+2026-10-27T03:05:16.7171229Z with:
+2026-10-27T03:05:16.7171425Z   name: player-verification-bce488a8cfc24b8ce72307892d42ed4dfe975681
+2026-10-27T03:05:16.7171806Z   path: web/playwright-report/
+web/test-results/
+web/numerical-results/
+web/dist/version.json
+docs/game-v0.1/evidence/
+
+2026-10-27T03:05:16.7172138Z   if-no-files-found: warn
+2026-10-27T03:05:16.7172276Z   compression-level: 6
+2026-10-27T03:05:16.7172402Z   overwrite: false
+2026-10-27T03:05:16.7172528Z   include-hidden-files: false
+2026-10-27T03:05:16.7172664Z env:
+2026-10-27T03:05:16.7172815Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T03:05:16.7173057Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-27T03:05:16.7173292Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T03:05:16.7173509Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T03:05:16.7173752Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T03:05:16.7173971Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-27T03:05:16.7174152Z ##[endgroup]
+2026-10-27T03:05:16.8272511Z (node:4858) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T03:05:16.8273317Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T03:05:16.8637175Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-27T03:05:16.8639742Z The least common ancestor is /home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator. This will be the root directory of the artifact
+2026-10-27T03:05:16.8640506Z With the provided path, there will be 230 files uploaded
+2026-10-27T03:05:16.8644971Z Artifact name is valid!
+2026-10-27T03:05:16.8645346Z Root directory input is valid!
+2026-10-27T03:05:17.1658643Z Beginning upload of artifact content to blob storage
+2026-10-27T03:05:17.6317787Z (node:4858) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-27T03:05:18.1306117Z Uploaded bytes 8388608
+2026-10-27T03:05:18.3141724Z Uploaded bytes 16777216
+2026-10-27T03:05:18.3434969Z Uploaded bytes 25165824
+2026-10-27T03:05:18.5038054Z Uploaded bytes 33554432
+2026-10-27T03:05:18.5933411Z Uploaded bytes 41943040
+2026-10-27T03:05:18.7131988Z Uploaded bytes 50331648
+2026-10-27T03:05:18.9063548Z Uploaded bytes 58720256
+2026-10-27T03:05:19.0493311Z Uploaded bytes 67108864
+2026-10-27T03:05:19.2793341Z Uploaded bytes 75497472
+2026-10-27T03:05:19.4099502Z Uploaded bytes 83886080
+2026-10-27T03:05:19.7876191Z Uploaded bytes 92274688
+2026-10-27T03:05:19.9962042Z Uploaded bytes 100663296
+2026-10-27T03:05:20.1058799Z Uploaded bytes 109051904
+2026-10-27T03:05:20.2641176Z Uploaded bytes 117440512
+2026-10-27T03:05:20.4963552Z Uploaded bytes 125829120
+2026-10-27T03:05:20.6123171Z Uploaded bytes 134217728
+2026-10-27T03:05:20.8161208Z Uploaded bytes 142606336
+2026-10-27T03:05:21.0063686Z Uploaded bytes 150994944
+2026-10-27T03:05:21.0972360Z Uploaded bytes 159383552
+2026-10-27T03:05:21.3088695Z Uploaded bytes 167772160
+2026-10-27T03:05:21.4973765Z Uploaded bytes 176160768
+2026-10-27T03:05:22.0140196Z Uploaded bytes 184549376
+2026-10-27T03:05:22.2712028Z Uploaded bytes 192937984
+2026-10-27T03:05:22.3579745Z Uploaded bytes 194579815
+2026-10-27T03:05:22.3968124Z Finished uploading artifact content to blob storage!
+2026-10-27T03:05:22.3970600Z SHA256 digest of uploaded artifact zip is 1da4bbd6c57be225aacabdc8b768c078b896be29366d263966ac3c2cd0263329
+2026-10-27T03:05:22.3971825Z Finalizing artifact upload
+2026-10-27T03:05:22.9312984Z Artifact player-verification-bce488a8cfc24b8ce72307892d42ed4dfe975681.zip successfully finalized. Artifact ID 12707450481
+2026-10-27T03:05:22.9314182Z Artifact player-verification-bce488a8cfc24b8ce72307892d42ed4dfe975681 has been successfully uploaded! Final size is 194579815 bytes. Artifact ID is 12707450481
+2026-10-27T03:05:22.9319252Z Artifact download URL: https://github.com/lijiabao1998/Physical-Fpv-Simulator/actions/runs/40440812714/artifacts/12707450481
+2026-10-27T03:05:22.9510963Z Post job cleanup.
+2026-10-27T03:05:23.0058215Z [command]/usr/bin/git version
+2026-10-27T03:05:23.0110441Z git version 2.55.0
+2026-10-27T03:05:23.0134161Z Temporarily overriding HOME='/home/runner/work/_temp/4bfffc68-6411-4ccb-bcac-170ae01ca6b1' before making global git config changes
+2026-10-27T03:05:23.0134981Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T03:05:23.0137118Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Physical-Fpv-Simulator/Physical-Fpv-Simulator
+2026-10-27T03:05:23.0168089Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T03:05:23.0195185Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T03:05:23.0392735Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T03:05:23.0420449Z http.https://github.com/.extraheader
+2026-10-27T03:05:23.0432509Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-27T03:05:23.0462228Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T03:05:23.0665947Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T03:05:23.0696599Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T03:05:23.0995731Z Cleaning up orphan processes
+2026-10-27T03:05:23.1273330Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/setup-python@v5, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
