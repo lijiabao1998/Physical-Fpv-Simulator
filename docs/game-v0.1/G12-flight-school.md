@@ -255,3 +255,8 @@ run timed out there; log kept). en is unaffected.
 Not run here: full `npm run test:e2e`, exact-head official CI, Pages. A card cannot record
 its own commit's build; the post-commit `CI=true npm run build` (dirty=false) is in the
 hand-off. Physical phones and controllers remain untested.
+
+Follow-up card opened (2026-10-28, Claude): docs/game-v0.1/G13-mobile-school-layout.md
+records (1), (2) and (3), the 320x568 zh-TW Start/`.actions` overlap, the copy line
+covered at scrollTop 0 and the stale e2e label, with acceptance frozen before code. It
+is not started; the owner sets its priority.
