@@ -171,3 +171,33 @@ course 7696 px² (34040 px² before). (2) Pre-existing and safety-relevant: in l
 widths 601-704 px still overlap the course panel under the desktop rule. (4) The fix
 needs `:has()` and `dvh`; without them the cap is skipped and the old overlap returns.
 Items (1)-(3) need an owner decision or a separate card before release.
+
+## Release integration receipt (2026-10-28, Claude)
+Owner decision 2026-10-28, relayed to this step by the orchestrating Claude session
+(no owner message ID was available to this step): 「G10＋G12 一起上」. Option text:
+also accept G12's provisional difficulty; integrate both, merge in order after CI is
+green, and publish; the landscape "Safe stop under ARM" issue gets a separate card.
+
+Difficulty: the owner accepts the five provisional lesson conditions, exactly as frozen
+above, as the difficulty of this release. This is the owner difficulty/balance
+confirmation the frozen section requires before release; no condition, threshold or
+frozen sentence is changed. Item (2) above, landscape Safe stop/Retry under `#arm`, is
+deferred to a separate card by the same decision and is not fixed here. Items (1) and
+(3) above are not named in the relayed option text; they stay open and disclosed.
+Physical phones and controllers remain untested.
+
+Local branch g12-int: G12 head 0e4bb23 (PR #12) plus a real merge of g10-int 64fa242
+(G10 02b2455 with main 8aae927's /fpv/ base; see the G10 card): merge commit d58ad51,
+parents 0e4bb23 and 64fa242. Clean automatic merge, no textual conflict; main.ts
+auto-merged with main's source link and every G10/G12 change; the tree is G12 plus
+g10-int's delta over G10 exactly. Follow-up 150923d moves the G12-added g12.spec.ts
+root from /Physical-Fpv-Simulator/ to /fpv/; no assertion, timeout or threshold
+changed. No tracked file under web/ names the old base. No G11 commit, patch or file:
+checked against origin/game/g11-personal-best-ghost and g11-cpu-one-round-20261025.
+
+At 150923d (Linux cloud container, Node 22.22.0, Python 3.13.17, NumPy 2.3.5; CI uses
+Node 24 and Python 3.12): npm ci pass; npm run reference pass, fixtures byte-identical;
+npm test 15 files / 135 tests pass (twice); CI=true npm run build pass (strict tsc,
+vite, check-build: base /fpv/, dirty=false, og.jpg in dist). Not run in this step: real
+Chromium e2e including g12.spec.ts, exact-head official CI, Pages. Earlier official
+results at 0e4bb23 do not carry over; the frozen exact-head workflow is still required.
