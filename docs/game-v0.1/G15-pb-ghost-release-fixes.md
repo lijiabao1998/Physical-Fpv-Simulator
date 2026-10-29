@@ -181,3 +181,18 @@ The port follows the G11 evaluation's port plan. It is not yet pushed.
 ## Status
 
 Opened, not started. No code, test or workflow has changed for this card.
+
+## Round 2: the split summary shows whole lines (2026-10-29, Claude)
+
+Added before code, after the by-eye review of `85fe02f`'s CI images. Nothing above changes.
+
+**Finding.** G11 (`b1c8283`) styles the sector summary `#race-splits` with `font-size:9px;max-height:28px;overflow:auto`. With main's line-height of 1.35, a line is 12.15 px, so the box shows 2.3 lines and cuts the third line through its glyphs. This happens in every zh-TW course card after a lap, and in en wherever the summary needs three lines. Main has no cap. The cut is new to players with G11 and is not on the known-issue list. An independent check of the images confirmed it as minor and cosmetic.
+
+**Change.** The box becomes exactly two lines tall (`max-height:2.7em`, that is 2 × 1.35 at the box's own font size). G11's intent stays: the summary remains a scroll box, so it does not duplicate the Ghost table, which repeats the cumulative gate times. Nothing else changes.
+
+**Acceptance.**
+- E9 in `web/e2e/g15.spec.ts`, test first. After a 7-gate lap at 1440x900 (fine pointer) and at 412x915 (touch), in zh-TW and en:
+  - the box height is a whole number of its own lines, within 0.05 line;
+  - the zh-TW summary overflows the box, so the test cannot pass without checking anything.
+- E9 is red at `85fe02f`: at both 1440 and 412, zh-TW gives 28 px against 12.15 px lines (2.30 lines). The log is `evidence/g15/e9-red.log`.
+- Everything under "Frozen acceptance" stays green at the round-2 head, and the CPU rule applies to that head's two runs.

@@ -1,0 +1,74 @@
+
+Running 2 tests using 1 worker
+
+  ✘  1 e2e/g15.spec.ts:149:78 › G15 E9 the split summary shows whole lines only 1440x900 (7.2s)
+  ✘  2 e2e/g15.spec.ts:149:78 › G15 E9 the split summary shows whole lines only 412x915 (6.3s)
+
+
+  1) e2e/g15.spec.ts:149:78 › G15 E9 the split summary shows whole lines only 1440x900 ─────────────
+
+    Error: 1440 zh-TW {"height":28,"line":12.15,"overflow":true}
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 0.05
+    Received:   0.30452674897119314
+
+      154 |    await page.locator('#ui-language').selectOption(language);
+      155 |    const m=await page.evaluate(()=>{const e=document.querySelector<HTMLElement>('#race-splits')!;e.scrollIntoView({block:'nearest'});return {height:e.getBoundingClientRect().height,line:parseFloat(getComputedStyle(e).lineHeight),overflow:e.scrollHeight>e.clientHeight};});
+    > 156 |    const lines=m.height/m.line;expect(Math.abs(lines-Math.round(lines)),`${width} ${language} ${JSON.stringify(m)}`).toBeLessThan(.05);
+          |                                                                                                                      ^
+      157 |    if(language==='zh-TW')expect(m.overflow,'seven zh-TW splits must overflow the box, or this test checks nothing').toBe(true);
+      158 |    await page.locator('#race-splits').screenshot({path:info.outputPath(`g15-e9-${width}-${language}.png`)});
+      159 |   }
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:156:118
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../g15/round2/red-results/g15-G15-E9-the-split-summary-shows-whole-lines-only-1440x900/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../g15/round2/red-results/g15-G15-E9-the-split-summary-shows-whole-lines-only-1440x900/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../g15/round2/red-results/g15-G15-E9-the-split-summary-shows-whole-lines-only-1440x900/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../g15/round2/red-results/g15-G15-E9-the-split-summary-shows-whole-lines-only-1440x900/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) e2e/g15.spec.ts:149:78 › G15 E9 the split summary shows whole lines only 412x915 ──────────────
+
+    Error: 412 zh-TW {"height":28,"line":12.15,"overflow":true}
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 0.05
+    Received:   0.30452674897119314
+
+      154 |    await page.locator('#ui-language').selectOption(language);
+      155 |    const m=await page.evaluate(()=>{const e=document.querySelector<HTMLElement>('#race-splits')!;e.scrollIntoView({block:'nearest'});return {height:e.getBoundingClientRect().height,line:parseFloat(getComputedStyle(e).lineHeight),overflow:e.scrollHeight>e.clientHeight};});
+    > 156 |    const lines=m.height/m.line;expect(Math.abs(lines-Math.round(lines)),`${width} ${language} ${JSON.stringify(m)}`).toBeLessThan(.05);
+          |                                                                                                                      ^
+      157 |    if(language==='zh-TW')expect(m.overflow,'seven zh-TW splits must overflow the box, or this test checks nothing').toBe(true);
+      158 |    await page.locator('#race-splits').screenshot({path:info.outputPath(`g15-e9-${width}-${language}.png`)});
+      159 |   }
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:156:118
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../g15/round2/red-results/g15-G15-E9-the-split-summary-shows-whole-lines-only-412x915/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../g15/round2/red-results/g15-G15-E9-the-split-summary-shows-whole-lines-only-412x915/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../g15/round2/red-results/g15-G15-E9-the-split-summary-shows-whole-lines-only-412x915/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../g15/round2/red-results/g15-G15-E9-the-split-summary-shows-whole-lines-only-412x915/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    e2e/g15.spec.ts:149:78 › G15 E9 the split summary shows whole lines only 1440x900 ──────────────
+    e2e/g15.spec.ts:149:78 › G15 E9 the split summary shows whole lines only 412x915 ───────────────

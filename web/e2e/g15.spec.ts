@@ -144,3 +144,18 @@ for(const width of [650,704])test(`G15 E8 course card clears the controls and th
  await page.locator('#school-open').click();await frames(page);
  for(const language of ['zh-TW','en']){await page.locator('#ui-language').selectOption(language);const card=await box(page,'.course');for(const sel of [...blockers,'#school-panel'])expect(area(card,await box(page,sel)),`${width} ${language} school open .course vs ${sel}`).toBe(0);expect(await hitAt(page,'#ghost-toggle')).toBe(true);await page.screenshot({path:info.outputPath(`g15-e8-${width}x900-${language}-open.png`)});}
 });
+
+// G15 round 2: the CI image review of 85fe02f found G11's 28px split-summary box cutting its third line through the glyphs.
+for(const [width,height,touch] of [[1440,900,false],[412,915,true]] as const)test(`G15 E9 the split summary shows whole lines only ${width}x${height}`,async({browser},info)=>{
+ test.setTimeout(120000);const context=await browser.newContext({viewport:{width,height},hasTouch:touch,isMobile:touch});const page=await context.newPage();
+ try{
+  await boot(page);const done=await localFlight(page,'british-slalom');expect(done.state).toBe('finished');expect(done.splits).toHaveLength(7);
+  for(const language of ['zh-TW','en']){
+   await page.locator('#ui-language').selectOption(language);
+   const m=await page.evaluate(()=>{const e=document.querySelector<HTMLElement>('#race-splits')!;e.scrollIntoView({block:'nearest'});return {height:e.getBoundingClientRect().height,line:parseFloat(getComputedStyle(e).lineHeight),overflow:e.scrollHeight>e.clientHeight};});
+   const lines=m.height/m.line;expect(Math.abs(lines-Math.round(lines)),`${width} ${language} ${JSON.stringify(m)}`).toBeLessThan(.05);
+   if(language==='zh-TW')expect(m.overflow,'seven zh-TW splits must overflow the box, or this test checks nothing').toBe(true);
+   await page.locator('#race-splits').screenshot({path:info.outputPath(`g15-e9-${width}-${language}.png`)});
+  }
+ }finally{await context.close();}
+});
