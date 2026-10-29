@@ -11,7 +11,8 @@ import {saveRecord} from '../src/game/records';
 import {planPhysicsSteps} from '../src/game/timing';
 import {GhostPlayback,GhostRecorder,ghostClass,ghostKey,loadGhost,saveGhost,ghostPoseAt,gateComparisons,MAX_GHOST_SAMPLES,MAX_GHOST_BYTES} from '../src/game/ghost';
 beforeAll(initPhysics);
-const storage=()=>{const map=new Map<string,string>();return {map,getItem:(k:string)=>map.get(k)??null,setItem:(k:string,v:string)=>{map.set(k,v);}};};
+// G15: saveGhost lists Ghost entries to keep its 2 MiB total, so the fake also needs removeItem/key/length.
+const storage=()=>{const map=new Map<string,string>();return {map,getItem:(k:string)=>map.get(k)??null,setItem:(k:string,v:string)=>{map.set(k,v);},removeItem:(k:string)=>{map.delete(k);},key:(i:number)=>[...map.keys()][i]??null,get length(){return map.size;}};};
 function localLap(courseId:CourseId='british-slalom',observe=true,damping=2){
  const s=new GameSession(undefined,true,undefined,courseId),r=new GhostRecorder();s.start();s.arm(0);if(observe)r.observe(s);let phase=0,gate=0,hover=s.power.hover();const trace=[];
  for(let tick=0;tick<240*110&&s.state==='flying';tick++){
@@ -50,8 +51,10 @@ it('G11 ghost observation/sample rendering leaves every player state, event, col
 },30000);
 it('G11 exact input replay and ghost alignment agree at 60/20/5 Hz without another ghost physics body',()=>{
  const f=getFixture(),g=f.r.completed(f.s,'same')!,bundle=f.s.exportReplay('same'),results=[];
- for(const hz of [60,20,5]){const s=new GameSession();s.replay(bundle);let accumulator=0,tick=0;const nodes=[];
- while(tick<bundle.events.length){const p=planPhysicsSteps(accumulator,1/hz,true);expect(p.fault).toBeNull();accumulator=p.remainder;for(let i=0;i<p.steps&&tick<bundle.events.length;i++,tick++){s.step(ZERO);if((tick+1)%4===0||tick+1===bundle.events.length){const pose=g.poses[Math.ceil((tick+1)/4)];expect(s.world.position).toEqual(pose.position);expect(s.world.quaternion).toEqual(pose.quaternion);}if((tick+1)%48===0)nodes.push(ghostPoseAt(g,s.course.elapsed(s.time)));}}
+ for(const hz of [60,20,5]){const s=new GameSession();s.replay(bundle);let accumulator=0,tick=0,stored=0;const nodes=[];
+ // G15 stores the timeline from the lap window on, so poses are looked up by tick; earlier ticks compare with the original simulation trace.
+ while(tick<bundle.events.length){const p=planPhysicsSteps(accumulator,1/hz,true);expect(p.fault).toBeNull();accumulator=p.remainder;for(let i=0;i<p.steps&&tick<bundle.events.length;i++,tick++){s.step(ZERO);if((tick+1)%4===0||tick+1===bundle.events.length){const kept=g.poses.find(x=>x.tick===tick+1),pose=kept??f.trace[tick];if(kept)stored++;expect(s.world.position).toEqual(pose.position);expect(s.world.quaternion).toEqual(pose.quaternion);}if((tick+1)%48===0)nodes.push(ghostPoseAt(g,s.course.elapsed(s.time)));}}
+ expect(stored).toBe(g.poses.filter(x=>x.tick>0).length);
  expect(s.snapshot().position).toEqual(f.s.snapshot().position);expect(s.snapshot().energy).toEqual(f.s.snapshot().energy);expect(s.course.splits).toEqual(f.s.course.splits);expect(s.events).toEqual([]);results.push({hz,nodes,end:s.snapshot()});s.world.dispose();}
  expect(results[1].nodes).toEqual(results[0].nodes);expect(results[2].nodes).toEqual(results[0].nodes);
  writeFileSync('numerical-results/g11-timing.json',JSON.stringify({dt:FIXED_DT,results},null,2));
