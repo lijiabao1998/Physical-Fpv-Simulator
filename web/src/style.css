@@ -27,3 +27,94 @@
 /* Reserve a non-scrolling toolbar so language never covers drawer controls. */
 #app:has(>.drawer:not([hidden]))::after{content:'';position:fixed;z-index:5;top:0;right:0;width:min(430px,100vw);height:56px;background:#182a23}
 .drawer{top:56px;height:calc(100dvh - 56px);padding-top:24px}
+
+/* Independent G12 observer UI: no control interception or player-view overlay. */
+.school-panel{position:absolute;top:100px;right:28px;width:300px;padding:12px;background:#182a23ed;border:1px solid #79917355;border-radius:12px;z-index:2;font-size:12px;max-height:350px;overflow:auto}.school-panel[hidden]{display:none}.school-panel p{margin:7px 0}.school-panel small{display:block;font-size:10px}.school-panel .row{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}.school-panel button{font-size:11px;padding:7px}#school-open{margin-top:5px;font-size:11px;padding:5px 9px}@media(max-width:600px){.school-panel{top:auto;bottom:357px;left:12px;right:12px;width:auto;max-height:135px;padding:9px;font-size:11px}.school-panel .row{gap:4px}.school-panel button{padding:5px;font-size:10px}.school-panel p{margin:4px 0}}
+
+.school-panel .row{position:sticky;bottom:0;background:#182a23;padding-top:4px}
+/* G12 360px real-image review: the open school panel covered course progress. On narrow
+   screens it keeps its own band above sticks (coarse) or notice/actions (fine); while it is
+   open the course panel stays in place and scrolls inside the space left above that band. */
+@media(max-width:600px){#app{--school-bottom:275px;--course-top:130px}.school-panel{bottom:var(--school-bottom)}#app:has(>#school-panel:not([hidden])) .course{max-height:calc(100dvh - var(--course-top) - var(--school-bottom) - 143px);overflow-y:auto}}
+@media(max-width:600px) and (pointer:coarse){#app{--school-bottom:357px}}
+@media(max-width:480px){#app{--course-top:96px}}
+/* G13 (frozen acceptance in docs/game-v0.1/G13-mobile-school-layout.md; owner 2026-10-28 「這個你自己來，安全清完盡可能覆蓋全部内容就行」).
+   Layout only. The panel is two blocks: the lesson text scrolls inside .school-body, and .school-foot (the provisional-
+   difficulty line and the three controls) always stays in view, so both are visible at scrollTop 0. No position:sticky:
+   a sticky footer inside the scrolling panel left an unhit-testable painted copy below the panel in Chromium (844x390).
+   Each control is a 44px target clear of ARM, Disarm and both sticks. */
+.school-panel:not([hidden]){display:flex;flex-direction:column;overflow:hidden}.school-panel .school-body{flex:0 1 auto;min-height:0;overflow:auto}.school-panel .school-foot{flex:none;margin-top:8px;padding-top:6px;border-top:1px solid #ffffff14}.school-panel .school-foot small{display:block;font-size:10px;line-height:1.3}
+.school-panel .row{position:static;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:6px;padding-top:0;background:none}.school-panel .row button{min-height:44px;padding:4px 6px;line-height:1.15;white-space:normal;overflow-wrap:anywhere}
+/* 601-850px: the panel starts right of the course card (issue 3: 650x900 overlapped it by 649 px²). */
+@media(min-width:601px) and (max-width:850px){#app:has(>#school-panel:not([hidden])) .course{max-width:310px}.school-panel{left:max(342px,calc(100vw - 344px));right:16px;width:auto}}
+/* Narrow portrait (issue 1): while the school is open the course card is a one-row strip (clock, gates); the panel hangs
+   below it, as tall as its content, never lower than the sticks (coarse) or the notice and actions (fine).
+   Short portrait phones (320x480, 360x540: verification sweep of d504b67) have no room below the strip for the 44px
+   controls. There the panel never shrinks below 72px (the controls and the provisional line); it rises over the strip
+   and, below about 490px, the header, as main's panel did, instead of reaching the sticks. */
+@media(max-width:600px){#app:has(>#school-panel:not([hidden])) .course{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:8px;height:46px;max-height:none;overflow:hidden;padding:8px 12px}#app:has(>#school-panel:not([hidden])) .course>:not(#course-clock):not(.gates){display:none}#app:has(>#school-panel:not([hidden])) .course .gates{margin-top:0}.school-panel{top:min(calc(var(--course-top) + 54px),calc(100dvh - var(--school-bottom) - 72px));bottom:auto;max-height:max(calc(100dvh - var(--course-top) - 54px - var(--school-bottom)),72px);padding-top:4px}.school-panel .school-foot{display:grid;grid-template-columns:72px minmax(0,1fr);align-items:center;column-gap:6px;margin-top:4px}.school-panel .school-foot .row{margin-top:0}}
+@media(max-width:480px) and (max-height:600px){#app:has(>#school-panel:not([hidden])){--course-top:83px}#app:has(>#school-panel:not([hidden])) .course{top:83px}}
+@media(max-width:480px) and (max-height:600px) and (pointer:coarse){#app{--school-bottom:345px}}
+/* 481-600px touch: G12's 357px reserve is the narrow-phone stick band (bottom 245px + 100px). Here the sticks are 118px
+   at bottom 190px, so the panel reserves 316px; 540x560 left the panel 19px tall and clipped all three controls. */
+@media(min-width:481px) and (max-width:600px) and (pointer:coarse){#app{--school-bottom:316px}}
+/* Up to 550px tall main moves those sticks to bottom 100px, so both cards reserve 226px (500x500: the panel shrank to
+   72px and the welcome card rose over the menu with a 316px reserve). */
+@media(min-width:481px) and (max-width:600px) and (max-height:550px) and (pointer:coarse){#app{--school-bottom:226px;--welcome-bottom:226px}}
+/* Narrow portrait welcome (issue 4): the card ends above the sticks (coarse) or the actions (fine). As in the school
+   panel, the text scrolls inside .welcome-body while Enter and the fine print stay in view. */
+@media(max-width:600px){#app{--welcome-bottom:167px}.welcome{top:calc(var(--course-top) - 12px);transform:none;max-height:max(calc(100dvh - var(--course-top) + 12px - var(--welcome-bottom)),131px);display:flex;flex-direction:column;overflow:hidden}.welcome .welcome-body{flex:0 1 auto;min-height:0;overflow:auto}.welcome .primary{flex:none;align-self:flex-start}.welcome .fineprint{flex:none}}
+@media(max-width:600px) and (pointer:coarse){#app{--welcome-bottom:316px}}
+@media(max-width:480px){#app{--welcome-bottom:207px}}
+@media(max-width:480px) and (pointer:coarse){#app{--welcome-bottom:353px}}
+@media(max-width:480px) and (max-height:600px){.welcome{padding:12px 16px}}
+/* The same short phones: the welcome card never shrinks below 131px, so Enter and the fine print stay whole. It keeps
+   its top below the header and, below about 500px of height, extends over the stick band instead: the sticks do nothing
+   before Start and are drawn under the card, while a card over the header put the menu's centres on Enter (320x480).
+   The school panel above does the opposite, because the sticks are live during lessons. Without sticks (fine pointer)
+   the card is anchored at its bottom edge, so the course select above it stays reachable on tall windows (360x900
+   fine: covered by .welcome-body at d504b67). */
+@media(max-width:600px) and (pointer:fine){.welcome{top:auto;bottom:var(--welcome-bottom)}}
+/* Touch tablets and touch laptops (wider than 600px, taller than 550px): the card could reach the left stick (1024x768
+   zh-TW: Enter 0 px from it).
+   - Wider than 850px there is room beside the stick. The card keeps main's vertical position and starts 8px right of
+     the stick (146px), so the course card above it stays reachable.
+   - From 601px to 850px the card's bottom is anchored 8px above the sticks (190px plus the 118px stick) and its top
+     stays at 198px or lower, below the course select row, so the select stays reachable from about 626px tall; a
+     short screen scrolls the text inside .welcome-body. */
+@media(min-width:851px) and (min-height:551px) and (pointer:coarse){.welcome{left:max(146px,7%)}}
+/* Touch screens taller than 550px keep main's panel (top 100px, up to 350px), but its 44px controls now end lower, so
+   the panel stops 8px above the sticks: at bottom 190px up to 850px wide, 126px above (both 118px tall). At 601x560
+   Close sat on the right stick at d504b67. */
+@media(min-width:601px) and (max-width:850px) and (min-height:551px) and (pointer:coarse){.school-panel{max-height:min(350px,calc(100dvh - 416px))}}
+@media(min-width:851px) and (min-height:551px) and (pointer:coarse){.school-panel{max-height:min(350px,calc(100dvh - 352px))}}
+@media(min-width:601px) and (max-width:850px) and (min-height:551px) and (pointer:coarse){.welcome{top:auto;bottom:316px;transform:none;max-height:max(calc(100dvh - 316px - 198px),131px);display:flex;flex-direction:column;overflow:hidden}.welcome .welcome-body{flex:0 1 auto;min-height:0;overflow:auto}.welcome .primary{flex:none;align-self:flex-start}.welcome .fineprint{flex:none}}
+/* Short landscape course card, school closed: on main the card ran under the HUD, which took every tap on Flight school
+   (844x390 first red: "hud subtree intercepts pointer events"). Above the left stick it keeps course select and Flight
+   school in row 1, clock and gates in row 2; the remaining lines scroll inside the card. */
+@media(max-height:550px) and (orientation:landscape){#app{--ls-top:53px}.course{top:var(--ls-top);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:8px;row-gap:6px;max-height:calc(100dvh - var(--ls-top) - 226px);overflow:auto;padding:8px 12px}.course>label{grid-column:1;grid-row:1;margin:0}.course #school-open{grid-column:2;grid-row:1;margin:0}.course #course-clock{grid-column:1;grid-row:2}.course .gates{grid-column:2;grid-row:2;margin-top:0}.course>:not(label):not(#school-open):not(#course-clock):not(.gates){grid-column:1/-1}}
+/* Short landscape (issue 2, safety): compact header; course strip top-left and school panel top-right, both above the
+   sticks, so Safe stop, Retry and Close never sit on ARM, Disarm or a stick; the welcome card sits between the sticks
+   (from about 592px wide; it keeps 300px below that). Landscape only: on a short portrait phone the sticks are 100px at
+   bottom 245px, not 118px at bottom 100px, and these rules put Close under the right stick (320x480). The panel's
+   padding and footer are trimmed (4px top, 9px bottom, which keeps the controls 10px above the sticks) so the lesson
+   title shows at 360px tall (800x360: 4px of text, 900x360: none at d504b67). */
+@media(max-height:550px) and (orientation:landscape){header{padding-top:6px;padding-bottom:6px}header .brand .eyebrow{display:none}#app:has(>#school-panel:not([hidden])) .course{top:var(--ls-top);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:8px;row-gap:0;height:auto;width:min(360px,calc(100vw - 420px));max-height:calc(100dvh - var(--ls-top) - 226px);overflow:hidden;padding:8px 12px}#app:has(>#school-panel:not([hidden])) .course>:not(#course-clock):not(.gates){display:none}#app:has(>#school-panel:not([hidden])) .course .gates{margin-top:0}.school-panel{top:var(--ls-top);bottom:auto;left:auto;right:16px;width:min(380px,calc(100vw - 32px));max-height:calc(100dvh - var(--ls-top) - 218px);padding-top:4px;padding-bottom:9px}#school-title,#school-feedback{display:inline}#school-feedback:not(:empty)::before{content:' · '}.school-panel .school-foot{display:grid;grid-template-columns:80px minmax(0,1fr);align-items:center;column-gap:6px;margin-top:2px;padding-top:3px}.school-panel .school-foot .row{margin-top:0}.welcome{top:var(--ls-top);bottom:auto;left:146px;width:min(470px,max(300px,calc(100vw - 292px)));transform:none;max-height:calc(100dvh - var(--ls-top) - 103px);display:flex;flex-direction:column;overflow:hidden}.welcome .welcome-body{flex:0 1 auto;min-height:0;overflow:auto}.welcome .primary{flex:none;align-self:flex-start}.welcome .fineprint{flex:none}}
+/* Codex P2 on PR #13: the landscape cards at 53px assumed a one-row header, but below about 581px the menu wrapped to a
+   second row and the course card covered it (568x400: Aircraft, Controls, Physics and Pause hit .course). From 481px
+   the short-landscape header no longer wraps: the menu keeps its width and the brand shrinks, ending in an ellipsis
+   if space runs out, so the header stays one row whatever the font metrics (main's sizes: 15px up to 850px, 20px
+   above). Up to 480px the header keeps its two
+   narrow-phone rows (69px), so --ls-top moves the cards to 77px; above 850px the header is 53px tall, so 61px. Both
+   keep the cards 8px below the header, as 53px does for the 45px header in between. The welcome card also stays
+   inside the viewport. */
+@media(max-height:550px) and (min-width:481px) and (orientation:landscape){header{flex-wrap:nowrap;gap:10px}header .brand{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}header nav{flex:none}}
+@media(max-height:550px) and (min-width:481px) and (max-width:850px) and (orientation:landscape){header .brand{letter-spacing:1px}}
+/* 601-850px at any height: the same no-wrap header. In en at 601-607px main's menu wrapped to a second row (117px), so
+   the school panel at 100px and the tablet welcome card overlapped it (601x600: 4131px²); from 608px it already fits. */
+@media(min-width:601px) and (max-width:850px){header{flex-wrap:nowrap;gap:10px}header .brand{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}header nav{flex:none}}
+@media(max-height:550px) and (max-width:480px) and (orientation:landscape){#app{--ls-top:77px}}
+@media(max-height:550px) and (min-width:851px) and (orientation:landscape){#app{--ls-top:61px}}
+/* Above 850px there is room: the welcome card starts at 212px, right of the course select (en select centre at
+   145px, under the card's 146px edge at 900x550), and still ends before the right stick. */
+@media(max-height:550px) and (min-width:851px) and (orientation:landscape){.welcome{left:212px}}

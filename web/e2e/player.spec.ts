@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-const base='http://127.0.0.1:4173/Physical-Fpv-Simulator/?test=1';
+const base='http://127.0.0.1:4173/fpv/?test=1';
 interface Snapshot {state:string; armed:boolean; time:number; position:number[]; quaternion:number[];gate:number}
 interface Harness {snapshot():Snapshot;tick(count:number,input?:{throttle:number;roll:number;pitch:number;yaw:number}):void;place(position:number[],velocity?:number[]):void}
 async function snapshot(page:Page) {return page.evaluate(()=> (window as unknown as {__FPV_TEST__:Harness}).__FPV_TEST__.snapshot());}
@@ -41,11 +41,11 @@ test('deterministic browser physics: gate crossing, collision and reset',async({
 test('production Pages-base bundle renders with provenance and no development hooks',async({page},info)=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
   const failures:string[]=[];page.on('requestfailed',r=>failures.push(r.url()));page.on('response',r=>{if(r.status()>=400)failures.push(`${r.status()} ${r.url()}`);});
-  const response=await page.goto('http://127.0.0.1:4174/Physical-Fpv-Simulator/?test=1');
+  const response=await page.goto('http://127.0.0.1:4174/fpv/?test=1');
   expect(response?.status()).toBe(200);await expect(page.locator('#loading')).toHaveCount(0);await expect(page.locator('canvas')).toBeVisible();
   await page.getByTestId('start').click();await page.waitForTimeout(1000);
   expect(await page.evaluate(()=> '__FPV_TEST__' in window)).toBe(false);
-  const manifest=await page.request.get('http://127.0.0.1:4174/Physical-Fpv-Simulator/version.json');
+  const manifest=await page.request.get('http://127.0.0.1:4174/fpv/version.json');
   expect(manifest.ok()).toBe(true);expect((await manifest.json()).commit).toMatch(/^[a-f0-9]{40}$/);
   await page.screenshot({path:info.outputPath('production-desktop.png')});
   for (const width of [360,412]) {
@@ -86,7 +86,7 @@ test('synthetic Standard Gamepad API: connection, zero-throttle ARM and disconne
   expect((await snapshot(page)).state).toBe('paused');
 });
 test('record actual browser frame intervals without claiming physical-device performance',async({page},info)=>{
-  await page.goto('http://127.0.0.1:4174/Physical-Fpv-Simulator/');await expect(page.locator('#loading')).toHaveCount(0);await expect(page.locator('canvas')).toBeVisible();
+  await page.goto('http://127.0.0.1:4174/fpv/');await expect(page.locator('#loading')).toHaveCount(0);await expect(page.locator('canvas')).toBeVisible();
   await page.getByTestId('start').click();
   const result=await page.evaluate(async()=>{
     const samples:number[]=[];let last=performance.now();
@@ -207,7 +207,7 @@ for (const width of [360,412]) test(`mobile ${width}: touch input, fail-safe and
 });
 
 test('production keyboard takeoff uses native input without development hooks',async({page},info)=>{
-  await page.goto('http://127.0.0.1:4174/Physical-Fpv-Simulator/');
+  await page.goto('http://127.0.0.1:4174/fpv/');
   await expect(page.locator('#loading')).toHaveCount(0);await page.getByTestId('start').click();
   await page.keyboard.down('Space');await page.waitForTimeout(750);await page.keyboard.up('Space');
   await expect(page.getByTestId('arm')).toHaveText('ARMED');
@@ -245,7 +245,7 @@ for(const width of [1440,360,412])test(`G07 optional measured diagnostics at ${w
 
 test('G07 review regression: Auto and Low recalculate pixel ratio without resize',async({page},info)=>{
  await page.setViewportSize({width:1440,height:900});
- await page.goto('http://127.0.0.1:4174/Physical-Fpv-Simulator/');await expect(page.locator('#loading')).toHaveCount(0);
+ await page.goto('http://127.0.0.1:4174/fpv/');await expect(page.locator('#loading')).toHaveCount(0);
  await page.getByTestId('start').click();await page.getByTestId('settings').click();
  const canvas=page.locator('#field');
  await page.locator('#quality').selectOption('low');
