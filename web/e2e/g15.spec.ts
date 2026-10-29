@@ -115,7 +115,8 @@ test('G15 E7 the production loop records the Ghost on every fixed step',async({p
  expect(last.events).toBeGreaterThanOrEqual(240);expect(last.state).toBe('flying');
 });
 
-const COARSE=[[320,568],[360,640],[360,800],[375,667],[390,844],[412,915]] as const;
+// 540x720 and 768x1024 were added after the G15 code review found G11's taller card on the left stick at 481-600px wide.
+const COARSE=[[320,568],[360,640],[360,800],[375,667],[390,844],[412,915],[540,720],[768,1024]] as const;
 const box=(page:Page,sel:string)=>page.evaluate(s=>{const e=document.querySelector(s);if(!e||!e.getClientRects().length)return null;const r=e.getBoundingClientRect();return {x:r.left,y:r.top,r:r.right,b:r.bottom};},sel);
 const area=(a:any,b:any)=>!a||!b?0:Math.max(0,Math.min(a.r,b.r)-Math.max(a.x,b.x))*Math.max(0,Math.min(a.b,b.b)-Math.max(a.y,b.y));
 const hitAt=(page:Page,sel:string)=>page.evaluate(s=>{const e=document.querySelector(s)!;const r=e.getBoundingClientRect();const h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return h===e||e.contains(h);},sel);
