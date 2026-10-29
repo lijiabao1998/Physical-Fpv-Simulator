@@ -51,6 +51,14 @@ Hover target: 1–3 m altitude, within 4 m of start; stay level and slow for 3 s
 Left stick: yaw / integrated throttle. Right: roll / pitch. Hold ARM 0.6s.|左搖桿：偏航／累積油門。右搖桿：橫滾／俯仰。按住 ARM 0.6 秒解鎖。
 RT/R2 throttle · left X yaw · right stick roll/pitch · hold A/✕ 0.6s ARM · B/○ disarm|RT/R2 油門 · 左搖桿橫軸偏航 · 右搖桿橫滾／俯仰 · 按住 A/✕ 0.6 秒解鎖 · B/○ 鎖定馬達
 Mode 2: left stick throttle/yaw · right stick roll/pitch · hold A/✕ 0.6s ARM · B/○ disarm|Mode 2：左搖桿油門／偏航 · 右搖桿橫滾／俯仰 · 按住 A/✕ 0.6 秒解鎖 · B/○ 鎖定馬達
+PB Ghost: ON|個人最佳 Ghost：顯示
+PB Ghost: OFF|個人最佳 Ghost：隱藏
+Replay preview · PB protected|重播預覽 · 個人最佳紀錄受保護
+No matching Ghost for this configuration|此設定沒有對應的有效 Ghost 紀錄
+Gate split comparison|通門分段比較
+Gate|關卡
+You|本次時間
+PB|最佳時間
 None|無
 ESC duty|ESC 占空比
 airspeed|空速
@@ -254,6 +262,7 @@ export function translate(source:string,language:Language):string{
  [/^Legacy unclassified: (.+) s \(not this class\)$/,v=>`歷史未分類紀錄：${v} s（不屬於此設定）`],
  [/^(\d+) \/ (\d+) gates$/, (passed,total)=>`${passed} / ${total} 道關卡`],
  [/^Lessons (\d+) \/ 5 · Hover (.+) \/ (.+) s$/, (count,time,required)=>`課程 ${count} / 5 · 懸停 ${time} / ${required} 秒`],
+ [/^PB (.+) s · (waiting at Gate 1|chase your best|hidden|hidden during flight school|not shown in free flight|no Ghost stored for this PB)$/, (time,state)=>`個人最佳 ${time} s · ${({'waiting at Gate 1':'等待第 1 關','chase your best':'挑戰最佳紀錄','hidden':'已隱藏','hidden during flight school':'飛行學校中不顯示','not shown in free flight':'自由飛行時不顯示','no Ghost stored for this PB':'未儲存 Ghost'} as Record<string,string>)[state]}`],
  [/^Selected file: (.*)$/,v=>`已選擇檔案：${v}`],
  [/^TRAINING FIELD \/ v(.+)$/,v=>`飛行訓練場 / v${v}`],
  [/^(\d+) \/ 5 gates$/,v=>`${v} / 5 道關卡`],[/^Lap (.+) s$/,v=>`單圈 ${v} s`],[/^LOCAL BEST (.+) s$/,v=>`本機最佳 ${v} s`],

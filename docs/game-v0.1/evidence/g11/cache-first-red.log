@@ -1,0 +1,27 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+ RUN  v5.0.5 /workspace/shared/own-cloud-migration-20261024/FPV-g11-ghost/web
+
+ ❯ tests/g11-ghost.test.ts (15 tests | 1 failed | 14 skipped) 1618ms
+   × G11 paused visual cache reuses immutable pose and invalidates on time, identity and reset 1586ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/g11-ghost.test.ts > G11 paused visual cache reuses immutable pose and invalidates on time, identity and reset
+TypeError: GhostPlayback is not a constructor
+ ❯ tests/g11-ghost.test.ts:107:60
+    105|
+    106| it('G11 paused visual cache reuses immutable pose and invalidates on t…
+    107|  const f=getFixture(),g=f.r.completed(f.s,'cache-test')!,c=new GhostPl…
+       |                                                            ^
+    108|  const first=c.sample(g,1);for(let i=0;i<10000;i++)expect(c.sample(g,1…
+    109|  const next=c.sample(g,1+FIXED_DT);expect(next).not.toBe(first);expect…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 skipped (15)
+   Start at  21:45:09
+   Duration  1.85s (tests 94%, transform 4%, import 2%)
+

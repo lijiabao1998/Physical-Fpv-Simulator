@@ -1,0 +1,140 @@
+
+Running 99 tests using 1 worker
+
+  ✓   1 e2e/g11.spec.ts:7:35 › G11 native PB loop, ON/OFF, split delta, FPV/Chase and performance 1440 (1.1m)
+  ✓   2 e2e/g11.spec.ts:7:35 › G11 native PB loop, ON/OFF, split delta, FPV/Chase and performance 412 (37.5s)
+  ✓   3 e2e/g11.spec.ts:7:35 › G11 native PB loop, ON/OFF, split delta, FPV/Chase and performance 360 (42.7s)
+  ✓   4 e2e/g11.spec.ts:48:1 › G11 imported completed replay never writes class PB or Ghost; pause/resume does not launder provenance (10.0s)
+  ✓   5 e2e/g11.spec.ts:58:1 › G11 production has native ghost toggle and no fixture API (2.8s)
+  ✓   6 e2e/g11.spec.ts:59:1 › G11 crash, unfinished, repeated completion and imported faster replay preserve valid PB/Ghost bytes (11.4s)
+  ✓   7 e2e/g11.spec.ts:69:56 › G11 training-straight local completed PB reloads its own visual Ghost (12.1s)
+  ✓   8 e2e/g11.spec.ts:69:56 › G11 industrial-run local completed PB reloads its own visual Ghost (12.2s)
+  ✓   9 e2e/g11.spec.ts:75:35 › G11 bilingual ghost retains paused pose, PB and deltas 1440 (14.7s)
+  ✓  10 e2e/g11.spec.ts:75:35 › G11 bilingual ghost retains paused pose, PB and deltas 412 (12.1s)
+  ✓  11 e2e/g11.spec.ts:75:35 › G11 bilingual ghost retains paused pose, PB and deltas 360 (12.7s)
+  ✓  12 e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 1440 (42.3s)
+  ✓  13 e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 412 (34.3s)
+  ✓  14 e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 390 (23.8s)
+  ✓  15 e2e/g12.spec.ts:5:39 › G12 bilingual school native flow and safety 360 (26.4s)
+  ✓  16 e2e/g12.spec.ts:38:34 › G12 coarse-pointer school controls remain separate 360 (18.1s)
+  ✓  17 e2e/g12.spec.ts:38:34 › G12 coarse-pointer school controls remain separate 390 (17.4s)
+  ✓  18 e2e/g12.spec.ts:38:34 › G12 coarse-pointer school controls remain separate 412 (17.0s)
+  ✓  19 e2e/g12.spec.ts:56:1 › G12 native watch Replay stays locked after pause/resume; fresh school Retry unlocks (11.9s)
+  ✓  20 e2e/g13.spec.ts:46:22 › G13 layout acceptance 320x568 coarse (16.7s)
+  ✓  21 e2e/g13.spec.ts:46:22 › G13 layout acceptance 360x800 coarse (15.6s)
+  ✓  22 e2e/g13.spec.ts:46:22 › G13 layout acceptance 390x844 coarse (15.9s)
+  ✓  23 e2e/g13.spec.ts:46:22 › G13 layout acceptance 412x915 coarse (15.9s)
+  ✓  24 e2e/g13.spec.ts:46:22 › G13 layout acceptance 650x900 fine (16.6s)
+  ✓  25 e2e/g13.spec.ts:46:22 › G13 layout acceptance 704x900 fine (17.2s)
+  ✓  26 e2e/g13.spec.ts:46:22 › G13 layout acceptance 800x360 coarse (20.3s)
+  ✓  27 e2e/g13.spec.ts:46:22 › G13 layout acceptance 844x390 coarse (20.3s)
+  ✓  28 e2e/g13.spec.ts:66:78 › G13 landscape native touch Safe stop 800x360 zh-TW (13.3s)
+  ✓  29 e2e/g13.spec.ts:66:78 › G13 landscape native touch Safe stop 800x360 en (12.9s)
+  ✓  30 e2e/g13.spec.ts:66:78 › G13 landscape native touch Safe stop 844x390 zh-TW (13.4s)
+  ✓  31 e2e/g13.spec.ts:66:78 › G13 landscape native touch Safe stop 844x390 en (13.3s)
+  ✓  32 e2e/g13.spec.ts:100:61 › G13 header stays reachable 480x400 coarse (8.5s)
+  ✓  33 e2e/g13.spec.ts:100:61 › G13 header stays reachable 480x400 fine (8.6s)
+  ✓  34 e2e/g13.spec.ts:100:61 › G13 header stays reachable 568x400 coarse (9.5s)
+  ✓  35 e2e/g13.spec.ts:100:61 › G13 header stays reachable 568x400 fine (8.3s)
+  ✓  36 e2e/g13.spec.ts:100:61 › G13 header stays reachable 600x400 coarse (8.9s)
+  ✓  37 e2e/g13.spec.ts:100:61 › G13 header stays reachable 600x400 fine (8.6s)
+  ✓  38 e2e/g13.spec.ts:100:61 › G13 header stays reachable 640x360 coarse (8.9s)
+  ✓  39 e2e/g13.spec.ts:100:61 › G13 header stays reachable 640x360 fine (8.6s)
+  ✓  40 e2e/g13.spec.ts:100:61 › G13 header stays reachable 900x400 coarse (9.6s)
+  ✓  41 e2e/g13.spec.ts:100:61 › G13 header stays reachable 900x400 fine (10.1s)
+  ✓  42 e2e/g13.spec.ts:100:61 › G13 header stays reachable 601x600 coarse (9.3s)
+  ✓  43 e2e/g13.spec.ts:100:61 › G13 header stays reachable 601x600 fine (10.2s)
+  ✓  44 e2e/g13.spec.ts:100:61 › G13 header stays reachable 700x560 coarse (10.9s)
+  ✓  45 e2e/g13.spec.ts:100:61 › G13 header stays reachable 700x560 fine (12.5s)
+  ✓  46 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 320x480 coarse (9.0s)
+  ✓  47 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 360x540 coarse (9.1s)
+  ✓  48 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 360x560 coarse (9.1s)
+  ✓  49 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 414x550 coarse (10.1s)
+  ✓  50 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 375x600 coarse (9.8s)
+  ✓  51 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 481x520 coarse (10.2s)
+  ✓  52 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 500x500 coarse (10.2s)
+  ✓  53 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 540x560 coarse (10.7s)
+  ✓  54 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 640x360 coarse (10.3s)
+  ✓  55 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 667x375 coarse (10.6s)
+  ✓  56 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 740x360 coarse (10.9s)
+  ✓  57 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 780x360 coarse (11.1s)
+  ✓  58 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 800x360 coarse (10.7s)
+  ✓  59 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 900x360 coarse (10.8s)
+  ✓  60 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 932x430 coarse (12.1s)
+  ✓  61 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 900x550 coarse (11.8s)
+  ✓  62 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 601x560 coarse (11.1s)
+  ✓  63 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 700x560 coarse (11.7s)
+  ✓  64 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 850x600 coarse (11.7s)
+  ✓  65 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 900x551 coarse (12.0s)
+  ✓  66 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 640x632 coarse (11.2s)
+  ✓  67 e2e/g13.spec.ts:143:27 › G13 short screens keep Enter and the school controls clear 800x700 coarse (12.2s)
+  ✓  68 e2e/g15.spec.ts:29:1 › G15 E1 flight school hides the PB Ghost (10.6s)
+  ✓  69 e2e/g15.spec.ts:38:1 › G15 E2 a school lap saves its PB and Ghost, hidden until the course (18.4s)
+  ✓  70 e2e/g15.spec.ts:52:1 › G15 E3 free flight shows its own status; flight school wins over free flight (14.3s)
+  ✓  71 e2e/g15.spec.ts:63:1 › G15 E4 a new PB is displayed at once; the split table keeps the chased Ghost (11.5s)
+  ✓  72 e2e/g15.spec.ts:74:1 › G15 E4b a Ghost save that fails after a new PB shows no stale Ghost (10.2s)
+  ✓  73 e2e/g15.spec.ts:85:1 › G15 E5 a PB without a stored Ghost says so (9.6s)
+  ✘  74 e2e/g15.spec.ts:93:1 › G15 E6 watching a replay in flight school keeps the PB protected and writes nothing (10.7s)
+  ✓  75 e2e/g15.spec.ts:106:1 › G15 E7 the production loop records the Ghost on every fixed step (6.5s)
+  ✓  76 e2e/g15.spec.ts:131:36 › G15 E8 course card clears the sticks 320x568 coarse (17.0s)
+  ✓  77 e2e/g15.spec.ts:131:36 › G15 E8 course card clears the sticks 360x640 coarse (17.1s)
+  ✓  78 e2e/g15.spec.ts:131:36 › G15 E8 course card clears the sticks 360x800 coarse (18.7s)
+  ✓  79 e2e/g15.spec.ts:131:36 › G15 E8 course card clears the sticks 375x667 coarse (18.0s)
+  ✓  80 e2e/g15.spec.ts:131:36 › G15 E8 course card clears the sticks 390x844 coarse (19.1s)
+  ✓  81 e2e/g15.spec.ts:131:36 › G15 E8 course card clears the sticks 412x915 coarse (20.1s)
+  ✓  82 e2e/g15.spec.ts:131:36 › G15 E8 course card clears the sticks 540x720 coarse (20.8s)
+  ✓  83 e2e/g15.spec.ts:131:36 › G15 E8 course card clears the sticks 768x1024 coarse (22.6s)
+  ✓  84 e2e/g15.spec.ts:140:30 › G15 E8 course card clears the controls and the school panel 650x900 fine (11.8s)
+  ✓  85 e2e/g15.spec.ts:140:30 › G15 E8 course card clears the controls and the school panel 704x900 fine (12.7s)
+  ✓  86 e2e/g15.spec.ts:149:78 › G15 E9 the split summary shows whole lines only 1440x900 (9.1s)
+  ✓  87 e2e/g15.spec.ts:149:78 › G15 E9 the split summary shows whole lines only 412x915 (8.7s)
+  ✓  88 e2e/i18n.spec.ts:3:72 › I18N native zh-TW 1440 (29.9s)
+  ✓  89 e2e/i18n.spec.ts:3:72 › I18N native en 1440 (31.3s)
+  ✓  90 e2e/i18n.spec.ts:3:72 › I18N native zh-TW 412 (23.5s)
+  ✓  91 e2e/i18n.spec.ts:3:72 › I18N native en 412 (23.2s)
+  ✓  92 e2e/i18n.spec.ts:3:72 › I18N native zh-TW 360 (23.3s)
+  ✓  93 e2e/i18n.spec.ts:3:72 › I18N native en 360 (22.2s)
+  ✓  94 e2e/i18n.spec.ts:23:1 › I18N switch is in-place, preserves unsaved selections, pause/disarm, settings, best and replay bytes (17.5s)
+  ✓  95 e2e/i18n.spec.ts:40:1 › I18N storage failure and Chinese browser fallback remain usable (7.1s)
+  ✓  96 e2e/i18n.spec.ts:47:1 › I18N Chinese native ARM hold, switch without reset, then settings disarm (12.5s)
+  ✓  97 e2e/i18n.spec.ts:67:38 › I18N coarse-pointer mobile zh-TW (7.3s)
+  ✓  98 e2e/i18n.spec.ts:67:38 › I18N coarse-pointer mobile en (6.8s)
+  ✓  99 e2e/i18n.spec.ts:76:1 › I18N native replay chooser is localized and malformed replay preserves paused flight (9.2s)
+
+
+  1) e2e/g15.spec.ts:93:1 › G15 E6 watching a replay in flight school keeps the PB protected and writes nothing 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "replay"
+    Received: "paused"
+
+       98 |  await page.locator('[data-panel=physics]').click();await page.locator('#watch-replay').click();
+       99 |  const replay=await page.evaluate(()=>{const h=(window as any).__FPV_TEST__;const during={ghost:h.ghost(),state:h.snapshot().state,school:h.school()};h.tick(14000);return {during,end:h.snapshot(),ghost:h.ghost(),school:h.school()};});
+    > 100 |  expect(replay.during.state).toBe('replay');expect(replay.during.ghost.recordable).toBe(false);expect(replay.during.ghost.pose).toBeNull();expect(replay.during.school.blocked).toBe(true);
+          |                              ^
+      101 |  expect(replay.end.state).toBe('finished');expect(replay.ghost.recordable).toBe(false);expect(replay.ghost.pose).toBeNull();
+      102 |  await expect(page.locator('#ghost-status')).toHaveText('Replay preview · PB protected');
+      103 |  expect(await page.evaluate(()=>({...localStorage}))).toEqual(cleared);
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:100:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../g15/round2/related-results/g15-G15-E6-watching-a-repl-4b8d3-rotected-and-writes-nothing/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../g15/round2/related-results/g15-G15-E6-watching-a-repl-4b8d3-rotected-and-writes-nothing/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../g15/round2/related-results/g15-G15-E6-watching-a-repl-4b8d3-rotected-and-writes-nothing/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../g15/round2/related-results/g15-G15-E6-watching-a-repl-4b8d3-rotected-and-writes-nothing/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  Slow test file: e2e/g13.spec.ts (9.3m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  1 failed
+    e2e/g15.spec.ts:93:1 › G15 E6 watching a replay in flight school keeps the PB protected and writes nothing 
+  98 passed (24.9m)
+e2e exit=1

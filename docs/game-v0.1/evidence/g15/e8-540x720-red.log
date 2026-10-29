@@ -1,0 +1,43 @@
+
+Running 2 tests using 1 worker
+
+  ✘  1 e2e/g15.spec.ts:131:36 › G15 E8 course card clears the sticks 540x720 coarse (5.6s)
+  ✓  2 e2e/g15.spec.ts:131:36 › G15 E8 course card clears the sticks 768x1024 coarse (21.3s)
+
+
+  1) e2e/g15.spec.ts:131:36 › G15 E8 course card clears the sticks 540x720 coarse ──────────────────
+
+    Error: 540x720 zh-TW before lap .course vs #left-stick
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 3894
+
+      122 | const hitAt=(page:Page,sel:string)=>page.evaluate(s=>{const e=document.querySelector(s)!;const r=e.getBoundingClientRect();const h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return h===e||e.contains(h);},sel);
+      123 | async function courseCardChecks(page:Page,label:string,blockers:string[],atTop:string[]){
+    > 124 |  const card=await box(page,'.course');for(const sel of blockers)expect(area(card,await box(page,sel)),`${label} .course vs ${sel}`).toBe(0);
+          |                                                                                                                                     ^
+      125 |  await page.evaluate(()=>{document.querySelector<HTMLElement>('.course')!.scrollTop=0;});
+      126 |  for(const sel of atTop)expect(await hitAt(page,sel),`${label} ${sel} at scrollTop 0`).toBe(true);
+      127 |  const toggle=await page.evaluate(()=>{const c=document.querySelector<HTMLElement>('.course')!,t=document.querySelector<HTMLElement>('#ghost-toggle')!;const cr=c.getBoundingClientRect(),tr=t.getBoundingClientRect();if(tr.top<cr.top||tr.bottom>cr.bottom)c.scrollTop+=tr.bottom-cr.bottom+4;return getComputedStyle(c).overflowY;});
+        at courseCardChecks (/tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:124:133)
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:135:99
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/g15-G15-E8-course-card-clears-the-sticks-540x720-coarse/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/g15-G15-E8-course-card-clears-the-sticks-540x720-coarse/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/g15-G15-E8-course-card-clears-the-sticks-540x720-coarse/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/g15-G15-E8-course-card-clears-the-sticks-540x720-coarse/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e/g15.spec.ts:131:36 › G15 E8 course card clears the sticks 540x720 coarse ───────────────────
+  1 passed (32.3s)

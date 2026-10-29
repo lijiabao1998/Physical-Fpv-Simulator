@@ -1,0 +1,374 @@
+{
+  "head": "191aaf3315142664e70e9ada527828c4d0af8912",
+  "runs": {
+    "push": 40197785898,
+    "pr": 40197789366
+  },
+  "allTests": "Both124 unit/40 Chromium passed, but passing functional CI is not a performance waiver.",
+  "measurements": {
+    "push": [
+      {
+        "width": 1440,
+        "sourceAttachment": "G11-native-PB-loop-ON-OFF-split-delta-FPV-Chase-and-performance-1440--g11-raw-off-on-performance.json",
+        "sampleFrames": [
+          120,
+          120,
+          120,
+          120
+        ],
+        "cpuMs": {
+          "OFF": 0.5179166666663757,
+          "ON": 0.6312500000029104,
+          "ratio": 1.2188254223715496
+        },
+        "frameP95Ms": {
+          "OFF": 50.100000000000364,
+          "ON": 50.10000000000218,
+          "ratio": 1.0000000000000364
+        },
+        "pairs": {
+          "cpuRatios": [
+            1.102941176486645,
+            1.331220285258291
+          ],
+          "p95Ratios": [
+            1.0000000000000726,
+            1.0
+          ]
+        },
+        "drawCalls": [
+          21,
+          22,
+          22,
+          21
+        ],
+        "triangles": [
+          6210,
+          6210,
+          6210,
+          6210
+        ],
+        "geometry": [
+          68,
+          68,
+          68,
+          68
+        ],
+        "textures": [
+          6,
+          6,
+          6,
+          6
+        ],
+        "quality": [
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00"
+        ]
+      },
+      {
+        "width": 412,
+        "sourceAttachment": "G11-native-PB-loop-ON-OFF-split-delta-FPV-Chase-and-performance-412--g11-raw-off-on-performance.json",
+        "sampleFrames": [
+          120,
+          120,
+          120,
+          120
+        ],
+        "cpuMs": {
+          "OFF": 0.4454166666672488,
+          "ON": 0.5137499999992239,
+          "ratio": 1.1534144059836537
+        },
+        "frameP95Ms": {
+          "OFF": 33.29999999999927,
+          "ON": 33.349999999998545,
+          "ratio": 1.0015015015014797
+        },
+        "pairs": {
+          "cpuRatios": [
+            1.1852517985678053,
+            1.1189083820530192
+          ],
+          "p95Ratios": [
+            1.0030030030029593,
+            1.0
+          ]
+        },
+        "drawCalls": [
+          16,
+          17,
+          17,
+          16
+        ],
+        "triangles": [
+          6160,
+          6160,
+          6160,
+          6160
+        ],
+        "geometry": [
+          60,
+          60,
+          60,
+          60
+        ],
+        "textures": [
+          4,
+          4,
+          4,
+          4
+        ],
+        "quality": [
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00"
+        ]
+      },
+      {
+        "width": 360,
+        "sourceAttachment": "G11-native-PB-loop-ON-OFF-split-delta-FPV-Chase-and-performance-360--g11-raw-off-on-performance.json",
+        "sampleFrames": [
+          120,
+          120,
+          120,
+          120
+        ],
+        "cpuMs": {
+          "OFF": 0.40791666666191306,
+          "ON": 0.4958333333338184,
+          "ratio": 1.2155260470020752
+        },
+        "frameP95Ms": {
+          "OFF": 16.75,
+          "ON": 16.80000000000109,
+          "ratio": 1.0029850746269309
+        },
+        "pairs": {
+          "cpuRatios": [
+            1.2028112450167308,
+            1.2286902286830785
+          ],
+          "p95Ratios": [
+            1.0000000000002165,
+            1.0059880239520085
+          ]
+        },
+        "drawCalls": [
+          16,
+          17,
+          17,
+          16
+        ],
+        "triangles": [
+          6160,
+          6160,
+          6160,
+          6160
+        ],
+        "geometry": [
+          59,
+          59,
+          59,
+          59
+        ],
+        "textures": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "quality": [
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00"
+        ]
+      }
+    ],
+    "pr": [
+      {
+        "width": 1440,
+        "sourceAttachment": "G11-native-PB-loop-ON-OFF-split-delta-FPV-Chase-and-performance-1440--g11-raw-off-on-performance.json",
+        "sampleFrames": [
+          120,
+          120,
+          120,
+          120
+        ],
+        "cpuMs": {
+          "OFF": 0.5420833333361468,
+          "ON": 0.6458333333323631,
+          "ratio": 1.191391237501635
+        },
+        "frameP95Ms": {
+          "OFF": 66.700000000008,
+          "ON": 66.75,
+          "ratio": 1.0007496251872863
+        },
+        "pairs": {
+          "cpuRatios": [
+            1.3230543318573487,
+            1.0467741935408568
+          ],
+          "p95Ratios": [
+            1.0,
+            1.0014992503745723
+          ]
+        },
+        "drawCalls": [
+          21,
+          22,
+          22,
+          21
+        ],
+        "triangles": [
+          6210,
+          6210,
+          6210,
+          6210
+        ],
+        "geometry": [
+          68,
+          68,
+          68,
+          68
+        ],
+        "textures": [
+          6,
+          6,
+          6,
+          6
+        ],
+        "quality": [
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00"
+        ]
+      },
+      {
+        "width": 412,
+        "sourceAttachment": "G11-native-PB-loop-ON-OFF-split-delta-FPV-Chase-and-performance-412--g11-raw-off-on-performance.json",
+        "sampleFrames": [
+          120,
+          120,
+          120,
+          120
+        ],
+        "cpuMs": {
+          "OFF": 0.5262499999989814,
+          "ON": 0.49125000000058205,
+          "ratio": 0.9334916864637206
+        },
+        "frameP95Ms": {
+          "OFF": 33.400000000001455,
+          "ON": 33.400000000001455,
+          "ratio": 1.0
+        },
+        "pairs": {
+          "cpuRatios": [
+            1.0400696864183139,
+            0.8447024673441227
+          ],
+          "p95Ratios": [
+            1.0,
+            1.0
+          ]
+        },
+        "drawCalls": [
+          16,
+          17,
+          17,
+          16
+        ],
+        "triangles": [
+          6160,
+          6160,
+          6160,
+          6160
+        ],
+        "geometry": [
+          60,
+          60,
+          60,
+          60
+        ],
+        "textures": [
+          4,
+          4,
+          4,
+          4
+        ],
+        "quality": [
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00"
+        ]
+      },
+      {
+        "width": 360,
+        "sourceAttachment": "G11-native-PB-loop-ON-OFF-split-delta-FPV-Chase-and-performance-360--g11-raw-off-on-performance.json",
+        "sampleFrames": [
+          120,
+          120,
+          120,
+          120
+        ],
+        "cpuMs": {
+          "OFF": 0.5641666666679763,
+          "ON": 0.498333333334934,
+          "ratio": 0.883308714919546
+        },
+        "frameP95Ms": {
+          "OFF": 33.400000000001455,
+          "ON": 33.400000000001455,
+          "ratio": 1.0
+        },
+        "pairs": {
+          "cpuRatios": [
+            1.0714285714306926,
+            0.7389033942560275
+          ],
+          "p95Ratios": [
+            1.0,
+            1.0
+          ]
+        },
+        "drawCalls": [
+          16,
+          17,
+          17,
+          16
+        ],
+        "triangles": [
+          6160,
+          6160,
+          6160,
+          6160
+        ],
+        "geometry": [
+          59,
+          59,
+          59,
+          59
+        ],
+        "textures": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "quality": [
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00",
+          "Low \u00b7 render scale 1.00"
+        ]
+      }
+    ]
+  }
+}

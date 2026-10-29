@@ -1,0 +1,7 @@
+
+Running 2 tests using 1 worker
+
+  ✓  1 e2e/g15.spec.ts:149:78 › G15 E9 the split summary shows whole lines only 1440x900 (8.4s)
+  ✓  2 e2e/g15.spec.ts:149:78 › G15 E9 the split summary shows whole lines only 412x915 (7.5s)
+
+  2 passed (18.1s)

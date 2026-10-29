@@ -1,0 +1,40 @@
+
+Running 1 test using 1 worker
+
+  ✘  1 e2e/g15.spec.ts:106:1 › G15 E7 the production loop records the Ghost on every fixed step (6.0s)
+
+
+  1) e2e/g15.spec.ts:106:1 › G15 E7 the production loop records the Ghost on every fixed step ──────
+
+    Error: {"events":215,"samples":0,"state":"flying","reason":"Fresh pack. Zero throttle, then hold ARM."}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 54
+    Received: 0
+
+      109 |  const read=()=>page.evaluate(()=>{const h=(window as any).__FPV_TEST__;const s=h.snapshot();return {events:Math.round(s.time*240),samples:h.ghost().samples,state:s.state,reason:s.reason};});
+      110 |  for(const started=Date.now();Date.now()-started<15000;){
+    > 111 |   const r=await read();reads.push(r);expect(r.samples,JSON.stringify(r)).toBe(Math.floor(r.events/4)+1);last=r;
+          |                                                                          ^
+      112 |   if(r.state==='paused'){expect(r.reason).toMatch(/Frame interruption over 250 ms|Physics catch-up limit/);expect(resumes++).toBeLessThan(3);await page.getByTestId('pause').click();await frames(page,2);continue;}
+      113 |   if(r.events>=240)break;await page.waitForTimeout(100);
+      114 |  }
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:111:74
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/g15-G15-E7-the-production--730b8-e-Ghost-on-every-fixed-step/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/g15-G15-E7-the-production--730b8-e-Ghost-on-every-fixed-step/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/g15-G15-E7-the-production--730b8-e-Ghost-on-every-fixed-step/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/g15-G15-E7-the-production--730b8-e-Ghost-on-every-fixed-step/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e/g15.spec.ts:106:1 › G15 E7 the production loop records the Ghost on every fixed step ───────

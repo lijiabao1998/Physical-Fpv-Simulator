@@ -1,0 +1,408 @@
+
+Running 16 tests using 1 worker
+
+  ✘   1 e2e/g15.spec.ts:29:1 › G15 E1 flight school hides the PB Ghost (9.3s)
+  ✘   2 e2e/g15.spec.ts:38:1 › G15 E2 a school lap saves its PB and Ghost, hidden until the course (7.5s)
+  ✘   3 e2e/g15.spec.ts:52:1 › G15 E3 free flight shows its own status; flight school wins over free flight (20.0s)
+  ✘   4 e2e/g15.spec.ts:63:1 › G15 E4 a new PB is displayed at once; the split table keeps the chased Ghost (21.0s)
+  ✘   5 e2e/g15.spec.ts:74:1 › G15 E4b a Ghost save that fails after a new PB shows no stale Ghost (10.7s)
+  ✘   6 e2e/g15.spec.ts:85:1 › G15 E5 a PB without a stored Ghost says so (18.7s)
+  ✓   7 e2e/g15.spec.ts:93:1 › G15 E6 watching a replay in flight school keeps the PB protected and writes nothing (10.7s)
+  ✓   8 e2e/g15.spec.ts:106:1 › G15 E7 the production loop records the Ghost on every fixed step (6.5s)
+  ✘   9 e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 320x568 coarse (3.7s)
+  ✘  10 e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 360x640 coarse (4.1s)
+  ✘  11 e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 360x800 coarse (14.4s)
+  ✘  12 e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 375x667 coarse (4.0s)
+  ✘  13 e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 390x844 coarse (14.9s)
+  ✓  14 e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 412x915 coarse (18.5s)
+  ✓  15 e2e/g15.spec.ts:139:30 › G15 E8 course card clears the controls and the school panel 650x900 fine (11.3s)
+  ✓  16 e2e/g15.spec.ts:139:30 › G15 E8 course card clears the controls and the school panel 704x900 fine (11.6s)
+
+
+  1) e2e/g15.spec.ts:29:1 › G15 E1 flight school hides the PB Ghost ────────────────────────────────
+
+    Error: expect(received).toBeNull()
+
+    Received: {"position": [9.999996019065863, -0.00003980863327081623, 2.7809297776954502], "quaternion": [0.9976285296534455, -9.878776008729237e-7, -0.06882816783877176, 0.000011510276678364864], "tick": 1472.1037096130767}
+
+      30 |  test.setTimeout(60000);await page.setViewportSize({width:1440,height:900});await boot(page);await localFlight(page,'slow-british-slalom');await page.getByTestId('retry').click();await frames(page);
+      31 |  let g=await ghost(page);expect(g.loaded).toBe(true);expect(g.pose).not.toBeNull();expect(g.render.visible).toBe(true);
+    > 32 |  await page.locator('#school-open').click();g=await ghost(page);expect(g.loaded).toBe(true);expect(g.pose).toBeNull();
+         |                                                                                                            ^
+      33 |  await frames(page);expect((await ghost(page)).render.visible).toBe(false);
+      34 |  const t=fixture('slow-british-slalom').ghost.total.toFixed(2);await statusIn(page,`PB ${t} s · hidden during flight school`,`個人最佳 ${t} s · 飛行學校中不顯示`);
+      35 |  await page.locator('.course').screenshot({path:info.outputPath('g15-e1-course-1440.png')});
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:32:108
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/g15-G15-E1-flight-school-hides-the-PB-Ghost/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/g15-G15-E1-flight-school-hides-the-PB-Ghost/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/g15-G15-E1-flight-school-hides-the-PB-Ghost/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/g15-G15-E1-flight-school-hides-the-PB-Ghost/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) e2e/g15.spec.ts:38:1 › G15 E2 a school lap saves its PB and Ghost, hidden until the course ────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 2368
+    Received: 0
+
+      40 |  const result=await schoolLap(page);expect(result.school.lesson).toBe('complete');expect(result.state.state).toBe('finished');
+      41 |  expect(result.keys.filter((k:string)=>k.startsWith('physical-fpv-race-v1'))).toHaveLength(1);const keys=result.keys.filter((k:string)=>k.startsWith(PREFIX));expect(keys).toHaveLength(1);
+    > 42 |  const stored=await page.evaluate(k=>JSON.parse(localStorage.getItem(k)!),keys[0]);expect(stored.startedAt).toBeGreaterThan(0);expect(stored.poses[0].tick).toBe(rule(stored.startedAt));
+         |                                                                                                                                                             ^
+      43 |  await refresh(page);let g=await ghost(page);expect(g.loaded).toBe(true);expect(g.pose).toBeNull();
+      44 |  const t=stored.total.toFixed(2);await statusIn(page,`PB ${t} s · hidden during flight school`,`個人最佳 ${t} s · 飛行學校中不顯示`);
+      45 |  await page.locator('#school-close').click();await refresh(page);g=await ghost(page);expect(g.loaded).toBe(true);expect(g.pose).toBeNull();
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:42:157
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/g15-G15-E2-a-school-lap-sa-6f4ce-ost-hidden-until-the-course/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/g15-G15-E2-a-school-lap-sa-6f4ce-ost-hidden-until-the-course/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/g15-G15-E2-a-school-lap-sa-6f4ce-ost-hidden-until-the-course/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/g15-G15-E2-a-school-lap-sa-6f4ce-ost-hidden-until-the-course/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) e2e/g15.spec.ts:52:1 › G15 E3 free flight shows its own status; flight school wins over free flight 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#ghost-status')
+    Expected: "個人最佳 42.00 s · 自由飛行時不顯示"
+    Received: "個人最佳 42.00 s · 等待第 1 關"
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#ghost-status') with timeout 10000ms
+      - waiting for locator('#ghost-status')
+        23 × locator resolved to <small id="ghost-status">個人最佳 42.00 s · 等待第 1 關</small>
+           - unexpected value "個人最佳 42.00 s · 等待第 1 關"
+
+
+      14 | const ghostKeys=(page:Page)=>page.evaluate(p=>Object.keys(localStorage).filter(k=>k.startsWith(p)),PREFIX);
+      15 | async function statusIn(page:Page,en:string,zh:string){
+    > 16 |  for(const [language,text] of [['zh-TW',zh],['en',en]]){await page.locator('#ui-language').selectOption(language);await expect(page.locator('#ghost-status')).toHaveText(text);}
+         |                                                                                                                                                               ^
+      17 | }
+      18 | async function aircraftPractice(page:Page,course:boolean){await page.locator('[data-panel=aircraft]').click();await page.locator('#practice').selectOption(String(course));await page.locator('#apply-aircraft').click();}
+      19 | /** G12's full school path (g12.spec.ts lines 6-16), with the 0-tick observe that animate makes before its first step. */
+        at statusIn (/tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:16:159)
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:56:2
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/g15-G15-E3-free-flight-sho-32991-chool-wins-over-free-flight/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/g15-G15-E3-free-flight-sho-32991-chool-wins-over-free-flight/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/g15-G15-E3-free-flight-sho-32991-chool-wins-over-free-flight/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/g15-G15-E3-free-flight-sho-32991-chool-wins-over-free-flight/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) e2e/g15.spec.ts:63:1 › G15 E4 a new PB is displayed at once; the split table keeps the chased Ghost 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#ghost-status')
+    Expected: "個人最佳 35.97 s · 挑戰最佳紀錄"
+    Received: "個人最佳 42.00 s · 挑戰最佳紀錄"
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#ghost-status') with timeout 10000ms
+      - waiting for locator('#ghost-status')
+        23 × locator resolved to <small id="ghost-status">個人最佳 42.00 s · 挑戰最佳紀錄</small>
+           - unexpected value "個人最佳 42.00 s · 挑戰最佳紀錄"
+
+
+      14 | const ghostKeys=(page:Page)=>page.evaluate(p=>Object.keys(localStorage).filter(k=>k.startsWith(p)),PREFIX);
+      15 | async function statusIn(page:Page,en:string,zh:string){
+    > 16 |  for(const [language,text] of [['zh-TW',zh],['en',en]]){await page.locator('#ui-language').selectOption(language);await expect(page.locator('#ghost-status')).toHaveText(text);}
+         |                                                                                                                                                               ^
+      17 | }
+      18 | async function aircraftPractice(page:Page,course:boolean){await page.locator('[data-panel=aircraft]').click();await page.locator('#practice').selectOption(String(course));await page.locator('#apply-aircraft').click();}
+      19 | /** G12's full school path (g12.spec.ts lines 6-16), with the 0-tick observe that animate makes before its first step. */
+        at statusIn (/tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:16:159)
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:66:2
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/g15-G15-E4-a-new-PB-is-dis-85143-able-keeps-the-chased-Ghost/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/g15-G15-E4-a-new-PB-is-dis-85143-able-keeps-the-chased-Ghost/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/g15-G15-E4-a-new-PB-is-dis-85143-able-keeps-the-chased-Ghost/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/g15-G15-E4-a-new-PB-is-dis-85143-able-keeps-the-chased-Ghost/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) e2e/g15.spec.ts:74:1 › G15 E4b a Ghost save that fails after a new PB shows no stale Ghost ────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      78 |  await localFlight(page,'british-slalom');await refresh(page);
+      79 |  await page.evaluate(()=>{Storage.prototype.setItem=(window as any).__g15SetItem;});
+    > 80 |  const g=await ghost(page);expect(g.loaded).toBe(false);expect(g.pose).toBeNull();
+         |                                             ^
+      81 |  await expect(page.locator('#ghost-status')).toHaveText(`PB ${fixture().ghost.total.toFixed(2)} s · no Ghost stored for this PB`);
+      82 |  expect(await page.evaluate(k=>localStorage.getItem(k),key)).toBe(slowBytes);
+      83 | });
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:80:45
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/g15-G15-E4b-a-Ghost-save-t-3819d-new-PB-shows-no-stale-Ghost/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/g15-G15-E4b-a-Ghost-save-t-3819d-new-PB-shows-no-stale-Ghost/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/g15-G15-E4b-a-Ghost-save-t-3819d-new-PB-shows-no-stale-Ghost/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/g15-G15-E4b-a-Ghost-save-t-3819d-new-PB-shows-no-stale-Ghost/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) e2e/g15.spec.ts:85:1 › G15 E5 a PB without a stored Ghost says so ─────────────────────────────
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#ghost-status')
+    Expected: "個人最佳 42.00 s · 未儲存 Ghost"
+    Received: "此設定沒有對應的有效 Ghost 紀錄"
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#ghost-status') with timeout 10000ms
+      - waiting for locator('#ghost-status')
+        23 × locator resolved to <small id="ghost-status">此設定沒有對應的有效 Ghost 紀錄</small>
+           - unexpected value "此設定沒有對應的有效 Ghost 紀錄"
+
+
+      14 | const ghostKeys=(page:Page)=>page.evaluate(p=>Object.keys(localStorage).filter(k=>k.startsWith(p)),PREFIX);
+      15 | async function statusIn(page:Page,en:string,zh:string){
+    > 16 |  for(const [language,text] of [['zh-TW',zh],['en',en]]){await page.locator('#ui-language').selectOption(language);await expect(page.locator('#ghost-status')).toHaveText(text);}
+         |                                                                                                                                                               ^
+      17 | }
+      18 | async function aircraftPractice(page:Page,course:boolean){await page.locator('[data-panel=aircraft]').click();await page.locator('#practice').selectOption(String(course));await page.locator('#apply-aircraft').click();}
+      19 | /** G12's full school path (g12.spec.ts lines 6-16), with the 0-tick observe that animate makes before its first step. */
+        at statusIn (/tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:16:159)
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:89:64
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/g15-G15-E5-a-PB-without-a-stored-Ghost-says-so/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/g15-G15-E5-a-PB-without-a-stored-Ghost-says-so/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/g15-G15-E5-a-PB-without-a-stored-Ghost-says-so/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/g15-G15-E5-a-PB-without-a-stored-Ghost-says-so/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  7) e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 320x568 coarse ──────────────────
+
+    Error: 320x568 zh-TW before lap .course vs #left-stick
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 10000
+
+      121 | const hitAt=(page:Page,sel:string)=>page.evaluate(s=>{const e=document.querySelector(s)!;const r=e.getBoundingClientRect();const h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return h===e||e.contains(h);},sel);
+      122 | async function courseCardChecks(page:Page,label:string,blockers:string[],atTop:string[]){
+    > 123 |  const card=await box(page,'.course');for(const sel of blockers)expect(area(card,await box(page,sel)),`${label} .course vs ${sel}`).toBe(0);
+          |                                                                                                                                     ^
+      124 |  await page.evaluate(()=>{document.querySelector<HTMLElement>('.course')!.scrollTop=0;});
+      125 |  for(const sel of atTop)expect(await hitAt(page,sel),`${label} ${sel} at scrollTop 0`).toBe(true);
+      126 |  const toggle=await page.evaluate(()=>{const c=document.querySelector<HTMLElement>('.course')!,t=document.querySelector<HTMLElement>('#ghost-toggle')!;const cr=c.getBoundingClientRect(),tr=t.getBoundingClientRect();if(tr.top<cr.top||tr.bottom>cr.bottom)c.scrollTop+=tr.bottom-cr.bottom+4;return getComputedStyle(c).overflowY;});
+        at courseCardChecks (/tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:123:133)
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:134:99
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/g15-G15-E8-course-card-clears-the-sticks-320x568-coarse/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/g15-G15-E8-course-card-clears-the-sticks-320x568-coarse/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/g15-G15-E8-course-card-clears-the-sticks-320x568-coarse/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/g15-G15-E8-course-card-clears-the-sticks-320x568-coarse/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  8) e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 360x640 coarse ──────────────────
+
+    Error: 360x640 zh-TW before lap .course vs #left-stick
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 9150
+
+      121 | const hitAt=(page:Page,sel:string)=>page.evaluate(s=>{const e=document.querySelector(s)!;const r=e.getBoundingClientRect();const h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return h===e||e.contains(h);},sel);
+      122 | async function courseCardChecks(page:Page,label:string,blockers:string[],atTop:string[]){
+    > 123 |  const card=await box(page,'.course');for(const sel of blockers)expect(area(card,await box(page,sel)),`${label} .course vs ${sel}`).toBe(0);
+          |                                                                                                                                     ^
+      124 |  await page.evaluate(()=>{document.querySelector<HTMLElement>('.course')!.scrollTop=0;});
+      125 |  for(const sel of atTop)expect(await hitAt(page,sel),`${label} ${sel} at scrollTop 0`).toBe(true);
+      126 |  const toggle=await page.evaluate(()=>{const c=document.querySelector<HTMLElement>('.course')!,t=document.querySelector<HTMLElement>('#ghost-toggle')!;const cr=c.getBoundingClientRect(),tr=t.getBoundingClientRect();if(tr.top<cr.top||tr.bottom>cr.bottom)c.scrollTop+=tr.bottom-cr.bottom+4;return getComputedStyle(c).overflowY;});
+        at courseCardChecks (/tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:123:133)
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:134:99
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/g15-G15-E8-course-card-clears-the-sticks-360x640-coarse/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/g15-G15-E8-course-card-clears-the-sticks-360x640-coarse/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/g15-G15-E8-course-card-clears-the-sticks-360x640-coarse/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/g15-G15-E8-course-card-clears-the-sticks-360x640-coarse/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  9) e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 360x800 coarse ──────────────────
+
+    Error: 360x800 zh-TW after lap .course vs #left-stick
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 7950
+
+      121 | const hitAt=(page:Page,sel:string)=>page.evaluate(s=>{const e=document.querySelector(s)!;const r=e.getBoundingClientRect();const h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return h===e||e.contains(h);},sel);
+      122 | async function courseCardChecks(page:Page,label:string,blockers:string[],atTop:string[]){
+    > 123 |  const card=await box(page,'.course');for(const sel of blockers)expect(area(card,await box(page,sel)),`${label} .course vs ${sel}`).toBe(0);
+          |                                                                                                                                     ^
+      124 |  await page.evaluate(()=>{document.querySelector<HTMLElement>('.course')!.scrollTop=0;});
+      125 |  for(const sel of atTop)expect(await hitAt(page,sel),`${label} ${sel} at scrollTop 0`).toBe(true);
+      126 |  const toggle=await page.evaluate(()=>{const c=document.querySelector<HTMLElement>('.course')!,t=document.querySelector<HTMLElement>('#ghost-toggle')!;const cr=c.getBoundingClientRect(),tr=t.getBoundingClientRect();if(tr.top<cr.top||tr.bottom>cr.bottom)c.scrollTop+=tr.bottom-cr.bottom+4;return getComputedStyle(c).overflowY;});
+        at courseCardChecks (/tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:123:133)
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:136:99
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/g15-G15-E8-course-card-clears-the-sticks-360x800-coarse/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/g15-G15-E8-course-card-clears-the-sticks-360x800-coarse/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/g15-G15-E8-course-card-clears-the-sticks-360x800-coarse/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/g15-G15-E8-course-card-clears-the-sticks-360x800-coarse/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  10) e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 375x667 coarse ─────────────────
+
+    Error: 375x667 zh-TW before lap .course vs #left-stick
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 6450
+
+      121 | const hitAt=(page:Page,sel:string)=>page.evaluate(s=>{const e=document.querySelector(s)!;const r=e.getBoundingClientRect();const h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return h===e||e.contains(h);},sel);
+      122 | async function courseCardChecks(page:Page,label:string,blockers:string[],atTop:string[]){
+    > 123 |  const card=await box(page,'.course');for(const sel of blockers)expect(area(card,await box(page,sel)),`${label} .course vs ${sel}`).toBe(0);
+          |                                                                                                                                     ^
+      124 |  await page.evaluate(()=>{document.querySelector<HTMLElement>('.course')!.scrollTop=0;});
+      125 |  for(const sel of atTop)expect(await hitAt(page,sel),`${label} ${sel} at scrollTop 0`).toBe(true);
+      126 |  const toggle=await page.evaluate(()=>{const c=document.querySelector<HTMLElement>('.course')!,t=document.querySelector<HTMLElement>('#ghost-toggle')!;const cr=c.getBoundingClientRect(),tr=t.getBoundingClientRect();if(tr.top<cr.top||tr.bottom>cr.bottom)c.scrollTop+=tr.bottom-cr.bottom+4;return getComputedStyle(c).overflowY;});
+        at courseCardChecks (/tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:123:133)
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:134:99
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/g15-G15-E8-course-card-clears-the-sticks-375x667-coarse/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/g15-G15-E8-course-card-clears-the-sticks-375x667-coarse/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/g15-G15-E8-course-card-clears-the-sticks-375x667-coarse/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/g15-G15-E8-course-card-clears-the-sticks-375x667-coarse/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  11) e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 390x844 coarse ─────────────────
+
+    Error: 390x844 zh-TW after lap .course vs #left-stick
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 3550
+
+      121 | const hitAt=(page:Page,sel:string)=>page.evaluate(s=>{const e=document.querySelector(s)!;const r=e.getBoundingClientRect();const h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return h===e||e.contains(h);},sel);
+      122 | async function courseCardChecks(page:Page,label:string,blockers:string[],atTop:string[]){
+    > 123 |  const card=await box(page,'.course');for(const sel of blockers)expect(area(card,await box(page,sel)),`${label} .course vs ${sel}`).toBe(0);
+          |                                                                                                                                     ^
+      124 |  await page.evaluate(()=>{document.querySelector<HTMLElement>('.course')!.scrollTop=0;});
+      125 |  for(const sel of atTop)expect(await hitAt(page,sel),`${label} ${sel} at scrollTop 0`).toBe(true);
+      126 |  const toggle=await page.evaluate(()=>{const c=document.querySelector<HTMLElement>('.course')!,t=document.querySelector<HTMLElement>('#ghost-toggle')!;const cr=c.getBoundingClientRect(),tr=t.getBoundingClientRect();if(tr.top<cr.top||tr.bottom>cr.bottom)c.scrollTop+=tr.bottom-cr.bottom+4;return getComputedStyle(c).overflowY;});
+        at courseCardChecks (/tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:123:133)
+        at /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web/e2e/g15.spec.ts:136:99
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/g15-G15-E8-course-card-clears-the-sticks-390x844-coarse/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/g15-G15-E8-course-card-clears-the-sticks-390x844-coarse/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/g15-G15-E8-course-card-clears-the-sticks-390x844-coarse/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/g15-G15-E8-course-card-clears-the-sticks-390x844-coarse/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  11 failed
+    e2e/g15.spec.ts:29:1 › G15 E1 flight school hides the PB Ghost ─────────────────────────────────
+    e2e/g15.spec.ts:38:1 › G15 E2 a school lap saves its PB and Ghost, hidden until the course ─────
+    e2e/g15.spec.ts:52:1 › G15 E3 free flight shows its own status; flight school wins over free flight 
+    e2e/g15.spec.ts:63:1 › G15 E4 a new PB is displayed at once; the split table keeps the chased Ghost 
+    e2e/g15.spec.ts:74:1 › G15 E4b a Ghost save that fails after a new PB shows no stale Ghost ─────
+    e2e/g15.spec.ts:85:1 › G15 E5 a PB without a stored Ghost says so ──────────────────────────────
+    e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 320x568 coarse ───────────────────
+    e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 360x640 coarse ───────────────────
+    e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 360x800 coarse ───────────────────
+    e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 375x667 coarse ───────────────────
+    e2e/g15.spec.ts:130:36 › G15 E8 course card clears the sticks 390x844 coarse ───────────────────
+  5 passed (3.4m)
