@@ -262,7 +262,7 @@ export function translate(source:string,language:Language):string{
  [/^Legacy unclassified: (.+) s \(not this class\)$/,v=>`歷史未分類紀錄：${v} s（不屬於此設定）`],
  [/^(\d+) \/ (\d+) gates$/, (passed,total)=>`${passed} / ${total} 道關卡`],
  [/^Lessons (\d+) \/ 5 · Hover (.+) \/ (.+) s$/, (count,time,required)=>`課程 ${count} / 5 · 懸停 ${time} / ${required} 秒`],
- [/^PB (.+) s · (waiting at Gate 1|chase your best|hidden)$/, (time,state)=>`個人最佳 ${time} s · ${state==='waiting at Gate 1'?'等待第 1 關':state==='chase your best'?'挑戰最佳紀錄':'已隱藏'}`],
+ [/^PB (.+) s · (waiting at Gate 1|chase your best|hidden|hidden during flight school|not shown in free flight|no Ghost stored for this PB)$/, (time,state)=>`個人最佳 ${time} s · ${({'waiting at Gate 1':'等待第 1 關','chase your best':'挑戰最佳紀錄','hidden':'已隱藏','hidden during flight school':'飛行學校中不顯示','not shown in free flight':'自由飛行時不顯示','no Ghost stored for this PB':'未儲存 Ghost'} as Record<string,string>)[state]}`],
  [/^Selected file: (.*)$/,v=>`已選擇檔案：${v}`],
  [/^TRAINING FIELD \/ v(.+)$/,v=>`飛行訓練場 / v${v}`],
  [/^(\d+) \/ 5 gates$/,v=>`${v} / 5 道關卡`],[/^Lap (.+) s$/,v=>`單圈 ${v} s`],[/^LOCAL BEST (.+) s$/,v=>`本機最佳 ${v} s`],

@@ -1,0 +1,13 @@
+
+> physical-fpv-player@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.5 /tmp/claude-0/-home-user/dea41ac9-4f0d-54ee-8f4a-9e12e5057a52/scratchpad/fpv-g11-int/web
+
+
+ Test Files  20 passed (20)
+      Tests  165 passed (165)
+   Start at  03:11:15
+   Duration  26.99s (tests 98%, import 1%, transform 1%)
+

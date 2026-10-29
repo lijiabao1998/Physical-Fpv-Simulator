@@ -17,7 +17,8 @@
 #ghost-splits .ahead{color:#94e2bc}#ghost-splits .behind{color:#ffb68e}
 /* Existing sector details remain available without duplicating the new table on screen. */
 #race-splits{font-size:9px;max-height:28px;overflow:auto}
-@media(max-width:480px){.course{padding:9px 10px;width:250px;max-width:calc(100vw - 24px)}.course strong{font-size:18px;margin:4px 0}.gates{margin-top:7px;gap:5px}.gate-dot{height:22px;width:22px}.course .fineprint{margin:5px 0}#ghost-splits table{font-size:10px;line-height:1.25}}
+/* G15 item 6: only with the school closed; :where() adds no specificity, so every later G12/G13 rule still wins as before. */
+@media(max-width:480px){:where(#app:has(>#school-panel[hidden])) .course{padding:9px 10px;width:250px;max-width:calc(100vw - 24px)}:where(#app:has(>#school-panel[hidden])) .course strong{font-size:18px;margin:4px 0}:where(#app:has(>#school-panel[hidden])) .gates{margin-top:7px;gap:5px}:where(#app:has(>#school-panel[hidden])) .gate-dot{height:22px;width:22px}:where(#app:has(>#school-panel[hidden])) .course .fineprint{margin:5px 0}:where(#app:has(>#school-panel[hidden])) #ghost-splits table{font-size:10px;line-height:1.25}}
 /* Language changes presentation, never flight state. */
 .language-control{display:flex;align-items:center;gap:6px;font-size:11px}.language-control select{background:#263b32;color:inherit;border:1px solid #ffffff30;border-radius:7px;padding:7px;max-width:130px}html[lang=zh-TW] .welcome h1{letter-spacing:0;line-height:1.2}html[lang=zh-TW] .actions{max-width:380px}html[lang=zh-TW] .eyebrow{letter-spacing:1px}@media(max-width:850px){header{flex-wrap:wrap}.language-control{margin-left:auto}.course{top:130px}}@media(max-width:480px){header .language-control{position:absolute;right:12px;top:7px}.language-control>span{display:none}.language-control select{font-size:11px;padding:5px;max-width:100px}header .brand{font-size:13px!important;letter-spacing:1px}.course{top:96px}html[lang=zh-TW] .actions{max-width:330px}html[lang=zh-TW] .actions button{padding:7px;font-size:10px}}
 .language-control{position:fixed;top:16px;right:28px;z-index:6}header{padding-right:190px}.drawer{padding-top:65px}.drawer header{padding-right:0}@media(max-width:850px){header{padding-right:165px}.language-control{top:12px;right:16px}}@media(max-width:480px){header{padding-right:12px}.language-control{top:7px;right:12px}.drawer header{padding-right:0}}
@@ -118,3 +119,14 @@
 /* Above 850px there is room: the welcome card starts at 212px, right of the course select (en select centre at
    145px, under the card's 146px edge at 900x550), and still ends before the right stick. */
 @media(max-height:550px) and (min-width:851px) and (orientation:landscape){.welcome{left:212px}}
+/* G15 item 7 (docs/game-v0.1/G15-pb-ghost-release-fixes.md): on portrait touch screens the school-closed course card
+   covered the live left stick: on main at 320x568, 360x640 and 375x667, and with G11's Ghost rows also at 481-600px wide
+   (540x720; G15 code review). The card now ends 8px above the sticks and the other lines scroll inside it:
+   - up to 480px wide, from 568px tall: top 96px, sticks at bottom 245px and 100px tall, so 100dvh - 449px;
+   - 481-850px wide: top 130px, sticks at bottom 190px and 118px tall, so 100dvh - 446px (100dvh - 356px up to 550px
+     tall, where the sticks sit at bottom 100px).
+   Course select and Flight school share row 1; the clock and the gates get a row each, because seven 22px gate dots
+   (184px) left the select no width when they shared a column with Flight school. */
+@media(max-width:480px) and (min-height:568px) and (orientation:portrait) and (pointer:coarse),(min-width:481px) and (max-width:850px) and (orientation:portrait) and (pointer:coarse){:where(#app:has(>#school-panel[hidden])) .course{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:8px;row-gap:4px;max-height:calc(100dvh - 449px);overflow-y:auto}:where(#app:has(>#school-panel[hidden])) .course>label{grid-column:1;grid-row:1;margin:0}:where(#app:has(>#school-panel[hidden])) .course #school-open{grid-column:2;grid-row:1;margin:0}:where(#app:has(>#school-panel[hidden])) .course #course-clock{grid-column:1/-1;grid-row:2}:where(#app:has(>#school-panel[hidden])) .course .gates{grid-column:1/-1;grid-row:3;margin-top:0}:where(#app:has(>#school-panel[hidden])) .course>:not(label):not(#school-open):not(#course-clock):not(.gates){grid-column:1/-1}}
+@media(min-width:481px) and (max-width:850px) and (orientation:portrait) and (pointer:coarse){:where(#app:has(>#school-panel[hidden])) .course{max-height:calc(100dvh - 446px)}}
+@media(min-width:481px) and (max-width:850px) and (max-height:550px) and (orientation:portrait) and (pointer:coarse){:where(#app:has(>#school-panel[hidden])) .course{max-height:calc(100dvh - 356px)}}
