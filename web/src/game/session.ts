@@ -18,6 +18,9 @@ export class GameSession {
   state:SessionState='ready';armed=false;mode:FlightMode='angle';time=0;airtime=0;rate=3.5;
   rotorPhases=[0,0,0,0];
   reason='Throttle to zero. Hold ARM to confirm.';lastControls:Controls={...ZERO};
+  private imported=false;
+  /** Replay provenance survives pause/resume; only an explicit fresh reset is local. */
+  get recordable(){return !this.imported;}
   events:ReplayEvent[]=[];private replayEvents:ReplayEvent[]|null=null;private replayIndex=0;
   constructor(public assembly:Assembly={...DEFAULT_ASSEMBLY},public practice=true,public physicsModel:PhysicsModel=G08_MODEL,public courseId:CourseId='training-straight') {
     const model=assemblyModel(assembly);this.world=new FlightWorld(model,true,this.courseId);this.power=this.physicsModel===G08_MODEL?new TransientPowertrain(model):new Powertrain(model);this.course=new Course(practice,this.courseId);
@@ -41,7 +44,7 @@ export class GameSession {
   reset(assembly=this.assembly,practice=this.practice) {
     this.world.dispose();this.assembly={...assembly};this.practice=practice;
     const model=assemblyModel(assembly);this.world=new FlightWorld(model,true,this.courseId);this.power=this.physicsModel===G08_MODEL?new TransientPowertrain(model):new Powertrain(model);this.course=new Course(practice,this.courseId);
-    this.armed=false;this.time=0;this.airtime=0;this.rotorPhases=[0,0,0,0];this.state='flying';this.events=[];this.lastControls={...ZERO};this.replayEvents=null;this.replayIndex=0;
+    this.imported=false;this.armed=false;this.time=0;this.airtime=0;this.rotorPhases=[0,0,0,0];this.state='flying';this.events=[];this.lastControls={...ZERO};this.replayEvents=null;this.replayIndex=0;
     this.reason='Fresh pack. Zero throttle, then hold ARM.';
   }
   step(input:Controls,dt=FIXED_DT) {
@@ -85,7 +88,7 @@ export class GameSession {
     assemblyModel(b.assembly);
     for(const e of b.events){validateControls(e.c);if(typeof e.a!=='boolean'||!['angle','acro'].includes(e.m)||!Number.isFinite(e.r)||e.r<1||e.r>10)throw Error('Invalid replay event');}
     const events=structuredClone(b.events);
-    this.courseId=selected.id;this.physicsModel=b.physicsModel??G07_MODEL;this.reset(b.assembly,b.practice);this.replayEvents=events;this.replayIndex=0;this.state='replay';this.reason='Input replay — same build/runtime only; no hardware claim.';
+    this.courseId=selected.id;this.physicsModel=b.physicsModel??G07_MODEL;this.reset(b.assembly,b.practice);this.imported=true;this.replayEvents=events;this.replayIndex=0;this.state='replay';this.reason='Input replay — same build/runtime only; no hardware claim.';
   }
   switchCourse(id:string){const c=getCourse(id);this.disarm('Course changed');this.courseId=c.id;this.reset();}
   snapshot() {

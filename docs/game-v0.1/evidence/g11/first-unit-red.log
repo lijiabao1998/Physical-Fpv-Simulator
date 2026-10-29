@@ -1,0 +1,51 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> physical-fpv-player@0.1.0 test
+> vitest run --run tests/g11-ghost.test.ts
+
+
+ RUN  v5.0.5 /workspace/shared/own-cloud-migration-20261024/FPV-g11-ghost/web
+
+ ❯ tests/g11-ghost.test.ts (2 tests | 2 failed) 126ms
+   × G11 replay origin remains non-recordable after pause and resume 80ms
+   × G11 read-only ghost module is implemented 13ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/g11-ghost.test.ts > G11 replay origin remains non-recordable after pause and resume
+AssertionError: expected undefined to be false // Object.is equality
+
+- Expected:
+false
+
++ Received:
+undefined
+
+ ❯ tests/g11-ghost.test.ts:8:23
+      6| it('G11 replay origin remains non-recordable after pause and resume',(…
+      7|  const s=new GameSession();s.start();s.step(ZERO);const b=s.exportRepl…
+      8|  expect(s.recordable).toBe(false);s.pause();s.pause();expect(s.recorda…
+       |                       ^
+      9| });
+     10| it('G11 read-only ghost module is implemented',async()=>{
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/g11-ghost.test.ts > G11 read-only ghost module is implemented
+Error: Cannot find module '/src/game/ghost' imported from /workspace/shared/own-cloud-migration-20261024/FPV-g11-ghost/web/tests/g11-ghost.test.ts
+ ❯ tests/g11-ghost.test.ts:11:51
+      9| });
+     10| it('G11 read-only ghost module is implemented',async()=>{
+     11|  const modulePath='../src/game/ghost';const ghost=await import(moduleP…
+       |                                                   ^
+     12| });
+     13|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  20:22:00
+   Duration  455ms (tests 43%, transform 36%, import 19%, worker 1%)
+

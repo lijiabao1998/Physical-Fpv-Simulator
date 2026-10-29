@@ -4,6 +4,8 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import {FIELD_BOXES,GATES,TREES} from '../game/field';
 import {getCourse,type CourseId} from '../game/courses';
 import {rotate} from '../physics/math';
+import type {GhostPose} from '../game/ghost';
+import {GhostOutline} from './ghost-outline';
 import type {GameSession} from '../game/session';
 import type {Settings} from '../input/settings';
 
@@ -13,6 +15,7 @@ export class FlightScene {
   readonly scene=new THREE.Scene();
   readonly camera=new THREE.PerspectiveCamera(100,1,.025,650);
   readonly drone=new THREE.Group();
+  private ghost:GhostOutline|null=null;
   readonly rotors:THREE.Group[]=[];
   readonly gateMeshes:THREE.Mesh[][]=[];
   private sun:THREE.DirectionalLight;
@@ -176,12 +179,15 @@ export class FlightScene {
     this.cylinder(.002,.002,.08,'#303932',[-.065,0,.07],this.drone,6);
     const tip=this.mesh(new THREE.SphereGeometry(.008,8,6),this.material('#e1bb6b'),[-.065,0,.11],this.drone);tip.castShadow=false;
   }
+  /** One merged unlit wire mesh, no collision, body, texture, shadow or controls. */
+  private createGhost(){this.ghost=new GhostOutline();this.scene.add(this.ghost);}
+  ghostReceipt(){return {visible:this.ghost?.visible??false,position:this.ghost?.position.toArray()??null,body:false,collider:false,drawCalls:this.ghost?.visible?1:0,segments:this.ghost?this.ghost.geometry.getAttribute('position').count/2:0,bufferBytes:this.ghost?this.ghost.geometry.getAttribute('position').array.byteLength:0};}
   resize() {const w=Math.max(1,this.canvas.clientWidth),h=Math.max(1,this.canvas.clientHeight);this.renderer.setPixelRatio(renderPixelRatio(w,h,devicePixelRatio,this.low&&this.settings.quality==='auto',this.low));this.renderer.setSize(w,h,false);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();}
   setQuality(low:boolean) {
     this.appliedQuality=this.settings.quality;this.low=low;this.renderer.setPixelRatio(Math.min(devicePixelRatio,low?1:1.5));this.renderer.shadowMap.enabled=!low;this.resize();
   }
   resetCamera() {this.lastCamera='';}
-  render(g:GameSession,realDt:number) {
+  render(g:GameSession,realDt:number,pose:GhostPose|null=null) {
     // Auto-low and manual Low share shadows but have different raster budgets.
     // Apply the explicit mode request even when the low boolean is unchanged.
     if(this.appliedQuality!==this.settings.quality)this.setQuality(this.settings.quality!=='high');
@@ -202,6 +208,14 @@ export class FlightScene {
       if(this.lastCamera!=='chase')this.smoothed.copy(target);else this.smoothed.lerp(target,1-Math.exp(-realDt*7));
       this.camera.position.copy(this.smoothed);this.camera.up.copy(Z);this.camera.lookAt(p[0]+2*Math.cos(heading),p[1]+2*Math.sin(heading),p[2]+.3);
     }
+    if(pose){
+      if(!this.ghost)this.createGhost();
+      this.ghost!.updatePose(pose);
+      const separation=this.ghost!.position.distanceTo(this.camera.position);
+      // FPV overlap fades away; never draws an opaque shape over a gate.
+      this.ghost!.material.opacity=this.cameraMode==='fpv'?Math.min(.78,Math.max(0,(separation-.25)*.8)):.78;
+      this.ghost!.visible=true;
+    }else if(this.ghost)this.ghost.visible=false;
     this.lastCamera=this.cameraMode;
     this.camera.fov=this.cameraMode==='fpv'?this.settings.fov:72;this.camera.updateProjectionMatrix();
     this.gateMeshes.forEach((meshes,i)=>meshes.forEach(m=>(m.material as THREE.MeshStandardMaterial).color.set(i<g.course.next?'#78b997':i===g.course.next?'#f8833c':'#d9ad76')));
@@ -217,6 +231,6 @@ export class FlightScene {
     if(fps<35&&!this.low){this.setQuality(true);this.autoHighAttempted=true;}
     else if(fps>55&&this.low&&!this.autoHighAttempted&&this.clock>10){this.autoHighAttempted=true;this.setQuality(false);}
   }
-  dispose(){const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();this.scene.traverse(o=>{if(o instanceof THREE.DirectionalLight||o instanceof THREE.SpotLight||o instanceof THREE.PointLight)o.shadow.dispose();if(o instanceof THREE.Mesh){geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m));}});geometries.forEach(g=>g.dispose());materials.forEach(m=>{for(const v of Object.values(m))if(v instanceof THREE.Texture)v.dispose();m.dispose();});this.renderer.dispose();}
+  dispose(){const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();this.scene.traverse(o=>{if(o instanceof THREE.DirectionalLight||o instanceof THREE.SpotLight||o instanceof THREE.PointLight)o.shadow.dispose();if(o instanceof THREE.Mesh||o instanceof THREE.LineSegments){geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m));}});geometries.forEach(g=>g.dispose());materials.forEach(m=>{for(const v of Object.values(m))if(v instanceof THREE.Texture)v.dispose();m.dispose();});this.renderer.dispose();}
   get qualityLabel(){return `${this.low?'Low':'High'} · render scale ${this.renderer.getPixelRatio().toFixed(2)}`;}
 }

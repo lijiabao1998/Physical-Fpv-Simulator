@@ -1,0 +1,14 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> physical-fpv-player@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.5 /workspace/shared/own-cloud-migration-20261024/FPV-g11-ghost/web
+
+
+ Test Files  11 passed (11)
+      Tests  124 passed (124)
+   Start at  20:35:18
+   Duration  15.92s (tests 98%, import 1%)
+

@@ -15,6 +15,14 @@ New-course replay requires its version|新賽道重播必須包含賽道版本
 Original five-gate baseline, preserved.|保留原有五道關卡基準。
 Country turns, climbing gates and a descending hairpin. Follow orange gate normals.|鄉間迴轉、爬升關卡與下降髮夾彎。請依橘色關卡的前進方向穿越。
 Open-ended brick warehouses, steel beams and low barriers. Structural meshes have matching static collisions.|開放式磚造倉庫、鋼樑與低空障礙。建築結構具有對應的靜態碰撞體。
+PB Ghost: ON|個人最佳 Ghost：顯示
+PB Ghost: OFF|個人最佳 Ghost：隱藏
+Replay preview · PB protected|重播預覽 · 個人最佳紀錄受保護
+No matching Ghost for this configuration|此設定沒有對應的有效 Ghost 紀錄
+Gate split comparison|通門分段比較
+Gate|關卡
+You|本次時間
+PB|最佳時間
 None|無
 ESC duty|ESC 占空比
 airspeed|空速
@@ -217,6 +225,7 @@ export function translate(source:string,language:Language):string{
  [/^LOCAL BEST (.+) s · this class$/,v=>`本機最佳 ${v} s · 此設定`],
  [/^Legacy unclassified: (.+) s \(not this class\)$/,v=>`歷史未分類紀錄：${v} s（不屬於此設定）`],
  [/^(\d+) \/ (\d+) gates$/, (passed,total)=>`${passed} / ${total} 道關卡`],
+ [/^PB (.+) s · (waiting at Gate 1|chase your best|hidden)$/, (time,state)=>`個人最佳 ${time} s · ${state==='waiting at Gate 1'?'等待第 1 關':state==='chase your best'?'挑戰最佳紀錄':'已隱藏'}`],
  [/^Selected file: (.*)$/,v=>`已選擇檔案：${v}`],
  [/^TRAINING FIELD \/ v(.+)$/,v=>`飛行訓練場 / v${v}`],
  [/^(\d+) \/ 5 gates$/,v=>`${v} / 5 道關卡`],[/^Lap (.+) s$/,v=>`單圈 ${v} s`],[/^LOCAL BEST (.+) s$/,v=>`本機最佳 ${v} s`],
