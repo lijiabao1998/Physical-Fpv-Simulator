@@ -15,8 +15,8 @@
 #ghost-splits th{text-align:right;color:#c7d2bf;font-weight:normal;border-bottom:1px solid #ffffff25}
 #ghost-splits td{text-align:right;padding:1px 3px}#ghost-splits th:first-child,#ghost-splits td:first-child{text-align:left}
 #ghost-splits .ahead{color:#94e2bc}#ghost-splits .behind{color:#ffb68e}
-/* Existing sector details remain available without duplicating the new table on screen. */
-#race-splits{font-size:9px;max-height:28px;overflow:auto}
+/* Existing sector details remain available without duplicating the new table on screen. G15 round 2: exactly two lines (2 x line-height 1.35); 28px cut a third line through its glyphs. */
+#race-splits{font-size:9px;max-height:2.7em;overflow:auto}
 /* G15 item 6: only with the school closed; :where() adds no specificity, so every later G12/G13 rule still wins as before. */
 @media(max-width:480px){:where(#app:has(>#school-panel[hidden])) .course{padding:9px 10px;width:250px;max-width:calc(100vw - 24px)}:where(#app:has(>#school-panel[hidden])) .course strong{font-size:18px;margin:4px 0}:where(#app:has(>#school-panel[hidden])) .gates{margin-top:7px;gap:5px}:where(#app:has(>#school-panel[hidden])) .gate-dot{height:22px;width:22px}:where(#app:has(>#school-panel[hidden])) .course .fineprint{margin:5px 0}:where(#app:has(>#school-panel[hidden])) #ghost-splits table{font-size:10px;line-height:1.25}}
 /* Language changes presentation, never flight state. */
