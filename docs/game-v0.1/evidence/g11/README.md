@@ -144,3 +144,5 @@ frozen OFF/ON/ON/OFF120-frame method,120-second timeout and20% diagnostic rule
 are unchanged. Original110 plus18G11 unit tests pass; new actual images and full
 exact-head CI remain necessary. Interpret all paired/outlier observations honestly
 after this bounded simplification; do not chase noise by weakening a gate.
+
+**Note (2026-10-29, Claude).** The 39-file list in the paragraph on replay verification above was never committed. It is reconstructed, with full SHA256 at c1aed5d, e0c6d87 and 125f9fa, in [`port/inherited39-sha256.txt`](port/inherited39-sha256.txt). The sentence held for 672bb2f against c1aed5d; the G11 card's port receipt restates it for the port.

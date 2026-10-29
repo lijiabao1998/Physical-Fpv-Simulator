@@ -1,0 +1,7 @@
+const fs=require("fs");const [oursP,resP,g11P]=process.argv.slice(2);const ours=fs.readFileSync(oursP,"utf8");let r=fs.readFileSync(resP,"utf8");const G=fs.readFileSync(g11P,"utf8"),g=G.split("\n");
+const ins=[/localInputFlight:\(controls:Controls\[\],count=controls\.length\)=>\{.*?recordable:game\.recordable\}\),/.exec(G)[0],
+g.find(l=>l.startsWith("import {GhostPlayback"))+"\n",g.find(l=>l.startsWith("const ghostRecorder"))+"\n",g.find(l=>l.startsWith("function observeGhost"))+"\n",g.find(l=>l.startsWith("function visibleGhost"))+"\n",g.find(l=>l.startsWith(" text('ghost-toggle'"))+"\n",g.find(l=>l.startsWith(" text('ghost-status'"))+"\n",g.find(l=>l.startsWith(" const comparisons="))+"\n",
+'<button id="ghost-toggle" aria-pressed="true">PB Ghost: ON</button><small id="ghost-status"></small><div id="ghost-splits" aria-label="Gate split comparison"></div>',"el('ghost-toggle').onclick=()=>{ghostEnabled=!ghostEnabled;updateHud();};","game.recordable&&!game.course.invalid&&game.state==='finished'&&",",visibleGhost()","observeGhost();","ghostRecorder.observe(game);"];
+for(const s of ins){if(!r.includes(s))console.log("missing insertion:",s.slice(0,60));r=r.split(s).join("");}
+r=r.replace("if(result!==null){best=result.total;const candidate=ghostRecorder.completed(game,__BUILD_SHA__);if(candidate)saveGhost(localStorage,ghostClass(game),candidate);}}","if(result!==null)best=result.total;}");
+console.log(resP,"stripped === ours:",r===ours);
