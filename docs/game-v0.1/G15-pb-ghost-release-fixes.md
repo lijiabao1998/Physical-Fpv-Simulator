@@ -180,7 +180,7 @@ The port follows the G11 evaluation's port plan. It is not yet pushed.
 
 ## Status
 
-Opened, not started. No code, test or workflow has changed for this card.
+Implemented 2026-10-29 by Claude and merged as `a95ab8e` (PR #14). Round 1: tests first in `8ad30f5` and `ec4eb08`, the fix in `85fe02f`. Round 2 (below): test first in `4eb07d5`, the fix in `2ce1bd3`. No frozen line above changed. The receipts follow Round 2.
 
 ## Round 2: the split summary shows whole lines (2026-10-29, Claude)
 
@@ -196,3 +196,92 @@ Added before code, after the by-eye review of `85fe02f`'s CI images. Nothing abo
   - the zh-TW summary overflows the box, so the test cannot pass without checking anything.
 - E9 is red at `85fe02f`: at both 1440 and 412, zh-TW gives 28 px against 12.15 px lines (2.30 lines). The log is `evidence/g15/e9-red.log`.
 - Everything under "Frozen acceptance" stays green at the round-2 head, and the CPU rule applies to that head's two runs.
+
+## Implementation receipt, round 1 (2026-10-29, Claude)
+
+**Commits.**
+- `e780384` port merge, `f793cd0` G11 spec URL, `14df557` port receipt (G11 card), `32b2aa9` this card, frozen before code.
+- `8ad30f5` test only: U1–U8 and E1–E8, plus the two wiring edits in `g11-ghost.test.ts`.
+- `ec4eb08` test only: E8 also runs 540x720 and 768x1024, after a code review found the 481–600 px portrait overlap. 540x720 is red on the first fix draft, whose card at 481–600 px equals the port head's: `.course` covers `#left-stick` by 3894 px² in zh-TW before any lap (`e8-540x720-red.log`).
+- `85fe02f` fix: `ghost.ts`, `main.ts`, `i18n.ts`, `style.css`.
+
+**First red at the port head** (local; logs in `evidence/g15/`):
+- Unit: 10 failed (U1 ×3, U2, U3, U4 ×2, U6, U7, U8), 16 passed: U5 (the guard) and G11's 15, unchanged in outcome. U5's first version went red for the wrong reason (the replaced entry freed quota); it was rebuilt before the commit.
+- Chromium: 11 failed (E1, E2, E3, E4, E4b, E5; E8 at 320x568, 360x640, 360x800, 375x667 and 390x844), 5 passed (E6 and E7, the guards; E8 at 412x915, 650x900 and 704x900).
+- V1: with the school open, the port head differs from main by up to 58.5 px (G11's ≤480 px rule on G13's strip).
+- E7 mutations: with the per-step `ghostRecorder.observe(game)` removed from `animate`, and with the `observeGhost()` before the steps removed, E7 fails (samples 0 against 54 and 55 expected).
+
+**What the fix does.**
+- `ghost.ts`: `ghostWindowStart` (`4*Math.floor(startedAt/FIXED_DT/4)`) is shared by `completed()`, which trims only the record it returns, and the validator. Entries are stored as `{"order":N,…}`; `loadGhost` requires N and returns the record without it. `saveGhost` keeps G11's checks, refuses an entry over 2 MiB, writes, and then removes other entries while the total exceeds 2 MiB: unreadable, misfiled or stale ones first in key order, then by N. A failed write removes nothing; a failed removal keeps the new entry.
+- `main.ts`: `visibleGhost()` returns no pose while the school is open. The displayed Ghost is reloaded after every lap-end save and whenever the class PB record changes; the chased Ghost (split table) changes only with the attempt. The status follows the card's six rules.
+- `i18n.ts`: the G11 PB rule gains the three new endings.
+- `style.css`: G11's ≤480 px block is prefixed with `:where(#app:has(>#school-panel[hidden]))`. On portrait touch screens with the school closed, the course card ends 8 px above the sticks and scrolls inside: up to 480 px wide from 568 px tall (`max-height: calc(100dvh - 449px)`), and from 481 to 850 px wide (`calc(100dvh - 446px)`; `calc(100dvh - 356px)` up to 550 px tall). Course select and Flight school share row 1; the clock and the gates get a row each. With seven gate dots (184 px) in Flight school's column, the select had no width left, so they are not side by side as in G13's landscape card.
+
+**Results at the fix** (local Chromium emulation, this machine):
+- Unit: `npm run reference`, then `npm test`: 20 files, 165 of 165. `tsc` and `npm run build` pass.
+- Chromium: the whole suite, 133 of 133, on the first fix draft (card rules up to 480 px only). After the 481–850 px extension, the G11, G12, G13, G15 and I18N specs pass, 97 of 97.
+- V1: all 36 school-open states (18 viewports up to 600 px wide, both languages) equal main within 0 px; the 480x400 school-closed card equals the port head.
+
+**Official CI at `85fe02f`.**
+- PR run 40819036359 (pull_request, built from the merge ref `3d08cf8`; artifact 12875186264, sha256 `b6811e2a…`) and workflow_dispatch run 40819041116 (`85fe02f`; artifact 12874517614, sha256 `1f9e0de0…`).
+- Each run: reference fixtures; unit, 20 files, 165 of 165; `tsc` and the strict build; Chromium, 135 of 135 (31.0 and 19.4 minutes).
+- Codex code review and security review of `85fe02f`: both completed with no findings.
+
+**CPU (frozen method, G11 card line 50).** Render CPU over 120 frames per sample, from `g11-raw-off-on-performance.json` in each artifact:
+
+| Run | Width | Render CPU ms, OFF1/ON2/ON3/OFF4 | First pair | Reverse pair | rAF p95 ms | rAF median ms | Mean frame ms | Draws | Triangles | Geometries/textures |
+|---|---|---|---|---|---|---|---|---|---|---|
+| PR | 1440 | 0.5183/0.5525/0.5033/0.4608 | +6.59 % | +9.22 % | 66.8/66.8/66.7/66.7 | 66.6/66.6/66.6/66.6 | 61.7/61.9/61.5/61.1 | 21/22/22/21 | 6210 | 68/6 |
+| PR | 412 | 0.4750/0.4650/0.4817/0.4283 | −2.11 % | +12.45 % | 33.4/33.4/33.4/33.4 | 16.7/33.2/33.2/16.8 | 24.7/25.1/25.0/25.0 | 16/17/17/16 | 6160 | 60/4 |
+| PR | 360 | 0.4425/0.5133/0.4483/0.5925 | +16.01 % | −24.33 % | 33.4/33.4/33.4/33.4 | 16.7/16.7/16.7/16.7 | 21.9/22.2/22.1/22.4 | 16/17/17/16 | 6160 | 59/3 |
+| dispatch | 1440 | 0.5483/0.5950/0.6367/0.5733 | +8.51 % | +11.05 % | 33.4/33.4/33.4/33.5 | 33.3/33.3/33.3/33.3 | 31.4/31.4/32.2/32.2 | 21/22/22/21 | 6210 | 68/6 |
+| dispatch | 412 | 0.4225/0.4858/0.4317/0.4258 | +14.99 % | +1.37 % | 16.8/16.7/16.8/16.7 | 16.7/16.7/16.7/16.7 | 16.7/16.7/16.7/16.7 | 16/17/17/16 | 6160 | 60/4 |
+| dispatch | 360 | 0.4508/0.4725/0.4500/0.4258 | +4.81 % | +5.68 % | 16.7/16.7/16.7/16.8 | 16.7/16.7/16.7/16.7 | 16.7/16.7/16.7/16.7 | 16/17/17/16 | 6160 | 59/3 |
+
+- **Release rule:** no pair at any width, and no frame p95, is above +20 % in both runs. The release is not stopped.
+- **The 1440 first pair** is +6.59 % and +8.51 % on this head, against +28 % to +52 % in G11's runs. The render path is byte-identical to e0c6d87, so this is runner variance, not a fix. The reservation stays a known issue.
+- **PR run, 412 px median 16.7/33.2/33.2/16.8.** All four samples have about half their frames on each of the 16.7 and 33.3 ms steps: the mean frame is 24.7/25.1/25.0/25.0 ms, and OFF4 equals the two ON samples. So the median sits on the boundary between the steps. p95 is 33.4 in all four, and render CPU is −2.11 % and +12.45 %. The dispatch run has 16.7 throughout. This is not a Ghost cost.
+- With the Ghost on, draws rise by one (21→22, 16→17). Triangles, geometries and textures are unchanged, as in G11's runs.
+
+**Images reviewed by eye** (the PR run's artifact; 77 raw PNGs). Every image was opened, and each flagged one was re-examined by an independent check that also opened its copy from the dispatch run.
+- G11 FPV and Chase at 1440, 412 and 360: the cyan Ghost outline flies ahead of the player, and the HUD, split table and PB status are readable and clear of each other.
+- G11 bilingual (en and zh-TW, three widths): the status and deltas are in the right language, and zh-TW keeps 「個人最佳 Ghost」.
+- G11 other courses: Industrial Run and Training Straight show their own Ghost in Chase. In FPV it is faded out by G11's 0.25 m rule, because the test re-flies the PB's own inputs (G11 card line 36).
+- G12 completed school (16 images): the completion state reads clearly in both languages, and no Ghost is drawn while the school is open.
+- G15 E1–E5: every status line matches its state.
+- G15 E8 (40 images): wherever the school-closed course card is capped (320x568 to 540x720), it ends exactly 8 px above both sticks and scrolls inside. Select, Flight school, the clock and the gates keep their rows. 540x720 is clean on both sides. Nothing overlaps the sticks, ARM, Disarm, the actions, the notice or the HUD.
+- **Found, fixed in round 2:** G11's `#race-splits` box cuts the third summary line through its glyphs. This happens in zh-TW after every lap, and in en wherever the summary needs three lines.
+- **Found on main, not changed by G15:** from 481 to 850 px wide, the two-row action buttons cover the bottom of the notice. It is worst in zh-TW (540x720, 650x900, 704x900, 768x1024), and ARM stays tappable. Below about 500 px of height, the en notice touches the stick labels. These need their own card. In en, at 480 px wide or less, the course select shortens names ('British Sla…') beside Flight school, as item 7 allows.
+
+## Implementation receipt, round 2 (2026-10-29, Claude)
+
+**Commits.** `4eb07d5` (E9 and the Round 2 section above, before code) and `2ce1bd3` (the fix: `#race-splits` max-height 2.7em).
+
+**First red.** E9 fails at `85fe02f`: at both 1440 and 412, zh-TW gives 28 px against 12.15 px lines (2.30 lines), with the summary overflowing (`evidence/g15/e9-red.log`).
+
+**Local results at the fix** (Chromium emulation, this machine):
+- E9: 2 of 2 (`e9-green.log`).
+- The G11, G12, G13, G15 and I18N specs: 98 of 99 (`e2e-round2-related.log`). E6 failed once while I ran other browser jobs on this 4-CPU machine: its replay read state `paused` instead of `replay`, which matches the 250 ms frame guard pausing under that load. Run alone on the idle machine, E6 passes 3 of 3 (`e6-rerun-idle.log`). Round 2 changes only this max-height, and E6 passed in both official runs of `85fe02f`.
+- Unit: 20 files, 165 of 165; `tsc` and the build pass (`unit-round2.log`).
+
+**Official CI at `2ce1bd3`.** PR run 40832089456 (built from the merge ref `1972caf`; artifact 12880347320, sha256 `dbee2b57…`) and workflow_dispatch run 40832092169 (`2ce1bd3`; artifact 12880219475, sha256 `a4580e38…`). Each passed the unit tests, the strict build and Chromium 137 of 137 (135 plus E9 at two sizes).
+
+**CPU (frozen method) at `2ce1bd3`:**
+
+| Run | Width | Render CPU ms, OFF1/ON2/ON3/OFF4 | First pair | Reverse pair | rAF p95 ms | rAF median ms | Draws | Triangles | Geometries/textures |
+|---|---|---|---|---|---|---|---|---|---|
+| PR | 1440 | 0.5192/0.5350/0.5675/0.5708 | +3.05 % | −0.58 % | 66.7/66.7/66.7/66.7 | 66.6/66.6/66.6/66.6 | 21/22/22/21 | 6210 | 68/6 |
+| PR | 412 | 0.4650/0.4667/0.4458/0.7308 | +0.36 % | −39.00 % | 33.4/33.4/33.4/33.4 | 16.7/16.8/16.8/16.8 | 16/17/17/16 | 6160 | 60/4 |
+| PR | 360 | 0.4375/0.5175/0.4642/0.4142 | +18.29 % | +12.07 % | 33.4/33.4/33.4/33.4 | 16.7/16.7/16.7/16.7 | 16/17/17/16 | 6160 | 59/3 |
+| dispatch | 1440 | 0.5425/0.5425/0.7225/0.4750 | +0.00 % | +52.11 % | 66.7/66.7/66.7/66.7 | 66.6/66.6/66.6/66.6 | 21/22/22/21 | 6210 | 68/6 |
+| dispatch | 412 | 0.4417/0.4417/0.4525/0.4250 | +0.00 % | +6.47 % | 33.4/33.4/33.4/33.4 | 16.7/16.8/16.8/16.8 | 16/17/17/16 | 6160 | 60/4 |
+| dispatch | 360 | 0.4467/0.5000/0.4567/0.4192 | +11.94 % | +8.95 % | 33.4/33.4/33.4/33.4 | 16.7/16.7/16.7/16.7 | 16/17/17/16 | 6160 | 59/3 |
+
+- **Release rule:** frame p95 is unchanged at every width, and no pair is above +20 % in both runs. The release is not stopped.
+- The dispatch run's 1440 reverse pair, +52.11 % (0.4750 → 0.7225 ms), is not repeated in the PR run (−0.58 %). It is a single-run outlier, which the frozen rule does not count; it is recorded here as measured.
+
+**Images at `2ce1bd3`.** The E9 summaries and the course cards that round 2 touches (G12 complete, zh-TW, 1440; E8 390x844 zh-TW after the lap) show two whole lines and no cut third line.
+
+**Release.** PR #14 was merged as `a95ab8e`, a merge commit pinned to the verified head `2ce1bd3`. The main run 40835780156 passed verify and deploy. At 08:04 UTC, https://game.lijiabao.uk/fpv/version.json reported commit `a95ab8e` (built 07:30:33 UTC).
+
+**Not done / known limits.** As listed under "Known issues that ship". No physical phone, controller, aircraft or battery was tested.
