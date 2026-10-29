@@ -165,3 +165,85 @@ The attachment also records the snapshots taken before the tap and before the ho
 - **320x568:** in the school, only the lesson title is visible at scrollTop 0; the instructions scroll inside `.school-body`. The welcome text also mostly scrolls, while Start and the fine print stay in view.
 - **Browser features:** the layout needs `:has()` and `dvh`, as G12's did. Without them the school-open rules are skipped and the old overlaps return.
 - **Emulation only:** all evidence is Chromium emulation. No physical phone, tablet or controller was tested.
+
+## Codex P2 fix and second verification (2026-10-28, Claude)
+
+**Codex review on PR #13 (P2, comment 4400999024).** At 568x400 in short landscape the header wraps its menu onto a second row, and the course card at 53 px took every tap on Aircraft, Controls, Physics and Pause.
+- **55993cf (test only).** A new test runs five short-landscape sizes (480x400, 568x400, 600x400, 640x360, 900x400), coarse and fine, both languages, in the welcome, flying and school states. Every header menu button and the language select must be hit at its own centre, and no card may overlap the header or leave the viewport. Red on 67ac236's CSS: 6 failed (480x400, 568x400 and 600x400, coarse and fine), 4 passed.
+- **d504b67 (fix).** From 481 px wide the short-landscape header does not wrap; the brand may shrink and ends in an ellipsis. `--ls-top` places the cards 8 px below the header: 77 px up to 480 px wide, 53 px in between, 61 px above 850 px. The landscape welcome card stays inside the viewport. On touch screens wider than 850 px and taller than 550 px the welcome card keeps main's vertical position and starts at max(146px, 7%), right of the left stick, so the course select above it stays reachable (2da99c0 had lifted it over the select at 1024x768).
+
+**Second verification, of d504b67.** Five independent Chromium sweeps compared main (`web/src` identical to fcc4c46) with d504b67, on Chrome for Testing 153 headless shell.
+- Gate: `tsc`, 130 unit tests and the build pass; the G13 spec passes 22 of 22 (5.6 min).
+- Frozen probe: 442 states, 0 violations, with geometry identical to the 2da99c0 run. Extra probe (12 sizes): 408 states, 114 violations, all at 568x320 (G14). The 32 panel/header overlaps that 2da99c0 had at 568x320 are gone.
+- Landscape sweep, 27 sizes: the Codex P2 class is gone everywhere. The header is one row from 481 px (44–45 px; 51–53 px above 850 px). A dense resize scan checked every width from 481 to 1300 px at heights 360, 400 and 540, coarse and fine, both languages, in three states: 29,520 states, 0 failures.
+
+It also found four problems, fixed in round 3 below:
+- **320x480 coarse, portrait, school open:** Close's centre was under the right stick and Safe stop sat 0 px from it. The same happened at 360x540 and 414x550. The short-landscape rules (height up to 550 px) also applied to short portrait phones, where the sticks are 100 px tall at bottom 245 px rather than 118 px at bottom 100 px. Present since 5437ad4.
+- **800x360, a frozen view:** the lesson text kept a 4 px strip (4 of the title's 15 px). Present since 5437ad4. The frozen audit does not check the title, so the frozen test passed.
+- **Fine-pointer portrait windows** (360x900, 412x900, 480x800, 600x900): the welcome card covered the course select, although these views have no sticks.
+- **Landscape welcome card under the right stick** from 481 to 753 px wide (667x375: 10,005 px²). Not a regression: main's card covered the left stick instead.
+
+The problems it found that G13 does not fix are listed under the updated known limits below.
+
+## Round 3: short screens and touch tablets (2026-10-28, Claude)
+
+**Test first: 0063d7c (test only).** Two tests in `web/e2e/g13.spec.ts` are extended or added.
+- **Header (extended).** The 55993cf header test also runs 601x600 and 700x560, coarse and fine. It is renamed "G13 header stays reachable".
+- **Short screens (new).** It covers 22 coarse screens, in both languages and in the welcome, open, armed and paused states:
+  - portrait: 320x480, 360x540, 360x560, 414x550, 375x600, 481x520, 500x500 and 540x560;
+  - landscape: 640x360, 667x375, 740x360, 780x360, 800x360, 900x360, 932x430 and 900x550;
+  - touch tablets and windows: 601x560, 700x560, 850x600, 900x551, 640x632 and 800x700.
+
+  It requires:
+  - Enter and the three school controls to be whole, inside the viewport, hit at their own centres, and at least 8 px from ARM, Disarm and both sticks; the school controls also at least 44 px;
+  - the provisional-difficulty line to be inside the panel;
+  - in landscape, at least 12 px of the lesson title at scrollTop 0;
+  - the header controls to be hit at their centres in the welcome state, and Pause and the language select in the school states;
+  - the course select to be hit at its centre at 640x632, 800x700 and 900x550.
+
+  One exception: below about 500 px of height on narrow phones (320x480), Enter may lie over the stick band, which does nothing before Start. It must still clear ARM and Disarm.
+
+First red on d504b67's CSS: 19 of 36 failed (log sha256 ccea8c75…).
+- Header: 601x600 coarse and fine, and 700x560 coarse.
+- Short screens: 320x480, 360x540, 414x550, 540x560, 640x360, 740x360, 780x360, 800x360, 900x360, 900x550, 601x560, 700x560, 850x600, 900x551, 640x632 and 800x700.
+- The other 17 passed, including the five original header views.
+
+**Fix: 4f8fb33 (CSS only; each rule is commented in place).**
+- **Landscape only.** The short-landscape rules now also require `orientation: landscape`. On short portrait phones the sticks are 100 px tall at bottom 245 px, not 118 px at bottom 100 px.
+- **Narrow portrait school panel.** The panel never shrinks below 72 px, the height of the controls and the provisional line. Where the band below the course strip is shorter, it rises over the strip, and below about 490 px of height over part of the header, instead of reaching the sticks, which are live during lessons. Its top padding and footer gap are 4 px, so 320x568 shows the whole lesson title and 16 px of text (7 px at d504b67).
+- **Narrow portrait welcome card.** It never shrinks below 131 px and its top stays below the header. Below about 500 px of height it extends over the stick band instead, which does nothing before Start and is drawn under the card.
+- **Reserves from the real stick band.**
+  - 481–600 px touch: 316 px instead of G12's 357 px (the narrow-phone band); 226 px up to 550 px tall, where the sticks move to bottom 100 px.
+  - Taller than 550 px: the panel keeps main's position and stops 8 px above the sticks: `min(350px, 100dvh − 416px)` from 601 to 850 px wide, `min(350px, 100dvh − 352px)` above.
+- **Touch-tablet welcome card, 601–850 px.** Its height is `max(100dvh − 514px, 131px)`, so its top stays below the course select.
+- **Header, 601–850 px at any height.** It no longer wraps. Only en at 601–607 px changes: the menu had wrapped to a second row (117 px).
+- **Short landscape.**
+  - The panel's padding is 4 px at the top and 9 px at the bottom, which keeps the controls 10 px above the sticks. The footer gap is 2 px, with 3 px of padding.
+  - Lesson text: 24 px at 800x360 and 16 px at 900x360 (4 px and 0 px at d504b67).
+  - The course strip has no empty first row.
+  - The welcome card is `min(470px, max(300px, 100vw − 292px))` wide and ends before the right stick. Above 850 px it starts at 212 px, clear of the en course select.
+- **Brand.** d504b67's 13 px only ever applied above 850 px wide. It is removed, so main's sizes apply again (15 px up to 850 px, 20 px above). The 1 px letter spacing stays up to 850 px only.
+- `a86f20c` is d504b67 with a corrected commit message; the tree is identical.
+
+**Results at 4f8fb33.**
+- Local Chromium emulation, web files identical to 4f8fb33 (style.css sha256 286a82eb…, g13.spec.ts 8b24f8e3…):
+  - G13 spec 48 of 48 plus G12 spec 8 of 8: 56 passed in 10.5 min (log sha256 9427f7c7…).
+  - Two earlier runs at the same files did not finish green. In one, a container restart stopped the run after 52 of 56 tests. In both that run and an earlier one at an intermediate CSS, G12's 1440 test failed once at "a 200 ms Space press does not arm": under heavy machine load the 200 ms wait outlasted the 600 ms ARM hold. That test uses a fine pointer at 1440x900 and keyboard timing; it passed on the quiet rerun and in CI.
+  - `npm run reference`, then `npm test`: 135 of 135 (log sha256 d45b1c73…). `tsc` and `npm run build` pass.
+- Official CI, PR run 40788118257 on the PR merge commit c5f5117 (head 4f8fb33): unit 135 of 135 in 15 files, strict build, Chromium 106 of 106 in 15.8 min; deploy skipped. Artifact `player-verification-c5f5117…`, id 12861560475, sha256 9b505a50….
+- A final dense A/B sweep of 4f8fb33 against main was started and stopped unfinished on 2026-10-29, after the owner set the release bar: 「美術過得去，人可玩流暢玩狀態就行」. Its partial output is not used as evidence.
+
+**Known limits (at 4f8fb33; Chromium emulation)**
+- **Short portrait phones** (up to 480 px wide, below about 560 px tall), school open:
+  - The 72 px panel overlaps the bottom of the course strip (360x540: 6 px) and, below about 490 px tall, the header (320x480: the panel starts at 63 px, the header ends at 77 px).
+  - The lesson text keeps 2 px at 320x480 and 360x540; the HUD notice still shows the current instruction.
+  - Safe stop, Retry and Close are hit at their centres, 10 px from the sticks; Pause and the language select are hit at their centres.
+- **Narrow portrait welcome below about 500 px tall** (320x480): Enter lies over the stick band, which does nothing before Start. It is hit at its centre and at least 126 px from ARM and Disarm.
+- **481–600 px wide, about 560 px tall** (540x560, zh-TW): the welcome card overlaps the bottom 2 px of the wrapped 120 px header; every header control is still hit at its centre.
+- **320x568 (frozen view):** the school shows the whole lesson title and 16 px of text; the welcome card shows Enter and the fine print, and its text scrolls.
+- **Moved to G14:** landscape heights below 360 px (568x320: Safe stop and Close 0 px from the right stick); landscape widths up to 480 px (480x400, where main's narrow-phone stick positions also apply); the collapsed course strip at 481–640 px short landscape with the school open.
+- **zh-TW, pre-existing on main and unchanged:**
+  - Disarm's centre is under the right stick on coarse screens wider than 850 px: 873x393 to 960x540 in short landscape, and 900x700 to 1440x900 on tablets. This is safety-relevant and is proposed as its own follow-up card.
+  - Flight school is under the left stick at 360x640 and 375x667 coarse, and at 601x560 in the welcome state.
+- **480x400 with a fine pointer:** the language control covers the top 5 px of Pause, which is still hit at its centre.
+- The layout needs `:has()` and `dvh`, as G12's did. All evidence is Chromium emulation; no physical phone, tablet or controller was tested.
